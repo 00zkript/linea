@@ -1,0 +1,51 @@
+	/*
+  	iconos icon font: iconos
+  	Creation date: 10/07/2020 16:28
+  	*/
+
+@font-face {
+  font-family: "iconos";
+  src: url("./iconos.eot");
+  src: url("./iconos.eot?#iefix") format("embedded-opentype"),
+       url("./iconos.woff2") format("woff2"),
+       url("./iconos.woff") format("woff"),
+       url("./iconos.ttf") format("truetype"),
+       url("./iconos.svg#iconos") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "iconos";
+    src: url("./iconos.svg#iconos") format("svg");
+  }
+}
+
+[class^="iconos-"]:before, [class*=" iconos-"]:before,
+[class^="iconos-"]:after, [class*=" iconos-"]:after {   
+  font-family: iconos;
+        font-size: 20px;
+font-style: normal;
+/*margin-left: 20px;*/
+}
+
+.iconos-camion:before { content: "\f100"; }
+.iconos-usuario:before { content: "\f101"; }
+.iconos-email:before { content: "\f102"; }
+.iconos-twitter:before { content: "\f103"; }
+.iconos-instagram:before { content: "\f104"; }
+.iconos-youtube:before { content: "\f105"; }
+.iconos-facebook:before { content: "\f106"; }
+.iconos-whatsapp:before { content: "\f107"; }
+.iconos-carrito1:before { content: "\f108"; }
+.iconos-carrito2:before { content: "\f109"; }
+.iconos-linkedin:before { content: "\f10a"; }
+.iconos-pinterest:before { content: "\f10b"; }
+.iconos-lupa:before { content: "\f10c"; }
+.iconos-avion:before { content: "\f10d"; }
+.iconos-ubicacion:before { content: "\f10e"; }
+.iconos-smartphone:before { content: "\f10f"; }
+.iconos-llamada:before { content: "\f110"; }
+.iconos-menos:before { content: "\f111"; }
+.iconos-mas:before { content: "\f112"; }

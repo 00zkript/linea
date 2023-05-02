@@ -1,0 +1,55 @@
+	/*
+  	icont icon font: icont
+  	Creation date: 23/02/2021 17:56
+  	*/
+
+@font-face {
+  font-family: "icont";
+  src: url("./icont.eot");
+  src: url("./icont.eot?#iefix") format("embedded-opentype"),
+       url("./icont.woff2") format("woff2"),
+       url("./icont.woff") format("woff"),
+       url("./icont.ttf") format("truetype"),
+       url("./icont.svg#icont") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "icont";
+    src: url("./icont.svg#icont") format("svg");
+  }
+}
+
+[class^="icont-"]:before, [class*=" icont-"]:before,
+[class^="icont-"]:after, [class*=" icont-"]:after {   
+  font-family: icont;
+  font-size: 20px;
+  font-style: normal;
+/*margin-left: 20px;*/
+}
+
+.icont-whatsapp:before { content: "\f100"; }
+.icont-whatsapp-1:before { content: "\f101"; }
+.icont-whatsapp-2:before { content: "\f102"; }
+.icont-simbolo-de-la-aplicacion-de-facebook:before { content: "\f103"; }
+.icont-gorjeo:before { content: "\f104"; }
+.icont-gorjeo-1:before { content: "\f105"; }
+.icont-instagram:before { content: "\f106"; }
+.icont-instagram-1:before { content: "\f107"; }
+.icont-linkedin:before { content: "\f108"; }
+.icont-linkedin-1:before { content: "\f109"; }
+.icont-pinterest:before { content: "\f10a"; }
+.icont-pinterest-1:before { content: "\f10b"; }
+.icont-youtube:before { content: "\f10c"; }
+.icont-youtube-1:before { content: "\f10d"; }
+.icont-telegrama:before { content: "\f10e"; }
+.icont-telegrama-1:before { content: "\f10f"; }
+.icont-pdf:before { content: "\f110"; }
+.icont-archivo-pdf:before { content: "\f111"; }
+.icont-llamada-telefonica:before { content: "\f112"; }
+.icont-llamada-telefonica-1:before { content: "\f113"; }
+.icont-telefono-movil:before { content: "\f114"; }
+.icont-tarjeta-de-credito:before { content: "\f115"; }
+.icont-shopping-cart:before { content: "\f116"; }
