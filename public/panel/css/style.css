@@ -2,7 +2,7 @@
     --color-panel-bg: #BAB8B8;
     --color-panel-text: #2A3F54;
     --color-panel-bg-active: #5046e5;
-    --color-panel-text-active: #5046e5;
+    --color-panel-text-active: #BAB8B8;
     --colot-panel-header: #5046e5;
     --colot-panel-border: #5046e5;
 }
@@ -40,4 +40,25 @@
     border-radius: 50%;
     text-align: center;
     padding: 0.25rem;
+}
+
+
+ul.nav, .nav ul{
+    /* flex-direction: column; */
+    display: none;
+    padding: 1rem;
+}
+
+ul.nav li{
+    margin-top: 0.5rem;
+}
+
+ul.nav li:hover:not(.active){
+    background-color: var(--color-panel-bg-active);
+    color: var(--color-panel-text-active);
+}
+
+li.current-page{
+    background-color: var(--color-panel-bg-active);
+    color: var(--color-panel-text-active);
 }
