@@ -1,0 +1,43 @@
+:root{
+    --color-panel-bg: #BAB8B8;
+    --color-panel-text: #2A3F54;
+    --color-panel-bg-active: #5046e5;
+    --color-panel-text-active: #5046e5;
+    --colot-panel-header: #5046e5;
+    --colot-panel-border: #5046e5;
+}
+
+
+.profile.clearfix {
+    display: table;
+    width: 100%;
+}
+.profile_pic {
+    display: table-cell;
+    vertical-align: middle;
+    float: none;
+    position: relative;
+}
+.profile_info {
+    display: table-cell;
+    vertical-align: middle;
+    float: none;
+}
+
+.unlink, .unlink:hover, .unlink:focus{
+    text-decoration: none;
+    color: var(--color-panel-text)
+}
+
+.link-home{
+    font-size: 24pt;
+}
+
+.link-home span{
+    width: 60px;
+    height: 60px;
+    border: 2px solid;
+    border-radius: 50%;
+    text-align: center;
+    padding: 0.25rem;
+}
