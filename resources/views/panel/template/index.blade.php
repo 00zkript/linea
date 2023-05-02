@@ -96,11 +96,11 @@
                         <div class="menu_section">
                             <h3>General</h3>
                             <ul class="nav side-menu">
-                                <li class="d-none">
+                                <li class="">
                                     <a href="{{ route('inicio.index') }}"><i class="fa fa-home"></i> Inicio</a>
                                 </li>
 
-                                <li class="d-none">
+                                <li class="">
                                     <a><i class="fa fa-lock"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
@@ -136,7 +136,7 @@
                                 </li>
 
 
-                                <li class="d-none"><a><i class="fa fa-tasks"></i> General <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-tasks"></i> General <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('menu.index') }}">Menú</a></li>
                                         <li><a href="{{ route('empresa.index') }}">Empresa</a></li>
