@@ -27,7 +27,8 @@
         "league/flysystem-cached-adapter": "^1.1",
         "maatwebsite/excel": "^3.1",
         "mercadopago/dx-php": "^2.4",
-        "olimortimer/laravelshoppingcart": "^4.0"
+        "olimortimer/laravelshoppingcart": "^4.0",
+        "spatie/laravel-permission": "5.3"
     },
     "require-dev": {
         "facade/ignition": "^1.4",

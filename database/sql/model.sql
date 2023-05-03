@@ -226,3 +226,92 @@ create table venta_detalle (
     estado tinyint(1) default '0'
 );
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+empleadoa cargode la matricula
+    busca cliente
+    crea cliente
+    crea matricula
+
+
+cajero
+    busca matricula
+    realiza cobro
+    imprime ticket
+
+
+
+pisciona ('grande', 'mediana', 'pequeña')
+concepto ('nueva matricula')
+temporada ('verano' <se calcula de enero-junio>, 'invierno' <junio-diciembre>)
+    abre programa
+
+programa ('para adultos', 'para niños')
+
+cantidad de sessiones
+    id
+    nombre
+    cantidad
+    precio
+
+horario ('L-M-V', 'M-J-S', 'S-D')
+
+
+matricula
+    codigo
+    idcliente
+    idempleado
+    fecha_matricula
+    concepto
+    idpiscina
+    idconcepto
+    idtemporada
+    idprograma
+    idqty_session
+    idhorario
+
+
+
+
