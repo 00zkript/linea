@@ -50,7 +50,7 @@ Artisan::command('create-roles',function () {
         [ 'name' => 'Crear Cliente' ],
         [ 'name' => 'Editar Cliente' ],
         [ 'name' => 'Borrar Cliente' ]
-    );
+    ]);
 
 
 
