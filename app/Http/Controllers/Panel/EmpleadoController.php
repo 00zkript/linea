@@ -21,7 +21,7 @@ class EmpleadoController extends Controller
         $tipoDocumentoIdentidad = TipoDocumentoIdentidad::query()->where('estado',1)->get();
 
 
-        return view('panel.cliente.index')->with(compact('empleados','tipoDocumentoIdentidad'));
+        return view('panel.empleado.index')->with(compact('empleados','tipoDocumentoIdentidad'));
 
 
     }
@@ -46,7 +46,7 @@ class EmpleadoController extends Controller
 
 
 
-        return view('panel.cliente.listado')->with(compact('empleados'))->render();
+        return view('panel.empleado.listado')->with(compact('empleados'))->render();
 
     }
 
@@ -56,30 +56,50 @@ class EmpleadoController extends Controller
             return abort(404);
         }
 
+        $idtipoEmpleado           = $request->input('idtipoEmpleado');
+        $nombres                  = $request->input('nombres');
+        $apellidos                = $request->input('apellidos');
+        $correo                   = $request->input('correo');
+        $tipoDocumentoIdentidad   = $request->input('tipoDocumentoIdentidad');
+        $numeroDocumentoIdentidad = $request->input('numeroDocumentoIdentidad');
+        $telefono                 = $request->input('telefono');
+        $codigo                   = $request->input('codigo');
+        $imagen                   = $request->input('imagen');
+        $fechaIngreso             = $request->input('fechaIngreso');
+        $fechaCulminacion         = $request->input('fechaCulminacion');
+        $sexo                     = $request->input('sexo');
+        $estado                   = $request->input('estado');
+
+
         try {
 
             // $usuario            = new User();
             // $usuario->idrol     = 2;
-            // $usuario->usuario   = $request->input('nombres');
-            // $usuario->nombres   = $request->input('nombres');
-            // $usuario->apellidos = $request->input('apellidos');
-            // $usuario->correo = $request->input('correo');
+            // $usuario->usuario   = $nombres;
+            // $usuario->nombres   = $nombres;
+            // $usuario->apellidos = $apellidos;
+            // $usuario->correo = $correo;
             // $usuario->clave     = encrypt(random_int(10000, 99999));
-            // $usuario->estado = $request->input('estado');
+            // $usuario->estado = $estado;
             // $usuario->save();
 
 
 
             $cliente = new Empleado();
             // $cliente->idusuario = $usuario->idusuario;
-            $cliente->nombres   = $request->input('nombres');
-            $cliente->apellidos = $request->input('apellidos');
-            $cliente->correo    = $request->input('correo');
-            $cliente->idtipo_documento_identidad    = $request->input('tipoDocumentoIdentidad');
-            $cliente->numero_documento_identidad    = $request->input('numeroDocumentoIdentidad');
-            $cliente->telefono    = $request->input('telefono');
-            $cliente->fecha_creacion = now()->format('Y-m-d H:i:s');
-            $cliente->estado    = $request->input('estado');
+            $cliente->idtipo_empleado            = $idtipoEmpleado;
+            $cliente->nombres                    = $nombres;
+            $cliente->apellidos                  = $apellidos;
+            $cliente->correo                     = $correo;
+            $cliente->idtipo_documento_identidad = $tipoDocumentoIdentidad;
+            $cliente->numero_documento_identidad = $numeroDocumentoIdentidad;
+            $cliente->telefono                   = $telefono;
+            $cliente->codigo                     = $codigo;
+            $cliente->imagen                     = $imagen;
+            $cliente->fecha_ingreso              = $fechaIngreso;
+            $cliente->fecha_culminacion          = $fechaCulminacion;
+            $cliente->sexo                       = $sexo;
+            $cliente->estado                     = $estado;
             $cliente->save();
 
             return response()->json([
@@ -141,16 +161,35 @@ class EmpleadoController extends Controller
             return abort(404);
         }
 
+        $idtipoEmpleado           = $request->input('idtipoEmpleadoEditar');
+        $nombres                  = $request->input('nombresEditar');
+        $apellidos                = $request->input('apellidosEditar');
+        $correo                   = $request->input('correoEditar');
+        $tipoDocumentoIdentidad   = $request->input('tipoDocumentoIdentidadEditar');
+        $numeroDocumentoIdentidad = $request->input('numeroDocumentoIdentidadEditar');
+        $telefono                 = $request->input('telefonoEditar');
+        $codigo                   = $request->input('codigoEditar');
+        $imagen                   = $request->input('imagenEditar');
+        $fechaIngreso             = $request->input('fechaIngresoEditar');
+        $fechaCulminacion         = $request->input('fechaCulminacionEditar');
+        $sexo                     = $request->input('sexoEditar');
+        $estado                   = $request->input('estadoEditar');
+
         try {
             $cliente = Empleado::query()->findOrFail($request->input('idempleado'));
-
-            $cliente->nombres   = $request->input('nombresEditar');
-            $cliente->apellidos = $request->input('apellidosEditar');
-            $cliente->correo    = $request->input('correoEditar');
-            $cliente->idtipo_documento_identidad    = $request->input('tipoDocumentoIdentidadEditar');
-            $cliente->numero_documento_identidad    = $request->input('numeroDocumentoIdentidadEditar');
-            $cliente->telefono    = $request->input('telefonoEditar');
-            $cliente->estado    = $request->input('estadoEditar');
+            $cliente->idtipo_empleado            = $idtipoEmpleado;
+            $cliente->nombres                    = $nombres;
+            $cliente->apellidos                  = $apellidos;
+            $cliente->correo                     = $correo;
+            $cliente->idtipo_documento_identidad = $tipoDocumentoIdentidad;
+            $cliente->numero_documento_identidad = $numeroDocumentoIdentidad;
+            $cliente->telefono                   = $telefono;
+            $cliente->codigo                     = $codigo;
+            $cliente->imagen                     = $imagen;
+            $cliente->fecha_ingreso              = $fechaIngreso;
+            $cliente->fecha_culminacion          = $fechaCulminacion;
+            $cliente->sexo                       = $sexo;
+            $cliente->estado                     = $estado;
             $cliente->update();
 
 

@@ -326,6 +326,11 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::post('cliente/listar',[\App\Http\Controllers\Panel\ClienteController::class,'listar'])->name("cliente.listar");
     Route::resource('cliente',\App\Http\Controllers\Panel\ClienteController::class);
 
+    Route::post('empleado/habilitar',[\App\Http\Controllers\Panel\EmpleadoController::class,'habilitar'])->name("empleado.habilitar");
+    Route::post('empleado/inhabilitar',[\App\Http\Controllers\Panel\EmpleadoController::class,'inhabilitar'])->name("empleado.inhabilitar");
+    Route::post('empleado/listar',[\App\Http\Controllers\Panel\EmpleadoController::class,'listar'])->name("empleado.listar");
+    Route::resource('empleado',\App\Http\Controllers\Panel\EmpleadoController::class);
+
 
     Route::get('suscripcion/downloadExcel',[\App\Http\Controllers\Panel\SuscripcionController::class,'downloadExcel'])->name("suscripcion.downloadExcel");
     Route::post('suscripcion/listar',[\App\Http\Controllers\Panel\SuscripcionController::class,'listar'])->name("suscripcion.listar");

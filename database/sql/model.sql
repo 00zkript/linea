@@ -15,7 +15,7 @@ drop table if exists empleado;
 create table empleado (
     idempleado int not null auto_increment PRIMARY KEY,
     codigo varchar(50),
-    nombre VARCHAR(250),s varchar(250),
+    nombres VARCHAR(250),
     apellidos varchar(250),
     idtipo_documento_identidad int,
     numero_documento_identidad varchar(20),
@@ -24,10 +24,12 @@ create table empleado (
     fecha_culminacion datetime,
     idtipo_empleado int,
     sexo varchar(50),
+    telefono varchar(50),
+    correo varchar(250),
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP
+    create_at TIMESTAMP,
+    update_at TIMESTAMP
 );
-
 
 
 

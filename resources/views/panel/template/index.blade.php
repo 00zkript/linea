@@ -122,6 +122,7 @@
 
                                 <li class=""><a><i class="fa fa-money-check-dollar"></i> Ventas o pedidos <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
+                                        <li><a href="{{ route('empleado.index') }}">Empleado</a></li>
                                         <li><a href="{{ route('cliente.index') }}">Clientes</a></li>
                                         <li><a href="{{ route('cupon.index') }}">Cupones</a></li>
                                         {{-- <li><a href="{{ route('ventas.index') }}">Ventas</a></li> --}}
