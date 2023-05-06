@@ -58,20 +58,20 @@ class ClienteController extends Controller
 
         try {
 
-            $usuario            = new User();
-            $usuario->idrol     = 2;
-            $usuario->usuario   = $request->input('nombres');
-            $usuario->nombres   = $request->input('nombres');
-            $usuario->apellidos = $request->input('apellidos');
-            $usuario->correo = $request->input('correo');
-            $usuario->clave     = encrypt(random_int(10000, 99999));
-            $usuario->estado = $request->input('estado');
-            $usuario->save();
+            // $usuario            = new User();
+            // $usuario->idrol     = 2;
+            // $usuario->usuario   = $request->input('nombres');
+            // $usuario->nombres   = $request->input('nombres');
+            // $usuario->apellidos = $request->input('apellidos');
+            // $usuario->correo = $request->input('correo');
+            // $usuario->clave     = encrypt(random_int(10000, 99999));
+            // $usuario->estado = $request->input('estado');
+            // $usuario->save();
 
 
 
             $cliente = new Cliente();
-            $cliente->idusuario   = $usuario->idusuario;
+            // $cliente->idusuario = $usuario->idusuario;
             $cliente->nombres   = $request->input('nombres');
             $cliente->apellidos = $request->input('apellidos');
             $cliente->correo    = $request->input('correo');
