@@ -112,26 +112,29 @@
 
                                 <li class="d-none"><a><i class="fa fa-shopping-cart"></i> Catálogo <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li ><a href="{{ route('marcas.index') }}">Marcas</a></li>
+                                        <li><a href="{{ route('marcas.index') }}">Marcas</a></li>
                                         <li><a href="{{ route('categorias.index') }}">Categorias</a></li>
-                                        <li ><a href="{{ route('section.index') }}">Secciones</a></li>
+                                        <li><a href="{{ route('section.index') }}">Secciones</a></li>
                                         <li><a href="{{ route('atributo.index') }}">Atributos</a></li>
                                         <li><a href="{{ route('productos.index') }}">Productos</a></li>
                                     </ul>
                                 </li>
 
-                                <li class="d-none"><a><i class="fa fa-money-check-dollar"></i> Ventas o pedidos <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-money-check-dollar"></i> Ventas o pedidos <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li ><a href="{{ route('cliente.index') }}">Clientes</a></li>
-                                        <li ><a href="{{ route('ventas.index') }}">Ventas</a></li>
+                                        <li><a href="{{ route('cliente.index') }}">Clientes</a></li>
                                         <li><a href="{{ route('cupon.index') }}">Cupones</a></li>
-                                        <li><a href="{{ route('costo-envio.index') }}">Costo de envío</a></li>
+                                        {{-- <li><a href="{{ route('ventas.index') }}">Ventas</a></li> --}}
+                                        {{-- <li><a href="{{ route('costo-envio.index') }}">Costo de envío</a></li> --}}
                                     </ul>
                                 </li>
 
+
+
+
                                 <li class="d-none"><a><i class="fa fa-file"></i> Pagina de Inicio <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li ><a href="{{ route('section-home.index') }}">Secciones Home</a></li>
+                                        <li><a href="{{ route('section-home.index') }}">Secciones Home</a></li>
                                     </ul>
                                 </li>
 
@@ -151,7 +154,7 @@
 
                                 <li class="d-none"><a><i class="fa fa-file-circle-plus"></i> Paginas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li ><a href="{{ route('asesores.index') }}">Asesores</a></li>
+                                        <li><a href="{{ route('asesores.index') }}">Asesores</a></li>
                                         <li><a href="{{ route('pagina.index') }}">Página</a></li>
                                         <li><a href="{{ route('instagram.index') }}">instagram</a></li>
                                         <li><a href="{{ route('testimonio.index') }}">Testimonios</a></li>

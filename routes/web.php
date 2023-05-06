@@ -13,148 +13,148 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/test/prueba-envio',[\App\Http\Controllers\TestController::class,'testSend']);
 
 
-// Route::get('/lang/{lang}', [\App\Http\Controllers\LanguageController::class, 'changeLanguage'])->name('lang');
+Route::get('/lang/{lang}', [\App\Http\Controllers\LanguageController::class, 'changeLanguage'])->name('lang');
 
-// Route::middleware(['translate'])->group(function () {
-
-
-//     Route::get('/',[\App\Http\Controllers\Web\InicioController::class,'index'])->name('web.inicio');
+Route::middleware(['translate'])->group(function () {
 
 
-//     //Route::get('/pagina',[\App\Http\Controllers\Web\PaginaController::class,'index'])->name('web.pagina');
-//     Route::get('/pagina/{slug}',[\App\Http\Controllers\Web\PaginaController::class,'detalle'])->name('web.pagina.detalle');
-//     Route::get('/terminos-condiciones',[\App\Http\Controllers\Web\PaginaController::class,'terminosCondiciones'])->name('web.terminos-condiciones');
-//     Route::get('/politica-de-privacidad',[\App\Http\Controllers\Web\PaginaController::class,'politicaPrivacidad'])->name('web.politicas-privacidad');
+    Route::get('/',[\App\Http\Controllers\Web\InicioController::class,'index'])->name('web.inicio');
 
 
-
-//     Route::post('/suscripcion/enviar',[\App\Http\Controllers\Web\SuscripcionController::class,'enviar'])->name('web.suscripcion.enviar');
-
-
-//     Route::get("/contacto",[\App\Http\Controllers\Web\ContactoController::class,'index'])->name('web.contacto');
-//     Route::post('/contacto/enviar',[\App\Http\Controllers\Web\ContactoController::class,'enviar'])->name('web.contacto.enviar');
-
-
-//     Route::get("/preguntas-frecuentes",[\App\Http\Controllers\Web\PreguntasFrecuentesController::class,'index'])->name('web.preguntas-frecuentes');
-
-
-//     Route::get('/blog', [\App\Http\Controllers\Web\BlogController::class,'index'])->name('web.blog');
-//     Route::get('/blog/{slug}', [\App\Http\Controllers\Web\BlogController::class,'detalle'])->name('web.blog.detalle');
-
-//     Route::get('/libro-de-reclamaciones',[\App\Http\Controllers\Web\LibroReclamacionController::class,'index'])->name('web.libro-reclamacion');
-//     Route::post('/libro-de-reclamaciones/guardarDatos',[\App\Http\Controllers\Web\LibroReclamacionController::class,'guardarDatos'])->name('web.libro-reclamacion.guardarDatos');
-
-
-//     Route::get('/asesores-comerciales',[\App\Http\Controllers\Web\AsesorController::class,'index'])->name('web.asesor');
+    //Route::get('/pagina',[\App\Http\Controllers\Web\PaginaController::class,'index'])->name('web.pagina');
+    Route::get('/pagina/{slug}',[\App\Http\Controllers\Web\PaginaController::class,'detalle'])->name('web.pagina.detalle');
+    Route::get('/terminos-condiciones',[\App\Http\Controllers\Web\PaginaController::class,'terminosCondiciones'])->name('web.terminos-condiciones');
+    Route::get('/politica-de-privacidad',[\App\Http\Controllers\Web\PaginaController::class,'politicaPrivacidad'])->name('web.politicas-privacidad');
 
 
 
+    Route::post('/suscripcion/enviar',[\App\Http\Controllers\Web\SuscripcionController::class,'enviar'])->name('web.suscripcion.enviar');
 
 
-
-//     Route::get('/productos',[\App\Http\Controllers\Web\ProductoController::class,'index'])->name('web.productos');
-//     Route::get('/productos/buscar/{buscadorGlobal?}',[\App\Http\Controllers\Web\ProductoController::class,'index'])->name('web.productos.buscadorGlobal');
-//     Route::get('/productos/categoria/{slugCategoria}',[\App\Http\Controllers\Web\ProductoController::class,'categoria'])->name('web.productos.categoria');
-//     Route::get('/productos/seccion/{slugSection}',[\App\Http\Controllers\Web\ProductoController::class,'section'])->name('web.productos.section');
-//     Route::get('/productos/marca/{slugMarca}',[\App\Http\Controllers\Web\ProductoController::class,'marca'])->name('web.productos.marca');
-//     Route::get('/productos/caracteristica/{slugAtributo}/{valor}',[\App\Http\Controllers\Web\ProductoController::class,'caracteristica'])->name('web.productos.caracteristica');
+    Route::get("/contacto",[\App\Http\Controllers\Web\ContactoController::class,'index'])->name('web.contacto');
+    Route::post('/contacto/enviar',[\App\Http\Controllers\Web\ContactoController::class,'enviar'])->name('web.contacto.enviar');
 
 
-//     Route::get('/producto/{slug}',[\App\Http\Controllers\Web\ProductoController::class,'detalle'])->name('web.productos.detalle');
-//     Route::post('/productos/ajax/listadoProductosAjax',[\App\Http\Controllers\Web\ProductoController::class,'listadoProductosAjax'])->name('web.productos.listadoProductosAjax');
-//     Route::post('/productos/ajax/cambiarPresentacion',[\App\Http\Controllers\Web\ProductoController::class,'cambiarPresentacion'])->name('web.productos.cambiarPresentacion');
-//     Route::post('/productos/ajax/buscadorGlobalAjax',[\App\Http\Controllers\Web\ProductoController::class,'buscadorGlobalAjax'])->name('web.productos.buscadorGlobalAjax');
+    Route::get("/preguntas-frecuentes",[\App\Http\Controllers\Web\PreguntasFrecuentesController::class,'index'])->name('web.preguntas-frecuentes');
 
 
+    Route::get('/blog', [\App\Http\Controllers\Web\BlogController::class,'index'])->name('web.blog');
+    Route::get('/blog/{slug}', [\App\Http\Controllers\Web\BlogController::class,'detalle'])->name('web.blog.detalle');
+
+    Route::get('/libro-de-reclamaciones',[\App\Http\Controllers\Web\LibroReclamacionController::class,'index'])->name('web.libro-reclamacion');
+    Route::post('/libro-de-reclamaciones/guardarDatos',[\App\Http\Controllers\Web\LibroReclamacionController::class,'guardarDatos'])->name('web.libro-reclamacion.guardarDatos');
 
 
-//     Route::get("/favoritos",[\App\Http\Controllers\Web\FavoritoController::class,'index'])->name('web.favorito');
-//     Route::post('/favoritos/listado',[\App\Http\Controllers\Web\FavoritoController::class,'listado'])->name('web.favorito.listado');
-//     Route::post('/favorito/agregar',[\App\Http\Controllers\Web\FavoritoController::class,"agregar"])->name("web.favorito.agregar");
-//     Route::post('/favorito/eliminar',[\App\Http\Controllers\Web\FavoritoController::class,"eliminar"])->name("web.favorito.eliminar");
-
-
-//     Route::post('/carrito-de-compras/removerCupon',[\App\Http\Controllers\Web\CarroController::class,'removerCupon'])->name('web.carrito-de-compras.removerCupon');
-//     Route::post('/carrito-de-compras/aplicarCupon',[\App\Http\Controllers\Web\CarroController::class,'aplicarCupon'])->name('web.carrito-de-compras.aplicarCupon');
-
-//     Route::post('/carrito-de-compras/getProvincia',[\App\Http\Controllers\Web\CarroController::class,'getProvincia'])->name('web.carrito-de-compras.getProvincia');
-//     Route::post('/carrito-de-compras/changeProvincia',[\App\Http\Controllers\Web\CarroController::class,'getDistrito'])->name('web.carrito-de-compras.changeProvincia');
-//     Route::post('/carrito-de-compras/aplicarCostoEnvio',[\App\Http\Controllers\Web\CarroController::class,'aplicarCostoEnvio'])->name('web.carrito-de-compras.aplicarCostoEnvio');
-//     Route::post('/carrito-de-compras/calcularCostoEnvio',[\App\Http\Controllers\Web\CarroController::class,'calcularCostoEnvio'])->name('web.carrito-de-compras.calcularCostoEnvio');
-
-//     Route::post('/carrito-de-compras/listadoAjax',[\App\Http\Controllers\Web\CarroController::class,'listadoAjax'])->name('web.carrito-de-compras.listadoAjax');
-//     Route::post('/carrito-de-compras/resumenPagoCarrito',[\App\Http\Controllers\Web\CarroController::class,'resumenPagoCarrito'])->name('web.carrito-de-compras.resumenPagoCarrito');
-//     Route::resource('/carrito-de-compras',\App\Http\Controllers\Web\CarroController::class)->names('web.carrito-de-compras');
-
-
-
-//     Route::post('/mercadopago/verificar-pago', [\App\Http\Controllers\WebHook\PagoController::class, "verificarPago"])->name("mercadopago.verificarPago");
-//     Route::middleware(["validarIdventa"])->group(function (){
-//         Route::get('/resumen-pedido',[\App\Http\Controllers\Web\Venta\ResumenPedidoController::class,'index'])->name('web.venta.resumen');
-
-//         Route::get('/informacion-de-cliente',[\App\Http\Controllers\Web\Venta\DatosClienteController::class,'index'])->name('web.venta.usuario.index');
-//         Route::post('/informacion-de-cliente/guardar',[\App\Http\Controllers\Web\Venta\DatosClienteController::class,'guardar'])->name('web.venta.usuario.guardar');
-
-//         Route::get('/metodo-de-entrega',[\App\Http\Controllers\Web\Venta\MetodoEntregaController::class,'index'])->name('web.venta.entrega.index');
-//         Route::get('/metodo-de-entrega/getProvincia',[\App\Http\Controllers\Web\Venta\MetodoEntregaController::class,'getProvincia'])->name('web.venta.entrega.getProvincia');
-//         Route::get('/metodo-de-entrega/getDistrito',[\App\Http\Controllers\Web\Venta\MetodoEntregaController::class,'getDistrito'])->name('web.venta.entrega.getDistrito');
-//         Route::post('/metodo-de-entrega/getPrecioEnvio',[\App\Http\Controllers\Web\Venta\MetodoEntregaController::class,'getPrecioEnvio'])->name('web.venta.entrega.getPrecioEnvio');
-//         Route::post('/metodo-de-entrega/guardar',[\App\Http\Controllers\Web\Venta\MetodoEntregaController::class,'guardar'])->name('web.venta.entrega.guardar');
-
-
-
-//         Route::get('/metodo-de-pago',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'index'])->name('web.venta.pago.index');
-//         Route::get('/metodo-de-pago/verificarPedido',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'verificarPedido'])->name("web.venta.pago.verificarPedido");
-//         Route::post('/metodo-de-pago/pagarConTarjeta',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'pagarConTarjeta'])->name("web.venta.pago.pagarConTarjeta");
-//         Route::post('/metodo-de-pago/pagarConEfectivo',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'pagarConEfectivo'])->name("web.venta.pago.pagarConEfectivo");
-//         Route::post('/metodo-de-pago/pagarConDepositoBancario',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'pagarConDepositoBancario'])->name("web.venta.pago.pagarConDepositoBancario");
-//         /// IZIPAY
-//         // Route::post('/metodo-de-pago/createToken',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'createToken'])->name("web.venta.pago.createToken");
-//         // Route::post('/metodo-de-pago/confirmarPago',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'confirmarPago'])->name("web.venta.pago.confirmarPago");
-
-//     });
-
-//     Route::get('/compra-finalizada',[\App\Http\Controllers\Web\Venta\FinalVentaController::class,'index'])->name("web.venta.finalVenta");
-
-
-
-//     Route::get('/login',[\App\Http\Controllers\Web\LoginController::class,'index'])->name('web.login');
-//     Route::post('/login/verificar',[\App\Http\Controllers\Web\LoginController::class,'verificar'])->name('web.login.verificar');
-
-//     Route::get('/registrarse',[\App\Http\Controllers\Web\LoginController::class,'registrase'])->name('web.login.registro');
-//     Route::post('/registrarse/guardar',[\App\Http\Controllers\Web\LoginController::class,'guardarUsuario'])->name('web.login.registro.guardar');
-
-//     Route::get('/recuperar-clave',[\App\Http\Controllers\Web\LoginController::class,'recuperarClave'])->name('web.login.recuperar-clave');
-//     Route::post('/recuperar-clave/enviarClave',[\App\Http\Controllers\Web\LoginController::class,'enviarClave'])->name('web.login.recuperar-clave.enviarClave');
-
-//     Route::get('/login/auth/{servicio}', [\App\Http\Controllers\Web\LoginController::class, 'loginAuth'])->name('web.login.auth');
-//     Route::get('/login/auth/return/facebook', [\App\Http\Controllers\Web\LoginController::class, 'responseLoginFacebook'])->name('web.login.facebook');
-//     Route::get('/login/auth/return/google', [\App\Http\Controllers\Web\LoginController::class, 'responseLoginGoogle'])->name('web.login.google');
-
-
-//     Route::get('/login/salir',[\App\Http\Controllers\Web\LoginController::class,'salir'])->name('web.login.salir');
+    Route::get('/asesores-comerciales',[\App\Http\Controllers\Web\AsesorController::class,'index'])->name('web.asesor');
 
 
 
 
 
 
-
-//     /* INICIO ----> RUTAS PROTEGIDAS USUARIO AUTENTICADO PARA ACCESO A LA WEB */
-//     Route::middleware(['autenticado:web'])->group(function (){
-
-//         Route::get('/usuario/perfil',[\App\Http\Controllers\Web\UsuarioController::class,'index'])->name('web.usuario.index');
-//         Route::post('/usuario/modificarDatos',[\App\Http\Controllers\Web\UsuarioController::class,'modificarDatos'])->name('web.usuario.modificarDatos');
-//         Route::post('/usuario/listadoVentas',[\App\Http\Controllers\Web\UsuarioController::class,'listadoVentas'])->name('web.usuario.listadoVentas');
-//         Route::post('/usuario/detalleVenta',[\App\Http\Controllers\Web\UsuarioController::class,'detalleVenta'])->name('web.usuario.detalleVenta');
-//         Route::post('/usuario/updateComprobante',[\App\Http\Controllers\Web\UsuarioController::class,'updateComprobante'])->name('web.usuario.updateComprobante');
+    Route::get('/productos',[\App\Http\Controllers\Web\ProductoController::class,'index'])->name('web.productos');
+    Route::get('/productos/buscar/{buscadorGlobal?}',[\App\Http\Controllers\Web\ProductoController::class,'index'])->name('web.productos.buscadorGlobal');
+    Route::get('/productos/categoria/{slugCategoria}',[\App\Http\Controllers\Web\ProductoController::class,'categoria'])->name('web.productos.categoria');
+    Route::get('/productos/seccion/{slugSection}',[\App\Http\Controllers\Web\ProductoController::class,'section'])->name('web.productos.section');
+    Route::get('/productos/marca/{slugMarca}',[\App\Http\Controllers\Web\ProductoController::class,'marca'])->name('web.productos.marca');
+    Route::get('/productos/caracteristica/{slugAtributo}/{valor}',[\App\Http\Controllers\Web\ProductoController::class,'caracteristica'])->name('web.productos.caracteristica');
 
 
-//     });
-//     /* FIN ----> RUTAS PROTEGIDAS USUARIO AUTENTICADO  PARA ACCESO A LA WEB */
+    Route::get('/producto/{slug}',[\App\Http\Controllers\Web\ProductoController::class,'detalle'])->name('web.productos.detalle');
+    Route::post('/productos/ajax/listadoProductosAjax',[\App\Http\Controllers\Web\ProductoController::class,'listadoProductosAjax'])->name('web.productos.listadoProductosAjax');
+    Route::post('/productos/ajax/cambiarPresentacion',[\App\Http\Controllers\Web\ProductoController::class,'cambiarPresentacion'])->name('web.productos.cambiarPresentacion');
+    Route::post('/productos/ajax/buscadorGlobalAjax',[\App\Http\Controllers\Web\ProductoController::class,'buscadorGlobalAjax'])->name('web.productos.buscadorGlobalAjax');
 
 
-// });
+
+
+    Route::get("/favoritos",[\App\Http\Controllers\Web\FavoritoController::class,'index'])->name('web.favorito');
+    Route::post('/favoritos/listado',[\App\Http\Controllers\Web\FavoritoController::class,'listado'])->name('web.favorito.listado');
+    Route::post('/favorito/agregar',[\App\Http\Controllers\Web\FavoritoController::class,"agregar"])->name("web.favorito.agregar");
+    Route::post('/favorito/eliminar',[\App\Http\Controllers\Web\FavoritoController::class,"eliminar"])->name("web.favorito.eliminar");
+
+
+    Route::post('/carrito-de-compras/removerCupon',[\App\Http\Controllers\Web\CarroController::class,'removerCupon'])->name('web.carrito-de-compras.removerCupon');
+    Route::post('/carrito-de-compras/aplicarCupon',[\App\Http\Controllers\Web\CarroController::class,'aplicarCupon'])->name('web.carrito-de-compras.aplicarCupon');
+
+    Route::post('/carrito-de-compras/getProvincia',[\App\Http\Controllers\Web\CarroController::class,'getProvincia'])->name('web.carrito-de-compras.getProvincia');
+    Route::post('/carrito-de-compras/changeProvincia',[\App\Http\Controllers\Web\CarroController::class,'getDistrito'])->name('web.carrito-de-compras.changeProvincia');
+    Route::post('/carrito-de-compras/aplicarCostoEnvio',[\App\Http\Controllers\Web\CarroController::class,'aplicarCostoEnvio'])->name('web.carrito-de-compras.aplicarCostoEnvio');
+    Route::post('/carrito-de-compras/calcularCostoEnvio',[\App\Http\Controllers\Web\CarroController::class,'calcularCostoEnvio'])->name('web.carrito-de-compras.calcularCostoEnvio');
+
+    Route::post('/carrito-de-compras/listadoAjax',[\App\Http\Controllers\Web\CarroController::class,'listadoAjax'])->name('web.carrito-de-compras.listadoAjax');
+    Route::post('/carrito-de-compras/resumenPagoCarrito',[\App\Http\Controllers\Web\CarroController::class,'resumenPagoCarrito'])->name('web.carrito-de-compras.resumenPagoCarrito');
+    Route::resource('/carrito-de-compras',\App\Http\Controllers\Web\CarroController::class)->names('web.carrito-de-compras');
+
+
+
+    Route::post('/mercadopago/verificar-pago', [\App\Http\Controllers\WebHook\PagoController::class, "verificarPago"])->name("mercadopago.verificarPago");
+    Route::middleware(["validarIdventa"])->group(function (){
+        Route::get('/resumen-pedido',[\App\Http\Controllers\Web\Venta\ResumenPedidoController::class,'index'])->name('web.venta.resumen');
+
+        Route::get('/informacion-de-cliente',[\App\Http\Controllers\Web\Venta\DatosClienteController::class,'index'])->name('web.venta.usuario.index');
+        Route::post('/informacion-de-cliente/guardar',[\App\Http\Controllers\Web\Venta\DatosClienteController::class,'guardar'])->name('web.venta.usuario.guardar');
+
+        Route::get('/metodo-de-entrega',[\App\Http\Controllers\Web\Venta\MetodoEntregaController::class,'index'])->name('web.venta.entrega.index');
+        Route::get('/metodo-de-entrega/getProvincia',[\App\Http\Controllers\Web\Venta\MetodoEntregaController::class,'getProvincia'])->name('web.venta.entrega.getProvincia');
+        Route::get('/metodo-de-entrega/getDistrito',[\App\Http\Controllers\Web\Venta\MetodoEntregaController::class,'getDistrito'])->name('web.venta.entrega.getDistrito');
+        Route::post('/metodo-de-entrega/getPrecioEnvio',[\App\Http\Controllers\Web\Venta\MetodoEntregaController::class,'getPrecioEnvio'])->name('web.venta.entrega.getPrecioEnvio');
+        Route::post('/metodo-de-entrega/guardar',[\App\Http\Controllers\Web\Venta\MetodoEntregaController::class,'guardar'])->name('web.venta.entrega.guardar');
+
+
+
+        Route::get('/metodo-de-pago',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'index'])->name('web.venta.pago.index');
+        Route::get('/metodo-de-pago/verificarPedido',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'verificarPedido'])->name("web.venta.pago.verificarPedido");
+        Route::post('/metodo-de-pago/pagarConTarjeta',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'pagarConTarjeta'])->name("web.venta.pago.pagarConTarjeta");
+        Route::post('/metodo-de-pago/pagarConEfectivo',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'pagarConEfectivo'])->name("web.venta.pago.pagarConEfectivo");
+        Route::post('/metodo-de-pago/pagarConDepositoBancario',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'pagarConDepositoBancario'])->name("web.venta.pago.pagarConDepositoBancario");
+        /// IZIPAY
+        // Route::post('/metodo-de-pago/createToken',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'createToken'])->name("web.venta.pago.createToken");
+        // Route::post('/metodo-de-pago/confirmarPago',[\App\Http\Controllers\Web\Venta\MetodoPagoController::class,'confirmarPago'])->name("web.venta.pago.confirmarPago");
+
+    });
+
+    Route::get('/compra-finalizada',[\App\Http\Controllers\Web\Venta\FinalVentaController::class,'index'])->name("web.venta.finalVenta");
+
+
+
+    Route::get('/login',[\App\Http\Controllers\Web\LoginController::class,'index'])->name('web.login');
+    Route::post('/login/verificar',[\App\Http\Controllers\Web\LoginController::class,'verificar'])->name('web.login.verificar');
+
+    Route::get('/registrarse',[\App\Http\Controllers\Web\LoginController::class,'registrase'])->name('web.login.registro');
+    Route::post('/registrarse/guardar',[\App\Http\Controllers\Web\LoginController::class,'guardarUsuario'])->name('web.login.registro.guardar');
+
+    Route::get('/recuperar-clave',[\App\Http\Controllers\Web\LoginController::class,'recuperarClave'])->name('web.login.recuperar-clave');
+    Route::post('/recuperar-clave/enviarClave',[\App\Http\Controllers\Web\LoginController::class,'enviarClave'])->name('web.login.recuperar-clave.enviarClave');
+
+    Route::get('/login/auth/{servicio}', [\App\Http\Controllers\Web\LoginController::class, 'loginAuth'])->name('web.login.auth');
+    Route::get('/login/auth/return/facebook', [\App\Http\Controllers\Web\LoginController::class, 'responseLoginFacebook'])->name('web.login.facebook');
+    Route::get('/login/auth/return/google', [\App\Http\Controllers\Web\LoginController::class, 'responseLoginGoogle'])->name('web.login.google');
+
+
+    Route::get('/login/salir',[\App\Http\Controllers\Web\LoginController::class,'salir'])->name('web.login.salir');
+
+
+
+
+
+
+
+    /* INICIO ----> RUTAS PROTEGIDAS USUARIO AUTENTICADO PARA ACCESO A LA WEB */
+    Route::middleware(['autenticado:web'])->group(function (){
+
+        Route::get('/usuario/perfil',[\App\Http\Controllers\Web\UsuarioController::class,'index'])->name('web.usuario.index');
+        Route::post('/usuario/modificarDatos',[\App\Http\Controllers\Web\UsuarioController::class,'modificarDatos'])->name('web.usuario.modificarDatos');
+        Route::post('/usuario/listadoVentas',[\App\Http\Controllers\Web\UsuarioController::class,'listadoVentas'])->name('web.usuario.listadoVentas');
+        Route::post('/usuario/detalleVenta',[\App\Http\Controllers\Web\UsuarioController::class,'detalleVenta'])->name('web.usuario.detalleVenta');
+        Route::post('/usuario/updateComprobante',[\App\Http\Controllers\Web\UsuarioController::class,'updateComprobante'])->name('web.usuario.updateComprobante');
+
+
+    });
+    /* FIN ----> RUTAS PROTEGIDAS USUARIO AUTENTICADO  PARA ACCESO A LA WEB */
+
+
+});
 
 
 
