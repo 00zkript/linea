@@ -38,7 +38,7 @@
                             <hr>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
-                            <p class="text-capitalize">N° de Doucmento</p>
+                            <p class="text-capitalize">N° de Documento</p>
                             <p id="numeroDocumentoIdentidadShow"></p>
                             <hr>
                         </div>

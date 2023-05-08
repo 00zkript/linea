@@ -21,7 +21,24 @@
                         </div>
 
 
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="codigoEditar">Código:</label>
+                                <input type="text" class="form-control" name="codigoEditar" id="codigoEditar" >
+                            </div>
+                        </div>
 
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="tipoEmpleadoEditar">Tipo empleado:</label>
+                                <select class="form-control" name="tipoEmpleadoEditar" id="tipoEmpleadoEditar" >
+                                    <option value="" selected hidden>[---Seleccione---]</option>
+                                    @foreach ($tiposDeEmpleados as $item )
+                                        <option value="{{ $item->idtipo_empleado }}">{{ $item->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
                         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
@@ -67,10 +84,43 @@
 
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="form-group">
-                                <label for="numeroDocumentoIdentidadEditar">N° de Doucmento: <span class="text-danger">(*)</span></label>
-                                <input type="text" name="numeroDocumentoIdentidadEditar" id="numeroDocumentoIdentidadEditar" required class="form-control soloNumeros"  placeholder="N° de Doucmento" minlength="8" maxlength="8">
+                                <label for="numeroDocumentoIdentidadEditar">N° de Documento: <span class="text-danger">(*)</span></label>
+                                <input type="text" name="numeroDocumentoIdentidadEditar" id="numeroDocumentoIdentidadEditar" required class="form-control soloNumeros"  placeholder="N° de Documento" minlength="8" maxlength="8">
                             </div>
                         </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="fechaIngresoEditar">Fecha Ingreso:</label>
+                                <input type="date" class="form-control" name="fechaIngresoEditar" id="fechaIngresoEditar" >
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="fechaCulminacionEditar">Fecha Culminacion:</label>
+                                <input type="date" class="form-control" name="fechaCulminacionEditar" id="fechaCulminacionEditar" >
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="sexoEditar">Sexo:</label>
+                                <select class="form-control" name="sexoEditar" id="sexoEditar" >
+                                    <option value="" hidden >[---Seleccione---]</option>
+                                    <option value="hombre">Hombre</option>
+                                    <option value="mujer">Mujer</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="imagenEditar">Imagen:</label>
+                                <input type="file" class="form-control" name="imagenEditar" id="imagenEditar" >
+                            </div>
+                        </div>
+
 
 
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

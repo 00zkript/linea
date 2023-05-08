@@ -67,8 +67,8 @@
 
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="form-group">
-                                <label for="numeroDocumentoIdentidadEditar">N° de Doucmento: <span class="text-danger">(*)</span></label>
-                                <input type="text" name="numeroDocumentoIdentidadEditar" id="numeroDocumentoIdentidadEditar" required class="form-control soloNumeros"  placeholder="N° de Doucmento" minlength="8" maxlength="8">
+                                <label for="numeroDocumentoIdentidadEditar">N° de Documento: <span class="text-danger">(*)</span></label>
+                                <input type="text" name="numeroDocumentoIdentidadEditar" id="numeroDocumentoIdentidadEditar" required class="form-control soloNumeros"  placeholder="N° de Documento" minlength="8" maxlength="8">
                             </div>
                         </div>
 

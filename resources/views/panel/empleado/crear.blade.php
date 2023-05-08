@@ -18,8 +18,24 @@
                             <hr>
                         </div>
 
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="codigo">Código:</label>
+                                <input type="text" class="form-control" name="codigo" id="codigo" >
+                            </div>
+                        </div>
 
-
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="tipoEmpleado">Tipo empleado:</label>
+                                <select class="form-control" name="tipoEmpleado" id="tipoEmpleado" >
+                                    <option value="" selected hidden>[---Seleccione---]</option>
+                                    @foreach ($tiposDeEmpleados as $item )
+                                        <option value="{{ $item->idtipo_empleado }}">{{ $item->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
 
                         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
@@ -65,8 +81,42 @@
 
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="form-group">
-                                <label for="numeroDocumentoIdentidad">N° de Doucmento: <span class="text-danger">(*)</span></label>
+                                <label for="numeroDocumentoIdentidad">N° de Documento: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="numeroDocumentoIdentidad" id="numeroDocumentoIdentidad" required class="form-control soloNumeros"  minlength="8" maxlength="8">
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="fechaIngreso">Fecha Ingreso:</label>
+                                <input type="date" class="form-control" name="fechaIngreso" id="fechaIngreso" >
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="fechaCulminacion">Fecha Culminacion:</label>
+                                <input type="date" class="form-control" name="fechaCulminacion" id="fechaCulminacion" >
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="sexo">Sexo: </label>
+                                <select class="form-control" name="sexo" id="sexo" >
+                                    <option value="" hidden selected>[---Seleccione---]</option>
+                                    <option value="hombre">Hombre</option>
+                                    <option value="mujer">Mujer</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="imagen">Imagen: </label>
+                                <input type="file" class="form-control" name="imagen" id="imagen" >
                             </div>
                         </div>
 

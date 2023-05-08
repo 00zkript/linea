@@ -21,6 +21,15 @@
 
 
 
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="codigo">Código: </label>
+                                <input type="text" name="codigo" id="codigo" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        </div>
                         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
                                 <label for="nombres">Nombres: <span class="text-danger">(*)</span></label>
@@ -65,10 +74,60 @@
 
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="form-group">
-                                <label for="numeroDocumentoIdentidad">N° de Doucmento: <span class="text-danger">(*)</span></label>
+                                <label for="numeroDocumentoIdentidad">N° de Documento: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="numeroDocumentoIdentidad" id="numeroDocumentoIdentidad" required class="form-control soloNumeros"  minlength="8" maxlength="8">
                             </div>
                         </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="departamento">Departamento:</label>
+                                <select class="form-control" name="departamento" id="departamento" title="Departamento" >
+                                    <option value="" hidden selected >[---Seleccione---]</option>
+                                    @foreach ($departamentos as $item)
+                                        <option value="{{ $item->iddepartamento }}">{{ $item->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="provincia">Provincia:</label>
+                                <select class="form-control" name="provincia" id="provincia" title="Provincia" >
+                                    <option value="" hidden selected >[---Seleccione---]</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="distrito">Distrito:</label>
+                                <select class="form-control" name="distrito" id="distrito" title="Distrito" >
+                                    <option value="" hidden selected >[---Seleccione---]</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="sexoEditar">Sexo:</label>
+                                <select class="form-control" name="sexoEditar" id="sexoEditar" >
+                                    <option value="" hidden >[---Seleccione---]</option>
+                                    <option value="hombre">Hombre</option>
+                                    <option value="mujer">Mujer</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="imagen">Imagen:</label>
+                                <input type="file" id="imagen" name="imagen">
+                            </div>
+                        </div>
+
 
 
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

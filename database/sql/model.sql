@@ -10,6 +10,13 @@ create table tipo_empleado (
     estado TINYINT(1) DEFAULT '1'
 );
 
+insert into tipo_empleado
+    ( idtipo_empleado, nombre, slug, imagen, descripcion, estado )
+values
+    ( 1, 'Administrador', 'administrador', 'administrador.png', 'Administrador del sistema', 1 ),
+    ( 2, 'Gerente', 'gerente', 'gerente.png', 'Gerente del sistema', 1 ),
+    ( 3, 'Empleado', 'empleado', 'empleado.png', 'Empleado del sistema', 1 );
+
 
 drop table if exists empleado;
 create table empleado (
@@ -20,16 +27,54 @@ create table empleado (
     idtipo_documento_identidad int,
     numero_documento_identidad varchar(20),
     imagen text,
-    fecha_ingreso datetime,
-    fecha_culminacion datetime,
+    fecha_ingreso date,
+    fecha_culminacion date,
     idtipo_empleado int,
     sexo varchar(50),
     telefono varchar(50),
     correo varchar(250),
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP,
-    update_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
+
+
+
+
+show create table cliente;
+
+drop table if exists cliente;
+CREATE TABLE `cliente` (
+  idcliente int(10) NOT NULL AUTO_INCREMENT,
+  codigo varchar(50),
+  nombres varchar(250),
+  apellidos varchar(250),
+  correo varchar(250),
+  telefono varchar(15),
+  idtipo_documento_identidad int(11),
+  numero_documento_identidad varchar(15),
+  sexo varchar(3),
+  fecha_nacimiento date,
+  iddepartamento int(11),
+  idprovincia int(11),
+  iddistrito int(11),
+  direccion text,
+  referencia text,
+  nota text,
+  imagen text,
+  created_at TIMESTAMP,
+  updated_at TIMESTAMP,
+  estado tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`idcliente`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+
+
+
+
+
 
 
 
@@ -39,7 +84,7 @@ create table piscina (
     nombre VARCHAR(250),
     slug VARCHAR(250),
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP
+    created_at TIMESTAMP
 );
 insert into piscina (idpiscina, nombre, slug, estado) VALUES
     (1, 'Piscina grande', 'piscina-grande', 1),
@@ -57,7 +102,8 @@ create table carril (
     slug VARCHAR(250),
     capacidad_maxima int,
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 insert into carril
     (idcarril, idpiscina, nombre, slug, capacidad_maxima, estado)
@@ -85,7 +131,8 @@ create table concepto (
     idconcepto int not null auto_increment primary key,
     nombre VARCHAR(250),
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 INSERT concepto
@@ -102,7 +149,8 @@ create table temporada (
     fecha_desde datetime,
     fecha_hasta datetime,
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 INSERT INTO temporada
@@ -120,7 +168,8 @@ create table programa (
     nombre VARCHAR(250),
     slug VARCHAR(250),
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 insert into programa
     (idprograma, idtemporada, nombre, slug, estado)
@@ -139,7 +188,8 @@ create table cantidad_sesiones (
     cantidad INT,
     precio DECIMAL(11,2),
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 insert into cantidad_sesiones
     (idcantidad_sesiones, nombre, slug, cantidad, precio, estado)
@@ -177,7 +227,8 @@ create table actividad_semanal (
     nombre VARCHAR(250),
     slug VARCHAR(250),
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 insert into actividad_semanal
@@ -218,7 +269,8 @@ create table horario (
     nombre VARCHAR(250),
     slug VARCHAR(250),
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 insert into horario
     (idhorario, nombre, slug, estado)
@@ -252,7 +304,8 @@ create table sucursal (
     imagen text,
     horario_atencion text,
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 
@@ -289,8 +342,8 @@ create table matricula (
     idcarril int,
     monto_total DECIMAL(11,2),
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP,
-    update_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 
@@ -300,8 +353,8 @@ create table matricula_detalle (
     idmatricula int,
     idhorario int,
     iddia int,
-    create_at TIMESTAMP,
-    update_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 
@@ -315,8 +368,8 @@ create table record_asistencia (
     idactividad_semanal int,
     idhorario int,
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP,
-    update_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 
@@ -326,20 +379,31 @@ create table pago_cliente (
     idmatricula int,
     idconcepto int,
     idcliente int,
-    idcaja int,
+    idcaj0a int,
     idempleado int,
     empleado_nombres VARCHAR(250),
     empleado_apellidos VARCHAR(250),
     empleado_idtipo_documento_identidad int,
     empleado_numero_documento_identidad VARCHAR(250),
     idtipo_pago int,
+    idmodo_pago int,
     idestado_pago int,
+    idmoneda int,
+    moneda_nombre VARCHAR(250),
+    moneda_simbolo VARCHAR(250),
+    moneda_cambio DECIMAL(11,2),
     monto_total DECIMAL(11,2),
+    monto_efectivo DECIMAL(11,2),
+    monto_tranferencia DECIMAL(11,2),
     monto_pago DECIMAL(11,2),
     estado TINYINT(1) DEFAULT '1',
-    create_at TIMESTAMP,
-    update_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
+
+
+
+
 
 
 
@@ -355,8 +419,8 @@ create table caja (
     monto_actual DECIMAL(11,2),
     monto_final DECIMAL(11,2),
     fecha DATE,
-    create_at TIMESTAMP,
-    update_at TIMESTAMP
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP
 );
 
 

@@ -18,6 +18,11 @@
 
 
                         <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
+                            <p class="text-capitalize">Código</p>
+                            <p id="codigoShow"></p>
+                            <hr>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
                             <p class="text-capitalize">Nombres</p>
                             <p id="nombreShow"></p>
                             <hr>
@@ -33,20 +38,21 @@
                             <hr>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
+                            <p class="text-capitalize">Teléfono</p>
+                            <p id="telefonoShow"></p>
+                            <hr>
+                        </div>
+                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
                             <p class="text-capitalize">Documento de identidad</p>
                             <p id="tipoDocumentoIdentidadShow"></p>
                             <hr>
                         </div>
                         <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
-                            <p class="text-capitalize">N° de Doucmento</p>
-                            <p id="numeroDocumentoIdentidadShow"></p>
+                            <p class="text-capitalize">Sexo</p>
+                            <p id="sexoShow"></p>
                             <hr>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
-                            <p class="text-capitalize">Teléfono</p>
-                            <p id="telefonoShow"></p>
-                            <hr>
-                        </div>
+
 
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <p class="text-capitalize">Estado:</p>

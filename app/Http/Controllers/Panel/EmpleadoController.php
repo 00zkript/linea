@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\Empleado;
 use App\Models\TipoDocumentoIdentidad;
+use App\Models\TipoEmpleado;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -15,13 +16,18 @@ class EmpleadoController extends Controller
     {
 
         $empleados = Empleado::query()
+            ->with(['tipoDocumentoIdentidad'])
             ->orderBy('idempleado','DESC')
             ->paginate(10,['*'],'pagina',1);
 
+            // dd( $empleados->toArray()  );
+
         $tipoDocumentoIdentidad = TipoDocumentoIdentidad::query()->where('estado',1)->get();
 
+        $tiposDeEmpleados = TipoEmpleado::query()->where('estado',1)->get();
 
-        return view('panel.empleado.index')->with(compact('empleados','tipoDocumentoIdentidad'));
+
+        return view('panel.empleado.index')->with(compact('empleados','tipoDocumentoIdentidad', 'tiposDeEmpleados'));
 
 
     }
@@ -38,8 +44,14 @@ class EmpleadoController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $empleados = Empleado::query()
+            ->with(['tipoDocumentoIdentidad'])
             ->when($txtBuscar,function($query) use($txtBuscar){
-                return $query->where('nombres','LIKE','%'.$txtBuscar.'%');
+                return $query
+                    ->where('nombres','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('apellidos','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('codigo','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('numero_documento_identidad','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('correo','LIKE','%'.$txtBuscar.'%');
             })
             ->orderBy('idempleado','DESC')
             ->paginate($cantidadRegistros,['*'],'pagina',$paginaActual);
@@ -56,15 +68,14 @@ class EmpleadoController extends Controller
             return abort(404);
         }
 
-        $idtipoEmpleado           = $request->input('idtipoEmpleado');
+        $codigo                   = $request->input('codigo');
+        $tipoEmpleado             = $request->input('tipoEmpleado');
         $nombres                  = $request->input('nombres');
         $apellidos                = $request->input('apellidos');
         $correo                   = $request->input('correo');
+        $telefono                 = $request->input('telefono');
         $tipoDocumentoIdentidad   = $request->input('tipoDocumentoIdentidad');
         $numeroDocumentoIdentidad = $request->input('numeroDocumentoIdentidad');
-        $telefono                 = $request->input('telefono');
-        $codigo                   = $request->input('codigo');
-        $imagen                   = $request->input('imagen');
         $fechaIngreso             = $request->input('fechaIngreso');
         $fechaCulminacion         = $request->input('fechaCulminacion');
         $sexo                     = $request->input('sexo');
@@ -85,22 +96,26 @@ class EmpleadoController extends Controller
 
 
 
-            $cliente = new Empleado();
-            // $cliente->idusuario = $usuario->idusuario;
-            $cliente->idtipo_empleado            = $idtipoEmpleado;
-            $cliente->nombres                    = $nombres;
-            $cliente->apellidos                  = $apellidos;
-            $cliente->correo                     = $correo;
-            $cliente->idtipo_documento_identidad = $tipoDocumentoIdentidad;
-            $cliente->numero_documento_identidad = $numeroDocumentoIdentidad;
-            $cliente->telefono                   = $telefono;
-            $cliente->codigo                     = $codigo;
-            $cliente->imagen                     = $imagen;
-            $cliente->fecha_ingreso              = $fechaIngreso;
-            $cliente->fecha_culminacion          = $fechaCulminacion;
-            $cliente->sexo                       = $sexo;
-            $cliente->estado                     = $estado;
-            $cliente->save();
+            $empleado = new Empleado();
+            // $empleado->idusuario = $usuario->idusuario;
+            $empleado->codigo                     = $codigo;
+            $empleado->idtipo_empleado            = $tipoEmpleado;
+            $empleado->nombres                    = $nombres;
+            $empleado->apellidos                  = $apellidos;
+            $empleado->correo                     = $correo;
+            $empleado->telefono                   = $telefono;
+            $empleado->idtipo_documento_identidad = $tipoDocumentoIdentidad;
+            $empleado->numero_documento_identidad = $numeroDocumentoIdentidad;
+            $empleado->fecha_ingreso              = $fechaIngreso;
+            $empleado->fecha_culminacion          = $fechaCulminacion;
+            $empleado->sexo                       = $sexo;
+            if ( $request->hasFile('imagen') ) {
+                // $filename = $request->file('imagen')->store( 'empleado', 'panel');
+                $filename = Storage::disk('panel')->putFile( 'empleado', $request->file('imagen') );
+                $empleado->imagen = $filename;
+            }
+            $empleado->estado                     = $estado;
+            $empleado->save();
 
             return response()->json([
                 'mensaje'=> "Registro creado exitosamente.",
@@ -127,14 +142,14 @@ class EmpleadoController extends Controller
             return abort(404);
         }
 
-        $cliente = Empleado::query()->with(['tipoDocumentoIdentidad'])->find($request->input('idempleado'));
+        $empleado = Empleado::query()->with(['tipoDocumentoIdentidad'])->find($request->input('idempleado'));
 
-        if(!$cliente){
+        if(!$empleado){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
         }
 
 
-        return response()->json($cliente);
+        return response()->json($empleado);
 
     }
 
@@ -144,14 +159,14 @@ class EmpleadoController extends Controller
             return abort(404);
         }
 
-        $cliente = Empleado::query()->find($request->input('idempleado'));
+        $empleado = Empleado::query()->find($request->input('idempleado'));
 
-        if(!$cliente){
+        if(!$empleado){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
         }
 
 
-        return response()->json($cliente);
+        return response()->json($empleado);
 
     }
 
@@ -161,36 +176,43 @@ class EmpleadoController extends Controller
             return abort(404);
         }
 
-        $idtipoEmpleado           = $request->input('idtipoEmpleadoEditar');
+        $codigo                   = $request->input('codigoEditar');
+        $tipoEmpleado             = $request->input('tipoEmpleadoEditar');
         $nombres                  = $request->input('nombresEditar');
         $apellidos                = $request->input('apellidosEditar');
         $correo                   = $request->input('correoEditar');
+        $telefono                 = $request->input('telefonoEditar');
         $tipoDocumentoIdentidad   = $request->input('tipoDocumentoIdentidadEditar');
         $numeroDocumentoIdentidad = $request->input('numeroDocumentoIdentidadEditar');
-        $telefono                 = $request->input('telefonoEditar');
-        $codigo                   = $request->input('codigoEditar');
-        $imagen                   = $request->input('imagenEditar');
         $fechaIngreso             = $request->input('fechaIngresoEditar');
         $fechaCulminacion         = $request->input('fechaCulminacionEditar');
         $sexo                     = $request->input('sexoEditar');
         $estado                   = $request->input('estadoEditar');
 
         try {
-            $cliente = Empleado::query()->findOrFail($request->input('idempleado'));
-            $cliente->idtipo_empleado            = $idtipoEmpleado;
-            $cliente->nombres                    = $nombres;
-            $cliente->apellidos                  = $apellidos;
-            $cliente->correo                     = $correo;
-            $cliente->idtipo_documento_identidad = $tipoDocumentoIdentidad;
-            $cliente->numero_documento_identidad = $numeroDocumentoIdentidad;
-            $cliente->telefono                   = $telefono;
-            $cliente->codigo                     = $codigo;
-            $cliente->imagen                     = $imagen;
-            $cliente->fecha_ingreso              = $fechaIngreso;
-            $cliente->fecha_culminacion          = $fechaCulminacion;
-            $cliente->sexo                       = $sexo;
-            $cliente->estado                     = $estado;
-            $cliente->update();
+            $empleado = Empleado::query()->findOrFail($request->input('idempleado'));
+            $empleado->codigo                     = $codigo;
+            $empleado->idtipo_empleado            = $tipoEmpleado;
+            $empleado->nombres                    = $nombres;
+            $empleado->apellidos                  = $apellidos;
+            $empleado->correo                     = $correo;
+            $empleado->idtipo_documento_identidad = $tipoDocumentoIdentidad;
+            $empleado->numero_documento_identidad = $numeroDocumentoIdentidad;
+            $empleado->telefono                   = $telefono;
+            $empleado->codigo                     = $codigo;
+            $empleado->fecha_ingreso              = $fechaIngreso;
+            $empleado->fecha_culminacion          = $fechaCulminacion;
+            $empleado->sexo                       = $sexo;
+            if ( $request->hasFile('imagenEditar') ) {
+                if ($empleado->imagen) {
+                    Storage::disk('panel')->delete($empleado->imagen);
+                }
+
+                $filename = $request->file('imagenEditar')->store( 'empleado', 'panel');
+                $empleado->imagen = $filename;
+            }
+            $empleado->estado                     = $estado;
+            $empleado->update();
 
 
 
@@ -219,9 +241,9 @@ class EmpleadoController extends Controller
         }
 
         try {
-            $cliente = Empleado::query()->findOrFail($request->input('idempleado'));
-            $cliente->estado    = 1;
-            $cliente->update();
+            $empleado = Empleado::query()->findOrFail($request->input('idempleado'));
+            $empleado->estado    = 1;
+            $empleado->update();
 
             return response()->json([
                 'mensaje'=> "Registro habilitado exitosamente.",
@@ -244,10 +266,10 @@ class EmpleadoController extends Controller
         }
 
         try {
-            $cliente = Empleado::query()->findOrFail($request->input('idempleado'));
-            $cliente->estado    = 0;
+            $empleado = Empleado::query()->findOrFail($request->input('idempleado'));
+            $empleado->estado    = 0;
 
-            $cliente->update();
+            $empleado->update();
 
             return response()->json([
                 'mensaje'=> "Registro inhabilitado exitosamente.",
@@ -270,8 +292,8 @@ class EmpleadoController extends Controller
         }
 
         try {
-            $cliente = Empleado::query()->findOrFail($request->input('idempleado'));
-            $cliente->delete();
+            $empleado = Empleado::query()->findOrFail($request->input('idempleado'));
+            $empleado->delete();
 
             return response()->json([
                 'mensaje'=> "Registro eliminado exitosamente.",

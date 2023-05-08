@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cliente;
+use App\Models\Departamento;
+use App\Models\Distrito;
+use App\Models\Provincia;
 use App\Models\TipoDocumentoIdentidad;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,13 +17,17 @@ class ClienteController extends Controller
     {
 
         $clientes = Cliente::query()
+            ->with(['tipoDocumentoIdentidad'])
             ->orderBy('idcliente','DESC')
             ->paginate(10,['*'],'pagina',1);
 
         $tipoDocumentoIdentidad = TipoDocumentoIdentidad::query()->where('estado',1)->get();
 
+        $departamentos = Departamento::query()->where('estado',1)->get();
 
-        return view('panel.cliente.index')->with(compact('clientes','tipoDocumentoIdentidad'));
+
+
+        return view('panel.cliente.index')->with(compact('clientes','tipoDocumentoIdentidad','departamentos'));
 
 
     }
@@ -38,8 +44,15 @@ class ClienteController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $clientes = Cliente::query()
+            ->with(['tipoDocumentoIdentidad'])
             ->when($txtBuscar,function($query) use($txtBuscar){
-                return $query->where('nombres','LIKE','%'.$txtBuscar.'%');
+                return $query
+                    ->where('nombres','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('apellidos','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('correo','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('telefono','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('numero_documento_identidad','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('codigo','LIKE','%'.$txtBuscar.'%');
             })
             ->orderBy('idcliente','DESC')
             ->paginate($cantidadRegistros,['*'],'pagina',$paginaActual);
@@ -56,30 +69,49 @@ class ClienteController extends Controller
             return abort(404);
         }
 
+        $codigo                   = $request->input('codigo');
+        $nombres                  = $request->input('nombres');
+        $apellidos                = $request->input('apellidos');
+        $correo                   = $request->input('correo');
+        $telefono                 = $request->input('telefono');
+        $tipoDocumentoIdentidad   = $request->input('tipoDocumentoIdentidad');
+        $numeroDocumentoIdentidad = $request->input('numeroDocumentoIdentidad');
+        $sexo                     = $request->input('sexo');
+        $fechaNacimiento          = $request->input('fechaNacimiento');
+        $departamento             = $request->input('departamento');
+        $provincia                = $request->input('provincia');
+        $distrito                 = $request->input('distrito');
+        $direccion                = $request->input('direccion');
+        $referencia               = $request->input('referencia');
+        $nota                     = $request->input('nota');
+        $estado                   = $request->input('estado');
+
+
         try {
 
-            // $usuario            = new User();
-            // $usuario->idrol     = 2;
-            // $usuario->usuario   = $request->input('nombres');
-            // $usuario->nombres   = $request->input('nombres');
-            // $usuario->apellidos = $request->input('apellidos');
-            // $usuario->correo = $request->input('correo');
-            // $usuario->clave     = encrypt(random_int(10000, 99999));
-            // $usuario->estado = $request->input('estado');
-            // $usuario->save();
-
-
-
             $cliente = new Cliente();
-            // $cliente->idusuario = $usuario->idusuario;
-            $cliente->nombres   = $request->input('nombres');
-            $cliente->apellidos = $request->input('apellidos');
-            $cliente->correo    = $request->input('correo');
-            $cliente->idtipo_documento_identidad    = $request->input('tipoDocumentoIdentidad');
-            $cliente->numero_documento_identidad    = $request->input('numeroDocumentoIdentidad');
-            $cliente->telefono    = $request->input('telefono');
-            $cliente->fecha_creacion = now()->format('Y-m-d H:i:s');
-            $cliente->estado    = $request->input('estado');
+            $cliente->codigo                     = $codigo;
+            $cliente->nombres                    = $nombres;
+            $cliente->apellidos                  = $apellidos;
+            $cliente->correo                     = $correo;
+            $cliente->telefono                   = $telefono;
+            $cliente->idtipo_documento_identidad = $tipoDocumentoIdentidad;
+            $cliente->numero_documento_identidad = $numeroDocumentoIdentidad;
+            $cliente->sexo                       = $sexo;
+            $cliente->fecha_nacimiento           = $fechaNacimiento;
+            $cliente->iddepartamento             = $departamento;
+            $cliente->idprovincia                = $provincia;
+            $cliente->iddistrito                 = $distrito;
+            $cliente->direccion                  = $direccion;
+            $cliente->referencia                 = $referencia;
+            $cliente->nota= $nota;
+            $cliente->estado                     = $estado;
+
+            if ( $request->hasFile('imagen') ) {
+                $filename = Storage::disk('panel')->put('cliente', $request->file('imagen'));
+                $cliente->imagen = $filename;
+            }
+
             $cliente->save();
 
             return response()->json([
@@ -141,16 +173,54 @@ class ClienteController extends Controller
             return abort(404);
         }
 
+        $codigo                   = $request->input('codigoEditar');
+        $nombres                  = $request->input('nombresEditar');
+        $apellidos                = $request->input('apellidosEditar');
+        $correo                   = $request->input('correoEditar');
+        $telefono                 = $request->input('telefonoEditar');
+        $tipoDocumentoIdentidad   = $request->input('tipoDocumentoIdentidadEditar');
+        $numeroDocumentoIdentidad = $request->input('numeroDocumentoIdentidadEditar');
+        $sexo                     = $request->input('sexoEditar');
+        $fechaNacimiento          = $request->input('fechaNacimientoEditar');
+        $departamento             = $request->input('departamentoEditar');
+        $provincia                = $request->input('provinciaEditar');
+        $distrito                 = $request->input('distritoEditar');
+        $direccion                = $request->input('direccionEditar');
+        $referencia               = $request->input('referenciaEditar');
+        $nota                     = $request->input('notaEditar');
+        $estado                   = $request->input('estadoEditar');
+
+
         try {
             $cliente = Cliente::query()->findOrFail($request->input('idcliente'));
 
-            $cliente->nombres   = $request->input('nombresEditar');
-            $cliente->apellidos = $request->input('apellidosEditar');
-            $cliente->correo    = $request->input('correoEditar');
-            $cliente->idtipo_documento_identidad    = $request->input('tipoDocumentoIdentidadEditar');
-            $cliente->numero_documento_identidad    = $request->input('numeroDocumentoIdentidadEditar');
-            $cliente->telefono    = $request->input('telefonoEditar');
-            $cliente->estado    = $request->input('estadoEditar');
+            $cliente = new Cliente();
+            $cliente->codigo                     = $codigo;
+            $cliente->nombres                    = $nombres;
+            $cliente->apellidos                  = $apellidos;
+            $cliente->correo                     = $correo;
+            $cliente->telefono                   = $telefono;
+            $cliente->idtipo_documento_identidad = $tipoDocumentoIdentidad;
+            $cliente->numero_documento_identidad = $numeroDocumentoIdentidad;
+            $cliente->sexo                       = $sexo;
+            $cliente->fecha_nacimiento           = $fechaNacimiento;
+            $cliente->iddepartamento             = $departamento;
+            $cliente->idprovincia                = $provincia;
+            $cliente->iddistrito                 = $distrito;
+            $cliente->direccion                  = $direccion;
+            $cliente->referencia                 = $referencia;
+            $cliente->estado                     = $estado;
+
+            if ( $request->hasFile('imagen') ) {
+
+                if ($cliente->imagen) {
+                    Storage::disk('panel')->delete($cliente->imagen);
+                }
+
+                $filename = Storage::disk('panel')->put('cliente', $request->file('imagen'));
+                $cliente->imagen = $filename;
+            }
+
             $cliente->update();
 
 

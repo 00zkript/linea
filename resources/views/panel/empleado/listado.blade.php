@@ -3,9 +3,11 @@
         <table class="table table-bordered">
             <thead class="thead-dark">
             <tr class="text-center">
+                <th>Identificador</th>
                 <th>Código</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
+                <th>Documento de identidad</th>
                 <th>Estado</th>
                 <th>Opciones</th>
             </tr>
@@ -15,8 +17,10 @@
             @foreach($empleados AS $item)
                 <tr>
                     <td class="text-nowrap">{{ str_pad($item->idempleado,7,'0000000',STR_PAD_LEFT) }}</td>
+                    <td>{{ $item->codigo }}</td>
                     <td>{{ $item->nombres }}</td>
                     <td>{{ $item->apellidos }}</td>
+                    <td>{{ $item->tipoDocumentoIdentidad->nombre }} - {{ $item->numero_documento_identidad }}</td>
                     <td class="text-nowrap">{!! $item->estado ? '<label class="badge badge-success">Habilidado</label>' : '<label class="badge badge-danger">Inhabilitado</label>' !!}</td>
                     <td class="text-center text-nowrap">
                         <div class="dropdown">
@@ -31,7 +35,7 @@
                                 @else
                                     <button class="dropdown-item btnModalHabilitar" type="button"><i class="fa fa-check"></i> Habilitar</button>
                                 @endif
-{{--                                <button class="dropdown-item btnModalEliminar" type="button"><i class="fa fa-trash"></i> Eliminar</button>--}}
+                               {{-- <button class="dropdown-item btnModalEliminar" type="button"><i class="fa fa-trash"></i> Eliminar</button> --}}
 
                             </div>
                         </div>

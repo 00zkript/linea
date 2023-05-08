@@ -9,7 +9,12 @@ class Empleado extends Model
     //
  	protected $table = 'empleado';
 	protected $primaryKey = 'idempleado';
+
+    // const CREATED_AT = 'created_at';
+    // const UPDATED_AT = 'updated_at';
 	public $timestamps = true;
+    // public static $snakeAttributes = true;
+
 
 
 

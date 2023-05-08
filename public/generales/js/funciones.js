@@ -520,6 +520,11 @@ const str_random = (length) => {
 }
 
 
+const basename = (path) => {
+    return path.split('/').pop();
+}
+
+
 
 function soloNumeros(e) {
     // e.preventDefault();

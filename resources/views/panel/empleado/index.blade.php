@@ -70,7 +70,7 @@
         const URL_HABILITAR   = "{{ route('empleado.habilitar') }}";
         const URL_INHABILITAR = "{{ route('empleado.inhabilitar') }}";
         const URL_ELIMINAR    = "{{ route('empleado.destroy','destroy') }}";
-        const URL_CARPETA     = BASE_URL+"/panel/img/empleado/";
+        const URL_CARPETA     = BASE_URL+"/panel/img/";
 
 
 
@@ -183,14 +183,31 @@
                     $("#frmEditar input[name=idempleado]").val(data.idempleado);
 
 
-                    $("#nombreEditar").val(data.nombre);
+                    $('#codigoEditar').val(data.codigo);
+                    $('#tipoEmpleadoEditar').val(data.idtipo_empleado);
 
                     $('#nombresEditar').val(data.nombres);
                     $('#apellidosEditar').val(data.apellidos);
                     $('#correoEditar').val(data.correo);
+                    $('#telefonoEditar').val(data.telefono);
                     $('#tipoDocumentoIdentidadEditar').val(data.idtipo_documento_identidad);
                     $('#numeroDocumentoIdentidadEditar').val(data.numero_documento_identidad);
-                    $('#telefonoEditar').val(data.telefono);
+                    $('#fechaIngresoEditar').val(data.fecha_ingreso)
+                    $('#fechaCulminacionEditar').val(data.fecha_culminacion)
+                    $('#sexoEditar').val(data.sexo)
+
+                    $("#imagenEditar").fileinput('destroy').fileinput({
+                        dropZoneTitle : 'Arrastre la imagen aquí',
+                        initialPreview : [ URL_CARPETA+data.imagen ],
+                        initialPreviewConfig : { caption : data.imagen , width: "120px", height : "120px" },
+                        // fileActionSettings : { showRemove : false, showUpload : false, showZoom : true, showDrag : false},
+                        // uploadUrl : URL_FILE_UPDATE,
+                        // uploadExtraData : _ => {
+                        // },
+                        // deleteUrl : URL_FILE_DESTROY,
+                        // deleteExtraData : _ => {
+                        // },
+                    });
 
 
 
@@ -216,12 +233,13 @@
 
                     stop();
 
+                    $('#codigoShow').html(data.codigo);
                     $('#nombreShow').html(data.nombres);
                     $('#apellidosShow').html(data.apellidos);
                     $('#correoShow').html(data.correo);
-                    $('#tipoDocumentoIdentidadShow').html(data.tipo_documento_identidad.nombre);
-                    $('#numeroDocumentoIdentidadShow').html(data.numero_documento_identidad);
                     $('#telefonoShow').html(data.telefono);
+                    $('#tipoDocumentoIdentidadShow').html(data.tipo_documento_identidad.nombre + " - "+data.numero_documento_identidad);
+                    $('#sexoShow').html(data.sexo);
 
 
                     if (data.estado){
@@ -362,56 +380,39 @@
         }
 
         const changeTipoDocumentoIdentidad = () => {
-            $(document).on('change','#tipoDocumentoIdentidad', function(e){
-                e.preventDefault();
+            const documentoIdentidad = [
+                { id: 1, name: 'DNI', caracter_min: 8, caracter_max: 8 },
+                { id: 2, name: 'CARNET DE EXTRANJERIA', caracter_min: 12, caracter_max: 12 },
+                { id: 3, name: 'RUC', caracter_min: 12, caracter_max: 12 },
+                { id: 4, name: 'PASAPORTE', caracter_min: 12, caracter_max: 12 }
+            ];
 
-                const val = $(this).val();
+            const handleChange = (selector, inputSelector) => {
+                $(document).on('change', selector, function (e) {
+                    e.preventDefault();
 
-                if (val == 1){
-                    $('#numeroDocumentoIdentidad').attr('minLength',8);
-                    $('#numeroDocumentoIdentidad').attr('maxLength',8);
-                    $('#numeroDocumentoIdentidad').val($('#numeroDocumentoIdentidad').val().substring(0,8));
-                }
+                    const val = $(this).val();
+                    const documento = documentoIdentidad.find(ele => ele.id == val);
 
-                if (val == 2){
-                    $('#numeroDocumentoIdentidad').attr('minLength',12);
-                    $('#numeroDocumentoIdentidad').attr('maxLength',12);
-                    $('#numeroDocumentoIdentidad').val($('#numeroDocumentoIdentidad').val().substring(0,12));
-                }
+                    $(inputSelector).attr('minLength', documento.caracter_min)
+                        .attr('maxLength', documento.caracter_max)
+                        .val($(inputSelector).val().substring(0, documento.caracter_min));
 
-                if (val == 3){
-                    $('#numeroDocumentoIdentidad').attr('minLength',12);
-                    $('#numeroDocumentoIdentidad').attr('maxLength',12);
-                    $('#numeroDocumentoIdentidad').val($('#numeroDocumentoIdentidad').val().substring(0,12));
+                });
+            };
 
-                }
-            })
+            handleChange('#tipoDocumentoIdentidad', '#numeroDocumentoIdentidad');
+            handleChange('#tipoDocumentoIdentidadEditar', '#numeroDocumentoIdentidadEditar');
+        };
 
-            $(document).on('change','#tipoDocumentoIdentidadEditar', function(e){
-                e.preventDefault();
+        $("#imagen").fileinput({
+            dropZoneTitle : 'Arrastre la imagen aquí',
+            // uploadUrl : URL_FILE_STORE,
+        });
 
-                const val = $(this).val();
-
-                if (val == 1){
-                    $('#numeroDocumentoIdentidadEditar').attr('minLength',8);
-                    $('#numeroDocumentoIdentidadEditar').attr('maxLength',8);
-                    $('#numeroDocumentoIdentidadEditar').val($('#numeroDocumentoIdentidadEditar').val().substring(0,8));
-                }
-
-                if (val == 2){
-                    $('#numeroDocumentoIdentidadEditar').attr('minLength',12);
-                    $('#numeroDocumentoIdentidadEditar').attr('maxLength',12);
-                    $('#numeroDocumentoIdentidadEditar').val($('#numeroDocumentoIdentidadEditar').val().substring(0,12));
-                }
-
-                if (val == 3){
-                    $('#numeroDocumentoIdentidadEditar').attr('minLength',12);
-                    $('#numeroDocumentoIdentidadEditar').attr('maxLength',12);
-                    $('#numeroDocumentoIdentidadEditar').val($('#numeroDocumentoIdentidadEditar').val().substring(0,12));
-
-                }
-            })
-        }
+        $("#imagenEditar").fileinput({
+            dropZoneTitle : 'Arrastre la imagen aquí',
+        });
 
 
         $(function () {

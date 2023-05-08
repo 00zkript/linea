@@ -8,8 +8,10 @@ class Cliente extends Model
 {
     protected  $table = 'cliente';
     protected $primaryKey = 'idcliente';
-    public $timestamps = false;
     protected $guarded = [];
+    // const CREATED_AT = 'created_at';
+    // const UPDATED_AT = 'updated_at';
+	public $timestamps = true;
 
 
 
@@ -20,4 +22,7 @@ class Cliente extends Model
                 "nombre" => "Sin Documento de Identidad",
             ]);
     }
+
+
+
 }
