@@ -124,7 +124,7 @@
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('empleado.index') }}">Empleado</a></li>
                                         <li><a href="{{ route('cliente.index') }}">Clientes</a></li>
-                                        <li><a href="{{ route('cupon.index') }}">Cupones</a></li>
+                                        {{-- <li><a href="{{ route('cupon.index') }}">Cupones</a></li> --}}
                                         {{-- <li><a href="{{ route('ventas.index') }}">Ventas</a></li> --}}
                                         {{-- <li><a href="{{ route('costo-envio.index') }}">Costo de envío</a></li> --}}
                                     </ul>
