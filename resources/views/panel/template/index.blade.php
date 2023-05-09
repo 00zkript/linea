@@ -142,14 +142,14 @@
 
                                 <li class=""><a><i class="fa fa-tasks"></i> General <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{ route('menu.index') }}">Menú</a></li>
+                                        {{-- <li><a href="{{ route('menu.index') }}">Menú</a></li> --}}
                                         <li><a href="{{ route('empresa.index') }}">Empresa</a></li>
-                                        <li><a href="{{ route('seo.index') }}">SEO</a></li>
-                                        <li><a href="{{ route('contacto.index') }}">Contacto</a></li>
+                                        {{-- <li><a href="{{ route('seo.index') }}">SEO</a></li> --}}
+                                        {{-- <li><a href="{{ route('contacto.index') }}">Contacto</a></li> --}}
                                         <li><a href="{{ route('moneda.index') }}">Moneda</a></li>
-                                        <li><a href="{{ route('terminos-condiciones.index') }}">Términos y condicones</a></li>
-                                        <li><a href="{{ route('politicas-privacidad.index') }}">Políticas de privacidad</a></li>
-                                        <li style="display: none"><a href="{{ route('puntoVentas.index') }}">Puntos de venta</a></li>
+                                        {{-- <li><a href="{{ route('terminos-condiciones.index') }}">Términos y condicones</a></li> --}}
+                                        {{-- <li><a href="{{ route('politicas-privacidad.index') }}">Políticas de privacidad</a></li> --}}
+                                        {{-- <li style="display: none"><a href="{{ route('puntoVentas.index') }}">Puntos de venta</a></li> --}}
                                     </ul>
                                 </li>
 
