@@ -5,7 +5,7 @@
             <tr class="text-center text-nowrap">
                 <th>Código</th>
                 <th>Foto</th>
-                <th>Cargo</th>
+                {{-- <th>Cargo</th> --}}
                 <th>Usuario</th>
                 <th>Correo</th>
                 <th>Estado</th>
@@ -24,7 +24,7 @@
                             <img class="img-thumbnail" style="width: 80px;height: 80px" src="{{ asset('panel/default/foto_defecto.jpg') }}" alt="">
                         @endif
                     </td>
-                    <td>{{ $u->cargo}}</td>
+                    {{-- <td>{{ $u->cargo}}</td> --}}
                     <td>{{ $u->usuario }}</td>
                     <td>{{ $u->correo}}</td>
                     <td>{!! $u->estado ? '<label class="badge badge-success">Habilidado</label>' : '<label class="badge badge-danger">Inhabilitado</label>' !!}</td>

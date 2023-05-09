@@ -1,5 +1,177 @@
 -- Active: 1653431546013@@127.0.0.1@3306@linea
 
+
+
+DROP TABLE IF EXISTS empresa;
+
+CREATE TABLE empresa (
+  idempresa int(10) unsigned NOT NULL AUTO_INCREMENT,
+  nombre varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  ruc varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  igv decimal(11,2) DEFAULT '0.00',
+  idmoneda int(11) DEFAULT NULL,
+  logo text COLLATE utf8mb4_unicode_ci,
+  favicon text COLLATE utf8mb4_unicode_ci,
+  cuenta_bancaria text COLLATE utf8mb4_unicode_ci,
+  logo2 text COLLATE utf8mb4_unicode_ci,
+  informacion_adicional text COLLATE utf8mb4_unicode_ci,
+  PRIMARY KEY (idempresa)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+insert  into empresa
+    (idempresa,nombre,ruc,igv,idmoneda,logo,favicon,cuenta_bancaria,logo2,informacion_adicional)
+values
+    (1,'Linea',NULL,18.00,2,'sR2ilq3B0sC3VbHNSNKyGW7kLBZQWWZYrCwdgI8h.png','kjviaNy5TLlo3EhUJq6iaq53I0pORxMvk2kFkthE.png',NULL,NULL,NULL);
+
+
+
+
+DROP TABLE IF EXISTS moneda;
+
+CREATE TABLE moneda (
+  idmoneda int(10) unsigned NOT NULL AUTO_INCREMENT,
+  nombre varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  moneda varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  simbolo varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  simbolo_posicion enum('LEFT','RIGHT') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  cambio decimal(10,4) DEFAULT NULL,
+  estado tinyint(1) DEFAULT '0',
+  PRIMARY KEY (idmoneda)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+/*Data for the table moneda */
+
+insert  into moneda(idmoneda,nombre,moneda,simbolo,simbolo_posicion,cambio,estado) values (1,'DOLARES','USD','$',NULL,1.0000,1);
+insert  into moneda(idmoneda,nombre,moneda,simbolo,simbolo_posicion,cambio,estado) values (2,'SOLES','PEN','S/',NULL,1.0000,1);
+
+
+
+DROP TABLE IF EXISTS tipo_documento_identidad;
+
+CREATE TABLE tipo_documento_identidad (
+  idtipo_documento_identidad int(10) unsigned NOT NULL AUTO_INCREMENT,
+  nombre varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  estado tinyint(1) DEFAULT NULL,
+  orden int(11) DEFAULT NULL,
+  PRIMARY KEY (idtipo_documento_identidad)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+insert  into tipo_documento_identidad(idtipo_documento_identidad,nombre,estado,orden) values (1,'DNI',1,1);
+insert  into tipo_documento_identidad(idtipo_documento_identidad,nombre,estado,orden) values (2,'CARNET DE EXTRANJERIA',1,2);
+insert  into tipo_documento_identidad(idtipo_documento_identidad,nombre,estado,orden) values (3,'RUC',1,3);
+insert  into tipo_documento_identidad(idtipo_documento_identidad,nombre,estado,orden) values (4,'PASAPORTE',1,4);
+
+
+
+
+
+DROP TABLE IF EXISTS ubigeo_departamento;
+
+CREATE TABLE ubigeo_departamento (
+  iddepartamento int(10) unsigned NOT NULL AUTO_INCREMENT,
+  nombre varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  estado tinyint(1) DEFAULT '0',
+  PRIMARY KEY (iddepartamento)
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+DROP TABLE IF EXISTS ubigeo_provincia;
+
+CREATE TABLE ubigeo_provincia (
+  idprovincia int(10) unsigned NOT NULL AUTO_INCREMENT,
+  iddepartamento int(11) NOT NULL,
+  nombre varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  estado tinyint(1) DEFAULT '0',
+  PRIMARY KEY (idprovincia)
+) ENGINE=InnoDB AUTO_INCREMENT=2505 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+DROP TABLE IF EXISTS ubigeo_distrito;
+
+CREATE TABLE ubigeo_distrito (
+  iddistrito int(10) unsigned NOT NULL AUTO_INCREMENT,
+  iddepartamento int(11) DEFAULT NULL,
+  idprovincia int(11) DEFAULT NULL,
+  nombre varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  estado tinyint(1) DEFAULT '0',
+  PRIMARY KEY (iddistrito)
+) ENGINE=InnoDB AUTO_INCREMENT=250402 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+
+
+
+
+
+drop table if exists usuario;
+CREATE TABLE usuario (
+  idusuario int(10) unsigned NOT NULL AUTO_INCREMENT,
+  idrol int(11) NOT NULL,
+  usuario varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  clave text COLLATE utf8mb4_unicode_ci NOT NULL,
+  correo varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  nombres varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  apellidos varchar(250) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  foto text COLLATE utf8mb4_unicode_ci,
+  creado datetime DEFAULT NULL,
+  actualizado datetime DEFAULT NULL,
+  estado tinyint(1) DEFAULT '0',
+  PRIMARY KEY (idusuario),
+  UNIQUE KEY correo (correo)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+insert  into usuario(idusuario,idrol,usuario,clave,correo,nombres,apellidos,foto,creado,actualizado,estado) values (1,1,'admin','eyJpdiI6IkxHSGVhQlNTKytBMHpwXC9Ed29cL0dadz09IiwidmFsdWUiOiJWRFlQcmNmVlwvNXZRek0xVnJBMW13VzRqV2ZPTEJiVGxKY1hTcU5RdXJvcz0iLCJtYWMiOiI0NWQ1ODEwMTMwNTUzZDlmYjJmMGM2YWIzY2MwMGY0ODI1NTZhZDExMmRhMTBmOWVjYmViNWEwZTY2NjAzMWJmIn0=','admin@example.com','Admin',NULL,NULL,'2023-04-30 02:48:11','2023-04-30 02:48:11',1);
+
+DROP TABLE IF EXISTS usuario_has_role;
+create table usuario_has_role (
+    idusuario_has_role int not null auto_increment primary key,
+    idusuario int,
+    idrol int
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+drop table if exists roles;
+CREATE TABLE roles (
+  id int unsigned NOT NULL AUTO_INCREMENT ,
+  name varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  guard_name varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  created_at timestamp NULL DEFAULT NULL,
+  updated_at timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY roles_name_guard_name_unique (name,guard_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+drop table if exists permissions;
+CREATE TABLE permissions (
+  id int unsigned NOT NULL AUTO_INCREMENT,
+  name varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  guard_name varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  created_at timestamp NULL DEFAULT NULL,
+  updated_at timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY permissions_name_guard_name_unique (name,guard_name)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+drop table if exists role_has_permissions;
+CREATE TABLE role_has_permissions (
+  permission_id int unsigned NOT NULL,
+  role_id int unsigned NOT NULL,
+  PRIMARY KEY (permission_id,role_id),
+  KEY role_has_permissions_role_id_foreign (role_id),
+  CONSTRAINT role_has_permissions_permission_id_foreign FOREIGN KEY (permission_id) REFERENCES permissions (id) ON DELETE CASCADE,
+  CONSTRAINT role_has_permissions_role_id_foreign FOREIGN KEY (role_id) REFERENCES roles (id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+
+
+
+
+
 drop table if exists tipo_empleado;
 create table tipo_empleado (
     idtipo_empleado int not null auto_increment PRIMARY KEY,
@@ -39,12 +211,8 @@ create table empleado (
 );
 
 
-
-
-show create table cliente;
-
 drop table if exists cliente;
-CREATE TABLE `cliente` (
+CREATE TABLE cliente (
   idcliente int(10) NOT NULL AUTO_INCREMENT,
   codigo varchar(50),
   nombres varchar(250),
@@ -65,7 +233,7 @@ CREATE TABLE `cliente` (
   created_at TIMESTAMP,
   updated_at TIMESTAMP,
   estado tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`idcliente`)
+  PRIMARY KEY (idcliente)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
@@ -434,8 +602,4 @@ CREATE TABLE currency_change_over_time (
     created_at TIMESTAMP,
     updated_at TIMESTAMP
 );
-
-
-
-
 

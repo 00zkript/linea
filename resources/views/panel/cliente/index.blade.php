@@ -407,7 +407,24 @@
 
             handleChange('#tipoDocumentoIdentidad', '#numeroDocumentoIdentidad');
             handleChange('#tipoDocumentoIdentidadEditar', '#numeroDocumentoIdentidadEditar');
-        };
+        }
+
+
+        const fillSelect = ( selector, data ) => {
+            $(selector).empty();
+
+            let html = '<option value="" hidden selected >[---Seleccione---]</option>';
+
+            for (const item of data) {
+                const keys = Object.keys(item);
+
+                html +=  `<option value="${ item[keys[0]] }">${ item.nombre }</option>`;
+            }
+            $(selector).html(html);
+
+        }
+
+
 
         $("#imagen").fileinput({
             dropZoneTitle : 'Arrastre la imagen aquí',

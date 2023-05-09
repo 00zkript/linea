@@ -16,14 +16,16 @@ class UsuarioController extends Controller
 
     public function index()
     {
-        $roles = DB::table('rol')
-            ->where('estado', 1)
-            //->where('idrol',1)
-            ->get();
+        // $roles = DB::table('rol')
+        //     ->where('estado', 1)
+        //     //->where('idrol',1)
+        //     ->get();
+
+        $roles = [];
 
         $usuarios = DB::table('usuario AS u')
-            ->join('rol AS r', 'u.idrol', '=', 'r.idrol')
-            ->selectRaw('u.*,r.cargo AS cargo')
+            // ->join('rol AS r', 'u.idrol', '=', 'r.idrol')
+            // ->selectRaw('u.*,r.cargo AS cargo')
             ->orderBy('u.idusuario', 'DESC')
             ->paginate(10, ['*'], 'pagina', 1);
 
@@ -41,10 +43,10 @@ class UsuarioController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $usuarios = DB::table('usuario AS u')
-            ->join('rol AS r', 'u.idrol', '=', 'r.idrol')
-            ->selectRaw('u.*,r.cargo AS cargo')
+            // ->join('rol AS r', 'u.idrol', '=', 'r.idrol')
+            // ->selectRaw('u.*,r.cargo AS cargo')
             ->when(!empty($txtBuscar), function ($query) use ($txtBuscar) {
-                return $query->whereRaw('CONCAT(u.usuario,r.cargo,u.nombres,u.apellidos) LIKE ? ', ["%" . $txtBuscar . "%"]);
+                return $query->whereRaw('CONCAT(u.usuario,u.nombres,u.apellidos) LIKE ? ', ["%" . $txtBuscar . "%"]);
             })
             ->orderBy('u.idusuario', 'DESC')
             ->paginate($cantidadRegistros, ['*'], 'pagina', $paginaActual);
