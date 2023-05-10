@@ -82,7 +82,7 @@ class ClienteController extends Controller
         $provincia                = $request->input('provincia');
         $distrito                 = $request->input('distrito');
         $direccion                = $request->input('direccion');
-        $referencia               = $request->input('referencia');
+        // $referencia               = $request->input('referencia');
         $nota                     = $request->input('nota');
         $estado                   = $request->input('estado');
 
@@ -103,8 +103,8 @@ class ClienteController extends Controller
             $cliente->idprovincia                = $provincia;
             $cliente->iddistrito                 = $distrito;
             $cliente->direccion                  = $direccion;
-            $cliente->referencia                 = $referencia;
-            $cliente->nota= $nota;
+            // $cliente->referencia                 = $referencia;
+            $cliente->nota                       = $nota;
             $cliente->estado                     = $estado;
 
             if ( $request->hasFile('imagen') ) {
@@ -139,7 +139,14 @@ class ClienteController extends Controller
             return abort(404);
         }
 
-        $cliente = Cliente::query()->with(['tipoDocumentoIdentidad'])->find($request->input('idcliente'));
+        $cliente = Cliente::query()
+            ->with([
+                'tipoDocumentoIdentidad',
+                'departamento',
+                'provincia',
+                'distrito'
+            ])
+            ->find($request->input('idcliente'));
 
         if(!$cliente){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -186,15 +193,13 @@ class ClienteController extends Controller
         $provincia                = $request->input('provinciaEditar');
         $distrito                 = $request->input('distritoEditar');
         $direccion                = $request->input('direccionEditar');
-        $referencia               = $request->input('referenciaEditar');
+        // $referencia               = $request->input('referenciaEditar');
         $nota                     = $request->input('notaEditar');
         $estado                   = $request->input('estadoEditar');
 
 
         try {
             $cliente = Cliente::query()->findOrFail($request->input('idcliente'));
-
-            $cliente = new Cliente();
             $cliente->codigo                     = $codigo;
             $cliente->nombres                    = $nombres;
             $cliente->apellidos                  = $apellidos;
@@ -208,16 +213,17 @@ class ClienteController extends Controller
             $cliente->idprovincia                = $provincia;
             $cliente->iddistrito                 = $distrito;
             $cliente->direccion                  = $direccion;
-            $cliente->referencia                 = $referencia;
+            // $cliente->referencia                 = $referencia;
+            $cliente->nota                       = $nota;
             $cliente->estado                     = $estado;
 
-            if ( $request->hasFile('imagen') ) {
+            if ( $request->hasFile('imagenEditar') ) {
 
                 if ($cliente->imagen) {
                     Storage::disk('panel')->delete($cliente->imagen);
                 }
 
-                $filename = Storage::disk('panel')->put('cliente', $request->file('imagen'));
+                $filename = Storage::disk('panel')->put('cliente', $request->file('imagenEditar'));
                 $cliente->imagen = $filename;
             }
 
@@ -318,6 +324,27 @@ class ClienteController extends Controller
         }
     }
 
+    public function provincias(Request $request, $iddepartamento)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $provincias = Provincia::where('iddepartamento', $iddepartamento)->where('estado',1)->get();
+
+        return response()->json($provincias);
+    }
+
+    public function distritos(Request $request, $idprovincia)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $distritos = Distrito::where('idprovincia', $idprovincia)->where('estado',1)->get();
+
+        return response()->json($distritos);
+    }
 
 
 

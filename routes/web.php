@@ -321,6 +321,8 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::post('preguntas-frecuentes/listar',[\App\Http\Controllers\Panel\PreguntaFrecuenteController::class,'listar'])->name("preguntas-frecuentes.listar");
     Route::resource('preguntas-frecuentes',\App\Http\Controllers\Panel\PreguntaFrecuenteController::class);
 
+    Route::get('cliente/{id}/provincias',[\App\Http\Controllers\Panel\ClienteController::class,'provincias'])->name("cliente.provincias");
+    Route::get('cliente/{id}/distritos',[\App\Http\Controllers\Panel\ClienteController::class,'distritos'])->name("cliente.distritos");
     Route::post('cliente/habilitar',[\App\Http\Controllers\Panel\ClienteController::class,'habilitar'])->name("cliente.habilitar");
     Route::post('cliente/inhabilitar',[\App\Http\Controllers\Panel\ClienteController::class,'inhabilitar'])->name("cliente.inhabilitar");
     Route::post('cliente/listar',[\App\Http\Controllers\Panel\ClienteController::class,'listar'])->name("cliente.listar");

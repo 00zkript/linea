@@ -221,7 +221,7 @@ CREATE TABLE cliente (
   telefono varchar(15),
   idtipo_documento_identidad int(11),
   numero_documento_identidad varchar(15),
-  sexo varchar(3),
+  sexo varchar(50),
   fecha_nacimiento date,
   iddepartamento int(11),
   idprovincia int(11),

@@ -82,6 +82,25 @@
 
                         <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
                             <div class="form-group">
+                                <label for="fechaNacimiento">Fecha de nacimiento:</label>
+                                <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimiento" placeholder="Fecha de nacimiento" >
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="sexo">Sexo:</label>
+                                <select class="form-control" name="sexo" id="sexo" >
+                                    <option value="" hidden >[---Seleccione---]</option>
+                                    <option value="hombre">Hombre</option>
+                                    <option value="mujer">Mujer</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
                                 <label for="departamento">Departamento:</label>
                                 <select class="form-control" name="departamento" id="departamento" title="Departamento" >
                                     <option value="" hidden selected >[---Seleccione---]</option>
@@ -109,18 +128,20 @@
                                 </select>
                             </div>
                         </div>
-
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
-                                <label for="sexoEditar">Sexo:</label>
-                                <select class="form-control" name="sexoEditar" id="sexoEditar" >
-                                    <option value="" hidden >[---Seleccione---]</option>
-                                    <option value="hombre">Hombre</option>
-                                    <option value="mujer">Mujer</option>
-                                    <option value="Otro">Otro</option>
-                                </select>
+                                <label for="direccion">Direción:</label>
+                                <textarea class="form-control" name="direccion" id="direccion" placeholder="Direción" rows="5" ></textarea>
                             </div>
                         </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="nota">Nota:</label>
+                                <textarea class="form-control" name="nota" id="nota" placeholder="Nota" rows="10" ></textarea>
+                            </div>
+                        </div>
+
 
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
@@ -128,6 +149,7 @@
                                 <input type="file" id="imagen" name="imagen">
                             </div>
                         </div>
+
 
 
 

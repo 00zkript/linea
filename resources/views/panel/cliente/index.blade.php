@@ -70,6 +70,8 @@
         const URL_HABILITAR   = "{{ route('cliente.habilitar') }}";
         const URL_INHABILITAR = "{{ route('cliente.inhabilitar') }}";
         const URL_ELIMINAR    = "{{ route('cliente.destroy','destroy') }}";
+        const URL_PROVINCIAS  = "{{ route('cliente.provincias',':id') }}";
+        const URL_DISTRITOS   = "{{ route('cliente.distritos',':id') }}";
         const URL_CARPETA     = BASE_URL+"/panel/img/";
 
 
@@ -194,9 +196,11 @@
                     $('#numeroDocumentoIdentidadEditar').val(data.numero_documento_identidad);
                     $('#sexoEditar').val(data.sexo);
                     $('#fechaNacimientoEditar').val(data.fecha_nacimiento);
-                    $('#departamentoEditar').val(data.departamento);
-                    $('#provinciaEditar').val(data.provincia);
-                    $('#distritoEditar').val(data.distrito);
+
+                    $('#departamentoEditar').val(data.iddepartamento);
+                    getProvincia({ selector: '#provinciaEditar', iddepartamento: data.iddepartamento, newValue: data.idprovincia });
+                    getDistrito({ selector: '#distritoEditar', idprovincia: data.idprovincia, newValue: data.iddistrito });
+
                     $('#direccionEditar').val(data.direccion);
                     $('#referenciaEditar').val(data.referencia);
                     $('#notaEditar').val(data.nota);
@@ -241,9 +245,12 @@
                     $('#nombreShow').html(data.nombres);
                     $('#apellidosShow').html(data.apellidos);
                     $('#correoShow').html(data.correo);
-                    $('#tipoDocumentoIdentidadShow').html(data.tipo_documento_identidad.nombre);
-                    $('#numeroDocumentoIdentidadShow').html(data.numero_documento_identidad);
                     $('#telefonoShow').html(data.telefono);
+                    $('#tipoDocumentoIdentidadShow').html(data.tipo_documento_identidad.nombre+" - "+data.numero_documento_identidad);
+                    $('#fechaNacimientoShow').html(data.fecha_nacimiento);
+                    $('#notaShow').html(data.nota);
+                    $('#direccionShow').html(data.direccion+" "+ data.distrito.nombre+" / "+data.provincia.nombre+" / "+data.departamento.nombre);
+
 
 
                     if (data.estado){
@@ -410,17 +417,68 @@
         }
 
 
-        const fillSelect = ( selector, data ) => {
+        const fillSelect = ({ selector, data, newValue = null }) => {
             $(selector).empty();
 
             let html = '<option value="" hidden selected >[---Seleccione---]</option>';
 
             for (const item of data) {
                 const keys = Object.keys(item);
+                const id =  item[keys[0]];
 
-                html +=  `<option value="${ item[keys[0]] }">${ item.nombre }</option>`;
+                html +=  `<option value="${ id }">${ item.nombre }</option>`;
             }
             $(selector).html(html);
+            if (newValue) {
+                $(selector).val(newValue);
+            }
+
+        }
+
+
+        const getProvincia = ({ selector, iddepartamento, newValue = null }) => {
+            return axios.get(URL_PROVINCIAS.replace(':id', iddepartamento))
+            .then( response => {
+                const data = response.data;
+                fillSelect({ selector, data, newValue });
+            });
+        }
+
+        const getDistrito = ({ selector, idprovincia, newValue = null }) => {
+            return axios.get(URL_DISTRITOS.replace(':id', idprovincia))
+            .then( response => {
+                const data = response.data;
+                fillSelect({ selector, data, newValue });
+            });
+        }
+
+        const ubigeo = () => {
+
+            $(document).on( 'change', '#departamento', function (e) {
+                e.preventDefault();
+                const val = $(this).val();
+                getProvincia({ selector: '#provincia', iddepartamento: val });
+            });
+
+            $(document).on( 'change', '#provincia', function (e) {
+                e.preventDefault();
+                const val = $(this).val();
+                getDistrito({ selector: '#distrito', idprovincia: val });
+            });
+
+
+            $(document).on( 'change', '#departamentoEditar', function (e) {
+                e.preventDefault();
+                const val = $(this).val();
+                getProvincia({ selector: '#provinciaEditar', iddepartamento: val });
+            });
+
+            $(document).on( 'change', '#provinciaEditar', function (e) {
+                e.preventDefault();
+                const val = $(this).val();
+                getDistrito({ selector: '#distritoEditar', idprovincia: val });
+            });
+
 
         }
 
@@ -443,6 +501,7 @@
             habilitar();
             inhabilitar();
             changeTipoDocumentoIdentidad();
+            ubigeo();
 
 
         });

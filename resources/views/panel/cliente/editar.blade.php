@@ -22,6 +22,16 @@
 
 
 
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="codigoEditar">Código: </label>
+                                <input type="text" name="codigoEditar" id="codigoEditar" class="form-control">
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        </div>
+
 
                         <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                             <div class="form-group">
@@ -71,6 +81,78 @@
                                 <input type="text" name="numeroDocumentoIdentidadEditar" id="numeroDocumentoIdentidadEditar" required class="form-control soloNumeros"  placeholder="N° de Documento" minlength="8" maxlength="8">
                             </div>
                         </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="sexoEditar">Sexo:</label>
+                                <select class="form-control" name="sexoEditar" id="sexoEditar" >
+                                    <option value="" hidden >[---Seleccione---]</option>
+                                    <option value="hombre">Hombre</option>
+                                    <option value="mujer">Mujer</option>
+                                    <option value="Otro">Otro</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="fechaNacimientoEditar">Fecha de nacimiento:</label>
+                                <input type="date" class="form-control" name="fechaNacimientoEditar" id="fechaNacimientoEditar" placeholder="Fecha de nacimiento" >
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="departamentoEditar">Departamento:</label>
+                                <select class="form-control" name="departamentoEditar" id="departamentoEditar" title="Departamento" >
+                                    <option value="" hidden selected >[---Seleccione---]</option>
+                                    @foreach ($departamentos as $item)
+                                        <option value="{{ $item->iddepartamento }}">{{ $item->nombre }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="provinciaEditar">Provincia:</label>
+                                <select class="form-control" name="provinciaEditar" id="provinciaEditar" title="Provincia" >
+                                    <option value="" hidden selected >[---Seleccione---]</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="distritoEditar">Distrito:</label>
+                                <select class="form-control" name="distritoEditar" id="distritoEditar" title="Distrito" >
+                                    <option value="" hidden selected >[---Seleccione---]</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="direccionEditar">Direción:</label>
+                                <textarea class="form-control" name="direccionEditar" id="direccionEditar" placeholder="Direción" rows="5" ></textarea>
+                            </div>
+                        </div>
+
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="notaEditar">Nota:</label>
+                                <textarea class="form-control" name="notaEditar" id="notaEditar" placeholder="Nota" rows="10" ></textarea>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="form-group">
+                                <label for="imagenEditar">Imagen:</label>
+                                <input type="file" id="imagenEditar" name="imagenEditar">
+                            </div>
+                        </div>
+
 
 
                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

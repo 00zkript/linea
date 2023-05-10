@@ -23,6 +23,22 @@ class Cliente extends Model
             ]);
     }
 
+    public function departamento()
+    {
+        return $this->hasOne(Departamento::class,'iddepartamento','iddepartamento');
+    }
+
+    public function provincia()
+    {
+        return $this->hasOne(Provincia::class,'idprovincia','idprovincia');
+    }
+
+    public function distrito()
+    {
+        return $this->hasOne(Distrito::class,'iddistrito','iddistrito');
+    }
+
+
 
 
 }
