@@ -130,7 +130,11 @@
                                     </ul>
                                 </li>
 
-
+                                <li class=""><a><i class="fa fa-tasks"></i> Matricula <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('matricula.index') }}">Nueva matricula</a></li>
+                                    </ul>
+                                </li>
 
 
                                 <li class="d-none"><a><i class="fa fa-file"></i> Pagina de Inicio <span class="fa fa-chevron-down"></span></a>
@@ -152,6 +156,8 @@
                                         {{-- <li style="display: none"><a href="{{ route('puntoVentas.index') }}">Puntos de venta</a></li> --}}
                                     </ul>
                                 </li>
+
+
 
                                 <li class="d-none"><a><i class="fa fa-file-circle-plus"></i> Paginas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">

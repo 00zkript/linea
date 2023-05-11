@@ -377,7 +377,7 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
 
 
 
-
+    Route::resource( 'matricula', \App\Http\Controllers\Panel\MatriculaController::class )->names('matricula');
 
 
 
