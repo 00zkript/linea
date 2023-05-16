@@ -62,7 +62,7 @@
 
     @stack('css')
 
-    <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @routes
 </head>
 <body class="nav-md">
@@ -300,7 +300,7 @@
     <script src="{{ asset('generales/js/jquery.mask.js') }}"></script>
     <script src="{{ asset('generales/js/funciones.js') }}"></script>
 
-    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ asset('js/app.js') }}"></script>
 
     @include('ckfinder::setup')
 
