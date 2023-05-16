@@ -385,6 +385,15 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
 
 
 
+    Route::get( 'pago/create/{idmatricula?}', [\App\Http\Controllers\Panel\PagoController::class, 'create'] )->name('pago.create');
+    Route::resource( 'pago', \App\Http\Controllers\Panel\PagoController::class )->only(['index'])->names('pago');
+
+
+
+
+
+
+
     // Route::post('example/file/store',[\App\Http\Controllers\Panel\ExampleController::class,'fileStore'])->name("example.file.store");
     // Route::post('example/file/update',[\App\Http\Controllers\Panel\ExampleController::class,'fileUpdate'])->name("example.file.update");
     // Route::post('example/file/sort',[\App\Http\Controllers\Panel\ExampleController::class,'fileSort'])->name("example.file.sort");

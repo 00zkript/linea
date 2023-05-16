@@ -136,6 +136,8 @@
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('matricula.create') }}">Nueva matrícula</a></li>
                                         <li><a href="{{ route('matricula.index') }}">Matrículas</a></li>
+                                        <li><a href="{{ route('pago.create') }}">Nuevo pago</a></li>
+                                        <li><a href="{{ route('pago.index') }}">Nuevo pago</a></li>
                                     </ul>
                                 </li>
 
