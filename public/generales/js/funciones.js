@@ -8,25 +8,31 @@ try {
     // console.log("no se importo pnotify");
 }
 
-let notificacion = function (tipo,titulo,mensaje,tiempo=5000) {
 
-        PNotify.alert({
-            type:tipo,
-            title: titulo,
-            text: mensaje,
-            addClass: 'stack-bar-top',
-            cornerClass: 'ui-pnotify-sharp',
-            shadow: false,
-            width: '100%',
-            delay: tiempo,
-            stack:{
-                'dir1': 'down',
-                'firstpos1': 0,
-                'spacing1': 0,
-                'push': 'top'
-            },
+let notificacion = function (tipo,titulo,mensaje,tiempo=5000, options = null) {
+    let config = {
+        type:tipo,
+        title: titulo,
+        text: mensaje,
+        // addClass: 'border_custom',
+        cornerClass: 'ui-pnotify-sharp',
+        // shadow: true,
+        // width: '100%',
+        delay: tiempo,
+        stack:{
+            dir1: 'down',
+            firstpos1: 25,
+            modal: true,
+            maxOpen: Infinity
+        },
+    }
 
-        })
+    if (options) {
+        config = Object.assign(config,options);
+    }
+
+
+    PNotify.alert(config)
 
 }
 
