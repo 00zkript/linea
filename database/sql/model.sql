@@ -603,3 +603,15 @@ CREATE TABLE currency_change_over_time (
     updated_at TIMESTAMP
 );
 
+
+
+
+
+alter table usuario add column idempleado int;
+select * from usuario ;
+select * from empleado ;
+
+
+
+
+

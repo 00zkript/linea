@@ -4,12 +4,12 @@
             <div class="step-number"><span v-text="number"></span><i class="fas fa-check"></i></div>
             <h3 v-text="title"></h3>
         </div>
-        <div class="step-content" v-if=" currentValue == number || showContent && currentValue > number" >
+        <div class="step-content" :class="classContent" v-if=" currentValue == number || showContent && currentValue > number" >
             <div class="step-header"></div>
             <div class="step-body">
                 <slot/>
             </div>
-            <div class="step-footer">
+            <div class="step-footer" v-if="showFooter">
                 <button class="btn btn-primary next-step" @click="showContent = false; $emit('next')" >Siguiente</button>
                 <button class="btn btn-secondary cancel-step">Cancelar</button>
             </div>
@@ -22,7 +22,19 @@
 
 <script>
 export default {
-    props: [ 'title', 'number', 'currentValue' ],
+    props: {
+        title: String,
+        number: Number,
+        currentValue: Number,
+        showFooter: {
+            type: Boolean ,
+            default: true
+        },
+        classContent: {
+            type: [String, Object],
+            default: ''
+        }
+    },
     data() {
         return {
             showContent: false

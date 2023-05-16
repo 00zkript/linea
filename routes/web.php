@@ -377,6 +377,10 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
 
 
 
+    Route::get('matricula/listar',[\App\Http\Controllers\Panel\MatriculaController::class,'listar'])->name("matricula.listar");
+    Route::get('matricula/resources',[\App\Http\Controllers\Panel\MatriculaController::class,'resources'])->name("matricula.resources");
+    Route::get('matricula/{id}/provincias',[\App\Http\Controllers\Panel\MatriculaController::class,'provincias'])->name("matricula.provincias");
+    Route::get('matricula/{id}/distritos',[\App\Http\Controllers\Panel\MatriculaController::class,'distritos'])->name("matricula.distritos");
     Route::resource( 'matricula', \App\Http\Controllers\Panel\MatriculaController::class )->names('matricula');
 
 

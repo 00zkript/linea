@@ -134,7 +134,8 @@
 
                                 <li class=""><a><i class="fa fa-tasks"></i> Matricula <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{ route('matricula.index') }}">Nueva matricula</a></li>
+                                        <li><a href="{{ route('matricula.create') }}">Nueva matrícula</a></li>
+                                        <li><a href="{{ route('matricula.index') }}">Matrículas</a></li>
                                     </ul>
                                 </li>
 
