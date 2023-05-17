@@ -1,4 +1,4 @@
-@if(count($registros) > 0)
+{{-- @if(count($registros) > 0)
     <div class="table-responsive">
         <table class="table table-bordered">
             <thead class="thead-dark">
@@ -53,5 +53,73 @@
     <div class="alert alert-danger">
         <p class="text-center mb-0"><i class="fa fa-exclamation-circle"></i> No hay registros encontrados para mostrar.</p>
     </div>
-@endif
+@endif --}}
 
+<div class="table-responsive">
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr class="text-center">
+                <th>Opciones</th>
+                <th>Matrícula</th>
+                <th>Alumno</th>
+                <th>Cantidad pagos</th>
+                <th>Monto total</th>
+                <th>Monto pagado</th>
+                <th>Monto deuda</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td class="text-center">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-7" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
+                            Seleccione
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu-7" data-idregistro="7">
+                            <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
+                            <a href="{{ route('pago.create', 7) }}" class="dropdown-item" type="button"><i class="fa fa-eye"></i> Pagar matrícula</a>
+                        </div>
+                    </div>
+                </td>
+                <td>0000007</td>
+                <td>Juan Perez Mancilla</td>
+                <td>2</td>
+                <td>S/. 350.00</td>
+                <td>S/. 250.00</td>
+                <td>S/. 100.00</td>
+            </tr>
+            <tr>
+                <td class="text-center">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-7" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
+                            Seleccione
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenu-7" data-idregistro="7">
+                            <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
+                            <a href="{{ route('pago.create', 7) }}" class="dropdown-item" type="button"><i class="fa fa-eye"></i> Pagar matrícula</a>
+                        </div>
+                    </div>
+                </td>
+                <td>0000008</td>
+                <td>Maria Aguirre lazo</td>
+                <td>1</td>
+                <td>S/. 350.00</td>
+                <td>S/. 200.00</td>
+                <td>S/. 150.00</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="4" class="text-center"><b>Total Final</b></td>
+                <td>S/. 700.00</td>
+                <td>S/. 450.00</td>
+                <td>S/. 250.00</td>
+            </tr>
+        </tfoot>
+    </table>
+    <p>
+        Mostrando del registro 7 al 1 de un total de 2 registros
+    </p>
+
+
+</div>
