@@ -1,5 +1,6 @@
 @extends('panel.template.index')
 @section('cuerpo')
+    @include('panel.pago.ver')
     @include('panel.pago.eliminar')
     <div class="container-fluid">
         <div class="row">
@@ -40,54 +41,11 @@
                             </div>
 
                             <div class="col-12" id="listado">
-                                <div class="table-responsive">
-                                    <table class="table table-bordered">
-                                        <thead class="thead-dark">
-                                        <tr class="text-center">
-                                            <th>Matrícula</th>
-                                            <th>Alumno</th>
-                                            <th>Cantidad pagos</th>
-                                            <th>Monto total</th>
-                                            <th>Monto pagado</th>
-                                            <th>Monto deuda</th>
-                                            <th>Opciones</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>0000007</td>
-                                                <td>Juan Perez Mancilla</td>
-                                                <td>2</td>
-                                                <td>S/. 350.00</td>
-                                                <td>S/. 250.00</td>
-                                                <td>S/. 100.00</td>
-                                                <td class="text-center">
-                                                    <div class="dropdown">
-                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-1" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
-                                                            Seleccione
-                                                        </button>
-                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu-1" data-idregistro="1">
-                                                            <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
-                                                            <a href="{{ route('pago.create', 7) }}" class="dropdown-item" type="button"><i class="fa fa-eye"></i> Pagar matrícula</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-
-                                        </tbody>
-                                    </table>
-                                    <p>
-                                        Mostrando del registro 1 al 1 de un total de 1 registros
-                                    </p>
-
-
-                                </div>
-
                             </div>
 
 
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -148,7 +106,7 @@
         }
 
         const listado = async (cantidadRegistros = 10,paginaActual = 1) => {
-            cargando();
+            // cargando();
 
             const form = {
                 cantidadRegistros : cantidadRegistros,
@@ -249,50 +207,90 @@
 
 
 
-            });
+            }); */
 
             $(document).on("click",".btnModalVer",function(e){
                 e.preventDefault();
                 const idregistro = $(this).closest('div.dropdown-menu').data('idregistro');
 
+                // cargando('Procesando...');
+                // axios.get(URL_VER.replace(':id',idregistro))
+                // .then(response => {
+                //     const data = response.data;
+                //     stop();
 
-                cargando('Procesando...');
-                axios.get(URL_VER.replace(':id',idregistro))
-                .then(response => {
-                    const data = response.data;
-
-                    stop();
-
-                    $("#nombreShow").html(data.nombre);
-                    $("#contenidoShow").html(data.contenido);
-
-
-
-                    if(data.imagen){
-                        const img = `<img src="${ URL_CARPETA+data.imagen }" style ="width: 200px;" >`;
-                        $("#imagenShow").html(img);
+                    const data = {
+                        idmatricula : 7,
+                        sucursal: {
+                            nombre: 'sucrusal 1',
+                            direccion: 'Lorem ipsum dolor sit amet.',
+                            departamento: {
+                                nombre: 'Lima'
+                            },
+                            provincia: {
+                                nombre: 'Lima'
+                            },
+                            distrito: {
+                                nombre: 'Lima'
+                            },
+                        },
+                        caja: {
+                            nombre: 'caja1'
+                        },
+                        empleado: {
+                            nombres: 'lorenzo',
+                            apellidos: 'Perez Mancilla',
+                            tipo_documento_identidad: {
+                                nombre: 'DNI'
+                            },
+                            numero_documento_identidad: 87654321,
+                        },
+                        cliente: {
+                            nombres: 'Juan',
+                            apellidos: 'Perez Mancilla',
+                            tipo_documento_identidad: {
+                                nombre: 'DNI'
+                            },
+                            numero_documento_identidad: 87654321,
+                        },
+                        pagos: [
+                            { monto: 150, created_at : '01/01/2023'  } ,
+                            { monto: 100, created_at : '02/01/2023'  } ,
+                        ],
+                        monto_total: 350,
+                        monto_pagado: 250,
+                        monto_deuda: 100,
                     }
 
+                    $('#alumnoShow').html( data.cliente.nombres+" "+data.cliente.apellidos );
+                    $('#idmatriculaShow').html( data.idmatricula.toString().padStart(7,0) );
+                    $('#sucursalShow').html( `${data.sucursal.nombre} - ${data.sucursal.direccion} ${data.sucursal.distrito.nombre} / ${data.sucursal.provincia.nombre} / ${data.sucursal.departamento.nombre} ` );
+                    $('#cajaShow').html( data.caja.nombre );
+                    $('#empleadoShow').html( data.empleado.nombres+" "+data.empleado.apellidos );
+                    $('#montoTotalShow').html( "S/. "+number_format(data.monto_total,2) );
+                    $('#montoPagadoShow').html( "S/. "+number_format(data.monto_pagado,2) );
+                    $('#montoDeudaShow').html( "S/. "+number_format(data.monto_deuda,2) );
 
-                    if(data.pdf){
-                        const pdf = `<a href="${ URL_CARPETA+data.pdf }" target="_blank">Ver PDF</a>`;
-                        $("#pdfShow").html(pdf);
-                    }
+                    $('#pagosShow tbody').empty()
+                    data.pagos.forEach((pago,idx) => {
+                        $('#pagosShow tbody').append(`
+                            <tr>
+                                <td>#${idx+1}</td>
+                                <td>S/. ${number_format(pago.monto,2)}</td>
+                                <td>${pago.created_at}</td>
+                            </tr>
+                        `);
 
-                    if (data.estado){
-                        $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');
-                    }else{
-                        $("#estadoShow").html('<label class="badge badge-danger">Inhabilitado</label>');
-                    }
-
+                    })
 
                     $("#modalVer").modal("show");
 
-                })
-                .catch(errorCatch)
+                // })
+                // .catch(errorCatch)
 
 
-            }); */
+
+            });
 
         }
 
@@ -452,7 +450,7 @@
 
 
         $(function () {
-            // listado();
+            listado();
             modales();
             filtros();
             // guardar();

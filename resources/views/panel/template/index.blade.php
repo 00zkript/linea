@@ -53,10 +53,6 @@
             }
         }
 
-        #modalVer .modal-body .row .col-12 p:first-child {
-            font-weight: bold;
-            font-size: 11pt;
-        }
 
         .ui-pnotify-container{
             border-radius: 0.75rem !important;
