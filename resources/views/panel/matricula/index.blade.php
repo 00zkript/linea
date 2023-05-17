@@ -42,6 +42,51 @@
                             </div>
 
                             <div class="col-12" id="listado">
+
+                                <div class="table-responsive">
+                                    <table class="table table-bordered">
+                                        <thead class="thead-dark">
+                                        <tr class="text-center">
+                                            <th>Código</th>
+                                            <th>Alumno</th>
+                                            <th>Temporada</th>
+                                            <th>Programa</th>
+                                            <th>Precio total</th>
+                                            <th>Fecha</th>
+                                            <th>Fecha de registro</th>
+                                            <th>Opciones</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>00000001</td>
+                                                <td>Juan Manual Perez Aguila</td>
+                                                <th>Verano 2023</th>
+                                                <th>Para adultos</th>
+                                                <th>S/. 350.00</th>
+                                                <th>01/01/2023 - 01/02/2023</th>
+                                                <th>01/01/2023</th>
+                                                <td class="text-center">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-0" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
+                                                            Seleccione
+                                                        </button>
+                                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu-0" data-idregistro="0">
+                                                            <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
+                                                            <a href="{{ route('pago.create',7) }}" class="dropdown-item" type="button"><i class="fa fa-eye"></i> Pagar</a>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <p>
+                                        Mostrando del registro 1 al 1 de un total de 1 registros
+                                    </p>
+
+
+                                </div>
+
                             </div>
 
 
@@ -354,7 +399,7 @@
 
 
         $(function () {
-            listado();
+            // listado();
             modales();
             filtros();
             // guardar();

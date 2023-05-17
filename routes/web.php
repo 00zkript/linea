@@ -385,8 +385,9 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
 
 
 
-    Route::get( 'pago/create/{idmatricula?}', [\App\Http\Controllers\Panel\PagoController::class, 'create'] )->name('pago.create');
-    Route::resource( 'pago', \App\Http\Controllers\Panel\PagoController::class )->only(['index'])->names('pago');
+    Route::get('pago/listar',[\App\Http\Controllers\Panel\PagoController::class,'listar'])->name("pago.listar");
+    Route::get('pago/create/{idmatricula?}', [\App\Http\Controllers\Panel\PagoController::class, 'create'] )->name('pago.create');
+    Route::resource( 'pago', \App\Http\Controllers\Panel\PagoController::class )->only(['index','store'])->names('pago');
 
 
 
