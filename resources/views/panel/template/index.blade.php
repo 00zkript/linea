@@ -58,6 +58,10 @@
             font-size: 11pt;
         }
 
+        .ui-pnotify-container{
+            border-radius: 0.75rem !important;
+        }
+
     </style>
 
     @stack('css')
@@ -137,7 +141,7 @@
                                         <li><a href="{{ route('matricula.create') }}">Nueva matrícula</a></li>
                                         <li><a href="{{ route('matricula.index') }}">Matrículas</a></li>
                                         <li><a href="{{ route('pago.create') }}">Nuevo pago</a></li>
-                                        {{-- <li><a href="{{ route('pago.index') }}">Pago</a></li> --}}
+                                        <li><a href="{{ route('pago.index') }}">Pagos</a></li>
                                     </ul>
                                 </li>
 

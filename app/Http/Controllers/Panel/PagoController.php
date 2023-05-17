@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\Matricula;
+use App\Models\PagoCliente;
 use Illuminate\Http\Request;
 
 class PagoController extends Controller
@@ -13,9 +14,18 @@ class PagoController extends Controller
         return view('panel.pago.index');
     }
 
-    public function listar()
+    public function listar(Request $request)
     {
-        return ;
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $registros = PagoCliente::query()
+            ->where('estado',1)
+            ->paginate();
+
+
+        return view('panel.pago.listado')->with(compact('registros'))->render();
     }
 
     public function resources(Request $request)
@@ -28,7 +38,7 @@ class PagoController extends Controller
         $matricula = Matricula::query()->where('idmatricula',$idmatricula)->where('estado',1)->first();
 
 
-        return view('panel.pago.create')->with(compact('matricula'));
+        return view('panel.pago.create')->with(compact('matricula', 'idmatricula'));
     }
 
     public function store(Request $request)
