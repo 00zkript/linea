@@ -7,73 +7,70 @@
 @section('cuerpo')
 
     <div class="container-fluid">
-
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header" style="background-color: #2a3f54">
-                            <p style="font-size: 20px" class="card-title text-center text-white mb-0"> Inicio</p>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
-
-                                <div class="col-md-6 mb-5">
-                                    <h3 class="position-relative">Top 10 productos más vendidos en el mes de <span class="thisMonth"></span></h3>
-                                    <div class="chart-container position-relative" style="width: 100%;">
-                                        <canvas id="productsMostSelled" ></canvas>
-                                    </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header" style="background-color: #2a3f54">
+                        <p style="font-size: 20px" class="card-title text-center text-white mb-0"> Inicio</p>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 col-12">
+                                <h3 class="text-center">Alumnos matriculados 2023</h3>
+                                <div class="chart-container position-relative" style="width: 100%;">
+                                    <canvas id="alumnosMatricualdosChar" ></canvas>
                                 </div>
-
-                                <div class="col-md-6 mb-5">
-                                    <h3 class="position-relative">Ventas del mes de <span class="thisMonth"></span> </h3>
-                                    <div class="chart-container position-relative" style="width: 100%;">
-                                        <canvas id="salesForMonth"></canvas>
-                                    </div>
-
+                            </div>
+                            <div class="col-md-6 col-12">
+                                <h3 class="text-center">Ganancias 2023</h3>
+                                <div class="chart-container " style="width: 50%;left: 25%;position: relative;">
+                                    <canvas id="gananciasChar" ></canvas>
                                 </div>
-
-                                <div class="col-md-12 mb-5">
-                                    <h3 class="position-relative">Ventas del año <span class="thisYear"></span> vs <span class="lastYear"></span></h3>
-                                    <div class="d-flex">
-
-
-                                        <p class="d-flex flex-column">
-                                            <span class="text-bold text-lg font-weight-bold" id="salesForYear"></span>
-                                            <span id="">Ventas a lo largo del tiempo</span>
-                                        </p>
-                                        <p class="ml-auto d-flex flex-column text-right">
-                                            <span class="text-success">
-                                                <i class="fas fa-arrow-up" id="rateIncremnt"></i>
-                                            </span>
-                                            <span class="text-muted">Desde el mes pasado</span>
-                                        </p>
-                                    </div>
-
-
-                                    <div class="chart-container position-relative" style="width: 100%;">
-                                        <canvas id="comparativeSalesTheYearCurrentToYearOld"></canvas>
-                                    </div>
-
-                                </div>
-
-
-
-
-
-
-
-
-
-
                             </div>
 
+                            {{-- <div class="col-md-6 mb-5">
+                                <h3 class="position-relative">Top 10 productos más vendidos en el mes de <span class="thisMonth"></span></h3>
+                                <div class="chart-container position-relative" style="width: 100%;">
+                                    <canvas id="productsMostSelled" ></canvas>
+                                </div>
+                            </div> --}}
+
+                            {{-- <div class="col-md-6 mb-5">
+                                <h3 class="position-relative">Ventas del mes de <span class="thisMonth"></span> </h3>
+                                <div class="chart-container position-relative" style="width: 100%;">
+                                    <canvas id="salesForMonth"></canvas>
+                                </div>
+                            </div> --}}
+
+                            {{-- <div class="col-md-12 mb-5">
+                                <h3 class="position-relative">Ventas del año <span class="thisYear"></span> vs <span class="lastYear"></span></h3>
+                                <div class="d-flex">
+
+
+                                    <p class="d-flex flex-column">
+                                        <span class="text-bold text-lg font-weight-bold" id="salesForYear"></span>
+                                        <span id="">Ventas a lo largo del tiempo</span>
+                                    </p>
+                                    <p class="ml-auto d-flex flex-column text-right">
+                                        <span class="text-success">
+                                            <i class="fas fa-arrow-up" id="rateIncremnt"></i>
+                                        </span>
+                                        <span class="text-muted">Desde el mes pasado</span>
+                                    </p>
+                                </div>
+
+
+                                <div class="chart-container position-relative" style="width: 100%;">
+                                    <canvas id="comparativeSalesTheYearCurrentToYearOld"></canvas>
+                                </div>
+
+                            </div> --}}
+
                         </div>
-
-
                     </div>
                 </div>
             </div>
-
+        </div>
     </div>
 
 @endsection
@@ -83,9 +80,9 @@
 
     <script type="module">
 
-        const URL_PRODUCTSMOSTSELLED = "{{ route('inicio.getproductMostSelled') }}";
-        const URL_SALESOVERTIME = "{{ route('inicio.getSalesForYearVsYearOld') }}";
-        const URL_SALESFORMONTH = "{{ route('inicio.salesForMonth') }}";
+        {{-- // const URL_PRODUCTSMOSTSELLED = "{{ route('inicio.getproductMostSelled') }}"; --}}
+        {{-- // const URL_SALESOVERTIME = "{{ route('inicio.getSalesForYearVsYearOld') }}"; --}}
+        {{-- // const URL_SALESFORMONTH = "{{ route('inicio.salesForMonth') }}"; --}}
 
         const moneyFormat = "{{ $monedaGeneral->format('0.00') }}";
         const months = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
@@ -98,9 +95,7 @@
         const mode       = "index";
         const intersect  = true;
 
-        const getMonthCurrent = () => {
-            return months[date.getMonth()]
-        }
+        const getMonthCurrent = () => months[date.getMonth()];
 
         const styleScaleY = ( value ) => {
             if (1000000 > value && value >= 1000) {
@@ -115,7 +110,98 @@
             return moneyFormat.replace('0.00',value);
         }
 
-        const productsMostSelled = () => {
+        const alumnosMatricualdosChar = () => {
+            return new Chart(
+                document.querySelectorAll('#alumnosMatricualdosChar'),
+                {
+                    type: 'bar',
+                    data: {
+                        labels: months,
+                        datasets: [
+                            {
+                                label: 'cantidad de matrículas',
+                                backgroundColor: 'rgb(255, 99, 132)',
+                                borderColor: 'rgb(255, 99, 132)',
+                                data: [
+                                    '20',
+                                    '10',
+                                    '40',
+                                    '20',
+                                    '30',
+                                    '30',
+                                    '25',
+                                    '20',
+                                    '30',
+                                    '20',
+                                    '20',
+                                    '20'
+                                ],
+                            },
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                ticks: {
+                                    ...ticksStyle,
+                                    beginAtZero: true,
+                                    callback: styleScaleY,
+                                },
+                            },
+                        },
+                    },
+                }
+            );
+
+        }
+        const gananciasChar = () => {
+            return new Chart(
+                document.querySelectorAll('#gananciasChar'),
+                {
+                    type: 'doughnut',
+                    data: {
+                        labels: [
+                            'Academia de natación',
+                            'GyM',
+                            'Tienda'
+                        ],
+                        datasets: [{
+                            data: [
+                                "1800",
+                                "1500",
+                                "500",
+                            ],
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)',
+                                'rgb(75, 192, 192)',
+                                'rgb(153, 102, 255)',
+                                'rgb(255, 159, 64)',
+                                'rgb(102, 255, 102)',
+                                "rgb(80, 80, 80)",
+                                "rgb(140, 192, 192)",
+                                "rgb(10, 10, 10)",
+                            ],
+                            hoverOffset: 10
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                ticks: {
+                                    ...ticksStyle,
+                                    beginAtZero: true,
+                                    callback: styleScaleY,
+                                },
+                            },
+                        },
+                    },
+                }
+            );
+        }
+
+        /* const productsMostSelled = () => {
             const element = document.getElementById('productsMostSelled');
 
             axios({
@@ -319,9 +405,16 @@
             })
 
 
-        };
+        }; */
 
-        const init_paginate = () => {
+        (() => {
+
+            // productsMostSelled();
+            // salesOverTime();
+            // salesForMonth();
+            alumnosMatricualdosChar();
+            gananciasChar();
+
             document.querySelectorAll('.thisMonth').forEach(function(el, idx){
                 el.innerHTML = getMonthCurrent();
             });
@@ -334,16 +427,9 @@
                 el.innerHTML = lastYear;
             });
 
-        }
+        })()
 
 
-
-        document.addEventListener('DOMContentLoaded', () => {
-            init_paginate();
-            productsMostSelled();
-            salesOverTime();
-            salesForMonth();
-        });
 
 
 

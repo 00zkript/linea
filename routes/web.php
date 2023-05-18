@@ -174,11 +174,11 @@ Route::get('/panel/login/salir',[\App\Http\Controllers\Panel\LoginController::cl
 /* INICIO ----> RUTAS PROTEGIDAS USUARIO AUTENTICADO Y CON CARGO ADMINISTRADOR PARA ACCESO AL PANEL */
 Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(function (){
 
-
-    Route::get('inicio/salesForMonth',[\App\Http\Controllers\Panel\InicioController::class,'salesForMonth'])->name('inicio.salesForMonth');
-    Route::get('inicio/getSalesForYearVsYearOld',[\App\Http\Controllers\Panel\InicioController::class,'getSalesForYearVsYearOld'])->name('inicio.getSalesForYearVsYearOld');
-    Route::get('inicio/getproductMostSelled',[\App\Http\Controllers\Panel\InicioController::class,'getproductMostSelled'])->name('inicio.getproductMostSelled');
+    // Route::get('inicio/salesForMonth',[\App\Http\Controllers\Panel\InicioController::class,'salesForMonth'])->name('inicio.salesForMonth');
+    // Route::get('inicio/getSalesForYearVsYearOld',[\App\Http\Controllers\Panel\InicioController::class,'getSalesForYearVsYearOld'])->name('inicio.getSalesForYearVsYearOld');
+    // Route::get('inicio/getproductMostSelled',[\App\Http\Controllers\Panel\InicioController::class,'getproductMostSelled'])->name('inicio.getproductMostSelled');
     Route::resource('inicio',\App\Http\Controllers\Panel\InicioController::class)->only(['index']);
+
 
     Route::resource('empresa',\App\Http\Controllers\Panel\EmpresaController::class)->only(['index','update']);
 
@@ -189,6 +189,7 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::post('usuarios/inhabilitar',[\App\Http\Controllers\Panel\UsuarioController::class,'inhabilitar'])->name("usuario.inhabilitar");
     Route::post('usuarios/listar',[\App\Http\Controllers\Panel\UsuarioController::class,'listar'])->name("usuario.listar");
     Route::resource('usuarios',\App\Http\Controllers\Panel\UsuarioController::class)->names('usuario');
+
 
     Route::get('cliente/{id}/provincias',[\App\Http\Controllers\Panel\ClienteController::class,'provincias'])->name("cliente.provincias");
     Route::get('cliente/{id}/distritos',[\App\Http\Controllers\Panel\ClienteController::class,'distritos'])->name("cliente.distritos");
