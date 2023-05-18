@@ -102,12 +102,9 @@
                         <div class="menu_section">
                             <h3>General</h3>
                             <ul class="nav side-menu">
-                                <li class="">
-                                    <a href="{{ route('inicio.index') }}"><i class="fa fa-home"></i> Inicio</a>
-                                </li>
+                                <li class=""><a href="{{ route('inicio.index') }}"><i class="fa fa-home"></i> Inicio</a></li>
 
-                                <li class="">
-                                    <a><i class="fa fa-lock"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-lock"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
                                             <li><a href="{{ route('usuario.index') }}">Usuarios</a></li>
@@ -115,9 +112,46 @@
                                             <li><a href="javascript:void(0);">Roles</a></li>
                                             <li><a href="javascript:void(0);">Permisos</a></li>
                                         </li>
-
                                     </ul>
                                 </li>
+
+                                <li class=""><a><i class="fa fa-tasks"></i> Matriculas <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('matricula.create') }}">Nueva matrícula</a></li>
+                                        <li><a href="{{ route('matricula.index') }}">Matrículas</a></li>
+                                        <li><a href="{{ route('cliente.index') }}">Clientes</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class=""><a><i class="fa fa-tasks"></i> Pagos <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('pago.create') }}">Nuevo pago</a></li>
+                                        <li><a href="{{ route('pago.index') }}">Pagos</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class=""><a><i class="fa fa-tasks"></i> Cajas <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        {{-- <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirCajaModalCenter" >Abrir Caja</a></li> --}}
+                                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#cerrarCajaModalCenter" >Cerrar caja</a></li>
+                                        <li><a href="javascript:void(0);" >Cajas</a></li>
+                                        <li><a href="javascript:void(0);" >Control de precio</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class=""><a><i class="fa fa-tasks"></i> General <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('empresa.index') }}">Empresa</a></li>
+                                        <li><a href="{{ route('moneda.index') }}">Moneda</a></li>
+                                        {{-- <li><a href="{{ route('menu.index') }}">Menú</a></li> --}}
+                                        {{-- <li><a href="{{ route('seo.index') }}">SEO</a></li> --}}
+                                        {{-- <li><a href="{{ route('contacto.index') }}">Contacto</a></li> --}}
+                                        {{-- <li><a href="{{ route('terminos-condiciones.index') }}">Términos y condicones</a></li> --}}
+                                        {{-- <li><a href="{{ route('politicas-privacidad.index') }}">Políticas de privacidad</a></li> --}}
+                                        {{-- <li><a href="{{ route('puntoVentas.index') }}">Puntos de venta</a></li> --}}
+                                    </ul>
+                                </li>
+
 
                                 {{-- <li class=""><a><i class="fa fa-shopping-cart"></i> Catálogo <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
@@ -137,52 +171,11 @@
                                     </ul>
                                 </li> --}}
 
-                                <li class=""><a><i class="fa fa-tasks"></i> Matriculas <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="{{ route('matricula.create') }}">Nueva matrícula</a></li>
-                                        <li><a href="{{ route('matricula.index') }}">Matrículas</a></li>
-                                        <li><a href="{{ route('cliente.index') }}">Clientes</a></li>
-                                    </ul>
-                                </li>
-
-                                <li class=""><a><i class="fa fa-tasks"></i> Pagos <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="{{ route('pago.create') }}">Nuevo pago</a></li>
-                                        <li><a href="{{ route('pago.index') }}">Pagos</a></li>
-                                    </ul>
-                                </li>
-
-                                <li class=""><a><i class="fa fa-tasks"></i> Cajas <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirCajaModalCenter" >Abrir Caja</a></li>
-                                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#cerrarCajaModalCenter" >Cerrar caja</a></li>
-                                    </ul>
-                                </li>
-
-
-
-
                                 {{-- <li class=""><a><i class="fa fa-file"></i> Pagina de Inicio <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('section-home.index') }}">Secciones Home</a></li>
                                     </ul>
                                 </li> --}}
-
-
-                                <li class=""><a><i class="fa fa-tasks"></i> General <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        {{-- <li><a href="{{ route('menu.index') }}">Menú</a></li> --}}
-                                        <li><a href="{{ route('empresa.index') }}">Empresa</a></li>
-                                        {{-- <li><a href="{{ route('seo.index') }}">SEO</a></li> --}}
-                                        {{-- <li><a href="{{ route('contacto.index') }}">Contacto</a></li> --}}
-                                        <li><a href="{{ route('moneda.index') }}">Moneda</a></li>
-                                        {{-- <li><a href="{{ route('terminos-condiciones.index') }}">Términos y condicones</a></li> --}}
-                                        {{-- <li><a href="{{ route('politicas-privacidad.index') }}">Políticas de privacidad</a></li> --}}
-                                        {{-- <li style="display: none"><a href="{{ route('puntoVentas.index') }}">Puntos de venta</a></li> --}}
-                                    </ul>
-                                </li>
-
-
 
                                 {{-- <li class=""><a><i class="fa fa-file-circle-plus"></i> Paginas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
@@ -201,14 +194,12 @@
                                     </ul>
                                 </li> --}}
 
-
                                 {{-- <li class=""><a><i class="fa fa-globe"></i> Noticias <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('blogCategoria.index') }}">Blog Categoria</a></li>
                                         <li><a href="{{ route('blog.index') }}">Blog</a></li>
                                     </ul>
                                 </li> --}}
-
 
                                 {{-- <li class=""><a><i class="fa fa-people-group"></i> Marketing <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
@@ -229,7 +220,6 @@
 
 
                     <div class="sidebar-footer hidden-small">
-
                         <a class="w-100" data-toggle="tooltip" data-placement="top" title="Cerrar sesión" href="{{ route('panel.login.salir') }}">
                             <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
                         </a>

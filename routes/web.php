@@ -180,146 +180,15 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::get('inicio/getproductMostSelled',[\App\Http\Controllers\Panel\InicioController::class,'getproductMostSelled'])->name('inicio.getproductMostSelled');
     Route::resource('inicio',\App\Http\Controllers\Panel\InicioController::class)->only(['index']);
 
-
+    Route::resource('empresa',\App\Http\Controllers\Panel\EmpresaController::class)->only(['index','update']);
 
     Route::get('/configuracion',[\App\Http\Controllers\Panel\ConfiguracionController::class,'edit'])->name('configuracion.edit');
     Route::put('/configuracion/update',[\App\Http\Controllers\Panel\ConfiguracionController::class,'update'])->name('configuracion.update');
-
-
-
-    Route::get('costo-envio/getProvincia',[\App\Http\Controllers\Panel\CostoEnvioController::class,'getProvincia'])->name("costo-envio.getProvincia");
-    Route::get('costo-envio/getDistrito',[\App\Http\Controllers\Panel\CostoEnvioController::class,'getDistrito'])->name("costo-envio.getDistrito");
-    Route::post('costo-envio/habilitar',[\App\Http\Controllers\Panel\CostoEnvioController::class,'habilitar'])->name("costo-envio.habilitar");
-    Route::post('costo-envio/inhabilitar',[\App\Http\Controllers\Panel\CostoEnvioController::class,'inhabilitar'])->name("costo-envio.inhabilitar");
-    Route::post('costo-envio/listar',[\App\Http\Controllers\Panel\CostoEnvioController::class,'listar'])->name("costo-envio.listar");
-    Route::resource('costo-envio',\App\Http\Controllers\Panel\CostoEnvioController::class);
 
     Route::post('usuarios/habilitar',[\App\Http\Controllers\Panel\UsuarioController::class,'habilitar'])->name("usuario.habilitar");
     Route::post('usuarios/inhabilitar',[\App\Http\Controllers\Panel\UsuarioController::class,'inhabilitar'])->name("usuario.inhabilitar");
     Route::post('usuarios/listar',[\App\Http\Controllers\Panel\UsuarioController::class,'listar'])->name("usuario.listar");
     Route::resource('usuarios',\App\Http\Controllers\Panel\UsuarioController::class)->names('usuario');
-
-    Route::post('asesores/habilitar',[\App\Http\Controllers\Panel\AsesorController::class,'habilitar'])->name("asesores.habilitar");
-    Route::post('asesores/inhabilitar',[\App\Http\Controllers\Panel\AsesorController::class,'inhabilitar'])->name("asesores.inhabilitar");
-    Route::post('asesores/listar',[\App\Http\Controllers\Panel\AsesorController::class,'listar'])->name("asesores.listar");
-    Route::resource('asesores',\App\Http\Controllers\Panel\AsesorController::class);
-
-
-    Route::post('marcas/habilitar',[\App\Http\Controllers\Panel\MarcaController::class,'habilitar'])->name("marcas.habilitar");
-    Route::post('marcas/inhabilitar',[\App\Http\Controllers\Panel\MarcaController::class,'inhabilitar'])->name("marcas.inhabilitar");
-    Route::post('marcas/listar',[\App\Http\Controllers\Panel\MarcaController::class,'listar'])->name("marcas.listar");
-    Route::resource('marcas',\App\Http\Controllers\Panel\MarcaController::class);
-
-    Route::get('categorias/getOrden',[\App\Http\Controllers\Panel\CategoriaController::class,'getOrden'])->name("categorias.getOrden");
-    Route::get('categorias/getParientes',[\App\Http\Controllers\Panel\CategoriaController::class,'getParientes'])->name("categorias.getParientes");
-    Route::post('categorias/habilitar',[\App\Http\Controllers\Panel\CategoriaController::class,'habilitar'])->name("categorias.habilitar");
-    Route::post('categorias/inhabilitar',[\App\Http\Controllers\Panel\CategoriaController::class,'inhabilitar'])->name("categorias.inhabilitar");
-    Route::post('categorias/listar',[\App\Http\Controllers\Panel\CategoriaController::class,'listar'])->name("categorias.listar");
-    Route::resource('categorias',\App\Http\Controllers\Panel\CategoriaController::class);
-
-
-    Route::get('menu/getPosicion',[\App\Http\Controllers\Panel\MenuController::class,'getPosicion'])->name("menu.getPosicion");
-    Route::get('menu/getParientes',[\App\Http\Controllers\Panel\MenuController::class,'getParientes'])->name("menu.getParientes");
-    Route::post('menu/habilitar',[\App\Http\Controllers\Panel\MenuController::class,'habilitar'])->name("menu.habilitar");
-    Route::post('menu/inhabilitar',[\App\Http\Controllers\Panel\MenuController::class,'inhabilitar'])->name("menu.inhabilitar");
-    Route::post('menu/listar',[\App\Http\Controllers\Panel\MenuController::class,'listar'])->name("menu.listar");
-    Route::post('menu/quitarIcono',[\App\Http\Controllers\Panel\MenuController::class,'quitarIcono'])->name("menu.quitarIcono");
-    Route::resource('menu',\App\Http\Controllers\Panel\MenuController::class);
-
-
-
-    Route::post('pagina/habilitar',[\App\Http\Controllers\Panel\PaginaController::class,'habilitar'])->name("pagina.habilitar");
-    Route::post('pagina/inhabilitar',[\App\Http\Controllers\Panel\PaginaController::class,'inhabilitar'])->name("pagina.inhabilitar");
-    Route::post('pagina/listar',[\App\Http\Controllers\Panel\PaginaController::class,'listar'])->name("pagina.listar");
-    Route::resource('pagina',\App\Http\Controllers\Panel\PaginaController::class);
-
-
-    Route::post('cupon/habilitar',[\App\Http\Controllers\Panel\CuponController::class,'habilitar'])->name("cupon.habilitar");
-    Route::post('cupon/inhabilitar',[\App\Http\Controllers\Panel\CuponController::class,'inhabilitar'])->name("cupon.inhabilitar");
-    Route::post('cupon/listar',[\App\Http\Controllers\Panel\CuponController::class,'listar'])->name("cupon.listar");
-    Route::resource('cupon',\App\Http\Controllers\Panel\CuponController::class);
-
-    Route::resource('empresa',\App\Http\Controllers\Panel\EmpresaController::class)->only(['index','update']);
-
-    Route::resource('seo',\App\Http\Controllers\Panel\SeoController::class)->only(['index','update']);
-
-    Route::resource('contacto',\App\Http\Controllers\Panel\ContactoController::class)->only(['index','update']);
-
-    Route::resource('terminos-condiciones',\App\Http\Controllers\Panel\TerminosCondicionesController::class)->only(['index','update']);
-    Route::resource('politicas-privacidad',\App\Http\Controllers\Panel\PoliticaPrivacidadController::class)->only(['index','update']);
-
-
-
-    Route::post('blog/habilitar',[\App\Http\Controllers\Panel\BlogController::class,'habilitar'])->name("blog.habilitar");
-    Route::post('blog/inhabilitar',[\App\Http\Controllers\Panel\BlogController::class,'inhabilitar'])->name("blog.inhabilitar");
-    Route::post('blog/listar',[\App\Http\Controllers\Panel\BlogController::class,'listar'])->name("blog.listar");
-    Route::resource('blog',\App\Http\Controllers\Panel\BlogController::class);
-
-    Route::post('blogCategoria/habilitar',[\App\Http\Controllers\Panel\BlogCategoriaController::class,'habilitar'])->name("blogCategoria.habilitar");
-    Route::post('blogCategoria/inhabilitar',[\App\Http\Controllers\Panel\BlogCategoriaController::class,'inhabilitar'])->name("blogCategoria.inhabilitar");
-    Route::post('blogCategoria/listar',[\App\Http\Controllers\Panel\BlogCategoriaController::class,'listar'])->name("blogCategoria.listar");
-    Route::resource('blogCategoria',\App\Http\Controllers\Panel\BlogCategoriaController::class);
-
-    Route::post('puntoVentas/habilitar',[\App\Http\Controllers\Panel\PuntoVentaController::class,'habilitar'])->name("puntoVentas.habilitar");
-    Route::post('puntoVentas/inhabilitar',[\App\Http\Controllers\Panel\PuntoVentaController::class,'inhabilitar'])->name("puntoVentas.inhabilitar");
-    Route::post('puntoVentas/listar',[\App\Http\Controllers\Panel\PuntoVentaController::class,'listar'])->name("puntoVentas.listar");
-    Route::resource('puntoVentas',\App\Http\Controllers\Panel\PuntoVentaController::class);
-
-    Route::get('banner/getPosicion',[\App\Http\Controllers\Panel\BannerController::class,'getPosicion'])->name("banner.getPosicion");
-    Route::post('banner/removerImagen',[\App\Http\Controllers\Panel\BannerController::class,'removerImagen'])->name("banner.removerImagen");
-    Route::post('banner/habilitar',[\App\Http\Controllers\Panel\BannerController::class,'habilitar'])->name("banner.habilitar");
-    Route::post('banner/inhabilitar',[\App\Http\Controllers\Panel\BannerController::class,'inhabilitar'])->name("banner.inhabilitar");
-    Route::post('banner/listar',[\App\Http\Controllers\Panel\BannerController::class,'listar'])->name("banner.listar");
-    Route::resource('banner',\App\Http\Controllers\Panel\BannerController::class);
-
-
-    Route::post('popup/cantidadPopups',[\App\Http\Controllers\Panel\PopupController::class,'cantidadPopups'])->name("popup.cantidadPopups");
-    Route::post('popup/removerImagen',[\App\Http\Controllers\Panel\PopupController::class,'removerImagen'])->name("popup.removerImagen");
-    Route::post('popup/habilitar',[\App\Http\Controllers\Panel\PopupController::class,'habilitar'])->name("popup.habilitar");
-    Route::post('popup/inhabilitar',[\App\Http\Controllers\Panel\PopupController::class,'inhabilitar'])->name("popup.inhabilitar");
-    Route::post('popup/listar',[\App\Http\Controllers\Panel\PopupController::class,'listar'])->name("popup.listar");
-    Route::resource('popup',\App\Http\Controllers\Panel\PopupController::class);
-
-
-    Route::get('ventas',[\App\Http\Controllers\Panel\VentaController::class,'index'])->name('ventas.index');
-    Route::post('ventas/listar',[\App\Http\Controllers\Panel\VentaController::class,'listar'])->name("ventas.listar");
-    Route::post('ventas/detalleVenta',[\App\Http\Controllers\Panel\VentaController::class,'detalleVenta'])->name("ventas.detalleVenta");
-    Route::post('ventas/detalleVoucher',[\App\Http\Controllers\Panel\VentaController::class,'detalleVoucher'])->name("ventas.detalleVoucher");
-    Route::post('ventas/anularVenta',[\App\Http\Controllers\Panel\VentaController::class,'anularVenta'])->name("ventas.anularVenta");
-    Route::post('ventas/modificarEstadoControlVenta',[\App\Http\Controllers\Panel\VentaController::class,'modificarEstadoControlVenta'])->name("ventas.modificarEstadoControlVenta");
-    Route::post('ventas/modificarEstadoEnvio',[\App\Http\Controllers\Panel\VentaController::class,'modificarEstadoEnvio'])->name("ventas.modificarEstadoEnvio");
-    Route::post('ventas/modificarEstadoPago',[\App\Http\Controllers\Panel\VentaController::class,'modificarEstadoPago'])->name("ventas.modificarEstadoPago");
-    Route::get('ventas/{venta}/pdf',[\App\Http\Controllers\Panel\VentaController::class,'pdf'])->name('ventas.pdf');
-
-    Route::get('reporte-ventas',[\App\Http\Controllers\Panel\ReporteVentaController::class,'index'])->name('reporteVentas.index');
-    Route::post('reporte-ventas/generarPdfVentas',[\App\Http\Controllers\Panel\ReporteVentaController::class,'generarPdfVentas'])->name('reporteVentas.generarPdfVentas');
-    Route::post('reporte-ventas/generarExcelVentas',[\App\Http\Controllers\Panel\ReporteVentaController::class,'generarExcelVentas'])->name('reporteVentas.generarExcelVentas');
-
-
-
-    Route::post('productos/imagen/upload',[\App\Http\Controllers\Panel\ProductoController::class,'imagenUpload'])->name("productos.imagen.upload");
-    Route::post('productos/imagen/update',[\App\Http\Controllers\Panel\ProductoController::class,'imagenUpdate'])->name("productos.imagen.update");
-    Route::post('productos/imagen/sort',[\App\Http\Controllers\Panel\ProductoController::class,'imagenSort'])->name("productos.imagen.sort");
-    Route::post('productos/imagen/remove',[\App\Http\Controllers\Panel\ProductoController::class,'imagenRemove'])->name("productos.imagen.remove");
-
-    Route::post('productos/manual/upload',[\App\Http\Controllers\Panel\ProductoController::class,'manualUpload'])->name("productos.manual.upload");
-    Route::post('productos/manual/update',[\App\Http\Controllers\Panel\ProductoController::class,'manualUpdate'])->name("productos.manual.update");
-    Route::post('productos/manual/remove',[\App\Http\Controllers\Panel\ProductoController::class,'manualRemove'])->name("productos.manual.remove");
-
-    Route::post('productos/importarProductos',[\App\Http\Controllers\Panel\ProductoController::class,'importarProductos'])->name("productos.importarProductos");
-    Route::get('productos/getResources',[\App\Http\Controllers\Panel\ProductoController::class,'getResources'])->name("productos.getResources");
-    Route::get('producto/getProductos',[\App\Http\Controllers\Panel\ProductoController::class,'getProductos'])->name('producto.getProductos');
-
-    Route::post('productos/habilitar',[\App\Http\Controllers\Panel\ProductoController::class,'habilitar'])->name("productos.habilitar");
-    Route::post('productos/inhabilitar',[\App\Http\Controllers\Panel\ProductoController::class,'inhabilitar'])->name("productos.inhabilitar");
-    Route::post('productos/listar',[\App\Http\Controllers\Panel\ProductoController::class,'listar'])->name("productos.listar");
-    Route::resource('productos',\App\Http\Controllers\Panel\ProductoController::class);
-
-
-    Route::post('preguntas-frecuentes/habilitar',[\App\Http\Controllers\Panel\PreguntaFrecuenteController::class,'habilitar'])->name("preguntas-frecuentes.habilitar");
-    Route::post('preguntas-frecuentes/inhabilitar',[\App\Http\Controllers\Panel\PreguntaFrecuenteController::class,'inhabilitar'])->name("preguntas-frecuentes.inhabilitar");
-    Route::post('preguntas-frecuentes/listar',[\App\Http\Controllers\Panel\PreguntaFrecuenteController::class,'listar'])->name("preguntas-frecuentes.listar");
-    Route::resource('preguntas-frecuentes',\App\Http\Controllers\Panel\PreguntaFrecuenteController::class);
 
     Route::get('cliente/{id}/provincias',[\App\Http\Controllers\Panel\ClienteController::class,'provincias'])->name("cliente.provincias");
     Route::get('cliente/{id}/distritos',[\App\Http\Controllers\Panel\ClienteController::class,'distritos'])->name("cliente.distritos");
@@ -333,49 +202,10 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::post('empleado/listar',[\App\Http\Controllers\Panel\EmpleadoController::class,'listar'])->name("empleado.listar");
     Route::resource('empleado',\App\Http\Controllers\Panel\EmpleadoController::class);
 
-
-    Route::get('suscripcion/downloadExcel',[\App\Http\Controllers\Panel\SuscripcionController::class,'downloadExcel'])->name("suscripcion.downloadExcel");
-    Route::post('suscripcion/listar',[\App\Http\Controllers\Panel\SuscripcionController::class,'listar'])->name("suscripcion.listar");
-    Route::resource('suscripcion',\App\Http\Controllers\Panel\SuscripcionController::class)->only(['index']);
-
-
     Route::put('moneda/{moneda}/habilitar',[\App\Http\Controllers\Panel\MonedaController::class,'habilitar'])->name("moneda.habilitar");
     Route::put('moneda/{moneda}/inhabilitar',[\App\Http\Controllers\Panel\MonedaController::class,'inhabilitar'])->name("moneda.inhabilitar");
     Route::get('moneda/listar',[\App\Http\Controllers\Panel\MonedaController::class,'listar'])->name("moneda.listar");
     Route::resource('moneda',\App\Http\Controllers\Panel\MonedaController::class);
-
-
-
-    Route::put('seccion/{seccion}/habilitar',[\App\Http\Controllers\Panel\SectionController::class,'habilitar'])->name("section.habilitar");
-    Route::put('seccion/{seccion}/inhabilitar',[\App\Http\Controllers\Panel\SectionController::class,'inhabilitar'])->name("section.inhabilitar");
-    Route::get('seccion/listar',[\App\Http\Controllers\Panel\SectionController::class,'listar'])->name("section.listar");
-    Route::get('seccion/total-secciones',[\App\Http\Controllers\Panel\SectionController::class,'getCountSection'])->name("section.getCountSection");
-    Route::resource('seccion',\App\Http\Controllers\Panel\SectionController::class)->names('section');
-
-
-    Route::post('atributo/file/destroy',[\App\Http\Controllers\Panel\AtributoController::class,'fileDestroy'])->name("atributo.file.destroy");
-    Route::put('atributo/{atributo}/habilitar',[\App\Http\Controllers\Panel\AtributoController::class,'habilitar'])->name("atributo.habilitar");
-    Route::put('atributo/{atributo}/inhabilitar',[\App\Http\Controllers\Panel\AtributoController::class,'inhabilitar'])->name("atributo.inhabilitar");
-    Route::get('atributo/listar',[\App\Http\Controllers\Panel\AtributoController::class,'listar'])->name("atributo.listar");
-    Route::resource('atributo',\App\Http\Controllers\Panel\AtributoController::class);
-
-
-
-    Route::get('seccion-home/getSections',[\App\Http\Controllers\Panel\SectionHomeController::class,'getSections'])->name("section-home.getSections");
-    Route::resource('seccion-home',\App\Http\Controllers\Panel\SectionHomeController::class)->only(['index','store','update','destroy'])->names('section-home');
-
-
-    Route::put('testimonio/{example}/habilitar',[\App\Http\Controllers\Panel\TestimonioController::class,'habilitar'])->name("testimonio.habilitar");
-    Route::put('testimonio/{example}/inhabilitar',[\App\Http\Controllers\Panel\TestimonioController::class,'inhabilitar'])->name("testimonio.inhabilitar");
-    Route::get('testimonio/listar',[\App\Http\Controllers\Panel\TestimonioController::class,'listar'])->name("testimonio.listar");
-    Route::resource('testimonio',\App\Http\Controllers\Panel\TestimonioController::class);
-
-    Route::put('instagram/{instagram}/habilitar',[\App\Http\Controllers\Panel\InstagramController::class,'habilitar'])->name("instagram.habilitar");
-    Route::put('instagram/{instagram}/inhabilitar',[\App\Http\Controllers\Panel\InstagramController::class,'inhabilitar'])->name("instagram.inhabilitar");
-    Route::get('instagram/listar',[\App\Http\Controllers\Panel\InstagramController::class,'listar'])->name("instagram.listar");
-    Route::resource('instagram',\App\Http\Controllers\Panel\InstagramController::class);
-
-
 
     Route::get('matricula/listar',[\App\Http\Controllers\Panel\MatriculaController::class,'listar'])->name("matricula.listar");
     Route::get('matricula/resources',[\App\Http\Controllers\Panel\MatriculaController::class,'resources'])->name("matricula.resources");
@@ -383,11 +213,159 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::get('matricula/{id}/distritos',[\App\Http\Controllers\Panel\MatriculaController::class,'distritos'])->name("matricula.distritos");
     Route::resource( 'matricula', \App\Http\Controllers\Panel\MatriculaController::class )->names('matricula');
 
-
-
     Route::get('pago/listar',[\App\Http\Controllers\Panel\PagoController::class,'listar'])->name("pago.listar");
     Route::get('pago/create/{idmatricula?}', [\App\Http\Controllers\Panel\PagoController::class, 'create'] )->name('pago.create');
     Route::resource( 'pago', \App\Http\Controllers\Panel\PagoController::class )->only(['index','store'])->names('pago');
+
+
+
+
+
+
+    // Route::get('costo-envio/getProvincia',[\App\Http\Controllers\Panel\CostoEnvioController::class,'getProvincia'])->name("costo-envio.getProvincia");
+    // Route::get('costo-envio/getDistrito',[\App\Http\Controllers\Panel\CostoEnvioController::class,'getDistrito'])->name("costo-envio.getDistrito");
+    // Route::post('costo-envio/habilitar',[\App\Http\Controllers\Panel\CostoEnvioController::class,'habilitar'])->name("costo-envio.habilitar");
+    // Route::post('costo-envio/inhabilitar',[\App\Http\Controllers\Panel\CostoEnvioController::class,'inhabilitar'])->name("costo-envio.inhabilitar");
+    // Route::post('costo-envio/listar',[\App\Http\Controllers\Panel\CostoEnvioController::class,'listar'])->name("costo-envio.listar");
+    // Route::resource('costo-envio',\App\Http\Controllers\Panel\CostoEnvioController::class);
+
+    // Route::post('asesores/habilitar',[\App\Http\Controllers\Panel\AsesorController::class,'habilitar'])->name("asesores.habilitar");
+    // Route::post('asesores/inhabilitar',[\App\Http\Controllers\Panel\AsesorController::class,'inhabilitar'])->name("asesores.inhabilitar");
+    // Route::post('asesores/listar',[\App\Http\Controllers\Panel\AsesorController::class,'listar'])->name("asesores.listar");
+    // Route::resource('asesores',\App\Http\Controllers\Panel\AsesorController::class);
+
+    // Route::post('marcas/habilitar',[\App\Http\Controllers\Panel\MarcaController::class,'habilitar'])->name("marcas.habilitar");
+    // Route::post('marcas/inhabilitar',[\App\Http\Controllers\Panel\MarcaController::class,'inhabilitar'])->name("marcas.inhabilitar");
+    // Route::post('marcas/listar',[\App\Http\Controllers\Panel\MarcaController::class,'listar'])->name("marcas.listar");
+    // Route::resource('marcas',\App\Http\Controllers\Panel\MarcaController::class);
+
+    // Route::get('categorias/getOrden',[\App\Http\Controllers\Panel\CategoriaController::class,'getOrden'])->name("categorias.getOrden");
+    // Route::get('categorias/getParientes',[\App\Http\Controllers\Panel\CategoriaController::class,'getParientes'])->name("categorias.getParientes");
+    // Route::post('categorias/habilitar',[\App\Http\Controllers\Panel\CategoriaController::class,'habilitar'])->name("categorias.habilitar");
+    // Route::post('categorias/inhabilitar',[\App\Http\Controllers\Panel\CategoriaController::class,'inhabilitar'])->name("categorias.inhabilitar");
+    // Route::post('categorias/listar',[\App\Http\Controllers\Panel\CategoriaController::class,'listar'])->name("categorias.listar");
+    // Route::resource('categorias',\App\Http\Controllers\Panel\CategoriaController::class);
+
+    // Route::get('menu/getPosicion',[\App\Http\Controllers\Panel\MenuController::class,'getPosicion'])->name("menu.getPosicion");
+    // Route::get('menu/getParientes',[\App\Http\Controllers\Panel\MenuController::class,'getParientes'])->name("menu.getParientes");
+    // Route::post('menu/habilitar',[\App\Http\Controllers\Panel\MenuController::class,'habilitar'])->name("menu.habilitar");
+    // Route::post('menu/inhabilitar',[\App\Http\Controllers\Panel\MenuController::class,'inhabilitar'])->name("menu.inhabilitar");
+    // Route::post('menu/listar',[\App\Http\Controllers\Panel\MenuController::class,'listar'])->name("menu.listar");
+    // Route::post('menu/quitarIcono',[\App\Http\Controllers\Panel\MenuController::class,'quitarIcono'])->name("menu.quitarIcono");
+    // Route::resource('menu',\App\Http\Controllers\Panel\MenuController::class);
+
+    // Route::post('pagina/habilitar',[\App\Http\Controllers\Panel\PaginaController::class,'habilitar'])->name("pagina.habilitar");
+    // Route::post('pagina/inhabilitar',[\App\Http\Controllers\Panel\PaginaController::class,'inhabilitar'])->name("pagina.inhabilitar");
+    // Route::post('pagina/listar',[\App\Http\Controllers\Panel\PaginaController::class,'listar'])->name("pagina.listar");
+    // Route::resource('pagina',\App\Http\Controllers\Panel\PaginaController::class);
+
+    // Route::post('cupon/habilitar',[\App\Http\Controllers\Panel\CuponController::class,'habilitar'])->name("cupon.habilitar");
+    // Route::post('cupon/inhabilitar',[\App\Http\Controllers\Panel\CuponController::class,'inhabilitar'])->name("cupon.inhabilitar");
+    // Route::post('cupon/listar',[\App\Http\Controllers\Panel\CuponController::class,'listar'])->name("cupon.listar");
+    // Route::resource('cupon',\App\Http\Controllers\Panel\CuponController::class);
+
+    // Route::resource('seo',\App\Http\Controllers\Panel\SeoController::class)->only(['index','update']);
+    // Route::resource('contacto',\App\Http\Controllers\Panel\ContactoController::class)->only(['index','update']);
+    // Route::resource('terminos-condiciones',\App\Http\Controllers\Panel\TerminosCondicionesController::class)->only(['index','update']);
+    // Route::resource('politicas-privacidad',\App\Http\Controllers\Panel\PoliticaPrivacidadController::class)->only(['index','update']);
+
+    // Route::post('blog/habilitar',[\App\Http\Controllers\Panel\BlogController::class,'habilitar'])->name("blog.habilitar");
+    // Route::post('blog/inhabilitar',[\App\Http\Controllers\Panel\BlogController::class,'inhabilitar'])->name("blog.inhabilitar");
+    // Route::post('blog/listar',[\App\Http\Controllers\Panel\BlogController::class,'listar'])->name("blog.listar");
+    // Route::resource('blog',\App\Http\Controllers\Panel\BlogController::class);
+
+    // Route::post('blogCategoria/habilitar',[\App\Http\Controllers\Panel\BlogCategoriaController::class,'habilitar'])->name("blogCategoria.habilitar");
+    // Route::post('blogCategoria/inhabilitar',[\App\Http\Controllers\Panel\BlogCategoriaController::class,'inhabilitar'])->name("blogCategoria.inhabilitar");
+    // Route::post('blogCategoria/listar',[\App\Http\Controllers\Panel\BlogCategoriaController::class,'listar'])->name("blogCategoria.listar");
+    // Route::resource('blogCategoria',\App\Http\Controllers\Panel\BlogCategoriaController::class);
+
+    // Route::post('puntoVentas/habilitar',[\App\Http\Controllers\Panel\PuntoVentaController::class,'habilitar'])->name("puntoVentas.habilitar");
+    // Route::post('puntoVentas/inhabilitar',[\App\Http\Controllers\Panel\PuntoVentaController::class,'inhabilitar'])->name("puntoVentas.inhabilitar");
+    // Route::post('puntoVentas/listar',[\App\Http\Controllers\Panel\PuntoVentaController::class,'listar'])->name("puntoVentas.listar");
+    // Route::resource('puntoVentas',\App\Http\Controllers\Panel\PuntoVentaController::class);
+
+    // Route::get('banner/getPosicion',[\App\Http\Controllers\Panel\BannerController::class,'getPosicion'])->name("banner.getPosicion");
+    // Route::post('banner/removerImagen',[\App\Http\Controllers\Panel\BannerController::class,'removerImagen'])->name("banner.removerImagen");
+    // Route::post('banner/habilitar',[\App\Http\Controllers\Panel\BannerController::class,'habilitar'])->name("banner.habilitar");
+    // Route::post('banner/inhabilitar',[\App\Http\Controllers\Panel\BannerController::class,'inhabilitar'])->name("banner.inhabilitar");
+    // Route::post('banner/listar',[\App\Http\Controllers\Panel\BannerController::class,'listar'])->name("banner.listar");
+    // Route::resource('banner',\App\Http\Controllers\Panel\BannerController::class);
+
+    // Route::post('popup/cantidadPopups',[\App\Http\Controllers\Panel\PopupController::class,'cantidadPopups'])->name("popup.cantidadPopups");
+    // Route::post('popup/removerImagen',[\App\Http\Controllers\Panel\PopupController::class,'removerImagen'])->name("popup.removerImagen");
+    // Route::post('popup/habilitar',[\App\Http\Controllers\Panel\PopupController::class,'habilitar'])->name("popup.habilitar");
+    // Route::post('popup/inhabilitar',[\App\Http\Controllers\Panel\PopupController::class,'inhabilitar'])->name("popup.inhabilitar");
+    // Route::post('popup/listar',[\App\Http\Controllers\Panel\PopupController::class,'listar'])->name("popup.listar");
+    // Route::resource('popup',\App\Http\Controllers\Panel\PopupController::class);
+
+    // Route::get('ventas',[\App\Http\Controllers\Panel\VentaController::class,'index'])->name('ventas.index');
+    // Route::post('ventas/listar',[\App\Http\Controllers\Panel\VentaController::class,'listar'])->name("ventas.listar");
+    // Route::post('ventas/detalleVenta',[\App\Http\Controllers\Panel\VentaController::class,'detalleVenta'])->name("ventas.detalleVenta");
+    // Route::post('ventas/detalleVoucher',[\App\Http\Controllers\Panel\VentaController::class,'detalleVoucher'])->name("ventas.detalleVoucher");
+    // Route::post('ventas/anularVenta',[\App\Http\Controllers\Panel\VentaController::class,'anularVenta'])->name("ventas.anularVenta");
+    // Route::post('ventas/modificarEstadoControlVenta',[\App\Http\Controllers\Panel\VentaController::class,'modificarEstadoControlVenta'])->name("ventas.modificarEstadoControlVenta");
+    // Route::post('ventas/modificarEstadoEnvio',[\App\Http\Controllers\Panel\VentaController::class,'modificarEstadoEnvio'])->name("ventas.modificarEstadoEnvio");
+    // Route::post('ventas/modificarEstadoPago',[\App\Http\Controllers\Panel\VentaController::class,'modificarEstadoPago'])->name("ventas.modificarEstadoPago");
+    // Route::get('ventas/{venta}/pdf',[\App\Http\Controllers\Panel\VentaController::class,'pdf'])->name('ventas.pdf');
+
+    // Route::get('reporte-ventas',[\App\Http\Controllers\Panel\ReporteVentaController::class,'index'])->name('reporteVentas.index');
+    // Route::post('reporte-ventas/generarPdfVentas',[\App\Http\Controllers\Panel\ReporteVentaController::class,'generarPdfVentas'])->name('reporteVentas.generarPdfVentas');
+    // Route::post('reporte-ventas/generarExcelVentas',[\App\Http\Controllers\Panel\ReporteVentaController::class,'generarExcelVentas'])->name('reporteVentas.generarExcelVentas');
+
+    // Route::post('productos/imagen/upload',[\App\Http\Controllers\Panel\ProductoController::class,'imagenUpload'])->name("productos.imagen.upload");
+    // Route::post('productos/imagen/update',[\App\Http\Controllers\Panel\ProductoController::class,'imagenUpdate'])->name("productos.imagen.update");
+    // Route::post('productos/imagen/sort',[\App\Http\Controllers\Panel\ProductoController::class,'imagenSort'])->name("productos.imagen.sort");
+    // Route::post('productos/imagen/remove',[\App\Http\Controllers\Panel\ProductoController::class,'imagenRemove'])->name("productos.imagen.remove");
+    // Route::post('productos/manual/upload',[\App\Http\Controllers\Panel\ProductoController::class,'manualUpload'])->name("productos.manual.upload");
+    // Route::post('productos/manual/update',[\App\Http\Controllers\Panel\ProductoController::class,'manualUpdate'])->name("productos.manual.update");
+    // Route::post('productos/manual/remove',[\App\Http\Controllers\Panel\ProductoController::class,'manualRemove'])->name("productos.manual.remove");
+    // Route::post('productos/importarProductos',[\App\Http\Controllers\Panel\ProductoController::class,'importarProductos'])->name("productos.importarProductos");
+    // Route::get('productos/getResources',[\App\Http\Controllers\Panel\ProductoController::class,'getResources'])->name("productos.getResources");
+    // Route::get('producto/getProductos',[\App\Http\Controllers\Panel\ProductoController::class,'getProductos'])->name('producto.getProductos');
+    // Route::post('productos/habilitar',[\App\Http\Controllers\Panel\ProductoController::class,'habilitar'])->name("productos.habilitar");
+    // Route::post('productos/inhabilitar',[\App\Http\Controllers\Panel\ProductoController::class,'inhabilitar'])->name("productos.inhabilitar");
+    // Route::post('productos/listar',[\App\Http\Controllers\Panel\ProductoController::class,'listar'])->name("productos.listar");
+    // Route::resource('productos',\App\Http\Controllers\Panel\ProductoController::class);
+
+    // Route::post('preguntas-frecuentes/habilitar',[\App\Http\Controllers\Panel\PreguntaFrecuenteController::class,'habilitar'])->name("preguntas-frecuentes.habilitar");
+    // Route::post('preguntas-frecuentes/inhabilitar',[\App\Http\Controllers\Panel\PreguntaFrecuenteController::class,'inhabilitar'])->name("preguntas-frecuentes.inhabilitar");
+    // Route::post('preguntas-frecuentes/listar',[\App\Http\Controllers\Panel\PreguntaFrecuenteController::class,'listar'])->name("preguntas-frecuentes.listar");
+    // Route::resource('preguntas-frecuentes',\App\Http\Controllers\Panel\PreguntaFrecuenteController::class);
+
+    // Route::get('suscripcion/downloadExcel',[\App\Http\Controllers\Panel\SuscripcionController::class,'downloadExcel'])->name("suscripcion.downloadExcel");
+    // Route::post('suscripcion/listar',[\App\Http\Controllers\Panel\SuscripcionController::class,'listar'])->name("suscripcion.listar");
+    // Route::resource('suscripcion',\App\Http\Controllers\Panel\SuscripcionController::class)->only(['index']);
+
+    // Route::put('seccion/{seccion}/habilitar',[\App\Http\Controllers\Panel\SectionController::class,'habilitar'])->name("section.habilitar");
+    // Route::put('seccion/{seccion}/inhabilitar',[\App\Http\Controllers\Panel\SectionController::class,'inhabilitar'])->name("section.inhabilitar");
+    // Route::get('seccion/listar',[\App\Http\Controllers\Panel\SectionController::class,'listar'])->name("section.listar");
+    // Route::get('seccion/total-secciones',[\App\Http\Controllers\Panel\SectionController::class,'getCountSection'])->name("section.getCountSection");
+    // Route::resource('seccion',\App\Http\Controllers\Panel\SectionController::class)->names('section');
+
+    // Route::post('atributo/file/destroy',[\App\Http\Controllers\Panel\AtributoController::class,'fileDestroy'])->name("atributo.file.destroy");
+    // Route::put('atributo/{atributo}/habilitar',[\App\Http\Controllers\Panel\AtributoController::class,'habilitar'])->name("atributo.habilitar");
+    // Route::put('atributo/{atributo}/inhabilitar',[\App\Http\Controllers\Panel\AtributoController::class,'inhabilitar'])->name("atributo.inhabilitar");
+    // Route::get('atributo/listar',[\App\Http\Controllers\Panel\AtributoController::class,'listar'])->name("atributo.listar");
+    // Route::resource('atributo',\App\Http\Controllers\Panel\AtributoController::class);
+
+    // Route::get('seccion-home/getSections',[\App\Http\Controllers\Panel\SectionHomeController::class,'getSections'])->name("section-home.getSections");
+    // Route::resource('seccion-home',\App\Http\Controllers\Panel\SectionHomeController::class)->only(['index','store','update','destroy'])->names('section-home');
+
+    // Route::put('testimonio/{example}/habilitar',[\App\Http\Controllers\Panel\TestimonioController::class,'habilitar'])->name("testimonio.habilitar");
+    // Route::put('testimonio/{example}/inhabilitar',[\App\Http\Controllers\Panel\TestimonioController::class,'inhabilitar'])->name("testimonio.inhabilitar");
+    // Route::get('testimonio/listar',[\App\Http\Controllers\Panel\TestimonioController::class,'listar'])->name("testimonio.listar");
+    // Route::resource('testimonio',\App\Http\Controllers\Panel\TestimonioController::class);
+
+    // Route::put('instagram/{instagram}/habilitar',[\App\Http\Controllers\Panel\InstagramController::class,'habilitar'])->name("instagram.habilitar");
+    // Route::put('instagram/{instagram}/inhabilitar',[\App\Http\Controllers\Panel\InstagramController::class,'inhabilitar'])->name("instagram.inhabilitar");
+    // Route::get('instagram/listar',[\App\Http\Controllers\Panel\InstagramController::class,'listar'])->name("instagram.listar");
+    // Route::resource('instagram',\App\Http\Controllers\Panel\InstagramController::class);
+
+
+
+
+
+
 
 
 
