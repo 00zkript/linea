@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="token" id="token" content="{{csrf_token() }}">
     <title>CMS - {{ $empresaGeneral->nombre }}</title>
-{{--    <link rel="shortcut icon" href="{{ asset('panel/img/favicon.png') }}">--}}
+    {{-- <link rel="shortcut icon" href="{{ asset('panel/img/favicon.png') }}"> --}}
     <link rel="shortcut icon" href="{{ asset($empresaGeneral->favicon ? 'panel/img/empresa/'.$empresaGeneral->favicon : 'panel/default/favicon.jpg') }}">
 
     <link href="{{ asset('panel/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -67,6 +67,10 @@
 </head>
 <body class="nav-md">
 
+    @include('panel.caja.abrirCaja')
+    @include('panel.caja.cerrarCaja')
+
+
     <div class="container body">
         <div class="main_container">
             <div class="col-md-3 left_col">
@@ -106,13 +110,16 @@
                                     <a><i class="fa fa-lock"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
-                                            <a href="{{ route('usuario.index') }}">Usuarios</a>
+                                            <li><a href="{{ route('usuario.index') }}">Usuarios</a></li>
+                                            <li><a href="{{ route('empleado.index') }}">Empleado</a></li>
+                                            <li><a href="javascript:void(0);">Roles</a></li>
+                                            <li><a href="javascript:void(0);">Permisos</a></li>
                                         </li>
 
                                     </ul>
                                 </li>
 
-                                <li class="d-none"><a><i class="fa fa-shopping-cart"></i> Catálogo <span class="fa fa-chevron-down"></span></a>
+                                {{-- <li class=""><a><i class="fa fa-shopping-cart"></i> Catálogo <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('marcas.index') }}">Marcas</a></li>
                                         <li><a href="{{ route('categorias.index') }}">Categorias</a></li>
@@ -120,33 +127,46 @@
                                         <li><a href="{{ route('atributo.index') }}">Atributos</a></li>
                                         <li><a href="{{ route('productos.index') }}">Productos</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
 
-                                <li class=""><a><i class="fa fa-money-check-dollar"></i> Ventas o pedidos <span class="fa fa-chevron-down"></span></a>
+                                {{-- <li class=""><a><i class="fa fa-money-check-dollar"></i> Ventas o pedidos <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{ route('empleado.index') }}">Empleado</a></li>
-                                        <li><a href="{{ route('cliente.index') }}">Clientes</a></li>
-                                        {{-- <li><a href="{{ route('cupon.index') }}">Cupones</a></li> --}}
-                                        {{-- <li><a href="{{ route('ventas.index') }}">Ventas</a></li> --}}
-                                        {{-- <li><a href="{{ route('costo-envio.index') }}">Costo de envío</a></li> --}}
+                                        <li><a href="{{ route('cupon.index') }}">Cupones</a></li>
+                                        <li><a href="{{ route('ventas.index') }}">Ventas</a></li>
+                                        <li><a href="{{ route('costo-envio.index') }}">Costo de envío</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
 
-                                <li class=""><a><i class="fa fa-tasks"></i> Matricula <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-tasks"></i> Matriculas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('matricula.create') }}">Nueva matrícula</a></li>
                                         <li><a href="{{ route('matricula.index') }}">Matrículas</a></li>
+                                        <li><a href="{{ route('cliente.index') }}">Clientes</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class=""><a><i class="fa fa-tasks"></i> Pagos <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
                                         <li><a href="{{ route('pago.create') }}">Nuevo pago</a></li>
                                         <li><a href="{{ route('pago.index') }}">Pagos</a></li>
                                     </ul>
                                 </li>
 
+                                <li class=""><a><i class="fa fa-tasks"></i> Cajas <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirCajaModalCenter" >Abrir Caja</a></li>
+                                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#cerrarCajaModalCenter" >Cerrar caja</a></li>
+                                    </ul>
+                                </li>
 
-                                <li class="d-none"><a><i class="fa fa-file"></i> Pagina de Inicio <span class="fa fa-chevron-down"></span></a>
+
+
+
+                                {{-- <li class=""><a><i class="fa fa-file"></i> Pagina de Inicio <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('section-home.index') }}">Secciones Home</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
 
 
                                 <li class=""><a><i class="fa fa-tasks"></i> General <span class="fa fa-chevron-down"></span></a>
@@ -164,7 +184,7 @@
 
 
 
-                                <li class="d-none"><a><i class="fa fa-file-circle-plus"></i> Paginas <span class="fa fa-chevron-down"></span></a>
+                                {{-- <li class=""><a><i class="fa fa-file-circle-plus"></i> Paginas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('asesores.index') }}">Asesores</a></li>
                                         <li><a href="{{ route('pagina.index') }}">Página</a></li>
@@ -172,35 +192,35 @@
                                         <li><a href="{{ route('testimonio.index') }}">Testimonios</a></li>
                                         <li><a href="{{ route('preguntas-frecuentes.index') }}">Preguntas frecuentes</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
 
-                                <li class="d-none"><a><i class="fa fa-image"></i> Banners - Popups<span class="fa fa-chevron-down"></span></a>
+                                {{-- <li class=""><a><i class="fa fa-image"></i> Banners - Popups<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('banner.index') }}">Banners</a></li>
                                         <li><a href="{{ route('popup.index') }}">Popups</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
 
 
-                                <li class="d-none"><a><i class="fa fa-globe"></i> Noticias <span class="fa fa-chevron-down"></span></a>
+                                {{-- <li class=""><a><i class="fa fa-globe"></i> Noticias <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('blogCategoria.index') }}">Blog Categoria</a></li>
                                         <li><a href="{{ route('blog.index') }}">Blog</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
 
 
-                                <li class="d-none"><a><i class="fa fa-people-group"></i> Marketing <span class="fa fa-chevron-down"></span></a>
+                                {{-- <li class=""><a><i class="fa fa-people-group"></i> Marketing <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('suscripcion.index') }}">Lista de suscripciones</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
 
-                                <li class="d-none"><a><i class="fa fa-file-text"></i> Reportes <span class="fa fa-chevron-down"></span></a>
+                                {{-- <li class=""><a><i class="fa fa-file-text"></i> Reportes <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('reporteVentas.index') }}">Ventas</a></li>
                                     </ul>
-                                </li>
+                                </li> --}}
 
                             </ul>
                         </div>
@@ -270,9 +290,6 @@
 
 
 
-
-
-
     <script src="{{ asset('panel/js/jquery.min.js') }}"></script>
     <script src="{{ asset('panel/js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('panel/js/fastclick.js') }}"></script>
@@ -303,7 +320,6 @@
     <script src="{{ asset('js/app.js') }}"></script>
 
     @include('ckfinder::setup')
-
 
     <script id="settings">
         CKEDITOR.config.language = 'es';
