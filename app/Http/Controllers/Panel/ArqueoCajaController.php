@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class CajaController extends Controller
+class ArqueoCajaController extends Controller
 {
 
     public function historialCambio()
