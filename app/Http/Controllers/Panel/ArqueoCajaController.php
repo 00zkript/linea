@@ -8,16 +8,4 @@ use Illuminate\Http\Request;
 class ArqueoCajaController extends Controller
 {
 
-    public function historialCambio()
-    {
-
-        return view('panel.arqueoCaja.historialCambio');
-    }
-
-    public function historialCambioListado()
-    {
-
-        return view('panel.arqueoCaja.historialCambioListado')->render();
-    }
-
 }

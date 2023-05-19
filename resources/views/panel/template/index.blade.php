@@ -132,10 +132,11 @@
                                 </li>
 
 
-                                <li class=""><a><i class="fa fa-tasks"></i> Cajas <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-tasks"></i> Arqueo de caja y cambio <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirArqueoCajaModalCenter" >Abrir Caja</a></li>
                                         <li><a href="javascript:void(0);" data-toggle="modal" data-target="#cerrarArqueoCajaModalCenter" >Cerrar caja</a></li>
+                                        <li><a href="javascript:void(0);">Operaciones</a></li>
                                         <li><a href="{{ route('historialCambio.index') }}" >Historial de camnio de moneda</a></li>
                                     </ul>
                                 </li>
