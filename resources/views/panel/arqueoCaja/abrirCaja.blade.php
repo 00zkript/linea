@@ -1,8 +1,8 @@
-<div class="modal fade" id="advertenciaAbrirCajaModalCenter" tabindex="-1" role="dialog" aria-labelledby="advertenciaAbrirCajaModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="advertenciaAbrirArqueoCajaModalCenter" tabindex="-1" role="dialog" aria-labelledby="advertenciaAbrirArqueoCajaModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="advertenciaAbrirCajaModalCenterTitle">¡Atención!</h5>
+                <h5 class="modal-title" id="advertenciaAbrirArqueoCajaModalCenterTitle">¡Atención!</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -11,18 +11,18 @@
                 ¿Estás seguro de continuar?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="closeAdevertenciaAbrirCaja">No</button>
-                <button type="button" class="btn btn-primary" id="storeAbrirCaja">Si</button>
+                <button type="button" class="btn btn-secondary" id="closeAdevertenciaAbrirArqueoCaja">No</button>
+                <button type="button" class="btn btn-primary" id="storeAbrirArqueoCaja">Si</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal fade" id="abrirCajaModalCenter" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="abrirCajaModalCenterTitle" aria-hidden="true">
+<div class="modal fade" id="abrirArqueoCajaModalCenter" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="abrirArqueoCajaModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="abrirCajaModalCenterTitle">¡Atención!</h5>
+                <h5 class="modal-title" id="abrirArqueoCajaModalCenterTitle">¡Atención!</h5>
                 {{-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button> --}}
@@ -98,8 +98,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="resetAbrirCaja" >Revertir</button>
-                <button type="submit" class="btn btn-primary" id="openAdevertenciaAbrirCaja" >Guardar</button>
+                <button type="button" class="btn btn-secondary" id="resetAbrirArqueoCaja" >Revertir</button>
+                <button type="submit" class="btn btn-primary" id="openAdevertenciaAbrirArqueoCaja" >Guardar</button>
             </div>
         </div>
     </div>
@@ -110,54 +110,44 @@
     <script type="module">
 
         if ( localStorage.getItem('showAbrirCaja') != 1) {
-            $('#abrirCajaModalCenter').modal('show');
+            $('#abrirArqueoCajaModalCenter').modal('show');
         }
 
-        const modalesAbrirCaja = () => {
-            $(document).on( 'click', '#openAdevertenciaAbrirCaja', function (e) {
+        const modalesAbrirArqueoCaja = () => {
+            $(document).on( 'click', '#openAdevertenciaAbrirArqueoCaja', function (e) {
                 e.preventDefault();
-                $('#abrirCajaModalCenter').modal('hide');
-                $('#advertenciaAbrirCajaModalCenter').modal('show');
+                $('#abrirArqueoCajaModalCenter').modal('hide');
+                $('#advertenciaAbrirArqueoCajaModalCenter').modal('show');
             });
 
-            $(document).on( 'click', '#closeAdevertenciaAbrirCaja', function (e) {
+            $(document).on( 'click', '#closeAdevertenciaAbrirArqueoCaja', function (e) {
                 e.preventDefault();
-                $('#abrirCajaModalCenter').modal('show');
-                $('#advertenciaAbrirCajaModalCenter').modal('hide');
+                $('#abrirArqueoCajaModalCenter').modal('show');
+                $('#advertenciaAbrirArqueoCajaModalCenter').modal('hide');
             });
 
         }
 
 
-        const storeAbrirCaja = () => {
-            $(document).on( 'click', '#resetAbrirCaja', function (e) {
+        const storeAbrirArqueoCaja = () => {
+            $(document).on( 'click', '#resetAbrirArqueoCaja', function (e) {
                 e.preventDefault();
                 $('#frmAbrirCaja')[0].reset();
             });
 
-            $(document).on( 'click', '#storeAbrirCaja', function (e) {
+            $(document).on( 'click', '#storeAbrirArqueoCaja', function (e) {
                 e.preventDefault();
                 console.log('save caja....');
                 localStorage.setItem('showAbrirCaja', 1);
-                $('#advertenciaAbrirCajaModalCenter').modal('hide');
+                $('#advertenciaAbrirArqueoCajaModalCenter').modal('hide');
             });
         }
 
-        const validateNumber = (val, valDefault = 0) => {
-            if (val === undefined || val === null || isNaN(parseFloat(val)) || isNaN(val)) {
-                return isNaN(Number(valDefault)) ? 0 : Number(valDefault);
-            }
-            return Number(val);
-        }
-
-        const actionsAbrirCaja = () => {
-        }
 
 
         (() => {
-            modalesAbrirCaja();
-            storeAbrirCaja();
-            actionsAbrirCaja();
+            modalesAbrirArqueoCaja();
+            storeAbrirArqueoCaja();
         })()
 
     </script>

@@ -219,8 +219,8 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::resource( 'pago', \App\Http\Controllers\Panel\PagoController::class )->only(['index','store'])->names('pago');
 
 
-    Route::get('caja/historial-cambio',[\App\Http\Controllers\Panel\CajaController::class,'historialCambio'])->name("caja.historialCambio.index");
-    Route::get('caja/historial-cambio/listado',[\App\Http\Controllers\Panel\CajaController::class,'historialCambioListado'])->name("caja.historialCambio.listado");
+    Route::get('historial-cambio',[\App\Http\Controllers\Panel\CajaController::class,'historialCambio'])->name("historialCambio.index");
+    Route::get('historial-cambio/listado',[\App\Http\Controllers\Panel\CajaController::class,'historialCambioListado'])->name("historialCambio.listado");
     // Route::resource( 'caja', \App\Http\Controllers\Panel\CajaController::class )->only(['index','store'])->names('caja');
 
 

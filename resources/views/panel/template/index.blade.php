@@ -67,8 +67,8 @@
 </head>
 <body class="nav-md">
 
-    @include('panel.caja.abrirCaja')
-    @include('panel.caja.cerrarCaja')
+    @include('panel.arqueoCaja.abrirCaja')
+    @include('panel.arqueoCaja.cerrarCaja')
 
 
     <div class="container body">
@@ -134,9 +134,9 @@
 
                                 <li class=""><a><i class="fa fa-tasks"></i> Cajas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirCajaModalCenter" >Abrir Caja</a></li>
-                                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#cerrarCajaModalCenter" >Cerrar caja</a></li>
-                                        <li><a href="{{ route('caja.historialCambio.index') }}" >Historial de camnio de moneda</a></li>
+                                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirArqueoCajaModalCenter" >Abrir Caja</a></li>
+                                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#cerrarArqueoCajaModalCenter" >Cerrar caja</a></li>
+                                        <li><a href="{{ route('historialCambio.index') }}" >Historial de camnio de moneda</a></li>
                                     </ul>
                                 </li>
 

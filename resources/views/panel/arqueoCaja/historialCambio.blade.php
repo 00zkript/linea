@@ -54,7 +54,7 @@
                             </div>
 
                             <div class="col-12" id="listado">
-                                @include('panel.caja.historialCambioListado')
+                                @include('panel.arqueoCaja.historialCambioListado')
                             </div>
 
 
@@ -70,7 +70,7 @@
     <script type="module" >
 
 
-        const URL_LISTADO     = "{{ route('caja.historialCambio.listado') }}";
+        const URL_LISTADO     = "{{ route('historialCambio.listado') }}";
 
         const filtros = () => {
 

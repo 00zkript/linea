@@ -11,13 +11,13 @@ class CajaController extends Controller
     public function historialCambio()
     {
 
-        return view('panel.caja.historialCambio');
+        return view('panel.arqueoCaja.historialCambio');
     }
 
     public function historialCambioListado()
     {
 
-        return view('panel.caja.historialCambioListado')->render();
+        return view('panel.arqueoCaja.historialCambioListado')->render();
     }
 
 }
