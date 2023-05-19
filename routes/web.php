@@ -190,6 +190,10 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::post('usuarios/listar',[\App\Http\Controllers\Panel\UsuarioController::class,'listar'])->name("usuario.listar");
     Route::resource('usuarios',\App\Http\Controllers\Panel\UsuarioController::class)->names('usuario');
 
+    Route::put('moneda/{moneda}/habilitar',[\App\Http\Controllers\Panel\MonedaController::class,'habilitar'])->name("moneda.habilitar");
+    Route::put('moneda/{moneda}/inhabilitar',[\App\Http\Controllers\Panel\MonedaController::class,'inhabilitar'])->name("moneda.inhabilitar");
+    Route::get('moneda/listar',[\App\Http\Controllers\Panel\MonedaController::class,'listar'])->name("moneda.listar");
+    Route::resource('moneda',\App\Http\Controllers\Panel\MonedaController::class);
 
     Route::get('cliente/{id}/provincias',[\App\Http\Controllers\Panel\ClienteController::class,'provincias'])->name("cliente.provincias");
     Route::get('cliente/{id}/distritos',[\App\Http\Controllers\Panel\ClienteController::class,'distritos'])->name("cliente.distritos");
@@ -203,10 +207,6 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::post('empleado/listar',[\App\Http\Controllers\Panel\EmpleadoController::class,'listar'])->name("empleado.listar");
     Route::resource('empleado',\App\Http\Controllers\Panel\EmpleadoController::class);
 
-    Route::put('moneda/{moneda}/habilitar',[\App\Http\Controllers\Panel\MonedaController::class,'habilitar'])->name("moneda.habilitar");
-    Route::put('moneda/{moneda}/inhabilitar',[\App\Http\Controllers\Panel\MonedaController::class,'inhabilitar'])->name("moneda.inhabilitar");
-    Route::get('moneda/listar',[\App\Http\Controllers\Panel\MonedaController::class,'listar'])->name("moneda.listar");
-    Route::resource('moneda',\App\Http\Controllers\Panel\MonedaController::class);
 
     Route::get('matricula/listar',[\App\Http\Controllers\Panel\MatriculaController::class,'listar'])->name("matricula.listar");
     Route::get('matricula/resources',[\App\Http\Controllers\Panel\MatriculaController::class,'resources'])->name("matricula.resources");
@@ -217,6 +217,11 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::get('pago/listar',[\App\Http\Controllers\Panel\PagoController::class,'listar'])->name("pago.listar");
     Route::get('pago/create/{idmatricula?}', [\App\Http\Controllers\Panel\PagoController::class, 'create'] )->name('pago.create');
     Route::resource( 'pago', \App\Http\Controllers\Panel\PagoController::class )->only(['index','store'])->names('pago');
+
+
+    Route::get('caja/historial-cambio',[\App\Http\Controllers\Panel\CajaController::class,'historialCambio'])->name("caja.historialCambio.index");
+    Route::get('caja/historial-cambio/listado',[\App\Http\Controllers\Panel\CajaController::class,'historialCambioListado'])->name("caja.historialCambio.listado");
+    // Route::resource( 'caja', \App\Http\Controllers\Panel\CajaController::class )->only(['index','store'])->names('caja');
 
 
 

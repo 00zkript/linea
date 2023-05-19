@@ -36,28 +36,64 @@
                                 <input type="text" class="form-control" name="caja" id="caja" placeholder="Caja" value="caja 1" readonly>
                             </div>
                         </div>
-                        <div class="col-md-12 col-12">
+
+                        <div class="col-12">
                             <div class="form-group">
-                                <label for="saldoAnterior">Saldo anterior:</label>
+                                <label>Cierre de caja anterior:</label>
+                                <div class="row">
+                                    <div class="col-md-6 col-12 input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">S/. </span>
+                                        </div>
+                                        <input type="text" class="form-control format-number-price" name="cierreCajaAnteriorSoles" id="cierreCajaAnteriorSoles" placeholder="Cierre anterior soles" value="" readonly >
+                                    </div>
+                                    <div class="col-md-6 col-12 input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$ </span>
+                                        </div>
+                                        <input type="text" class="form-control format-number-price" name="cierreCajaAnteriorDolar" id="cierreCajaAnteriorDolar" placeholder="Cierre anterior dolares" value="" readonly >
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="montoCambio">Monto de cambio ({{ now()->format('d/m/Y') }}): </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">S/. </span>
                                     </div>
-                                    <input type="text" class="form-control format-number-price" name="saldoAnterior" id="saldoAnterior" placeholder="Saldo anterior" value="3500" readonly >
+                                    <input type="text" class="form-control format-number-price" name="montoCambio" id="montoCambio" placeholder="Monto de cambio ({{ now()->format('d/m/Y') }})" required >
+                                    <div class="input-group-end">
+                                        <span class="input-group-text"> = $ 1.00 </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
                                 <label for="montoInicial">Monto inicial: </label>
-                                <div class="input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">S/. </span>
+                                <div class="row">
+                                    <div class="col-md-12 col-12 input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">S/. </span>
+                                        </div>
+                                        <input type="text" class="form-control format-number-price" name="montoInicialSoles" id="montoInicialSoles" placeholder="Monto inicial soles" required >
+
+                                        <span class="input-group-text"> && </span>
+
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">$ </span>
+                                        </div>
+                                        <input type="text" class="form-control format-number-price" name="montoInicialDolares" id="montoInicialDolares" placeholder="Monto inicial dolares" required >
                                     </div>
-                                    <input type="text" class="form-control format-number-price" name="montoInicial" id="montoInicial" placeholder="Monto inicial" required >
+                                    <div class="col-md-6 col-12 input-group">
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+
                     </div>
                 </form>
             </div>
@@ -107,10 +143,21 @@
             });
         }
 
+        const validateNumber = (val, valDefault = 0) => {
+            if (val === undefined || val === null || isNaN(parseFloat(val)) || isNaN(val)) {
+                return isNaN(Number(valDefault)) ? 0 : Number(valDefault);
+            }
+            return Number(val);
+        }
+
+        const actionsAbrirCaja = () => {
+        }
+
 
         (() => {
             modalesAbrirCaja();
             storeAbrirCaja();
+            actionsAbrirCaja();
         })()
 
     </script>

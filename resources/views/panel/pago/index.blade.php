@@ -41,6 +41,7 @@
                             </div>
 
                             <div class="col-12" id="listado">
+                                @include('panel.pago.listado')
                             </div>
 
 
@@ -450,7 +451,6 @@
 
 
         $(function () {
-            listado();
             modales();
             filtros();
             // guardar();

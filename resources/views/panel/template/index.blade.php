@@ -115,27 +115,28 @@
                                     </ul>
                                 </li>
 
-                                <li class=""><a><i class="fa fa-tasks"></i> Matriculas <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-tasks"></i> Clientes <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{ route('matricula.create') }}">Nueva matrícula</a></li>
-                                        <li><a href="{{ route('matricula.index') }}">Matrículas</a></li>
+                                        <li><a href="javascript:void(0);">Tipos de Cliente</a></li>
                                         <li><a href="{{ route('cliente.index') }}">Clientes</a></li>
                                     </ul>
                                 </li>
 
-                                <li class=""><a><i class="fa fa-tasks"></i> Pagos <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-tasks"></i> Matriculas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{ route('pago.create') }}">Nuevo pago</a></li>
-                                        <li><a href="{{ route('pago.index') }}">Pagos</a></li>
+                                        <li><a href="{{ route('matricula.create') }}">Nueva matrícula</a></li>
+                                        <li><a href="{{ route('matricula.index') }}">Matrículas</a></li>
+                                        <li><a href="{{ route('pago.create') }}">Nuevo pago de matrícula</a></li>
+                                        <li><a href="{{ route('pago.index') }}">Pagos de matrícula</a></li>
                                     </ul>
                                 </li>
 
+
                                 <li class=""><a><i class="fa fa-tasks"></i> Cajas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        {{-- <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirCajaModalCenter" >Abrir Caja</a></li> --}}
+                                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirCajaModalCenter" >Abrir Caja</a></li>
                                         <li><a href="javascript:void(0);" data-toggle="modal" data-target="#cerrarCajaModalCenter" >Cerrar caja</a></li>
-                                        <li><a href="javascript:void(0);" >Cajas</a></li>
-                                        <li><a href="javascript:void(0);" >Control de precio</a></li>
+                                        <li><a href="{{ route('caja.historialCambio.index') }}" >Historial de camnio de moneda</a></li>
                                     </ul>
                                 </li>
 

@@ -122,13 +122,25 @@
                                                 </div>
                                                 <div class="col-md-12 col-12">
                                                     <div class="form-group">
-                                                        <label for="montoEfectivo">Monto efectivo:</label>
-                                                        <input type="text" class="form-control format-number-price" name="montoEfectivo" id="montoEfectivo" placeholder="Monto efectivo" >
+                                                        <label for="montoEfectivoSoles">Monto efectivo:</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">S/.</span>
+                                                            </div>
+                                                            <input type="text" class="form-control format-number-price" name="montoEfectivoSoles" id="montoEfectivoSoles" placeholder="Monto efectivo" >
+                                                        </div>
+                                                        <label for="montoEfectivoDolares"> ó </label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">$</span>
+                                                            </div>
+                                                            <input type="text" class="form-control format-number-price" name="montoEfectivoDolares" id="montoEfectivoDolares" placeholder="Monto efectivo" >
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12 col-12">
                                                     <div class="form-group">
-                                                        <label for="montoTranferido">Monto efectivo:</label>
+                                                        <label for="montoTranferido">Monto Tranferido:</label>
                                                         <input type="text" class="form-control format-number-price" name="montoTranferido" id="montoTranferido" placeholder="Monto efectivo" >
                                                     </div>
                                                 </div>

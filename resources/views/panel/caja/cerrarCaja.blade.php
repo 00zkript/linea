@@ -35,12 +35,20 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="montoFinal">Monto final:</label>
+                                <label for="montoFinalSoles">Monto final:</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">S/. </span>
                                     </div>
-                                    <input type="text" class="form-control" name="montoFinal" id="montoFinal" placeholder="Monto final" value="1800"  required>
+                                    <input type="text" class="form-control" name="montoFinalSoles" id="montoFinalSoles" placeholder="Monto final" value="1800"  required>
+
+                                    <span class="input-group-text"> && </span>
+
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$ </span>
+                                    </div>
+                                    <input type="text" class="form-control" name="montoFinalDolares" id="montoFinalDolares" placeholder="Monto final" value="1800"  required>
+
                                 </div>
                             </div>
                         </div>
