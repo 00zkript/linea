@@ -30,6 +30,18 @@
             <div class="modal-body">
                 <form onsubmit="return false;" id="frmAbrirCaja">
                     <div class="row">
+
+                        <div class="col-12 text-center">
+                            <h2>Abrir nueva caja</h2>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="form-group">
+                                <label for="fechaAbrirCaja">Fecha de inicio de caja</label>
+                                <input type="date" class="form-control" name="fechaAbrirCaja" id="fechaAbrirCaja" value="{{ now()->format('Y-m-d') }}" readonly>
+                            </div>
+                        </div>
+
                         <div class="col-md-12 col-12">
                             <div class="form-group">
                                 <label for="caja">Caja:</label>
@@ -45,20 +57,20 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">S/. </span>
                                         </div>
-                                        <input type="text" class="form-control format-number-price" name="cierreCajaAnteriorSoles" id="cierreCajaAnteriorSoles" placeholder="Cierre anterior soles" value="" readonly >
+                                        <input type="text" class="form-control format-number-price" name="cierreCajaAnteriorSoles" id="cierreCajaAnteriorSoles" placeholder="Cierre anterior soles" value="1500" readonly >
                                     </div>
                                     <div class="col-md-6 col-12 input-group">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">$ </span>
                                         </div>
-                                        <input type="text" class="form-control format-number-price" name="cierreCajaAnteriorDolar" id="cierreCajaAnteriorDolar" placeholder="Cierre anterior dolares" value="" readonly >
+                                        <input type="text" class="form-control format-number-price" name="cierreCajaAnteriorDolar" id="cierreCajaAnteriorDolar" placeholder="Cierre anterior dolares" value="300" readonly >
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="col-12">
                             <div class="form-group">
-                                <label for="montoCambio">Monto de cambio ({{ now()->format('d/m/Y') }}): </label>
+                                <label for="montoCambio">Monto de cambio: </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">S/. </span>
