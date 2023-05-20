@@ -92,12 +92,12 @@
                         </div>
 
                         <form onsubmit="return false;" id="frmSavePago" style="{{ $idmatricula ? '': 'display: none;' }}">
-                            <div class="row">
-                                <div class="col-md-12 col-12 mt-5">
+                            <div class="row justify-content-center align-items-center">
+                                <div class="col-md-10 col-12 mt-5">
                                     <div class="row">
-                                        <div class="col-md-4 offset-1 col-12">
+                                        <div class="col-md-6 col-12">
                                             <div class="row">
-                                                <div class="col-md-12 col-12">
+                                                <div class="col-12">
                                                     <div class="form-group">
                                                         <label for="modoPago">Modo pago:</label>
                                                         <select class="form-control" name="modoPago" id="modoPago" title="Modo pago" >
@@ -108,19 +108,17 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 col-12">
+                                                <div class="col-12">
                                                     <div class="form-group">
-                                                        <label for="metodoPago">Método pago:</label>
-                                                        <select class="form-control" name="metodoPago" id="metodoPago" title="Método pago" >
-                                                            <option value="" hidden selected >[---Seleccione---]</option>
-                                                            <option value="1">Mercado pago</option>
-                                                            <option value="2">visa</option>
-                                                            <option value="3">tranferencia</option>
-                                                            <option value="4">tranferencia + efectivo </option>
+                                                        <label for="moneda">Moneda:</label>
+                                                        <select class="form-control" name="moneda" id="moneda" title="Moneda" >
+                                                            <option value="" selected hidden>[---Seleccione---]</option>
+                                                            <option value="1">Soles (S/.)</option>
+                                                            <option value="2">Dolares ($)</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 col-12">
+                                                <div class="col-12 montosToggle monedaSoles" style="display: none;" >
                                                     <div class="form-group">
                                                         <label for="montoEfectivoSoles">Monto efectivo:</label>
                                                         <div class="input-group">
@@ -129,7 +127,22 @@
                                                             </div>
                                                             <input type="text" class="form-control format-number-price" name="montoEfectivoSoles" id="montoEfectivoSoles" placeholder="Monto efectivo" >
                                                         </div>
-                                                        <label for="montoEfectivoDolares"> ó </label>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 montosToggle monedaSoles" style="display: none;" >
+                                                    <div class="form-group">
+                                                        <label for="montoTranferidoSoles">Monto Tranferido:</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">S/.</span>
+                                                            </div>
+                                                            <input type="text" class="form-control format-number-price" name="montoTranferidoSoles" id="montoTranferidoSoles" placeholder="Monto efectivo" >
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-12 montosToggle monedaDolares" style="display: none;" >
+                                                    <div class="form-group">
+                                                        <label for="montoEfectivoDolares">Monto efectivo </label>
                                                         <div class="input-group">
                                                             <div class="input-group-prepend">
                                                                 <span class="input-group-text">$</span>
@@ -138,28 +151,66 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 col-12">
+                                                <div class="col-12 montosToggle monedaDolares" style="display: none;" >
                                                     <div class="form-group">
-                                                        <label for="montoTranferido">Monto Tranferido:</label>
-                                                        <input type="text" class="form-control format-number-price" name="montoTranferido" id="montoTranferido" placeholder="Monto efectivo" >
+                                                        <label for="montoTranferidoDolares">Monto Tranferido:</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <span class="input-group-text">$</span>
+                                                            </div>
+                                                            <input type="text" class="form-control format-number-price" name="montoTranferidoDolares" id="montoTranferidoDolares" placeholder="Monto efectivo" >
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-4 offset-1 col-12">
-                                            <div class="row">
-                                                <div class="col-12">
-                                                    <p class="fs-12">
-                                                        <b>Monto Total:</b> S/ 350.00 <br>
-                                                        <b>Monto a pagar:</b> S/ 127.00 <br>
-                                                        <b>IGV:</b> S/. 23.00 <br>
-                                                        <b>Deuda:</b> S/ 250.00
-                                                    </p>
+                                        <div class="col-md-6 col-12">
+                                            <div class="row-">
+                                                <div class="col-12 form-group row">
+                                                    <label for="montoTotal" class="col-md-4 col-form-label" >Monto Total</label>
+                                                    <div class="col-md-8 input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">S/.</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="montoTotal" value="350.00" placeholder="Monto Total" readonly>
+                                                    </div>
                                                 </div>
-                                                <div class="col-12 mt-5">
-                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#asegurarPagoModalCenter">Pagar</button>
+
+                                                <div class="col-12 form-group row">
+                                                    <label for="montoPagar" class="col-md-4 col-form-label" >Monto a pagar</label>
+                                                    <div class="col-md-8 input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">S/.</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="montoPagar" value="0.00" placeholder="Monto a pagar" readonly>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 form-group row">
+                                                    <label for="igv" class="col-md-4 col-form-label" >IGV</label>
+                                                    <div class="col-md-8 input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">S/.</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="igv" value="0.00 " placeholder="IGV" readonly>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 form-group row">
+                                                    <label for="deuda" class="col-md-4 col-form-label" >Deuda</label>
+                                                    <div class="col-md-8 input-group">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">S/.</span>
+                                                        </div>
+                                                        <input type="text" class="form-control" id="deuda" value="0.00" placeholder="Deuda" readonly>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-12 mt-5 d-flex justify-content-center">
                                                     <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelarPagoModalCenter">Cancelar</button>
+                                                    <button class="btn btn-primary" data-toggle="modal" data-target="#asegurarPagoModalCenter">Pagar</button>
                                                 </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -177,6 +228,9 @@
 
 @push('js')
     <script>
+
+        const cambioMoneda = "3.82";
+        const montoTotal = "350.00";
 
         const modals = () => {
 
@@ -202,8 +256,68 @@
 
         }
 
+        const actions = () => {
+            $(document).on( 'change', '#moneda', function (e) {
+                e.preventDefault();
+                const val = $(this).val();
+
+                const selectorMoneda = {
+                    1 : 'monedaSoles',
+                    2 : 'monedaDolares',
+                }
+
+                $('.montosToggle').hide();
+                $('.'+selectorMoneda[val]).show();
+
+
+            });
+
+            $(document).on( 'input', '#montoEfectivoDolares, #montoTranferidoDolares', function (e) {
+                e.preventDefault();
+                const montoEfectivoDolares = Number($('#montoEfectivoDolares').val() ?? 0);
+                const montoTranferidoDolares = Number($('#montoTranferidoDolares').val() ?? 0);
+
+                const montoPagar = ( montoEfectivoDolares + montoTranferidoDolares) * cambioMoneda;
+                const deuda = montoTotal - montoPagar;
+
+                $('#montoPagar').val(number_format(montoPagar * 0.82,2));
+                $('#igv').val(number_format(montoPagar * 0.18,2));
+                $('#deuda').val(number_format(deuda,2));
+
+            });
+
+            $(document).on( 'input', '#montoEfectivoSoles, #montoTranferidoSoles', function (e) {
+                e.preventDefault();
+                const montoEfectivoSoles = Number($('#montoEfectivoSoles').val());
+                const montoTranferidoSoles = Number($('#montoTranferidoSoles').val());
+
+                const montoPagar = ( montoEfectivoSoles + montoTranferidoSoles);
+                const deuda = montoTotal - montoPagar;
+
+                $('#montoPagar').val(number_format(montoPagar * 0.82,2));
+                $('#igv').val(number_format(montoPagar * 0.18,2));
+                $('#deuda').val(number_format(deuda,2));
+
+            });
+
+
+        }
+
+        const init = () => {
+            $('#montoTotal').val(montoTotal);
+            $('#montoPagar').val('0.00');
+            $('#igv').val('0.00');
+            $('#deuda').val('0.00');
+
+            $('#moneda').val(1);
+            $('#moneda').trigger('change');
+        }
+
         (function () {
             modals();
+            actions();
+            init();
+
         })()
 
 
