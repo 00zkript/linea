@@ -214,6 +214,15 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::get('matricula/{id}/distritos',[\App\Http\Controllers\Panel\MatriculaController::class,'distritos'])->name("matricula.distritos");
     Route::resource( 'matricula', \App\Http\Controllers\Panel\MatriculaController::class )->names('matricula');
 
+
+    Route::get('matricula-gym/listar',[\App\Http\Controllers\Panel\MatriculaGymController::class,'listar'])->name("matriculaGym.listar");
+    Route::get('matricula-gym/resources',[\App\Http\Controllers\Panel\MatriculaGymController::class,'resources'])->name("matriculaGym.resources");
+    Route::get('matricula-gym/{id}/provincias',[\App\Http\Controllers\Panel\MatriculaGymController::class,'provincias'])->name("matriculaGym.provincias");
+    Route::get('matricula-gym/{id}/distritos',[\App\Http\Controllers\Panel\MatriculaGymController::class,'distritos'])->name("matriculaGym.distritos");
+    Route::resource( 'matricula-gym', \App\Http\Controllers\Panel\MatriculaGymController::class )->names('matriculaGym');
+
+
+
     Route::get('pago/listar',[\App\Http\Controllers\Panel\PagoController::class,'listar'])->name("pago.listar");
     Route::get('pago/create/{idmatricula?}', [\App\Http\Controllers\Panel\PagoController::class, 'create'] )->name('pago.create');
     Route::resource( 'pago', \App\Http\Controllers\Panel\PagoController::class )->only(['index','store'])->names('pago');
@@ -222,6 +231,8 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::get('historial-cambio',[\App\Http\Controllers\Panel\HistorialCambioMonedaController::class,'index'])->name("historialCambio.index");
     Route::get('historial-cambio/listado',[\App\Http\Controllers\Panel\HistorialCambioMonedaController::class,'listado'])->name("historialCambio.listado");
     // Route::resource( 'caja', \App\Http\Controllers\Panel\ArqueoCajaController::class )->only(['index','store'])->names('caja');
+
+
 
 
 

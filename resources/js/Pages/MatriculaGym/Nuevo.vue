@@ -1,136 +1,8 @@
 <template>
     <StepsContainer>
 
-        <Step :number="1" title="Nuevo Alumno" :currentValue="stepCurrent" @next="stepCurrent = 2"  >
-            <div class="row">
 
-
-                <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="nombres">Nombres: <span class="text-danger">(*)</span></label>
-                        <input type="text" name="nombres" id="nombres" class="form-control" placeholder="Nombres" >
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="apellidos">Apellidos: <span class="text-danger">(*)</span></label>
-                        <input type="text" name="apellidos" id="apellidos" class="form-control" placeholder="Apellidos" >
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="correo">Correo: <span class="text-danger">(*)</span></label>
-                        <input type="email" name="correo" id="correo" class="form-control" placeholder="Correo" >
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="telefono">Teléfono: <span class="text-danger">(*)</span></label>
-                        <input type="text" name="telefono" id="telefono" class="form-control soloNumeros" placeholder="Teléfono" >
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="tipoDocumentoIdentidad">Documento de identidad: <span class="text-danger">(*)</span></label>
-                        <select name="tipoDocumentoIdentidad" id="tipoDocumentoIdentidad" class="form-control" >
-                            <option hidden selected >[---Seleccione---]</option>
-                            <option v-for="(item, index) in resources.tipoDocumentoIdentidad" :key="index" :value="item.idtipo_documento_identidad" v-text="item.nombre" ></option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="numeroDocumentoIdentidad">N° de Documento: <span class="text-danger">(*)</span></label>
-                        <input type="text" name="numeroDocumentoIdentidad" id="numeroDocumentoIdentidad" class="form-control soloNumeros"  minlength="8" maxlength="8" placeholder="N°" >
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="fechaNacimiento">Fecha de nacimiento:</label>
-                        <!-- <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimiento" placeholder="Fecha de nacimiento" > -->
-                        <DatePicker default-panel="1970" input-class="form-control" v-model="alumno.fecha_nacimiento" ></DatePicker>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="sexo">Sexo:</label>
-                        <select class="form-control" name="sexo" id="sexo" >
-                            <option hidden selected >[---Seleccione---]</option>
-                            <option value="hombre">Hombre</option>
-                            <option value="mujer">Mujer</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="departamento">Departamento:</label>
-                        <select class="form-control" name="departamento" id="departamento" title="Departamento" >
-                            <option hidden selected >[---Seleccione---]</option>
-                            <option value="" hidden selected >[---Seleccione---]</option>
-                            <option v-for="(item, index) in resources.departamentos" :key="index" :value="item.iddepartamento" v-text="item.nombre"></option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="provincia">Provincia:</label>
-                        <select class="form-control" name="provincia" id="provincia" title="Provincia" >
-                            <option hidden selected >[---Seleccione---]</option>
-                            <option value="" hidden selected >[---Seleccione---]</option>
-                            <option v-for="(item, index) in resources.provincias" :key="index" :value="item.idprovincia" v-text="item.nombre"></option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-md-6 col-12">
-                    <div class="form-group">
-                        <label for="distrito">Distrito:</label>
-                        <select class="form-control" name="distrito" id="distrito" title="Distrito" >
-                            <option hidden selected >[---Seleccione---]</option>
-                            <option value="" hidden selected >[---Seleccione---]</option>
-                            <option v-for="(item, index) in resources.distritos" :key="index" :value="item.iddistrito" v-text="item.nombre"></option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-12 col-12">
-                    <div class="form-group">
-                        <label for="direccion">Direción:</label>
-                        <textarea class="form-control" name="direccion" id="direccion" placeholder="Direción" rows="3" ></textarea>
-                    </div>
-                </div>
-
-                <div class="col-md-12 col-12">
-                    <div class="form-group">
-                        <label for="nota">Nota:</label>
-                        <textarea class="form-control" name="nota" id="nota" placeholder="Nota" rows="3" ></textarea>
-                    </div>
-                </div>
-
-
-                <div class="col-md-12 col-12">
-                    <div class="form-group">
-                        <label for="imagen">Imagen:</label>
-                        <input type="file" id="imagen" name="imagen" class="form-control">
-                    </div>
-                </div>
-
-
-
-
-            </div>
-        </Step>
-
-        <Step :number="2" title="Matrícula" :currentValue="stepCurrent" @next="stepCurrent = 3" >
+        <Step :number="1" title="Matrícula" :currentValue="stepCurrent" @next="stepCurrent = 2" >
 
             <div class="row">
 
@@ -138,7 +10,9 @@
                     <div class="form-group">
                         <label for="concepto">Concepto</label>
                         <select class="form-control" id="concepto">
-                            <option hidden selected >[---Seleccione---]</option>
+                            <option hidden >[---Seleccione---]</option>
+                            <option value="1" selected >Nueva matricula</option>
+                            <option value="2" >renovación matricula</option>
                         </select>
                     </div>
                 </div>
@@ -152,58 +26,36 @@
                     <div class="form-group">
                         <label for="sucursal">Sucursal</label>
                         <select class="form-control" id="sucursal">
-                            <option hidden selected >[---Seleccione---]</option>
+                            <option hidden >[---Seleccione---]</option>
+                            <option value="1" selected >Sucursal 1</option>
+                            <option value="2" >Sucursal 2</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-8 col-12">
                     <div class="form-group">
                         <label for="sucursalDireción">Sucursal Direción</label>
-                        <input type="text" class="form-control" id="sucursalDireción" readonly placeholder="Sucursal" >
+                        <input type="text" class="form-control" id="sucursalDireción" value="Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus, accusamus!" readonly placeholder="Sucursal" >
                     </div>
                 </div>
                 <div class="col-md-8 col-12">
                     <div class="form-group">
-                        <label for="alumno">Alumno</label>
-                        <input type="text" class="form-control" id="alumno" value="Lorem ipsum dolor sit." readonly placeholder="Alumno" >
+                        <label for="cliente">Cliente</label>
+                        <input type="text" class="form-control" id="cliente" value="Lorem ipsum dolor sit." readonly placeholder="Cliente" >
                     </div>
                 </div>
                 <div class="col-md-4 col-12">
                     <div class="form-group">
                         <label for="fecha">Fecha</label>
-                        <!-- <input type="date" class="form-control" id="fecha"> -->
                         <DatePicker input-class="form-control" range v-model="matricula.fecha" ></DatePicker>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12">
-                    <div class="form-group">
-                        <label for="temporada">Temporada</label>
-                        <select class="form-control" id="temporada">
-                            <option hidden selected >[---Seleccione---]</option>
-                        </select>
                     </div>
                 </div>
                 <div class="col-md-4 col-12">
                     <div class="form-group">
                         <label for="programa">Programa</label>
                         <select class="form-control" id="programa">
-                            <option hidden selected >[---Seleccione---]</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12">
-                    <div class="form-group">
-                        <label for="pisciona">Piscina</label>
-                        <select class="form-control" id="pisciona">
-                            <option hidden selected >[---Seleccione---]</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-4 col-12">
-                    <div class="form-group">
-                        <label for="carril">Carril</label>
-                        <select class="form-control" id="carril">
-                            <option hidden selected >[---Seleccione---]</option>
+                            <option hidden >[---Seleccione---]</option>
+                            <option value="1" selected >pecho</option>
                         </select>
                     </div>
                 </div>
@@ -211,7 +63,8 @@
                     <div class="form-group">
                         <label for="diasDeActividad">Dias de actividad</label>
                         <select class="form-control" id="diasDeActividad">
-                            <option hidden selected >[---Seleccione---]</option>
+                            <option hidden >[---Seleccione---]</option>
+                            <option value="1" selected >L-M-V</option>
                         </select>
                     </div>
                 </div>
@@ -219,7 +72,8 @@
                     <div class="form-group">
                         <label for="cantidadDeSessiones">Cantidad de sessiones</label>
                         <select class="form-control" id="cantidadDeSessiones">
-                            <option hidden selected >[---Seleccione---]</option>
+                            <option hidden >[---Seleccione---]</option>
+                            <option value="1" selected >8 sessiones S/. 350.00</option>
                         </select>
                     </div>
                 </div>
@@ -238,7 +92,7 @@
                             <tr>
                                 <td class="table-primary">1</td>
                                 <td class="table-primary">07:00 am - 08:00 am </td>
-                                <td class="active"><i class="fa-solid fa-check"></i></td>
+                                <td class="active"> <i class="fa-solid fa-check"></i> </td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -246,14 +100,14 @@
                                 <td class="table-primary">2</td>
                                 <td class="table-primary">08:00 am - 09:00 am </td>
                                 <td></td>
-                                <td class="active"><i class="fa-solid fa-check"></i></td>
+                                <td class="active"> <i class="fa-solid fa-check"></i> </td>
                                 <td></td>
                             </tr>
                             <tr>
                                 <td class="table-primary">3</td>
                                 <td class="table-primary">09:00 am - 10:00 am </td>
                                 <td></td>
-                                <td class="active"><i class="fa-solid fa-check"></i></td>
+                                <td class="active"> <i class="fa-solid fa-check"></i> </td>
                                 <td></td>
                             </tr>
                             <tr>
@@ -261,7 +115,7 @@
                                 <td class="table-primary">10:00 am - 11:00 am </td>
                                 <td></td>
                                 <td></td>
-                                <td class="active"><i class="fa-solid fa-check"></i></td>
+                                <td class="active"> <i class="fa-solid fa-check"></i> </td>
                             </tr>
                             <tr>
                                 <td class="table-primary">5</td>
@@ -320,8 +174,8 @@
 
         </Step>
 
-        <Step :number="3" title="Ver registro" :currentValue="stepCurrent" @next="stepCurrent = 4" >
-            <h3>Alumno</h3>
+        <Step :number="2" title="Ver registro" :currentValue="stepCurrent" @next="stepCurrent = 3" >
+            <h3>Cliente</h3>
             <p class="fs-12">
                 <b>Nombre completo:</b> Juan Manual Perez Aguila <br>
                 <b>Correo:</b> juanpa@gmail.com <br>
@@ -337,10 +191,7 @@
                 <b>Empleado:</b> Roberto raymundo espinoza <br>
                 <b>Sucursal Direción:</b> sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  <br>
                 <b>Fecha:</b> 01/01/2023 - 01/02/2023 <br>
-                <b>Temporada:</b> Verano <br>
                 <b>Programa:</b> Para adultos <br>
-                <b>Piscina:</b> Piscina grande <br>
-                <b>Carril:</b> #6 <br>
                 <b>Dias de actividad:</b> L-M-V <br>
                 <b>Cantidad de sessiones:</b> 4 sessiones X 350 soles <br>
                 <b>Horario: </b>
@@ -354,7 +205,7 @@
             </p>
         </Step>
 
-        <Step :number="4" title="Final" :currentValue="stepCurrent" :showFooter="false" classContent="step-final" >
+        <Step :number="3" title="Final" :currentValue="stepCurrent" :showFooter="false" classContent="step-final" >
             <div class="alert alert-success text-center">
                 <h2>¡Felicidades, la matrícula se realizó con éxito!</h2>
                 <h4>Codígo : 0000007</h4>
@@ -399,7 +250,7 @@ export default {
                 sucursal: {},
             },
             stepCurrent : 1,
-            alumno: {
+            cliente: {
                 idcliente: null,
                 nombres: null,
                 apellidos: null,
@@ -467,8 +318,8 @@ export default {
         getDistritos( idprovincia ) {
             console.log('get distritos...');
         },
-        storeAlumno() {
-            console.log('stored alumno :)');
+        storeCliente() {
+            console.log('stored cliente :)');
         },
 
         getProgramas( idtemporada ) {

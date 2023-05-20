@@ -2026,6 +2026,133 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_StepsContainerComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/StepsContainerComponent.vue */ "./resources/js/components/StepsContainerComponent.vue");
+/* harmony import */ var _components_StepComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/StepComponent.vue */ "./resources/js/components/StepComponent.vue");
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    StepsContainer: _components_StepsContainerComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    Step: _components_StepComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      resources: {
+        tipoDocumentoIdentidad: [],
+        departamentos: [],
+        provincias: [],
+        distritos: [],
+        conceptos: [],
+        empleado: {
+          idempleado: 1,
+          nombres: 'juan alvaro',
+          apellidos: 'perez aguilar'
+        },
+        sucursales: [],
+        temporadas: [],
+        programas: [],
+        piscionas: [],
+        carriles: [],
+        actividadSemanal: [],
+        cantidadesDeSesiones: [],
+        horarios: [],
+        dias: []
+      },
+      temp: {
+        sucursal: {}
+      },
+      stepCurrent: 1,
+      cliente: {
+        idcliente: null,
+        nombres: null,
+        apellidos: null,
+        correo: null,
+        telefono: null,
+        idtipo_documento_identidad: null,
+        numero_documento_identidad: null,
+        fecha_nacimiento: null,
+        sexo: null,
+        iddepartaento: null,
+        idprovincia: null,
+        iddistrito: null,
+        direccion: null,
+        nota: null,
+        imagen: null
+      },
+      matricula: {
+        codigo: null,
+        idcliente: null,
+        idconcepto: null,
+        idempleado: null,
+        idsucursal: null,
+        idtemporada: null,
+        idprograma: null,
+        idpiscina: null,
+        idcarril: null,
+        iddias_actividad: null,
+        idcantidad_sessiones: null
+      },
+      matricula_detalle: []
+    };
+  },
+  methods: {
+    resetData: function resetData() {
+      Object.assign(this.$data, this.$options.data.call(this));
+      setTimeout(function () {
+        $("input[type=file]").fileinput({});
+      }, 100);
+    },
+    getResources: function getResources() {
+      var _this = this;
+      console.log('get resources...');
+      axios(route('matricula.resources')).then(function (response) {
+        var data = response.data;
+        _this.resources.tipoDocumentoIdentidad = data.tipoDocumentoIdentidad;
+        _this.resources.departamentos = data.departamentos;
+        _this.resources.conceptos = data.conceptos;
+        _this.resources.empleado = data.empleado;
+        _this.resources.sucursales = data.sucursales;
+        _this.resources.temporadas = data.temporadas;
+        _this.resources.piscionas = data.piscionas;
+        _this.resources.actividadSemanal = data.actividadSemanal;
+        _this.resources.cantidadesDeSesiones = data.cantidadesDeSesiones;
+        _this.resources.horarios = data.horarios;
+        _this.resources.dias = data.dias;
+      })["catch"](function (error) {
+        var response = error.response;
+        var data = response.data;
+      });
+    },
+    getProvincias: function getProvincias(iddepartamento) {
+      console.log('get provincias...');
+    },
+    getDistritos: function getDistritos(idprovincia) {
+      console.log('get distritos...');
+    },
+    storeCliente: function storeCliente() {
+      console.log('stored cliente :)');
+    },
+    getProgramas: function getProgramas(idtemporada) {},
+    getCarriles: function getCarriles(idpisciona) {},
+    storeMatricula: function storeMatricula() {}
+  },
+  mounted: function mounted() {
+    this.getResources();
+    $("input[type=file]").fileinput({});
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StepComponent.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/StepComponent.vue?vue&type=script&lang=js& ***!
@@ -2531,13 +2658,19 @@ var render = function render() {
     attrs: {
       "for": "fecha"
     }
-  }, [_vm._v("Fecha")]), _vm._v(" "), _c("input", {
-    staticClass: "form-control",
+  }, [_vm._v("Fecha")]), _vm._v(" "), _c("DatePicker", {
     attrs: {
-      type: "date",
-      id: "fecha"
+      "input-class": "form-control",
+      range: ""
+    },
+    model: {
+      value: _vm.matricula.fecha,
+      callback: function callback($$v) {
+        _vm.$set(_vm.matricula, "fecha", $$v);
+      },
+      expression: "matricula.fecha"
     }
-  })])]), _vm._v(" "), _c("div", {
+  })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 col-12"
   }, [_c("div", {
     staticClass: "form-group"
@@ -2657,25 +2790,33 @@ var render = function render() {
     staticClass: "table-primary"
   }, [_vm._v("07:00 am - 08:00 am ")]), _vm._v(" "), _c("td", {
     staticClass: "active"
-  }), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+  }, [_c("i", {
+    staticClass: "fa-solid fa-check"
+  })]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
     staticClass: "table-primary"
   }, [_vm._v("2")]), _vm._v(" "), _c("td", {
     staticClass: "table-primary"
   }, [_vm._v("08:00 am - 09:00 am ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td", {
     staticClass: "active"
-  }), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+  }, [_c("i", {
+    staticClass: "fa-solid fa-check"
+  })]), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
     staticClass: "table-primary"
   }, [_vm._v("3")]), _vm._v(" "), _c("td", {
     staticClass: "table-primary"
   }, [_vm._v("09:00 am - 10:00 am ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td", {
     staticClass: "active"
-  }), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+  }, [_c("i", {
+    staticClass: "fa-solid fa-check"
+  })]), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
     staticClass: "table-primary"
   }, [_vm._v("4")]), _vm._v(" "), _c("td", {
     staticClass: "table-primary"
   }, [_vm._v("10:00 am - 11:00 am ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td"), _vm._v(" "), _c("td", {
     staticClass: "active"
-  })]), _vm._v(" "), _c("tr", [_c("td", {
+  }, [_c("i", {
+    staticClass: "fa-solid fa-check"
+  })])]), _vm._v(" "), _c("tr", [_c("td", {
     staticClass: "table-primary"
   }, [_vm._v("5")]), _vm._v(" "), _c("td", {
     staticClass: "table-primary"
@@ -2721,6 +2862,331 @@ var render = function render() {
   }, [_c("b", [_vm._v("Codígo:")]), _vm._v(" 0000007"), _c("br"), _vm._v(" "), _c("b", [_vm._v("Concepto:")]), _vm._v(" Nueva Matricula "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Empleado:")]), _vm._v(" Roberto raymundo espinoza "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Sucursal Direción:")]), _vm._v(" sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Fecha:")]), _vm._v(" 01/01/2023 - 01/02/2023 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Temporada:")]), _vm._v(" Verano "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Programa:")]), _vm._v(" Para adultos "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Piscina:")]), _vm._v(" Piscina grande "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Carril:")]), _vm._v(" #6 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Dias de actividad:")]), _vm._v(" L-M-V "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Cantidad de sessiones:")]), _vm._v(" 4 sessiones X 350 soles "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Horario: ")]), _vm._v(" "), _c("ul", [_c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Martes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Miercoles : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")])])])]), _vm._v(" "), _c("Step", {
     attrs: {
       number: 4,
+      title: "Final",
+      currentValue: _vm.stepCurrent,
+      showFooter: false,
+      classContent: "step-final"
+    }
+  }, [_c("div", {
+    staticClass: "alert alert-success text-center"
+  }, [_c("h2", [_vm._v("¡Felicidades, la matrícula se realizó con éxito!")]), _vm._v(" "), _c("h4", [_vm._v("Codígo : 0000007")])]), _vm._v(" "), _c("div", {
+    staticClass: "div-btn-reset"
+  }, [_c("button", {
+    staticClass: "btn btn-primary",
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.resetData();
+      }
+    }
+  }, [_vm._v("Nueva matrícula")])])])], 1);
+};
+var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=template&id=cff2c764&":
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=template&id=cff2c764& ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("StepsContainer", [_c("Step", {
+    attrs: {
+      number: 1,
+      title: "Matrícula",
+      currentValue: _vm.stepCurrent
+    },
+    on: {
+      next: function next($event) {
+        _vm.stepCurrent = 2;
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-4 col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "concepto"
+    }
+  }, [_vm._v("Concepto")]), _vm._v(" "), _c("select", {
+    staticClass: "form-control",
+    attrs: {
+      id: "concepto"
+    }
+  }, [_c("option", {
+    attrs: {
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "1",
+      selected: ""
+    }
+  }, [_vm._v("Nueva matricula")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "2"
+    }
+  }, [_vm._v("renovación matricula")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-8 col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "empleado"
+    }
+  }, [_vm._v("Empleado")]), _vm._v(" "), _c("input", {
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "empleado",
+      value: "Lorem ipsum dolor sit.",
+      readonly: "",
+      placeholder: "Empleado"
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "sucursal"
+    }
+  }, [_vm._v("Sucursal")]), _vm._v(" "), _c("select", {
+    staticClass: "form-control",
+    attrs: {
+      id: "sucursal"
+    }
+  }, [_c("option", {
+    attrs: {
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "1",
+      selected: ""
+    }
+  }, [_vm._v("Sucursal 1")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "2"
+    }
+  }, [_vm._v("Sucursal 2")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-8 col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "sucursalDireción"
+    }
+  }, [_vm._v("Sucursal Direción")]), _vm._v(" "), _c("input", {
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "sucursalDireción",
+      value: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Necessitatibus, accusamus!",
+      readonly: "",
+      placeholder: "Sucursal"
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-8 col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "cliente"
+    }
+  }, [_vm._v("Cliente")]), _vm._v(" "), _c("input", {
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "cliente",
+      value: "Lorem ipsum dolor sit.",
+      readonly: "",
+      placeholder: "Cliente"
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "fecha"
+    }
+  }, [_vm._v("Fecha")]), _vm._v(" "), _c("DatePicker", {
+    attrs: {
+      "input-class": "form-control",
+      range: ""
+    },
+    model: {
+      value: _vm.matricula.fecha,
+      callback: function callback($$v) {
+        _vm.$set(_vm.matricula, "fecha", $$v);
+      },
+      expression: "matricula.fecha"
+    }
+  })], 1)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "programa"
+    }
+  }, [_vm._v("Programa")]), _vm._v(" "), _c("select", {
+    staticClass: "form-control",
+    attrs: {
+      id: "programa"
+    }
+  }, [_c("option", {
+    attrs: {
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "1",
+      selected: ""
+    }
+  }, [_vm._v("pecho")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "diasDeActividad"
+    }
+  }, [_vm._v("Dias de actividad")]), _vm._v(" "), _c("select", {
+    staticClass: "form-control",
+    attrs: {
+      id: "diasDeActividad"
+    }
+  }, [_c("option", {
+    attrs: {
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "1",
+      selected: ""
+    }
+  }, [_vm._v("L-M-V")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12"
+  }, [_c("div", {
+    staticClass: "form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "cantidadDeSessiones"
+    }
+  }, [_vm._v("Cantidad de sessiones")]), _vm._v(" "), _c("select", {
+    staticClass: "form-control",
+    attrs: {
+      id: "cantidadDeSessiones"
+    }
+  }, [_c("option", {
+    attrs: {
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _c("option", {
+    attrs: {
+      value: "1",
+      selected: ""
+    }
+  }, [_vm._v("8 sessiones S/. 350.00")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 mt-3 pl-0 pr-0"
+  }, [_c("table", {
+    staticClass: "table table-bordered table-striped"
+  }, [_c("thead", {
+    staticClass: "table-primary"
+  }, [_c("tr", [_c("th", [_vm._v("N°")]), _vm._v(" "), _c("th", [_vm._v("Horario")]), _vm._v(" "), _c("th", [_vm._v("Lunes")]), _vm._v(" "), _c("th", [_vm._v("Miercoles")]), _vm._v(" "), _c("th", [_vm._v("Viernes")])])]), _vm._v(" "), _c("tbody", [_c("tr", [_c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("1")]), _vm._v(" "), _c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("07:00 am - 08:00 am ")]), _vm._v(" "), _c("td", {
+    staticClass: "active"
+  }, [_c("i", {
+    staticClass: "fa-solid fa-check"
+  })]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("2")]), _vm._v(" "), _c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("08:00 am - 09:00 am ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td", {
+    staticClass: "active"
+  }, [_c("i", {
+    staticClass: "fa-solid fa-check"
+  })]), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("3")]), _vm._v(" "), _c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("09:00 am - 10:00 am ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td", {
+    staticClass: "active"
+  }, [_c("i", {
+    staticClass: "fa-solid fa-check"
+  })]), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("4")]), _vm._v(" "), _c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("10:00 am - 11:00 am ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td"), _vm._v(" "), _c("td", {
+    staticClass: "active"
+  }, [_c("i", {
+    staticClass: "fa-solid fa-check"
+  })])]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("5")]), _vm._v(" "), _c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("11:00 am - 12:00 pm ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("6")]), _vm._v(" "), _c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("12:00 pm - 01:00 pm ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("7")]), _vm._v(" "), _c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("01:00 pm - 02:00 pm ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("8")]), _vm._v(" "), _c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("02:00 pm - 03:00 pm ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("9")]), _vm._v(" "), _c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("03:00 pm - 04:00 pm ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("10")]), _vm._v(" "), _c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("04:00 pm - 05:00 pm ")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("11")]), _vm._v(" "), _c("td", {
+    staticClass: "table-primary"
+  }, [_vm._v("05:00 pm - 06:00 pm")]), _vm._v(" "), _c("td"), _vm._v(" "), _c("td"), _vm._v(" "), _c("td")])])])])])]), _vm._v(" "), _c("Step", {
+    attrs: {
+      number: 2,
+      title: "Ver registro",
+      currentValue: _vm.stepCurrent
+    },
+    on: {
+      next: function next($event) {
+        _vm.stepCurrent = 3;
+      }
+    }
+  }, [_c("h3", [_vm._v("Cliente")]), _vm._v(" "), _c("p", {
+    staticClass: "fs-12"
+  }, [_c("b", [_vm._v("Nombre completo:")]), _vm._v(" Juan Manual Perez Aguila "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Correo:")]), _vm._v(" juanpa@gmail.com "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Teléfono:")]), _vm._v(" 987654321 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Documento de identidad:")]), _vm._v(" DNI - 87654321 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Direción:")]), _vm._v(" Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima\n        ")]), _vm._v(" "), _c("h3", [_vm._v("Matricula")]), _vm._v(" "), _c("p", {
+    staticClass: "fs-12"
+  }, [_c("b", [_vm._v("Codígo:")]), _vm._v(" 0000007"), _c("br"), _vm._v(" "), _c("b", [_vm._v("Concepto:")]), _vm._v(" Nueva Matricula "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Empleado:")]), _vm._v(" Roberto raymundo espinoza "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Sucursal Direción:")]), _vm._v(" sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Fecha:")]), _vm._v(" 01/01/2023 - 01/02/2023 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Programa:")]), _vm._v(" Para adultos "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Dias de actividad:")]), _vm._v(" L-M-V "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Cantidad de sessiones:")]), _vm._v(" 4 sessiones X 350 soles "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Horario: ")]), _vm._v(" "), _c("ul", [_c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Martes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Miercoles : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")])])])]), _vm._v(" "), _c("Step", {
+    attrs: {
+      number: 3,
       title: "Final",
       currentValue: _vm.stepCurrent,
       showFooter: false,
@@ -2867,7 +3333,26 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\ntable tbody tr td.active{\n    background-color: darkgreen;\n}\n.fs-12{\n    font-size: 12pt;\n}\n.step-final{\n    width: 80%;\n    justify-content: center;\n    display: flex;\n}\n.div-btn-reset{\n    position: relative;\n    display: flex;\n    justify-content: center;\n}\n\n", ""]);
+exports.push([module.i, "\ntable tbody tr td.active{\n    background-color: darkgreen;\n    color: #fff;\n    text-align: center;\n}\n.fs-12{\n    font-size: 12pt;\n}\n.step-final{\n    width: 80%;\n    justify-content: center;\n    display: flex;\n}\n.div-btn-reset{\n    position: relative;\n    display: flex;\n    justify-content: center;\n}\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\ntable tbody tr td.active{\n    background-color: darkgreen;\n    color: #fff;\n    text-align: center;\n}\n.fs-12{\n    font-size: 12pt;\n}\n.step-final{\n    width: 80%;\n    justify-content: center;\n    display: flex;\n}\n.div-btn-reset{\n    position: relative;\n    display: flex;\n    justify-content: center;\n}\n\n", ""]);
 
 // exports
 
@@ -21361,6 +21846,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/StepComponent.vue?vue&type=style&index=0&id=3d0006b6&lang=css&":
 /*!***********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/StepComponent.vue?vue&type=style&index=0&id=3d0006b6&lang=css& ***!
@@ -38226,6 +38741,93 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/Pages/MatriculaGym/Nuevo.vue":
+/*!***************************************************!*\
+  !*** ./resources/js/Pages/MatriculaGym/Nuevo.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Nuevo_vue_vue_type_template_id_cff2c764___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Nuevo.vue?vue&type=template&id=cff2c764& */ "./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=template&id=cff2c764&");
+/* harmony import */ var _Nuevo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Nuevo.vue?vue&type=script&lang=js& */ "./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _Nuevo_vue_vue_type_style_index_0_id_cff2c764_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css& */ "./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
+  _Nuevo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Nuevo_vue_vue_type_template_id_cff2c764___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Nuevo_vue_vue_type_template_id_cff2c764___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/Pages/MatriculaGym/Nuevo.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Nuevo.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css&":
+/*!************************************************************************************************!*\
+  !*** ./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css& ***!
+  \************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_style_index_0_id_cff2c764_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=style&index=0&id=cff2c764&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_style_index_0_id_cff2c764_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_style_index_0_id_cff2c764_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_style_index_0_id_cff2c764_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_style_index_0_id_cff2c764_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
+
+/***/ }),
+
+/***/ "./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=template&id=cff2c764&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=template&id=cff2c764& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_template_id_cff2c764___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../node_modules/vue-loader/lib??vue-loader-options!./Nuevo.vue?vue&type=template&id=cff2c764& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/Pages/MatriculaGym/Nuevo.vue?vue&type=template&id=cff2c764&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_template_id_cff2c764___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_template_id_cff2c764___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -38257,6 +38859,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('DatePicker', vue2_datepick
 // Register Vue Pages
 // Vue.component('example-component', require('./components/ExampleComponent.vue').default);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('matricula-nuevo', __webpack_require__(/*! ./Pages/Matricula/Nuevo.vue */ "./resources/js/Pages/Matricula/Nuevo.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('matricula-gym-nuevo', __webpack_require__(/*! ./Pages/MatriculaGym/Nuevo.vue */ "./resources/js/Pages/MatriculaGym/Nuevo.vue")["default"]);
 
 // Initialize Vue
 if (document.querySelector('#instanceVue')) {
