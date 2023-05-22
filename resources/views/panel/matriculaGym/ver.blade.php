@@ -18,7 +18,7 @@
 
 
                         <div class="col-md-12 col-12 pl-5">
-                            <h3>Alumno</h3>
+                            <h3>Cliente</h3>
                             <p class="fs-12">
                                 <b>Nombre completo:</b> Juan Manual Perez Aguila <br>
                                 <b>Correo:</b> juanpa@gmail.com <br>
@@ -27,17 +27,15 @@
                                 <b>Direción:</b> Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima
                             </p>
 
-                            <h3>Matricula</h3>
+                            <h3>Inscripciones</h3>
                             <p class="fs-12">
                                 <b>Codígo:</b> 0000007<br>
-                                <b>Concepto:</b> Nueva Matricula <br>
+                                <b>Concepto:</b> Nueva Inscripciones <br>
                                 <b>Empleado:</b> Roberto raymundo espinoza <br>
                                 <b>Sucursal Direción:</b> sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  <br>
                                 <b>Fecha:</b> 01/01/2023 - 01/02/2023 <br>
                                 <b>Temporada:</b> Verano <br>
                                 <b>Programa:</b> Para adultos <br>
-                                <b>Piscina:</b> Piscina grande <br>
-                                <b>Carril:</b> #6 <br>
                                 <b>Dias de actividad:</b> L-M-V <br>
                                 <b>Cantidad de sessiones:</b> 4 sessiones X 350 soles <br>
                                 <b>Horario: </b>

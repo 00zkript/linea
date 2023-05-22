@@ -5,7 +5,7 @@
             <thead class="thead-dark">
             <tr class="text-center">
                 <th>Código</th>
-                <th>Alumno</th>
+                <th>Cliente</th>
                 <th>Temporada</th>
                 <th>Programa</th>
                 <th>Precio total</th>
@@ -66,7 +66,7 @@
         <thead class="thead-dark">
         <tr class="text-center">
             <th>Código</th>
-            <th>Alumno</th>
+            <th>Cliente</th>
             <th>Temporada</th>
             <th>Programa</th>
             <th>Precio total</th>
@@ -91,7 +91,7 @@
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenu-0" data-idregistro="0">
                             <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
-                            <a href="{{ route('pago.create',7) }}" class="dropdown-item" type="button"><i class="fa fa-eye"></i> Pagar</a>
+                            {{-- <a href="{{ route('pago.create',7) }}" class="dropdown-item" type="button"><i class="fa fa-eye"></i> Pagar</a> --}}
                         </div>
                     </div>
                 </td>

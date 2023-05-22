@@ -209,11 +209,11 @@
 
         <Step :number="3" title="Final" :currentValue="stepCurrent" :showFooter="false" classContent="step-final" >
             <div class="alert alert-success text-center">
-                <h2>¡Felicidades, la matrícula se realizó con éxito!</h2>
+                <h2>¡Felicidades, la inscripción se realizó con éxito!</h2>
                 <h4>Codígo : 0000007</h4>
             </div>
             <div class="div-btn-reset">
-                <button class="btn btn-primary" @click.prevent="resetData()">Nueva matrícula</button>
+                <button class="btn btn-primary" @click.prevent="resetData()">Nueva inscripción</button>
             </div>
         </Step>
 

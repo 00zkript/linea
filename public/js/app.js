@@ -3193,7 +3193,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "alert alert-success text-center"
-  }, [_c("h2", [_vm._v("¡Felicidades, la matrícula se realizó con éxito!")]), _vm._v(" "), _c("h4", [_vm._v("Codígo : 0000007")])]), _vm._v(" "), _c("div", {
+  }, [_c("h2", [_vm._v("¡Felicidades, la inscripción se realizó con éxito!")]), _vm._v(" "), _c("h4", [_vm._v("Codígo : 0000007")])]), _vm._v(" "), _c("div", {
     staticClass: "div-btn-reset"
   }, [_c("button", {
     staticClass: "btn btn-primary",
@@ -3203,7 +3203,7 @@ var render = function render() {
         return _vm.resetData();
       }
     }
-  }, [_vm._v("Nueva matrícula")])])])], 1);
+  }, [_vm._v("Nueva inscripción")])])])], 1);
 };
 var staticRenderFns = [];
 render._withStripped = true;

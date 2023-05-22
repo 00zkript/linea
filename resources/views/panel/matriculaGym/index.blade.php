@@ -2,18 +2,18 @@
 @push('css')
 @endpush
 @section('cuerpo')
-    @include('panel.matricula.ver')
+    @include('panel.matriculaGym.ver')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header" style="background-color: #2a3f54">
-                        <p style="font-size: 20px" class="card-title text-center text-white mb-0"> Matrículas</p>
+                        <p style="font-size: 20px" class="card-title text-center text-white mb-0"> Incripciones GyM</p>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 text-right">
-                                <a href="{{ route('matricula.create') }}" class="btn btn-primary btn-lg"><i class="fa fa-plus"></i> Nuevo registro</a>
+                                <a href="{{ route('matriculaGym.create') }}" class="btn btn-primary btn-lg"><i class="fa fa-plus"></i> Nuevo registro</a>
                             </div>
                             <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-md-12">
                                 <div class="form-group">
@@ -42,7 +42,7 @@
                             </div>
 
                             <div class="col-12" id="listado">
-                                @include('panel.matricula.listado')
+                                @include('panel.matriculaGym.listado')
                             </div>
 
 
@@ -60,14 +60,14 @@
     <script type="module" >
 
 
-        const URL_LISTADO     = "{{ route('matricula.listar') }}";
-        {{-- // const URL_GUARDAR     = "{{ route('matricula.store') }}"; --}}
-        {{-- // const URL_VER         = "{{ route('matricula.show',':id') }}"; --}}
-        {{-- // const URL_EDIT        = "{{ route('matricula.edit',':id') }}"; --}}
-        {{-- // const URL_MODIFICAR   = "{{ route('matricula.update',':id') }}"; --}}
-        {{-- // const URL_HABILITAR   = "{{ route('matricula.habilitar',':id') }}"; --}}
-        {{-- // const URL_INHABILITAR = "{{ route('matricula.inhabilitar',':id') }}"; --}}
-        {{-- // const URL_ELIMINAR    = "{{ route('matricula.destroy',':id') }}"; --}}
+        const URL_LISTADO     = "{{ route('matriculaGym.listar') }}";
+        {{-- // const URL_GUARDAR     = "{{ route('matriculaGym.store') }}"; --}}
+        {{-- // const URL_VER         = "{{ route('matriculaGym.show',':id') }}"; --}}
+        {{-- // const URL_EDIT        = "{{ route('matriculaGym.edit',':id') }}"; --}}
+        {{-- // const URL_MODIFICAR   = "{{ route('matriculaGym.update',':id') }}"; --}}
+        {{-- // const URL_HABILITAR   = "{{ route('matriculaGym.habilitar',':id') }}"; --}}
+        {{-- // const URL_INHABILITAR = "{{ route('matriculaGym.inhabilitar',':id') }}"; --}}
+        {{-- // const URL_ELIMINAR    = "{{ route('matriculaGym.destroy',':id') }}"; --}}
 
 
 
@@ -150,37 +150,37 @@
 
             /* $(document).on("click",".btnModalHabilitar",function(e){
                 e.preventDefault();
-                const idmatricula = $(this).closest('div.dropdown-menu').data('idmatricula');
-                $("#frmHabilitar input[name=idmatricula]").val(idmatricula);
+                const idmatriculaGym = $(this).closest('div.dropdown-menu').data('idmatriculaGym');
+                $("#frmHabilitar input[name=idmatriculaGym]").val(idmatriculaGym);
                 $("#modalHabilitar").modal("show");
             }); */
 
             /* $(document).on("click",".btnModalInhabilitar",function(e){
                 e.preventDefault();
-                const idmatricula = $(this).closest('div.dropdown-menu').data('idmatricula');
-                $("#frmInhabilitar input[name=idmatricula]").val(idmatricula);
+                const idmatriculaGym = $(this).closest('div.dropdown-menu').data('idmatriculaGym');
+                $("#frmInhabilitar input[name=idmatriculaGym]").val(idmatriculaGym);
                 $("#modalInhabilitar").modal("show");
             }); */
 
             /* $(document).on("click",".btnModalEliminar",function(e){
                 e.preventDefault();
-                const idmatricula = $(this).closest('div.dropdown-menu').data('idmatricula');
-                $("#frmEliminar input[name=idmatricula]").val(idmatricula);
+                const idmatriculaGym = $(this).closest('div.dropdown-menu').data('idmatriculaGym');
+                $("#frmEliminar input[name=idmatriculaGym]").val(idmatriculaGym);
                 $("#modalEliminar").modal("show");
             }); */
 
             /* $(document).on("click",".btnModalEditar",function(e){
                 e.preventDefault();
-                const idmatricula = $(this).closest('div.dropdown-menu').data('idmatricula');
+                const idmatriculaGym = $(this).closest('div.dropdown-menu').data('idmatriculaGym');
 
                 cargando('Procesando...');
-                axios.get(URL_EDIT.replace(':id',idmatricula))
+                axios.get(URL_EDIT.replace(':id',idmatriculaGym))
                 .then(response => {
                     const data = response.data;
 
                     stop();
                     $("#frmEditar")[0].reset();
-                    $("#frmEditar input[name=idmatricula]").val(data.idmatricula);
+                    $("#frmEditar input[name=idmatriculaGym]").val(data.idmatriculaGym);
 
                     $("#frmEditar .selectpicker").selectpicker("render");
                     $("#modalEditar").modal("show");
@@ -194,11 +194,11 @@
 
             $(document).on("click",".btnModalVer",function(e){
                 e.preventDefault();
-                const idmatricula = $(this).closest('div.dropdown-menu').data('idmatricula');
+                const idmatriculaGym = $(this).closest('div.dropdown-menu').data('idmatriculaGym');
 
 
                 /* cargando('Procesando...');
-                axios.get(URL_VER.replace(':id',idmatricula))
+                axios.get(URL_VER.replace(':id',idmatriculaGym))
                 .then(response => {
                     const data = response.data;
 
@@ -256,12 +256,12 @@
             $(document).on("submit","#frmEditar",function(e){
                 e.preventDefault();
 
-                const idmatricula = $("#frmEditar input[name=idmatricula]").val();
+                const idmatriculaGym = $("#frmEditar input[name=idmatriculaGym]").val();
                 const form = new FormData($(this)[0]);
                 form.append('contenidoEditar',CKEDITOR.instances.contenidoEditar.getData());
 
                 cargando('Procesando...');
-                axios.post(URL_MODIFICAR.replace(':id',idmatricula),form)
+                axios.post(URL_MODIFICAR.replace(':id',idmatriculaGym),form)
                 .then(response => {
                     const data = response.data;
                     // $("#imagenEditar").fileinput("upload");
@@ -283,10 +283,10 @@
             $(document).on( "submit" ,"#frmHabilitar", function(e){
                 e.preventDefault();
                 // const form = new FormData($(this)[0]);
-                const idmatricula = $("#frmHabilitar input[name=idmatricula]").val();
+                const idmatriculaGym = $("#frmHabilitar input[name=idmatriculaGym]").val();
                 cargando('Procesando...');
 
-                axios.put(URL_HABILITAR.replace(':id',idmatricula))
+                axios.put(URL_HABILITAR.replace(':id',idmatriculaGym))
                 .then( response => {
                     const data = response.data;
                     stop();
@@ -310,10 +310,10 @@
                 e.preventDefault();
 
                 // const form = new FormData($(this)[0]);
-                const idmatricula = $("#frmInhabilitar input[name=idmatricula]").val();
+                const idmatriculaGym = $("#frmInhabilitar input[name=idmatriculaGym]").val();
                 cargando('Procesando...');
 
-                axios.put(URL_INHABILITAR.replace(':id',idmatricula))
+                axios.put(URL_INHABILITAR.replace(':id',idmatriculaGym))
                 .then( response => {
                     const data = response.data;
                     stop();
@@ -334,10 +334,10 @@
                 e.preventDefault();
 
                 // const form = new FormData($(this)[0]);
-                const idmatricula = $("#frmEliminar input[name=idmatricula]").val();
+                const idmatriculaGym = $("#frmEliminar input[name=idmatriculaGym]").val();
                 cargando('Procesando...');
 
-                axios.delete(URL_ELIMINAR.replace(':id',idmatricula))
+                axios.delete(URL_ELIMINAR.replace(':id',idmatriculaGym))
                 .then( response => {
                     const data = response.data;
                     stop();
