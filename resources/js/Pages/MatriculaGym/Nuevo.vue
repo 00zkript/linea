@@ -20,6 +20,7 @@
                     <div class="form-group">
                         <label for="empleado">Empleado</label>
                         <input type="text" class="form-control" id="empleado" value="Lorem ipsum dolor sit." readonly placeholder="Empleado" >
+
                     </div>
                 </div>
                 <div class="col-md-4 col-12">
@@ -41,7 +42,8 @@
                 <div class="col-md-8 col-12">
                     <div class="form-group">
                         <label for="cliente">Cliente</label>
-                        <input type="text" class="form-control" id="cliente" value="Lorem ipsum dolor sit." readonly placeholder="Cliente" >
+                        <input type="text" class="form-control" id="cliente" value="Lorem ipsum dolor sit." placeholder="Cliente" >
+
                     </div>
                 </div>
                 <div class="col-md-4 col-12">
@@ -221,6 +223,7 @@
 <script>
 import StepsContainer from "../../components/StepsContainerComponent.vue";
 import Step from '../../components/StepComponent.vue';
+
 export default {
     components: { StepsContainer, Step },
     data() {

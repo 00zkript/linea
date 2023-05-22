@@ -3014,7 +3014,6 @@ var render = function render() {
       type: "text",
       id: "cliente",
       value: "Lorem ipsum dolor sit.",
-      readonly: "",
       placeholder: "Cliente"
     }
   })])]), _vm._v(" "), _c("div", {
