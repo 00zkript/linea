@@ -2,7 +2,7 @@
     <StepsContainer>
 
 
-        <Step :number="1" title="Matrícula" :currentValue="stepCurrent" @next="stepCurrent = 2" >
+        <Step :number="1" title="Inscripción" :currentValue="stepCurrent" @next="stepCurrent = 2" >
 
             <div class="row">
 

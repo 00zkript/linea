@@ -2904,7 +2904,7 @@ var render = function render() {
   return _c("StepsContainer", [_c("Step", {
     attrs: {
       number: 1,
-      title: "Matrícula",
+      title: "Inscripción",
       currentValue: _vm.stepCurrent
     },
     on: {
