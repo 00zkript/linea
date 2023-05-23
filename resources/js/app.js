@@ -20,7 +20,7 @@ Vue.component('DatePicker', DatePicker);
 Vue.component('matricula-nuevo', require('./views/Matricula/Nuevo.vue').default);
 Vue.component('matricula-gym-nuevo', require('./views/MatriculaGym/Nuevo.vue').default);
 
-Vue.component('venta-nuevo', require('./Pages/Venta/Nuevo.vue').default);
+Vue.component('venta-nuevo', require('./views/Venta/Nuevo.vue').default);
 
 // Initialize Vue
 if (document.querySelector('#instanceVue')) {
