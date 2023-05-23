@@ -139,8 +139,13 @@
                                         <li><a href="{{ route('matricula.index') }}">Matrículas</a></li>
                                         <li><a href="{{ route('matriculaGym.create') }}">Nueva inscripción GyM</a></li>
                                         <li><a href="{{ route('matriculaGym.index') }}">Inscripciones GyM</a></li>
-                                        <li><a href="{{ route('pago.create') }}">Nuevo pago de matrícula</a></li>
-                                        <li><a href="{{ route('pago.index') }}">Pagos de matrícula</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class=""><a><i class="fa fa-tasks"></i> Caja <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu">
+                                        <li><a href="{{ route('pago.create') }}">Nueva venta</a></li>
+                                        <li><a href="{{ route('pago.index') }}">Pago Matricula</a></li>
                                     </ul>
                                 </li>
 
