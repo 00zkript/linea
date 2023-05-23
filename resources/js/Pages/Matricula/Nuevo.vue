@@ -383,8 +383,10 @@
 <script>
 import StepsContainer from "../../components/StepsContainerComponent.vue";
 import Step from '../../components/StepComponent.vue';
+import AutoComplete from 'primevue/autocomplete';
+
 export default {
-    components: { StepsContainer, Step },
+    components: { StepsContainer, Step, AutoComplete },
     data() {
         return {
             resources: {

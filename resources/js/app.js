@@ -3,12 +3,13 @@ require('./bootstrap');
 import Vue from 'vue';
 import { ZiggyVue } from 'ziggy';
 
+// datapicker
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 
-Vue.use(ZiggyVue, Ziggy);
 
 // import route from 'ziggy';
+Vue.use(ZiggyVue, Ziggy);
 
 // Register Vue Components Global
 Vue.component('DatePicker', DatePicker);
