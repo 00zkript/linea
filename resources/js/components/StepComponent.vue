@@ -10,7 +10,7 @@
                 <slot/>
             </div>
             <div class="step-footer" v-if="showFooter">
-                <button class="btn btn-primary next-step" @click="showContent = false; $emit('next')" >Siguiente</button>
+                <button class="btn btn-primary next-step" @click="showContent = false; $emit('next')" v-text="btnNextText" ></button>
                 <button class="btn btn-secondary cancel-step">Cancelar</button>
             </div>
         </div>
@@ -33,6 +33,10 @@ export default {
         classContent: {
             type: [String, Object],
             default: ''
+        },
+        btnNextText:{
+            type: String,
+            default: 'Siguiente'
         }
     },
     data() {
