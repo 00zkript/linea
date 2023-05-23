@@ -248,6 +248,9 @@
                     <div class="nav toggle">
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     </div>
+
+                    {{-- <div class="text-right">Sucursal 1</div> --}}
+
                     <nav class="nav navbar-nav">
                         <ul class=" navbar-right">
                             <li class="nav-item dropdown open" style="padding-left: 15px;">
