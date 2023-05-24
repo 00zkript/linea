@@ -12,7 +12,7 @@
                 <form id="frmCrear" autocomplete="off">
                     @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
@@ -20,7 +20,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
+                        <div class="col-12 mb-3">
                             <ul class="nav nav-tabs">
                                 <li class="nav-item">
                                     <a href="#nav-general" class="nav-link active">
@@ -73,7 +73,7 @@
 
                     <div class="row content-create" id="nav-general" >
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="idsection">Sección: </label>
                                 <select  name="idsection" id="idsection"  class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -86,7 +86,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="idcategoria">Categoría: </label>
                                 <select  name="idcategoria" id="idcategoria"  class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -98,7 +98,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="idmarca">Marca: </label>
                                 <select  name="idmarca" id="idmarca"  class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -132,21 +132,21 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                        <div class="col-md-4 col-12">
                             <div class="form-group">
                                 <label for="precio">Precio: <span class="text-danger">(*)</span></label>
                                 <input type="number" name="precio" id="precio" required value="0" class="form-control" min="0" step="any" placeholder="{{ $monedaGeneral->format('0.00') }}">
                             </div>
                         </div>
 
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                        <div class="col-md-4 col-12">
                             <div class="form-group">
                                 <label for="precio_promocional">Precio promocional: </label>
                                 <input type="number" name="precio_promocional" id="precio_promocional" value="0" class="form-control" min="0" step="any" placeholder="{{ $monedaGeneral->format('0.00') }}">
                             </div>
                         </div>
 
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                        <div class="col-md-4 col-12">
                             <div class="form-group">
                                 <label for="stock">STOCK: <span class="text-danger">(*)</span></label>
                                 <input type="number" name="stock" id="stock" value="1" required class="form-control" min="0" placeholder="#">
@@ -154,11 +154,11 @@
                         </div>
                     </div>
                     <div class="row content-create" id="nav-tag" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <h6 class="font-weight-bolder text-uppercase mt-3 bg-secondary text-white p-2">Etiquetas:</h6>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="destacado">Destacado: </label>
                                 <select  name="destacado" id="destacado"  class="form-control">
@@ -169,7 +169,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="Nuevo">Nuevo: </label>
                                 <select  name="Nuevo" id="Nuevo"  class="form-control">
@@ -180,7 +180,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="liquidacion">En Liquidación: </label>
                                 <select  name="liquidacion" id="liquidacion"  class="form-control">
@@ -191,7 +191,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="showPrecio">Mostrar precio: </label>
                                 <select  name="showPrecio" id="showPrecio"  class="form-control">
@@ -202,11 +202,11 @@
                         </div>
                     </div>
                     <div class="row content-create" id="nav-attributes" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <h6 class="font-weight-bolder text-uppercase mt-3 bg-secondary text-white p-2">Especificaciones de búsqueda adicional:</h6>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <table class="table table-striped table-compact table-attribute" id="table-attribute">
                                 <thead>
                                     <tr>
@@ -225,7 +225,7 @@
                         </div>
                     </div>
                     <div class="row content-create" id="nav-images" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="imagen" class="d-block">Imágenes:</label>
                                 {{--<div class="alert alert-info">
@@ -240,7 +240,7 @@
                         </div>
                     </div>
                     <div class="row content-create" id="nav-manual" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="manual" class="d-block">Manuales:</label>
                                 <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Formato: pdf</div>
@@ -251,7 +251,7 @@
                         </div>
                     </div>
                     <div class="row content-create" id="nav-description" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="descripcionCorta">Descripción corta:</label>
                                 <textarea  id="descripcionCorta" class="descripcionCorta"></textarea>
@@ -259,7 +259,7 @@
                         </div>
                     </div>
                     <div class="row content-create" id="nav-description-large" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="descripcion">Descripción:</label>
                                 <textarea  id="descripcion" class="descripcion"></textarea>
@@ -267,7 +267,7 @@
                         </div>
                     </div>
                     <div class="row content-create" id="nav-data-sheet" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="ficha_tecnica">Ficha Técnica:</label>
                                 <textarea  id="ficha_tecnica" class="ficha_tecnica"></textarea>
@@ -275,7 +275,7 @@
                         </div>
                     </div>
                     <div class="row content-create" id="nav-video" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="video">Video:</label>
                                 <textarea  id="video" class="video"></textarea>
@@ -284,7 +284,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="estado">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estado" id="estado" class="form-control" required>

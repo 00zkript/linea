@@ -14,7 +14,7 @@
                     @method('PUT')
                     <input type="hidden" name="idproducto" id="idproducto" required>
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
@@ -22,7 +22,7 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mb-3">
+                        <div class="col-12 mb-3">
                             <ul class="nav nav-tabs">
                                 <li class="nav-item">
                                     <a href="#nav-general-editar" class="nav-link active">
@@ -74,7 +74,7 @@
                     </div>
 
                     <div class="row content-edit" id="nav-general-editar" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="idsectionEditar">Sección: </label>
                                 <select  name="idsectionEditar" id="idsectionEditar"  class="form-control selectpicker show-tick" title="Sin sección"
@@ -87,7 +87,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="idcategoriaEditar">Categoría: </label>
                                 <select  name="idcategoriaEditar" id="idcategoriaEditar"  class="form-control selectpicker show-tick" title="Sin categoría"
@@ -99,7 +99,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="idmarcaEditar">Marca: </label>
                                 <select  name="idmarcaEditar" id="idmarcaEditar"  class="form-control selectpicker show-tick" title="Sin Marca"
@@ -133,21 +133,21 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                        <div class="col-md-4 col-12">
                             <div class="form-group">
                                 <label for="precioEditar">Precio: <span class="text-danger">(*)</span></label>
                                 <input step="any" type="number" name="precioEditar" id="precioEditar" required class="form-control" min="0" placeholder="{{ $monedaGeneral->format('0.00') }}">
                             </div>
                         </div>
 
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                        <div class="col-md-4 col-12">
                             <div class="form-group">
                                 <label for="precio_promocionalEditar">Precio promocional: </label>
                                 <input step="any" type="number" name="precio_promocionalEditar" id="precio_promocionalEditar" class="form-control" min="0" placeholder="{{ $monedaGeneral->format('0.00') }}">
                             </div>
                         </div>
 
-                        <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12 col-12">
+                        <div class="col-md-4 col-12">
                             <div class="form-group">
                                 <label for="stockEditar">STOCK: <span class="text-danger">(*)</span></label>
                                 <input type="number" name="stockEditar" id="stockEditar" required class="form-control" min="0" placeholder="#">
@@ -155,11 +155,11 @@
                         </div>
                     </div>
                     <div class="row content-edit" id="nav-tag-editar" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <h6 class="font-weight-bolder text-uppercase mt-3 bg-secondary text-white p-2">Etiquetas:</h6>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="destacadoEditar">Destacado: </label>
                                 <select  name="destacadoEditar" id="destacadoEditar"  class="form-control">
@@ -170,7 +170,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="nuevoEditar">Nuevo: </label>
                                 <select  name="nuevoEditar" id="nuevoEditar"  class="form-control">
@@ -181,7 +181,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="liquidacionEditar">En Liquidación: </label>
                                 <select  name="liquidacionEditar" id="liquidacionEditar"  class="form-control">
@@ -192,7 +192,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="showPrecioEditar">Mostrar precio: </label>
                                 <select  name="showPrecioEditar" id="showPrecioEditar"  class="form-control">
@@ -203,11 +203,11 @@
                         </div>
                     </div>
                     <div class="row content-edit" id="nav-attributes-editar" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <h6 class="font-weight-bolder text-uppercase mt-3 bg-secondary text-white p-2">Especificaciones de búsqueda adicional:</h6>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <table class="table table-striped table-compact table-attribute" id="table-attributeEditar">
                                 <thead>
                                     <tr>
@@ -226,7 +226,7 @@
                         </div>
                     </div>
                     <div class="row content-edit" id="nav-images-editar" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="imagenEditar" class="d-block">Imágenes:</label>
                                 {{--<div class="alert alert-info">
@@ -241,7 +241,7 @@
                         </div>
                     </div>
                     <div class="row content-edit" id="nav-manual-editar" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="manualEditar" class="d-block">Manuales:</label>
                                 <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Formato: pdf</div>
@@ -252,7 +252,7 @@
                         </div>
                     </div>
                     <div class="row content-edit" id="nav-description-editar" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="descripcionCortaEditar">Descripción corta:</label>
                                 <textarea  id="descripcionCortaEditar" class="descripcionCortaEditar"></textarea>
@@ -260,7 +260,7 @@
                         </div>
                     </div>
                     <div class="row content-edit" id="nav-description-large-editar" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="descripcionEditar">Descripción:</label>
                                 <textarea  id="descripcionEditar" class="descripcionEditar"></textarea>
@@ -268,7 +268,7 @@
                         </div>
                     </div>
                     <div class="row content-edit" id="nav-data-sheet-editar" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="ficha_tecnicaEditar">Ficha Técnica:</label>
                                 <textarea  id="ficha_tecnicaEditar" class="ficha_tecnicaEditar"></textarea>
@@ -276,7 +276,7 @@
                         </div>
                     </div>
                     <div class="row content-edit" id="nav-video-editar" >
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="videoEditar">Video:</label>
                                 <textarea  id="videoEditar" class="videoEditar"></textarea>
@@ -287,7 +287,7 @@
 
 
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="estadoEditar">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estadoEditar" id="estadoEditar" class="form-control" required>

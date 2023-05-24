@@ -13,8 +13,7 @@
                     <input type="hidden" name="idventa" required>
                     @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <p>¿ESTA SEGURO DE <b class="text-danger">ANULAR</b> ESTA VENTA?</p>
+                        <div class="¿ESTA SEGURO DE <b class="text-danger">ANULAR</b> ESTA VENTA?</p>
                             <p>OCURRIRAN LOS SIGUIENTES CAMBIOS:</p>
                             <ul>
                                 <li>LOS CANTIDAD DE PRODUCTOS QUE SE DESCONTARON DEL STOCK CUANDO SE REALIZO LA VENTA SE REPONDRAN AUTOMATICAMENTE.</li>
@@ -22,8 +21,7 @@
                                 <li>UNA VEZ REALIZADA ESTA ACCIÓN NO SE PODRA REVERTIR.</li>
                             </ul>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                            <hr>
+                        <div class="        <hr>
                             <button type="submit" class="btn btn-success" ><i class="fa fa-check"></i> Si, acepto</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
 

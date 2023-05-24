@@ -12,15 +12,13 @@
                 <form id="frmImportarProductos" autocomplete="off">
                     @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+                        <div class="        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="excel" >Excel:</label>
                                 <div class="alert alert-info">
                                     <p class="my-0">

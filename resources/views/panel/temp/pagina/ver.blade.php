@@ -11,44 +11,37 @@
             <div class="modal-body">
 
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                        <div class="        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                             <hr>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <p>Título:</p>
+                        <div class=" <p>Título:</p>
                                 <p id="tituloShow"></p>
                             <hr>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <p>Categoria:</p>
+                        <div class="Categoria:</p>
                             <p id="paginaCategoriaShow"></p>
                             <hr>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <p>Tema:</p>
+                        <div class="Tema:</p>
                             <p id="temaShow"></p>
                             <hr>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <p>autor:</p>
+                        <div class="autor:</p>
                             <p id="autorShow"></p>
                             <hr>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <p>imagen:</p>
+                        <div class="imagen:</p>
                             <p id="imagenShow"></p>
                             <hr>
                         </div>
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <p>Estado:</p>
+                        <div class="Estado:</p>
                             <p id="estadoShow"></p>
                         </div>
 

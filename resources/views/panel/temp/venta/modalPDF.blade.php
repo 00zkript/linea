@@ -10,12 +10,10 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                    <div class="    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                         <hr>
                     </div>
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p style="font-size: 10pt;">
+                    <div class="e="font-size: 10pt;">
                             <iframe src="" id="pdf_generate" style="min-width: 100%; width: 100%; height: 535px;"></iframe>
                         </p>
                     </div>

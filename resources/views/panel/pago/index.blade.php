@@ -14,7 +14,7 @@
                             <div class="col-12 text-right">
                                 <a href="{{ route('pago.create') }}" class="btn btn-primary btn-lg"><i class="fa fa-plus"></i> Nuevo Pago</a>
                             </div>
-                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-md-12">
+                            <div class="col-md-6 col-md-12">
                                 <div class="form-group">
                                     <label for="cantidadRegistros">Cantidad de registros</label>
                                     <select name="cantidadRegistros" id="cantidadRegistros" class="form-control form-control-sm">

@@ -10,13 +10,13 @@
                     <input type="hidden" value="{{ $usuario->idusuario }}" name="idusuario">
 
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right" style="position: relative;top: 0;right: 0;">
+                        <div class="col-12 text-right" style="position: relative;top: 0;right: 0;">
                             <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <hr>
                         </div>
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="usuarioEditar">Usuario: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="usuarioEditar" id="usuarioEditar" required class="form-control"
@@ -24,7 +24,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="claveEditar">Clave: </label>
                                 <input type="password" name="claveEditar" id="claveEditar" class="form-control"
@@ -32,7 +32,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="nombresEditar">Nombres: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="nombresEditar" id="nombresEditar" required class="form-control"
@@ -40,7 +40,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="apellidosEditar">Apellidos: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="apellidosEditar" id="apellidosEditar" required
@@ -49,7 +49,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="correoEditar">Correo: <span class="text-danger">(*)</span></label>
                                 <input type="email" name="correoEditar" id="correoEditar" required class="form-control"
@@ -57,14 +57,14 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                        <div class="col-12 text-center">
                             <p class="mb-0">Foto actual:</p>
                             <img style="width: 130px;height: 130px" class="img-thumbnail"
                                  src="{{ $usuario->foto ? asset('panel/img/usuarios/'.$usuario->foto) :  asset('panel/img/img.webp')  }}"
                                  id="fotoActual">
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="imagenEditar">Foto:</label>
                                 <div class="file-loading">

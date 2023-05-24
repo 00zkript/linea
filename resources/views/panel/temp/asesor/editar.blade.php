@@ -14,7 +14,7 @@
                     @method('PUT')
                     <input type="hidden" name="idasesor" id="idasesor" required>
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
@@ -22,14 +22,14 @@
 
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="nombresEditar">Nombres: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="nombresEditar" id="nombresEditar"  class="form-control" maxlength="250" placeholder="Nombres" required>
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="correoEditar">Correo: <span class="text-danger">(*)</span></label>
                                 <input type="email" name="correoEditar" id="correoEditar"  class="form-control" maxlength="250" placeholder="Ejemplo@correo.com" required>
@@ -69,7 +69,7 @@
 
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="fotoEditar" class="d-block">Foto: <span class="text-danger">(*)</span></label>
                                 <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Medida: 400px * 361px</div>
@@ -80,7 +80,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="estadoEditar">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estadoEditar" id="estadoEditar" class="form-control" required>

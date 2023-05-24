@@ -18,11 +18,11 @@
 
 
 
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="col-12">
                                 <hr>
                             </div>
 
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="col-12">
                                 <div class="card">
                                     <div class="card-header">
                                         <p class="card-title text-center mb-0"> <i class="fa fa-plus"></i>  Agregar nueva sección</p>
@@ -30,7 +30,7 @@
                                     <div class="card-body">
                                         <div class="row">
 
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="col-12">
                                                 <div class="form-group">
                                                     <select name="typeSection" id="typeSection" class="form-control">
                                                         <option value="" hidden>[--- Seleccione ---] </option>
@@ -43,7 +43,7 @@
                                             </div>
 
 
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" id="quantityForSectionDiv" style="display: none">
+                                            <div class="col-12" id="quantityForSectionDiv" style="display: none">
                                                 <div class="form-group">
                                                     <label for="quantityForSection">Cantidad: <span class="text-danger">(*)</span></label>
                                                     <select name="quantityForSection" id="quantityForSection" class="form-control">
@@ -55,7 +55,7 @@
                                                 </div>
                                             </div>
 
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                                            <div class="col-12 text-right">
                                                 <button class="btn btn-primary" type="button" id="addSection" disabled> <i class="fa fa-plus"></i> Agregar</button>
                                             </div>
 
@@ -82,31 +82,31 @@
     <template id="previewsTemplate">
 
         <div id="preview-1" class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+            <div class="col-12 text-center">
                 <img src="{{ asset('panel/default/section-home-preview-1.png') }}" style="width: 50%" >
             </div>
         </div>
 
         <div id="preview-2" class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+            <div class="col-12 text-center">
                 <img src="{{ asset('panel/default/section-home-preview-2.png') }}" style="width: 50%" >
             </div>
         </div>
 
         <div id="preview-3" class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+            <div class="col-12 text-center">
                 <img src="{{ asset('panel/default/section-home-preview-3.png') }}" style="width: 50%" >
             </div>
         </div>
 
         <div id="preview-4" class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+            <div class="col-12 text-center">
                 <img src="{{ asset('panel/default/section-home-preview-4.png') }}" style="width: 50%" >
             </div>
         </div>
 
         <div id="preview-5" class="row">
-            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+            <div class="col-12 text-center">
                 <img src="{{ asset('panel/default/section-home-preview-5.png') }}" style="width: 50%" >
             </div>
         </div>
@@ -114,7 +114,7 @@
     </template>
 
     <template id="sectionTemplate">
-        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 headerSection mb-3">
+        <div class="col-12 headerSection mb-3">
             <div class="card">
                 <div class="card-header" >
                     <button class="btn" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
@@ -129,21 +129,21 @@
                             <input type="hidden" name="idsection_home" id="idsection_home">
                             <input type="hidden" name="tipo" id="tipo">
 
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="col-12">
                                 <div class="form-group">
                                     <label for="titulo">Título: <span class="text-danger">(*)</span></label>
                                     <input type="text" name="titulo" id="titulo" class="form-control" placeholder="Título de la sección" required>
                                 </div>
                             </div>
 
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="col-12">
                                 <div class="form-group">
                                     <label for="subtitulo">Sub Título: </label>
                                     <input type="text" name="subtitulo" id="subtitulo" class="form-control" placeholder="Subtitulo de la sección" >
                                 </div>
                             </div>
 
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                            <div class="col-12">
                                 <div class="form-group">
                                     <label for="posicion">Posición  de la sección: <span class="text-danger">(*)</span> </label>
                                     <input type="number" name="posicion" id="posicion" class="form-control" placeholder="Posición de la sección" value="1" min="1" step="1" >
@@ -159,7 +159,7 @@
 
                                 @for($i=1; $i<= $numberImages; $i++)
                                     <input type="hidden" id="idsection_home_link_{{ $i }}"  value="" name="idsection_home_link[]">
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 showOptionImage">
+                                    <div class="col-12 showOptionImage">
                                         <div class="row">
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                                 <div class="form-group">
@@ -171,25 +171,25 @@
                                             </div>
                                             <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6">
                                                 <div class="row">
-                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="col-12">
                                                         <div class="form-group">
                                                             <label for="posicion_i_{{ $i }}">Posición: <span class="text-danger">(*)</span></label>
                                                             <input type="text" name="posicion_i[]" id="posicion_i_{{ $i }}" class="form-control" value="{{ $i }}" readonly>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="col-12">
                                                         <div class="form-group">
                                                             <label for="textoBoton__{{ $i }}">Texto: <span class="text-danger">(*)</span></label>
                                                             <input type="text" name="textoBoton[]" id="textoBoton_{{ $i }}" class="form-control" placeholder="Texto" required>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="col-12">
                                                         <div class="form-group">
                                                             <label for="link_{{ $i }}">URL: <span class="text-danger">(*)</span></label>
                                                             <input type="text" name="link[]" id="link_{{ $i }}" class="form-control" placeholder="http://example.com" required>
                                                         </div>
                                                     </div>
-                                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                                    <div class="col-12">
                                                         <div class="form-group">
                                                             <label for="contenido_{{ $i }}">Contenido:</label>
                                                             <textarea name="contenido[]" id="contenido_{{ $i }}" class="form-control" rows="3" ></textarea>
@@ -208,9 +208,9 @@
                             <div id="contentProducts" class="">
                                 @for($i=1; $i<= $numberImages; $i++)
                                     <input type="hidden" id="idsection_home_producto_{{ $i }}"  value="" name="idsection_home_producto[]">
-                                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 showOptionProduct">
+                                    <div class="col-12 showOptionProduct">
                                         <div class="row">
-                                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                            <div class="col-12">
                                                 <div class="form-group">
                                                     <label for="producto_{{ $i }}" >Producto #{{ $i }}:</label>
                                                     <select name="productos[]" id="producto_{{ $i }}" class="form-control" required>
@@ -231,9 +231,9 @@
 
                             <div id="contentSlider" class="">
 
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="col-12">
                                     <div class="row">
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-md-6 col-12">
                                             <h2>Productos con el Tag : </h2>
                                             <div class="form-check">
                                                 <input class="form-check-input" type="checkbox" name="nuevo" id="nuevo" value="1">
@@ -249,7 +249,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="idmarca">Marca:</label>
                                                 <select name="idmarca" id="idmarca" class="form-control" title="Seleccione una marca">
@@ -286,7 +286,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="col-12">
                                     <hr>
                                 </div>
 
@@ -295,7 +295,7 @@
 
 
                             <div id="contentHtml" class="">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                <div class="col-12">
                                     <div class="form-group">
                                         <label for="contenido">Contenido: <span class="text-danger">(*)</span></label>
                                         <textarea class="form-control" rows="3" required></textarea>
@@ -303,7 +303,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
+                            <div class="col-12 text-center">
                                 <div class="form-group" id="btnsForStore">
                                     <button class="btn btn-success" type="submit" id="saveSection"> <i class="fa fa-save"></i> Guardar</button>
                                     <button class="btn btn-danger" type="button" id="cancelSection"> <i class="fa fa-times"></i> Cancelar</button>

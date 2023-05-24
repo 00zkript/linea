@@ -14,14 +14,14 @@
                     @method('PUT')
                     <input type="hidden" name="idcategoria" id="idcategoria" required>
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="nivelEditar">Nivel: <span class="text-danger">(*)</span></label>
                                 <select  name="nivelEditar" id="nivelEditar" required class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -33,8 +33,8 @@
                                 </select>
                             </div>
                         </div>
-
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+col-md-6
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="parienteEditar">Pariente: </label>
                                 <select  name="parienteEditar" id="parienteEditar" class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -60,14 +60,14 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="colorEditar">Color: </label>
                                 <input type="color" name="colorEditar" id="colorEditar" class="form-control" required value="#000000">
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="display: none">
+                        <div class="col-12" style="display: none">
                             <div class="form-group">
                                 <label for="marcaEditar">Marcas relaciondas: </label>
                                 <select  name="marcaEditar[]" id="marcaEditar" multiple class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -79,14 +79,14 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="descripcionEditar">Descripción:</label>
                                 <textarea  id="descripcionEditar" class="descripcionEditar"></textarea>
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="estadoEditar">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estadoEditar" id="estadoEditar" class="form-control" required>

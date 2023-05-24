@@ -11,43 +11,36 @@
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                    <div class="    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Departamento:</p>
+                    <div class="rtamento:</p>
                         <p id="txtDepartamento"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Provincia:</p>
+                    <div class="incia:</p>
                         <p id="txtProvincia"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Distrito:</p>
+                    <div class="rito:</p>
                         <p id="txtDistrito"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Precio:</p>
+                    <div class="io:</p>
                         <p id="txtPrecio"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Descripción:</p>
+                    <div class="ripción:</p>
                         <p id="txtDescripcion"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Estado:</p>
+                    <div class="do:</p>
                         <p id="txtEstado"></p>
                     </div>
 

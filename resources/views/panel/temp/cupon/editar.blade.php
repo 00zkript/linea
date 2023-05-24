@@ -14,7 +14,7 @@
                     @method('PUT')
                     <input type="hidden" name="idcupon" id="idcupon" required>
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
@@ -36,7 +36,7 @@
                         </div>
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="tipoDescuentoEditar">Tipo de descuento: <span class="text-danger">(*)</span></label>
                                 <select name="tipoDescuentoEditar" id="tipoDescuentoEditar" class="form-control" required>
@@ -49,49 +49,49 @@
 
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" style="display: none" id="iptDescuentoMontoEditar">
+                        <div class="col-md-6 col-12" style="display: none" id="iptDescuentoMontoEditar">
                             <div class="form-group">
                                 <label for="descuentoMontoEditar">Descuento Monto:</label>
                                 <input type="number" name="descuentoMontoEditar" id="descuentoMontoEditar" value="0" step="any" class="form-control" min="0" placeholder="{{ $monedaGeneral->format('0.00') }}">
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" style="display: none" id="iptDescuentoPorcentajeEditar">
+                        <div class="col-md-6 col-12" style="display: none" id="iptDescuentoPorcentajeEditar">
                             <div class="form-group">
                                 <label for="descuentoPorcentajeEditar">Descuento Porcentaje:</label>
                                 <input type="number" name="descuentoPorcentajeEditar" id="descuentoPorcentajeEditar" step="any" value="0" class="form-control" min="0" placeholder="%">
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
+                        <div class="col-md-6 col-12" >
                             <div class="form-group">
                                 <label for="cantidadEditar">Cantidad de cupones: <span class="text-danger">(*)</span></label>
                                 <input type="number" name="cantidadEditar" id="cantidadEditar" required value="1" class="form-control" min="0" placeholder="Cantidad">
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12" >
+                        <div class="col-md-6 col-12" >
                             <div class="form-group">
                                 <label for="montoMinimoEditar">Monto minimo para que se aplique el cupón:</label>
                                 <input type="number" name="montoMinimoEditar" id="montoMinimoEditar" value="0" step="any"  class="form-control" min="0" placeholder="{{ $monedaGeneral->format('0.00') }}">
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="fechaInicioEditar">Fecha Inicio:  <span class="text-danger">(*)</span></label>
                                 <input value="{{ now()->format('d/m/Y') }}" required data-mask="00/00/0000" placeholder="00/00/0000" type="text" name="fechaInicioEditar" id="fechaInicioEditar" class="form-control  datepicker">
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="fechaExpiracionEditar">Fecha Expiración:  <span class="text-danger">(*)</span></label>
                                 <input required data-mask="00/00/0000" placeholder="00/00/0000" type="text" name="fechaExpiracionEditar" id="fechaExpiracionEditar" class="form-control  datepicker">
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="estadoEditar">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estadoEditar" id="estadoEditar" class="form-control" required>

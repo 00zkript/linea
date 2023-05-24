@@ -12,21 +12,21 @@
                 <form id="frmCrear" autocomplete="off">
                     @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="nombres">Nombres: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="nombres" id="nombres"  class="form-control" maxlength="250" required>
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="correo">Correo: <span class="text-danger">(*)</span></label>
                                 <input type="email" name="correo" id="correo"  class="form-control" maxlength="250" required>
@@ -66,7 +66,7 @@
                         </div>
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="foto" class="d-block">Foto: <span class="text-danger">(*)</span></label>
                                 <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Medida: 400px * 361px</div>
@@ -77,7 +77,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="estado">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estado" id="estado" class="form-control" required>

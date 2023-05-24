@@ -26,8 +26,7 @@
 
 
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="contenido">Contenido:</label>
                                                 <textarea class="form-control" id="contenido" name="contenido">{{ $terminosCondiciones->contenido}}</textarea>
                                             </div>

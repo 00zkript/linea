@@ -12,13 +12,13 @@
                 <form id="frmCrear" autocomplete="off">
                     @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="iddepartamento">Departamento: </label>
                                 <select  name="iddepartamento" id="iddepartamento" class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -31,7 +31,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="idprovincia">Provincia: </label>
                                 <select  name="idprovincia" id="idprovincia" class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -41,7 +41,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="iddistrito">Distrito: </label>
                                 <select  name="iddistrito" id="iddistrito" class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -52,7 +52,7 @@
                         </div>
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="precio">Precio:</label>
                                 <input id="precio" name="precio" type="number" min="0" step="any" class="form-control" placeholder="{{ $monedaGeneral->format('0.00') }}">
@@ -60,21 +60,21 @@
                         </div>
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="descripcion">Descripción:</label>
                                 <textarea  id="descripcion" class="descripcion"></textarea>
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="restriccion">Restriccion:</label>
                                 <textarea  id="restriccion" class="restriccion"></textarea>
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="estado">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estado" id="estado" class="form-control" required>

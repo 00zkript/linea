@@ -13,11 +13,9 @@
                     <input type="hidden" name="idblog_categoria" required>
                     @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <p>¿Esta seguro de <b class="text-danger">inhabilitar</b> este registro?</p>
+                        <div class="¿Esta seguro de <b class="text-danger">inhabilitar</b> este registro?</p>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                            <hr>
+                        <div class="        <hr>
                             <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Si, acepto</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
 

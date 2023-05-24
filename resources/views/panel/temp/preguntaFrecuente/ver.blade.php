@@ -11,28 +11,24 @@
             <div class="modal-body">
 
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                        <div class="        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                             <hr>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                <p class="text-capitalize">pregunta:</p>
+                        <div class=" <p class="text-capitalize">pregunta:</p>
                                 <p id="preguntaShow"></p>
                             <hr>
                         </div>
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <p class="text-capitalize">respuesta:</p>
+                        <div class="class="text-capitalize">respuesta:</p>
                             <p id="respuestaShow"></p>
                             <hr>
                         </div>
 
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <p class="text-capitalize">Estado:</p>
+                        <div class="class="text-capitalize">Estado:</p>
                             <p id="estadoShow"></p>
                         </div>
 

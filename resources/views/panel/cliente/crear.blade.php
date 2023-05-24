@@ -12,7 +12,7 @@
                     <form id="frmCrear" autocomplete="off">
                         @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
@@ -21,45 +21,45 @@
 
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="codigo">Código: </label>
                                 <input type="text" name="codigo" id="codigo" class="form-control">
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="nombres">Nombres: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="nombres" id="nombres" required class="form-control">
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="apellidos">Apellidos: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="apellidos" id="apellidos" required class="form-control">
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="correo">Correo: <span class="text-danger">(*)</span></label>
                                 <input type="email" name="correo" id="correo" required class="form-control">
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="telefono">Teléfono: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="telefono" id="telefono" required class="form-control soloNumeros">
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="tipoDocumentoIdentidad">Documento de identidad: <span class="text-danger">(*)</span></label>
                                 <select name="tipoDocumentoIdentidad" id="tipoDocumentoIdentidad" class="form-control" required>
@@ -73,21 +73,21 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="numeroDocumentoIdentidad">N° de Documento: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="numeroDocumentoIdentidad" id="numeroDocumentoIdentidad" required class="form-control soloNumeros"  minlength="8" maxlength="8">
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="fechaNacimiento">Fecha de nacimiento:</label>
                                 <input type="date" class="form-control" name="fechaNacimiento" id="fechaNacimiento" placeholder="Fecha de nacimiento" >
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="sexo">Sexo:</label>
                                 <select class="form-control" name="sexo" id="sexo" >
@@ -99,7 +99,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="departamento">Departamento:</label>
                                 <select class="form-control" name="departamento" id="departamento" title="Departamento" >
@@ -111,7 +111,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="provincia">Provincia:</label>
                                 <select class="form-control" name="provincia" id="provincia" title="Provincia" >
@@ -120,7 +120,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="distrito">Distrito:</label>
                                 <select class="form-control" name="distrito" id="distrito" title="Distrito" >
@@ -128,14 +128,14 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="direccion">Direción:</label>
                                 <textarea class="form-control" name="direccion" id="direccion" placeholder="Direción" rows="5" ></textarea>
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="nota">Nota:</label>
                                 <textarea class="form-control" name="nota" id="nota" placeholder="Nota" rows="10" ></textarea>
@@ -143,7 +143,7 @@
                         </div>
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="imagen">Imagen:</label>
                                 <input type="file" id="imagen" name="imagen">
@@ -153,7 +153,7 @@
 
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="estado">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estado" id="estado" class="form-control" required>

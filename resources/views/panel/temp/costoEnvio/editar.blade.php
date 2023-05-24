@@ -14,14 +14,14 @@
                     @method('PUT')
                     <input type="hidden" name="idcosto_envio" id="idcosto_envio" required>
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="iddepartamentoEditar">Departamento: </label>
                                 <select  name="iddepartamentoEditar" id="iddepartamentoEditar" class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -34,7 +34,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="idprovinciaEditar">Provincia: </label>
                                 <select  name="idprovinciaEditar" id="idprovinciaEditar" class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -44,7 +44,7 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="iddistritoEditar">Distrito: </label>
                                 <select  name="iddistritoEditar" id="iddistritoEditar" class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -55,28 +55,28 @@
                         </div>
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="precioEditar">Precio:</label>
                                 <input id="precioEditar" name="precioEditar" type="number" min="0" step="any" class="form-control" placeholder="{{ $monedaGeneral->format('0.00') }}">
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="descripcionEditar">Descripción:</label>
                                 <textarea  id="descripcionEditar" class="descripcionEditar"></textarea>
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="restriccionEditar">Restriccion:</label>
                                 <textarea  id="restriccionEditar" class="restriccionEditar"></textarea>
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="estadoEditar">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estadoEditar" id="estadoEditar" class="form-control" required>

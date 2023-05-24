@@ -27,78 +27,67 @@
 
 
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="correo" >Correo:</label>
                                                 <input type="email" name="correo" id="correo" class="form-control" value="{{ $contacto->correo }}">
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="celular" >Celular:</label>
                                                 <textarea name="celular" id="celular" rows="3" class="form-control">{{ $contacto->celular}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="whatsapp" >Mensaje general Whatsapp:</label>
                                                 <textarea name="whatsapp" id="whatsapp" rows="3" class="form-control">{{ $contacto->whatsapp}}</textarea>
                                             </div>
                                         </div>
 
-                                         <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                         <div class="             <div class="form-group">
                                                 <label for="telefono" >Teléfono:</label>
                                                 <textarea name="telefono" id="telefono" rows="3" class="form-control">{{ $contacto->telefono}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="facebook" >Link Facebook:</label>
                                                 <textarea name="facebook" id="facebook" rows="3" class="form-control">{{ $contacto->facebook}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="instagram" >Link Instagram:</label>
                                                 <textarea name="instagram" id="instagram" rows="3" class="form-control">{{ $contacto->instagram}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="twitter" >Link Twitter:</label>
                                                 <textarea name="twitter" id="twitter" rows="3" class="form-control">{{ $contacto->twitter}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="youtube" >Link Youtube:</label>
                                                 <textarea name="youtube" id="youtube" rows="3" class="form-control">{{ $contacto->youtube}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="linkendin" >Link Linkendin:</label>
                                                 <textarea name="linkendin" id="linkendin" rows="3" class="form-control">{{ $contacto->linkendin}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="direccion" >Dirección:</label>
                                                 <textarea name="direccion" id="direccion" rows="3" class="form-control">{{ $contacto->direccion}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="google_maps" >Script Google Maps:</label>
                                                 <textarea name="google_maps" id="google_maps" rows="6" class="form-control">{{ $contacto->google_maps}}</textarea>
                                             </div>
@@ -107,8 +96,7 @@
 
 
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="horario" >Horario de atencíon:</label>
                                                 <textarea id="horario"  class="form-control">{{ $contacto->horario}}</textarea>
                                             </div>

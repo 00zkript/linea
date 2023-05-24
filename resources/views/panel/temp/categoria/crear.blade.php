@@ -12,13 +12,13 @@
                 <form id="frmCrear" autocomplete="off">
                     @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
 
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="nivel">Nivel: <span class="text-danger">(*)</span></label>
                                 <select  name="nivel" id="nivel" required class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -30,8 +30,8 @@
                                 </select>
                             </div>
                         </div>
-
-                        <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+col-md-6
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="pariente">Pariente: </label>
                                 <select  name="pariente" id="pariente" class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -57,14 +57,14 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="color">Color: </label>
                                 <input type="color" name="color" id="color" class="form-control" required value="#000000">
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12" style="display: none">
+                        <div class="col-12" style="display: none">
                             <div class="form-group">
                                 <label for="marca">Marcas relaciondas: </label>
                                 <select  name="marca[]" id="marca" multiple class="form-control selectpicker show-tick" title="[--Seleccione--]"
@@ -76,14 +76,14 @@
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="descripcion">Descripción:</label>
                                 <textarea  id="descripcion" class="descripcion"></textarea>
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="estado">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estado" id="estado" class="form-control" required>

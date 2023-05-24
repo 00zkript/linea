@@ -12,51 +12,44 @@
                 <form id="frmCrear" autocomplete="off">
                     @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+                        <div class="        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="nombre">Nombre: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="nombre" id="nombre" required class="form-control" maxlength="250" placeholder="Nombre">
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="telefono">Telefono: </label>
                                 <input type="text" name="telefono" id="telefono" class="form-control" maxlength="250" placeholder="Telefono">
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="whatsapp">Whatsapp: </label>
                                 <input type="text" name="whatsapp" id="whatsapp" class="form-control" maxlength="15" placeholder="Whatsapp">
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="correo">Correo: </label>
                                 <input type="email" name="correo" id="correo" class="form-control" placeholder="Correo">
                             </div>
                         </div>
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="direccion">Direccion: <span class="text-danger">(*)</span></label>
                                 <textarea  id="direccion" name="direccion" class="form-control" rows="3" required placeholder="Av. siempre viva 123"></textarea>
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="estado">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estado" id="estado" class="form-control" required>
                                     <option value="1" selected>Habilitado</option>

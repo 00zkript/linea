@@ -14,8 +14,7 @@
                     @method('PUT')
                     <input type="hidden" name="idpregunta_frecuente" id="idpregunta_frecuente" required>
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                            <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
+                        <div class="        <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
@@ -23,15 +22,13 @@
 
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="preguntaEditar">Pregunta: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="preguntaEditar" id="preguntaEditar" required class="form-control">
                             </div>
                         </div>
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="respuestaEditar">Respuesta: <span class="text-danger">(*)</span></label>
                                 <textarea id="respuestaEditar" cols="30" rows="10" class="form-control" placeholder="Respuesta"></textarea>
                             </div>
@@ -43,8 +40,7 @@
 
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="estadoEditar">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estadoEditar" id="estadoEditar" class="form-control" required>
                                     <option value="1" selected>Habilitado</option>

@@ -14,7 +14,7 @@
                     @method('PUT')
                     <input type="hidden" name="idbanner" id="idbanner" required>
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
@@ -104,7 +104,7 @@
 
                             <div class="col-12 mt-3 bg-blue"> <h3 class="text-center">Contenido</h3> </div>
 
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
+                            <div class="col-12 mt-3">
                                 <div class="form-group">
                                     <label for="nombreEditar">Título: </label>
                                     <input type="text" id="nombreEditar" name="nombreEditar" class="form-control" placeholder="Título">
@@ -113,7 +113,7 @@
 
 
 
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
+                            <div class="col-12 mt-3">
                                 <div class="form-group">
                                     <label for="contenidoEditar">Contenido: </label>
                                     <textarea  id="contenidoEditar" class="contenido"></textarea>
@@ -125,7 +125,7 @@
 
                             <div class="col-12 mt-3 bg-blue"> <h3 class="text-center">Redireccionamiento</h3> </div>
 
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
+                            <div class="col-12 mt-3">
                                 <div class="form-group">
                                     <label for="botonText">Texo botón de enlace (solo si tiene Contenido): </label>
                                     <input type="text" id="botonTextEditar" name="botonTextEditar" class="form-control" placeholder="Texto botón">
@@ -157,7 +157,7 @@
 
                             <div class="col-12 mt-3 bg-blue"> <h3 class="text-center">Imagen</h3> </div>
 
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
+                            <div class="col-md-6 col-12 mt-3">
                                 <div class="form-group">
                                     <label for="imagenEditar" class="d-block">Imagen PC: <span class="text-danger">(*)</span></label>
                                     <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Medida: 1920px * 785px</div>
@@ -168,7 +168,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 mt-3">
+                            <div class="col-md-6 col-12 mt-3">
                                 <div class="form-group">
                                     <label for="imagenMovilEditar" class="d-block">Imagen Móvil: <span class="text-danger">(*)</span></label>
                                     <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Medida: 800px * 884px</div>
@@ -185,7 +185,7 @@
 
                             <div class="col-12 mt-3 bg-blue"> <h3 class="text-center">Video</h3> </div>
 
-                            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
+                            <div class="col-12 mt-3">
                                 <div class="form-group">
                                     <label for="videoEditar" class="d-block">Video: <span class="text-danger">(*)</span></label>
                                     <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Medida: 1920px * 785px</div>
@@ -208,7 +208,7 @@
 
 
 
-                        {{--<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        {{--<div class="col-12">
                             <div class="form-group">
                                 <label for="video">Video: </label>
                                 <input type="text" id="video" name="video" class="form-control" placeholder="https://www.youtube.com/embed/">
@@ -219,7 +219,7 @@
 
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 mt-3">
+                        <div class="col-12 mt-3">
                             <div class="form-group">
                                 <label for="estadoEditar">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estadoEditar" id="estadoEditar" class="form-control" required>

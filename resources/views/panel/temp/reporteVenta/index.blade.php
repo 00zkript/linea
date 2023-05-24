@@ -71,13 +71,13 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-md-12">
+                                <div class="col-md-6 col-md-12">
                                     <div class="form-group">
                                         <label for="desde">Desde:</label>
                                         <input value="" required data-mask="00/00/0000" placeholder="00/00/0000" type="text" name="desde" id="desde" class="form-control  datepicker">
                                     </div>
                                 </div>
-                                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-md-12">
+                                <div class="col-md-6 col-md-12">
                                     <div class="form-group">
                                         <label for="hasta">Hasta:</label>
                                         <input value="" required data-mask="00/00/0000" placeholder="00/00/0000" type="text" name="hasta" id="hasta" class="form-control  datepicker">

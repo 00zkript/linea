@@ -24,14 +24,14 @@
 
                                     <div class="row">
 
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="nombre" >Nombre empresa:</label>
                                                 <input placeholder="Nombre empresa" type="text" class="form-control" name="nombre" id="nombre" value="{{ $empresa->nombre}}">
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="ruc" >Ruc:</label>
                                                 <input placeholder="RUC" type="text" class="form-control" name="ruc" id="ruc"  value="{{ $empresa->ruc}}">
@@ -39,7 +39,7 @@
                                         </div>
 
 
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="igv" >IGV (%):</label>
                                                 <input placeholder="18" type="text" class="form-control" name="igv" id="igv"  value="{{ $empresa->igv}}">
@@ -47,7 +47,7 @@
                                         </div>
 
 
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="idmoneda" >Moneda por defecto:</label>
                                                 <select class="form-control" name="idmoneda" id="idmoneda">
@@ -60,14 +60,14 @@
 
 
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="col-12">
                                             <div class="form-group">
                                                 <label for="cuentaBancaria">Cuentas Bancarias:</label>
                                                <textarea class="form-control" id="cuentaBancaria" name="cuentaBancaria">{{ $empresa->cuenta_bancaria}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                                        <div class="col-12">
                                             <div class="form-group">
                                                 <label for="informacionAdicional">Información adicional:</label>
                                                 <textarea class="form-control" id="informacionAdicional" name="informacionAdicional">{{ $empresa->informacion_adicional}}</textarea>
@@ -75,7 +75,7 @@
                                         </div>
 
 
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="favicon" class="d-block">Favicon:</label>
                                                 <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Medida: 250px * 250px</div>
@@ -86,7 +86,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                                        <div class="col-md-6 col-12">
                                             <div class="form-group">
                                                 <label for="logo" class="d-block">Logo:</label>
                                                 <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Medida: 384px * 134px</div>

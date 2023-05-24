@@ -24,57 +24,49 @@
 
                                     <div class="row">
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="titulo_general" >Título General:</label>
                                                 <input type="text" name="titulo_general" class="form-control" value="{{ $seo->titulo_general }}">
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="autor" >Autor:</label>
                                                 <textarea name="autor" id="autor" cols="30" rows="3" class="form-control">{{ $seo->autor}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="descripcion" >Descripción:</label>
                                                 <textarea name="descripcion" id="descripcion" cols="30" rows="3" class="form-control">{{ $seo->descripcion}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="keywords" >Keywords:</label>
                                                 <textarea name="keywords" id="keywords" cols="30" rows="3" class="form-control">{{ $seo->keywords}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="googleAnalytics" >Google Analytics:</label>
                                                 <textarea name="googleAnalytics" id="googleAnalytics" cols="30" rows="3" class="form-control">{{ $seo->googleAnalytics}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="googleTagManager" >Google TagManager:</label>
                                                 <textarea name="googleTagManager" id="googleTagManager" cols="30" rows="3" class="form-control">{{ $seo->googleTagManager}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="facebookPixel" >Facebook Pixel:</label>
                                                 <textarea name="facebookPixel" id="facebookPixel" cols="30" rows="3" class="form-control">{{ $seo->facebookPixel}}</textarea>
                                             </div>
                                         </div>
 
-                                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                            <div class="form-group">
+                                        <div class="             <div class="form-group">
                                                 <label for="imagenCompartir" >Imagen para compartir en redes:</label>
                                                 <div class="alert alert-info">
                                                     <p class="my-0"><i class="fa fa-exclamation-triangle"></i> Se recomienda imágenes de 1200 x 628 pixeles.</p>

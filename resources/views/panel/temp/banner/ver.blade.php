@@ -11,53 +11,45 @@
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                    <div class="    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                         <hr>
                     </div>
 
 
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Título:</p>
+                    <div class="lo:</p>
                         <p id="tituloShow"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Sub Título:</p>
+                    <div class="Título:</p>
                         <p id="subtituloShow"></p>
                         <hr>
                     </div>
 
 
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Contenido:</p>
+                    <div class="enido:</p>
                         <p id="contenidoShow"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Ruta:</p>
+                    <div class=":</p>
                         <p id="rutaShow"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>posición:</p>
+                    <div class="ción:</p>
                         <p id="posicionShow"></p>
                         <hr>
                     </div>
 
-                    {{--<div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Video:</p>
+                    {{--<div class="o:</p>
                         <p id="videoShow"></p>
                         <hr>
                     </div>--}}
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-center">
-                        <p>Imagen:</p>
+                    <div class="     <p>Imagen:</p>
                         <img style="width: 130px;height: 130px" class="img-thumbnail" src="" id="imagenShow">
                         <hr>
                     </div>
@@ -65,8 +57,7 @@
 
 
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Estado:</p>
+                    <div class="do:</p>
                         <p id="estadoShow"></p>
                     </div>
 

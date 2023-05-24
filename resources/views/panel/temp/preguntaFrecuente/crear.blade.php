@@ -12,8 +12,7 @@
                     <form id="frmCrear" autocomplete="off">
                         @csrf
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+                        <div class="        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
@@ -21,8 +20,7 @@
 
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="pregunta">Pregunta: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="pregunta" id="pregunta" required class="form-control">
                             </div>
@@ -30,16 +28,14 @@
 
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="respuesta">Respuesta: <span class="text-danger">(*)</span></label>
                                 <textarea id="respuesta" cols="30" rows="10" class="form-control" placeholder="Respuesta"></textarea>
                             </div>
                         </div>
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                            <div class="form-group">
+                        <div class="v class="form-group">
                                 <label for="estado">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estado" id="estado" class="form-control" required>
                                     <option value="1" selected>Habilitado</option>

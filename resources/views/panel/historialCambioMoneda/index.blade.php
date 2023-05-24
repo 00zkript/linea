@@ -9,7 +9,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-md-12">
+                            <div class="col-md-6 col-md-12">
                                 <div class="form-group">
                                     <label for="cantidadRegistros">Cantidad de registros</label>
                                     <select name="cantidadRegistros" id="cantidadRegistros" class="form-control form-control-sm">

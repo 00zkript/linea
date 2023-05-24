@@ -11,47 +11,40 @@
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
-                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                    <div class="    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                         <hr>
                     </div>
 
 
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Nombre:</p>
+                    <div class="re:</p>
                         <p id="txtNombre"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Telfono:</p>
+                    <div class="ono:</p>
                         <p id="txtTelefono"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Whatsapp:</p>
+                    <div class="sapp:</p>
                         <p id="txtWhatsapp"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Correo:</p>
+                    <div class="eo:</p>
                         <p id="txtCorreo"></p>
                         <hr>
                     </div>
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Direccion:</p>
+                    <div class="ccion:</p>
                         <p id="txtDireccion"></p>
                         <hr>
                     </div>
 
 
 
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                        <p>Estado:</p>
+                    <div class="do:</p>
                         <p id="txtEstado"></p>
                     </div>
 

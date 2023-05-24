@@ -14,7 +14,7 @@
                     @method('PUT')
                     <input type="hidden" name="idmoneda" id="idmoneda" required>
                     <div class="row">
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 text-right">
+                        <div class="col-12 text-right">
                             <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
@@ -23,7 +23,7 @@
 
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="nombreEditar">Nombre: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="nombreEditar" id="nombreEditar" required class="form-control">
@@ -31,7 +31,7 @@
                         </div>
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="monedaEditar">Moneda: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="monedaEditar" id="monedaEditar" required class="form-control">
@@ -41,7 +41,7 @@
 
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="simboloEditar">Símbolo: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="simboloEditar" id="simboloEditar" required class="form-control">
@@ -52,7 +52,7 @@
 
 
 
-                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12">
+                        <div class="col-md-6 col-12">
                             <div class="form-group">
                                 <label for="cambioEditar"> Cambio: <span class="text-danger">(*)</span></label>
                                 <div class="input-group">
@@ -77,7 +77,7 @@
 
 
 
-                        <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
+                        <div class="col-12">
                             <div class="form-group">
                                 <label for="estadoEditar">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estadoEditar" id="estadoEditar" class="form-control" required>
