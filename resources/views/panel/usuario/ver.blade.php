@@ -11,42 +11,50 @@
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                    <div class="col-12 text-right">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                         <hr>
                     </div>
 
-                    <div class="</p>
+                    <div class="col-12">
+                        <p>Rol:</p>
                         <p id="txtRol"></p>
                         <hr>
                     </div>
 
-                    <div class="rio:</p>
+                    <div class="col-12">
+                        <p>Usuario:</p>
                         <p id="txtUsuario"></p>
                         <hr>
                     </div>
 
 
-                    <div class="res:</p>
+                    <div class="col-12">
+                        <p>Nombres:</p>
                         <p id="txtNombres"></p>
                         <hr>
                     </div>
 
-                    <div class="lidos:</p>
+                    <div class="col-12">
+                        <p>Apellidos:</p>
                         <p id="txtApellidos"></p>
                         <hr>
                     </div>
 
-                    <div class="eo:</p>
+                    <div class="col-12">
+                        <p>Correo:</p>
                         <p id="txtCorreo"></p>
                         <hr>
                     </div>
 
-                    <div class="     <p>Foto:</p>
+                    <div class="col-12 text-center">
+                        <p>Foto:</p>
                         <img style="width: 130px;height: 130px" class="img-thumbnail" src="" id="txtFoto">
                         <hr>
                     </div>
 
-                    <div class="do:</p>
+                    <div class="col-12">
+                        <p>Estado:</p>
                         <p id="txtEstado"></p>
                     </div>
 

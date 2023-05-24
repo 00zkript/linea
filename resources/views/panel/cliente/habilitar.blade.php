@@ -13,9 +13,11 @@
                     <input type="hidden" name="idcliente" required>
                     @csrf
                     <div class="row">
-                        <div class="¿Está seguro de <b class="text-success">habilitar</b> este registro?</p>
+                        <div class="col-12">
+                            <p>¿Está seguro de <b class="text-success">habilitar</b> este registro?</p>
                         </div>
-                        <div class="        <hr>
+                        <div class="col-12 text-right">
+                            <hr>
                             <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Sí, acepto</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
 

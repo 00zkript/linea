@@ -12,7 +12,8 @@
                     <form id="frmCrear" autocomplete="off">
                         @csrf
                     <div class="row">
-                        <div class="        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+                        <div class="col-12 text-right">
+                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
@@ -20,14 +21,16 @@
 
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="nombre">Nombre: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="nombre" id="nombre" required class="form-control"  placeholder="Nombre">
                             </div>
                         </div>
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="contenido">Contenido: <span class="text-danger">(*)</span></label>
                                 <textarea id="contenido" cols="30" rows="10" class="form-control" placeholder="Contenido"></textarea>
                             </div>
@@ -36,7 +39,8 @@
 
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="imagen" >Imagen:</label>
                                 <div class="file-loading">
                                     <input  id="imagen" name="imagen" type="file" class="file" >
@@ -48,7 +52,8 @@
 
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="estado">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estado" id="estado" class="form-control" required>
                                     <option value="1" selected>Habilitado</option>

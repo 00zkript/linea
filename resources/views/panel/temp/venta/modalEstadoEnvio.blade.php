@@ -13,7 +13,8 @@
                     <input type="hidden" name="idventa" required>
                     @csrf
                     <div class="row">
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="idventa_envio_estado">ESTADO DE ENVIO:</label>
                                 <select name="idestado_envio" id="idestado_envio" class="form-control" required>
                                     <option value="" selected hidden>[--SELECCION--]</option>
@@ -23,7 +24,8 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="        <hr>
+                        <div class="col-12 text-right">
+                            <hr>
                             <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modficar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
 

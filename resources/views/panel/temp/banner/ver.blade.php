@@ -11,45 +11,53 @@
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                    <div class="col-12 text-right">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                         <hr>
                     </div>
 
 
 
-                    <div class="lo:</p>
+                    <div class="col-12">
+                        <p>Título:</p>
                         <p id="tituloShow"></p>
                         <hr>
                     </div>
 
-                    <div class="Título:</p>
+                    <div class="col-12">
+                        <p>Sub Título:</p>
                         <p id="subtituloShow"></p>
                         <hr>
                     </div>
 
 
 
-                    <div class="enido:</p>
+                    <div class="col-12">
+                        <p>Contenido:</p>
                         <p id="contenidoShow"></p>
                         <hr>
                     </div>
 
-                    <div class=":</p>
+                    <div class="col-12">
+                        <p>Ruta:</p>
                         <p id="rutaShow"></p>
                         <hr>
                     </div>
 
-                    <div class="ción:</p>
+                    <div class="col-12">
+                        <p>posición:</p>
                         <p id="posicionShow"></p>
                         <hr>
                     </div>
 
-                    {{--<div class="o:</p>
+                    {{--<div class="col-12">
+                        <p>Video:</p>
                         <p id="videoShow"></p>
                         <hr>
                     </div>--}}
 
-                    <div class="     <p>Imagen:</p>
+                    <div class="col-12 text-center">
+                        <p>Imagen:</p>
                         <img style="width: 130px;height: 130px" class="img-thumbnail" src="" id="imagenShow">
                         <hr>
                     </div>
@@ -57,7 +65,8 @@
 
 
 
-                    <div class="do:</p>
+                    <div class="col-12">
+                        <p>Estado:</p>
                         <p id="estadoShow"></p>
                     </div>
 

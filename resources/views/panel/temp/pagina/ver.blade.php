@@ -11,37 +11,44 @@
             <div class="modal-body">
 
                     <div class="row">
-                        <div class="        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                        <div class="col-12 text-right">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                             <hr>
                         </div>
 
-                        <div class=" <p>Título:</p>
+                        <div class="col-12">
+                                <p>Título:</p>
                                 <p id="tituloShow"></p>
                             <hr>
                         </div>
 
-                        <div class="Categoria:</p>
+                        <div class="col-12">
+                            <p>Categoria:</p>
                             <p id="paginaCategoriaShow"></p>
                             <hr>
                         </div>
 
-                        <div class="Tema:</p>
+                        <div class="col-12">
+                            <p>Tema:</p>
                             <p id="temaShow"></p>
                             <hr>
                         </div>
 
-                        <div class="autor:</p>
+                        <div class="col-12">
+                            <p>autor:</p>
                             <p id="autorShow"></p>
                             <hr>
                         </div>
 
-                        <div class="imagen:</p>
+                        <div class="col-12">
+                            <p>imagen:</p>
                             <p id="imagenShow"></p>
                             <hr>
                         </div>
 
 
-                        <div class="Estado:</p>
+                        <div class="col-12">
+                            <p>Estado:</p>
                             <p id="estadoShow"></p>
                         </div>
 

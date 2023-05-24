@@ -11,28 +11,33 @@
             <div class="modal-body">
 
                     <div class="row">
-                        <div class="        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                        <div class="col-12 text-right">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                             <hr>
                         </div>
 
-                        <div class=" <p class="text-capitalize">nombre:</p>
+                        <div class="col-12">
+                                <p class="text-capitalize">nombre:</p>
                                 <p id="nombreShow"></p>
                             <hr>
                         </div>
 
-                        <div class="class="text-capitalize">moneda:</p>
+                        <div class="col-12">
+                            <p class="text-capitalize">moneda:</p>
                             <p id="monedaShow"></p>
                             <hr>
                         </div>
 
 
-                        <div class="class="text-capitalize">simbolo:</p>
+                        <div class="col-12">
+                            <p class="text-capitalize">simbolo:</p>
                             <p id="simboloShow"></p>
                             <hr>
                         </div>
 
 
-                        <div class="class="text-capitalize">cambio:</p>
+                        <div class="col-12">
+                            <p class="text-capitalize">cambio:</p>
                             <p id="cambioShow"></p>
                             <hr>
                         </div>
@@ -41,7 +46,8 @@
 
 
 
-                        <div class="class="text-capitalize">Estado:</p>
+                        <div class="col-12">
+                            <p class="text-capitalize">Estado:</p>
                             <p id="estadoShow"></p>
                         </div>
 

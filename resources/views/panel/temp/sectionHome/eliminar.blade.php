@@ -14,9 +14,11 @@
                     @csrf
                     @method('DELETE')
                     <div class="row">
-                        <div class="¿Esta seguro de <b class="text-danger">eliminar</b> este registro?</p>
+                        <div class="col-12">
+                            <p>¿Esta seguro de <b class="text-danger">eliminar</b> este registro?</p>
                         </div>
-                        <div class="        <hr>
+                        <div class="col-12 text-right">
+                            <hr>
                             <button type="submit" class="btn btn-success"><i class="fa fa-check"></i> Si, acepto</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
 

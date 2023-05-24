@@ -14,7 +14,8 @@
                     @method('PUT')
                     <input type="hidden" name="idregistro" id="idregistro" required>
                     <div class="row">
-                        <div class="        <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
+                        <div class="col-12 text-right">
+                            <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
@@ -22,20 +23,23 @@
 
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="nombreEditar">Nombre: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="nombreEditar" id="nombreEditar" required class="form-control"  placeholder="Nombre">
                             </div>
                         </div>
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="contenidoEditar">Contenido: <span class="text-danger">(*)</span></label>
                                 <textarea id="contenidoEditar" cols="30" rows="10" class="form-control" placeholder="Contenido"></textarea>
                             </div>
                         </div>
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="imagenEditar" >Imagen:</label>
                                 <div class="file-loading">
                                     <input  id="imagenEditar" name="imagenEditar" type="file" class="file" >
@@ -47,7 +51,8 @@
 
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="estadoEditar">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estadoEditar" id="estadoEditar" class="form-control" required>
                                     <option value="1" selected>Habilitado</option>

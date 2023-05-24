@@ -11,29 +11,34 @@
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                    <div class="col-12 text-right">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                         <hr>
                     </div>
 
 
 
-                    <div class="re:</p>
+                    <div class="col-12">
+                        <p>Nombre:</p>
                         <p id="txtNombre"></p>
                         <hr>
                     </div>
 
-                    <div class="     <p>Imagen:</p>
+                    <div class="col-12 text-center">
+                        <p>Imagen:</p>
                         <img style="width: 130px;height: 130px" class="img-thumbnail" src="" id="txtImagen">
                         <hr>
                     </div>
 
 
-                    <div class="ripción:</p>
+                    <div class="col-12">
+                        <p>Descripción:</p>
                         <p id="txtDescripcion"></p>
                         <hr>
                     </div>
 
-                    <div class="do:</p>
+                    <div class="col-12">
+                        <p>Estado:</p>
                         <p id="txtEstado"></p>
                     </div>
 

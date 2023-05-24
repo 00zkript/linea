@@ -25,17 +25,20 @@
                                 <div class="col-12">
                                     <br>
                                     <div class="row">
-                                        <div class="             <div class="form-group">
+                                        <div class="col-12">
+                                            <div class="form-group">
                                                 <label for="mision">Misión:</label>
                                                 <textarea id="mision" rows="5"  class="form-control" placeholder="Misión"  >{{ $nosotros->mision }}</textarea>
                                             </div>
                                         </div>
-                                        <div class="             <div class="form-group">
+                                        <div class="col-12">
+                                            <div class="form-group">
                                                 <label for="vision">Visión:</label>
                                                 <textarea id="vision" rows="5"  class="form-control" placeholder="Visión"  >{{ $nosotros->vision }}</textarea>
                                             </div>
                                         </div>
-                                        <div class="             <div class="form-group">
+                                        <div class="col-12">
+                                            <div class="form-group">
                                                 <label for="quienes_somos">¿Quiénes somos?:</label>
                                                 <textarea id="quienes_somos" rows="5"  class="form-control" placeholder="¿Quiénes somos?"  >{{ $nosotros->quienes_somos }}</textarea>
                                             </div>

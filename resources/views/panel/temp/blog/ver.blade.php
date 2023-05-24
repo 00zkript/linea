@@ -11,37 +11,44 @@
             <div class="modal-body">
 
                     <div class="row">
-                        <div class="        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                        <div class="col-12 text-right">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                             <hr>
                         </div>
 
-                        <div class=" <p class="text-capitalize">titulo:</p>
+                        <div class="col-12">
+                                <p class="text-capitalize">titulo:</p>
                                 <p id="tituloShow"></p>
                             <hr>
                         </div>
 
-                        <div class="class="text-capitalize">fecha:</p>
+                        <div class="col-12">
+                            <p class="text-capitalize">fecha:</p>
                             <p id="fechaShow"></p>
                         <hr>
                     </div>
 
-                        <div class="class="text-capitalize">descripción:</p>
+                        <div class="col-12">
+                            <p class="text-capitalize">descripción:</p>
                             <p id="descripcionShow"></p>
                             <hr>
                         </div>
 
-                        <div class="class="text-capitalize">contenido:</p>
+                        <div class="col-12">
+                            <p class="text-capitalize">contenido:</p>
                             <p id="contenidoShow"></p>
                             <hr>
                         </div>
 
-                        <div class="class="text-capitalize">imagen:</p>
+                        <div class="col-12">
+                            <p class="text-capitalize">imagen:</p>
                             <p id="imagenShow"></p>
                             <hr>
                         </div>
 
 
-                        <div class="class="text-capitalize">Estado:</p>
+                        <div class="col-12">
+                            <p class="text-capitalize">Estado:</p>
                             <p id="estadoShow"></p>
                         </div>
 

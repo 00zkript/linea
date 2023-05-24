@@ -26,7 +26,8 @@
 
 
 
-                                        <div class="             <div class="form-group">
+                                        <div class="col-12">
+                                            <div class="form-group">
                                                 <label for="contenido">Contenido:</label>
                                                 <textarea class="form-control" id="contenido" name="contenido">{{ $politicas->contenido}}</textarea>
                                             </div>

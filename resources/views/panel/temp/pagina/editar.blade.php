@@ -1,4 +1,4 @@
-
+w
 <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog"  aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
         <div class="modal-content">
@@ -14,7 +14,8 @@
                     @method('PUT')
                     <input type="hidden" name="idpagina" id="idpagina" required>
                     <div class="row">
-                        <div class="        <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
+                        <div class="col-12 text-right">
+                            <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
@@ -22,14 +23,16 @@
 
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="tituloEditar">Título: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="tituloEditar" id="tituloEditar" required class="form-control">
                             </div>
                         </div>
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="contenidoEditar">Contenido: <span class="text-danger">(*)</span></label>
                                 <textarea id="contenidoEditar" cols="30" rows="10" class="form-control" placeholder="Descripcion"></textarea>
                             </div>
@@ -37,7 +40,8 @@
 
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="estadoEditar">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estadoEditar" id="estadoEditar" class="form-control" required>
                                     <option value="1" selected>Habilitado</option>

@@ -11,40 +11,47 @@
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                    <div class="col-12 text-right">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                         <hr>
                     </div>
 
 
 
-                    <div class="re:</p>
+                    <div class="col-12">
+                        <p>Nombre:</p>
                         <p id="txtNombre"></p>
                         <hr>
                     </div>
 
-                    <div class="ono:</p>
+                    <div class="col-12">
+                        <p>Telfono:</p>
                         <p id="txtTelefono"></p>
                         <hr>
                     </div>
 
-                    <div class="sapp:</p>
+                    <div class="col-12">
+                        <p>Whatsapp:</p>
                         <p id="txtWhatsapp"></p>
                         <hr>
                     </div>
 
-                    <div class="eo:</p>
+                    <div class="col-12">
+                        <p>Correo:</p>
                         <p id="txtCorreo"></p>
                         <hr>
                     </div>
 
-                    <div class="ccion:</p>
+                    <div class="col-12">
+                        <p>Direccion:</p>
                         <p id="txtDireccion"></p>
                         <hr>
                     </div>
 
 
 
-                    <div class="do:</p>
+                    <div class="col-12">
+                        <p>Estado:</p>
                         <p id="txtEstado"></p>
                     </div>
 

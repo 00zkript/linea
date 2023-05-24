@@ -12,27 +12,31 @@
                     <form id="frmCrear" autocomplete="off">
                         @csrf
                     <div class="row">
-                        <div class="        <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
+                        <div class="col-12 text-right">
+                            <button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Guardar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
 
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="pariente">Pariente:</label>
                                 <select data-size="5" name="pariente" id="pariente" class="form-control selectpicker show-tick" data-live-search="true" title="[--Seleccione--]">
                                 </select>
                             </div>
                         </div>
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="nombre">Nombre: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="nombre" id="nombre" required class="form-control">
                             </div>
                         </div>
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="tipoRuta">Tipo de ruta: <span class="text-danger">(*)</span></label>
                                 <select id="tipoRuta" name="tipoRuta" class="form-control" title="[---Seleccione---]" required>
                                     <option value="" selected hidden>[---Seleccione---]</option>
@@ -43,14 +47,14 @@
                             </div>
                         </div>
 
-                        <div class=" >
+                        <div class="col-12 tipoRutaDiv" style="display:none" >
                             <div class="form-group">
                                 <label for="rutaExterna">Ruta Externa: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="rutaExterna" id="rutaExterna"  class="form-control"  placeholder="Ruta">
                             </div>
                         </div>
 
-                        <div class=" >
+                        <div class="col-12 tipoRutaDiv" style="display:none" >
                             <div class="form-group">
                                 <label for="rutaInternaEstatica">Ruta interna (Estatica): <span class="text-danger">(*)</span></label>
                                 <select id="rutaInternaEstatica" name="rutaInternaEstatica" class="form-control selectpicker" data-live-search="true">
@@ -62,7 +66,7 @@
                             </div>
                         </div>
 
-                        <div class="" >
+                        <div class="col-12 tipoRutaDiv" style="display: none" >
                             <div class="form-group">
                                 <label for="rutaInternaCategoria">Ruta interna (Categoría): <span class="text-danger">(*)</span></label>
                                 <select id="rutaInternaCategoria" name="rutaInternaCategoria" class="form-control selectpicker" data-live-search="true">
@@ -75,7 +79,7 @@
                         </div>
 
 
-                        <div class="" >
+                        <div class="col-12 tipoRutaDiv" style="display: none" >
                             <div class="form-group">
                                 <label for="rutaInternaPagina">Ruta interna (Paginas): <span class="text-danger">(*)</span></label>
                                 <select id="rutaInternaPagina" name="rutaInternaPagina" class="form-control selectpicker" data-live-search="true">
@@ -90,7 +94,8 @@
 
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="posicion">Orden: <span class="text-danger">(*)</span></label>
                                 <select required data-size="5" name="posicion" id="posicion" class="form-control selectpicker show-tick"
                                         data-live-search="true" title="[--Seleccione--]">
@@ -100,7 +105,8 @@
                         </div>
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="icono" class="d-block">Icono:</label>
                                 <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Medida: 32px * 32px</div>
                                 <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Formato: png, jpg</div>
@@ -110,7 +116,8 @@
                             </div>
                         </div>
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="estado">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estado" id="estado" class="form-control" required>
                                     <option value="1" selected>Habilitado</option>

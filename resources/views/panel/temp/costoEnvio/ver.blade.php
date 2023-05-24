@@ -11,36 +11,43 @@
             <div class="modal-body">
 
                 <div class="row">
-                    <div class="    <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
+                    <div class="col-12 text-right">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cerrar</button>
                         <hr>
                     </div>
 
-                    <div class="rtamento:</p>
+                    <div class="col-12">
+                        <p>Departamento:</p>
                         <p id="txtDepartamento"></p>
                         <hr>
                     </div>
 
-                    <div class="incia:</p>
+                    <div class="col-12">
+                        <p>Provincia:</p>
                         <p id="txtProvincia"></p>
                         <hr>
                     </div>
 
-                    <div class="rito:</p>
+                    <div class="col-12">
+                        <p>Distrito:</p>
                         <p id="txtDistrito"></p>
                         <hr>
                     </div>
 
-                    <div class="io:</p>
+                    <div class="col-12">
+                        <p>Precio:</p>
                         <p id="txtPrecio"></p>
                         <hr>
                     </div>
 
-                    <div class="ripción:</p>
+                    <div class="col-12">
+                        <p>Descripción:</p>
                         <p id="txtDescripcion"></p>
                         <hr>
                     </div>
 
-                    <div class="do:</p>
+                    <div class="col-12">
+                        <p>Estado:</p>
                         <p id="txtEstado"></p>
                     </div>
 

@@ -14,27 +14,31 @@
                     @method('PUT')
                     <input type="hidden" name="idmenu" id="idmenu" required>
                     <div class="row">
-                        <div class="        <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
+                        <div class="col-12 text-right">
+                            <button type="submit" class="btn btn-success"><i class="fa fa-refresh"></i> Modificar</button>
                             <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times"></i> Cancelar</button>
                             <hr>
                         </div>
 
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="parienteEditar">Pariente:</label>
                                 <select name="parienteEditar" id="parienteEditar" class="form-control selectpicker show-tick" data-size="5" data-live-search="true" title="[--Seleccione--]">
                                 </select>
                             </div>
                         </div>
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="nombreEditar">Nombre: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="nombreEditar" id="nombreEditar" required class="form-control">
                             </div>
                         </div>
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="tipoRutaEditar">Tipo de ruta: <span class="text-danger">(*)</span></label>
                                 <select id="tipoRutaEditar" name="tipoRutaEditar" class="form-control" required>
                                     <option value="" hidden>[---Seleccione---]</option>
@@ -45,14 +49,14 @@
                             </div>
                         </div>
 
-                        <div class=":none" >
+                        <div class="col-12 tipoRutaDivEditar" style="display:none" >
                             <div class="form-group">
                                 <label for="rutaExternaEditar">Ruta Externa: <span class="text-danger">(*)</span></label>
                                 <input type="text" name="rutaExternaEditar" id="rutaExternaEditar"  class="form-control"  placeholder="Ruta">
                             </div>
                         </div>
 
-                        <div class=":none" >
+                        <div class="col-12 tipoRutaDivEditar" style="display:none" >
                             <div class="form-group">
                                 <label for="rutaInternaEstaticaEditar">Ruta interna (Estatica): <span class="text-danger">(*)</span></label>
                                 <select id="rutaInternaEstaticaEditar" name="rutaInternaEstaticaEditar" class="form-control selectpicker" data-live-search="true">
@@ -64,7 +68,7 @@
                             </div>
                         </div>
 
-                        <div class=": none" >
+                        <div class="col-12 tipoRutaDivEditar" style="display: none" >
                             <div class="form-group">
                                 <label for="rutaInternaCategoriaEditar">Ruta interna (Categoría): <span class="text-danger">(*)</span></label>
                                 <select id="rutaInternaCategoriaEditar" name="rutaInternaCategoriaEditar" class="form-control selectpicker" data-live-search="true">
@@ -79,7 +83,7 @@
 
 
 
-                        <div class=": none" >
+                        <div class="col-12 tipoRutaDivEditar" style="display: none" >
                             <div class="form-group">
                                 <label for="rutaInternaPaginaEditar">Ruta Paginas: <span class="text-danger">(*)</span></label>
                                 <select id="rutaInternaPaginaEditar" name="rutaInternaPaginaEditar" class="form-control selectpicker" data-live-search="true">
@@ -94,7 +98,8 @@
 
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="posicionEditar">Orden: <span class="text-danger">(*)</span></label>
                                 <select required data-size="5" name="posicionEditar" id="posicionEditar" class="form-control selectpicker show-tick"
                                         data-live-search="true" title="[--Seleccione--]">
@@ -104,7 +109,8 @@
                         </div>
 
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="iconoEditar" class="d-block">Icono:</label>
                                 <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Medida: 32px * 32px</div>
                                 <div class="bg-mensaje p-2 rounded text-white mb-1 d-inline-block">Formato: png, jpg</div>
@@ -114,7 +120,8 @@
                             </div>
                         </div>
 
-                        <div class="v class="form-group">
+                        <div class="col-12">
+                            <div class="form-group">
                                 <label for="estadoEditar">Estado: <span class="text-danger">(*)</span></label>
                                 <select name="estadoEditar" id="estadoEditar" class="form-control" required>
                                     <option value="1" selected>Habilitado</option>
