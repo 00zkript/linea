@@ -58,6 +58,11 @@
             border-radius: 0.75rem !important;
         }
 
+        .main_menu_side{
+            overflow-y: auto;
+            height: 90%;
+        }
+
     </style>
 
     @stack('css')
@@ -80,7 +85,7 @@
                     </div>
                     <div class="clearfix"></div>
 
-                    <div class="profile clearfix">
+                    <div class="profile clearfix mb-3">
                         <div class="profile_pic">
                             @if(empty(auth()->user()->foto))
                                 <img src="{{ asset('panel/default/foto_defecto.jpg') }}" alt="..." class="img-circle profile_img">
@@ -96,7 +101,6 @@
                         <div class="clearfix"></div>
                     </div>
 
-                    <br/>
 
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
@@ -115,7 +119,7 @@
                                     </ul>
                                 </li>
 
-                                <li class=""><a><i class="fa fa-tasks"></i> Programas <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-warehouse"></i> Programas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="javascript:void(0);">Temporada</a></li>
                                         <li><a href="javascript:void(0);">Programas</a></li>
@@ -126,14 +130,14 @@
                                     </ul>
                                 </li>
 
-                                <li class=""><a><i class="fa fa-tasks"></i> Clientes <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-user"></i> Clientes <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="javascript:void(0);">Tipos de Cliente</a></li>
                                         <li><a href="{{ route('cliente.index') }}">Clientes</a></li>
                                     </ul>
                                 </li>
 
-                                <li class=""><a><i class="fa fa-tasks"></i> Matriculas <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-address-card"></i> Matriculas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('matricula.create') }}">Nueva matrícula</a></li>
                                         <li><a href="{{ route('matricula.index') }}">Matrículas</a></li>
@@ -142,7 +146,7 @@
                                     </ul>
                                 </li>
 
-                                <li class=""><a><i class="fa fa-tasks"></i> Caja <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-money-bill"></i> Caja <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('pago.create') }}">Nueva venta</a></li>
                                         <li><a href="{{ route('pago.index') }}">Pago Matricula</a></li>
@@ -150,7 +154,7 @@
                                 </li>
 
 
-                                <li class=""><a><i class="fa fa-tasks"></i> Arqueo de caja y cambio <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-cash-register"></i> Arqueo de caja y cambio <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirArqueoCajaModalCenter" >Abrir Caja</a></li>
                                         <li><a href="javascript:void(0);" data-toggle="modal" data-target="#cerrarArqueoCajaModalCenter" >Cerrar caja</a></li>
@@ -159,7 +163,7 @@
                                     </ul>
                                 </li>
 
-                                <li class=""><a><i class="fa fa-tasks"></i> General <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-sliders"></i> General <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('empresa.index') }}">Empresa</a></li>
                                         <li><a href="{{ route('moneda.index') }}">Moneda</a></li>

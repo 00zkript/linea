@@ -356,17 +356,13 @@
                                                 <td><input type="text" class="form-control" value="1" ></td>
                                                 <td>
                                                     <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">S/.</span>
-                                                        </div>
+                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
                                                         <input type="text" class="form-control" value="350.00" ></input>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">S/.</span>
-                                                        </div>
+                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
                                                         <input type="text" class="form-control" value="350.00" readonly ></input>
                                                     </div>
                                                 </td>
@@ -378,39 +374,31 @@
                                                 <td><input type="text" class="form-control" value="1" ></td>
                                                 <td>
                                                     <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">S/.</span>
-                                                        </div>
+                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
                                                         <input type="text" class="form-control" value="100.00" ></input>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">S/.</span>
-                                                        </div>
+                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
                                                         <input type="text" class="form-control" value="100.00" readonly ></input>
                                                     </div>
                                                 </td>
                                                 <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
                                             </tr>
                                             <tr>
-                                                <td>2</td>
+                                                <td>3</td>
                                                 <td><input type="text" class="form-control" value="Lentes de agua" ></td>
                                                 <td><input type="text" class="form-control" value="2" ></td>
                                                 <td>
                                                     <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">S/.</span>
-                                                        </div>
+                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
                                                         <input type="text" class="form-control" value="50.00" ></input>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">S/.</span>
-                                                        </div>
+                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
                                                         <input type="text" class="form-control" value="100.00" readonly ></input>
                                                     </div>
                                                 </td>
@@ -420,84 +408,53 @@
                                         <tfoot>
                                             <tr>
                                                 <td colspan="3"></td>
-                                                <td class="text-right">
-                                                    <b>Total</b>
-                                                </td>
-                                                <td class="text-center">
-                                                    <b>S/. 451.00</b>
-                                                    <!-- <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">S/.</span>
-                                                        </div>
-                                                        <input type="text" class="form-control" value="451.00" readonly>
-                                                    </div> -->
-                                                </td>
+                                                <td class="text-right"> <b>Total (Sin IGV)</b> </td>
+                                                <td class="text-center"> <b>S/. 451.00</b> </td>
+                                                <td></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="3"></td>
-                                                <td class="text-right">
-                                                    <b>Igv</b>
-                                                </td>
-                                                <td class="text-center">
-                                                    <b>S/. 99.00</b>
-                                                    <!-- <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">S/.</span>
-                                                        </div>
-                                                        <input type="text" class="form-control" value="99.00" readonly>
-                                                    </div> -->
-                                                </td>
+                                                <td class="text-right"> <b>IGV</b> </td>
+                                                <td class="text-center"> <b>S/. 99.00</b> </td>
+                                                <td></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="3"></td>
-                                                <td class="text-right">
-                                                    <b>Total final</b>
-                                                </td>
+                                                <td class="text-right"> <b>Total</b> </td>
+                                                <td class="text-center"> <b>S/. 550.00</b> </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3"></td>
+                                                <td class="text-right"> <b>Monto efectivo</b> </td>
                                                 <td class="text-center">
-                                                    <b>S/. 550.00</b>
-                                                    <!-- <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <span class="input-group-text">S/.</span>
-                                                        </div>
-                                                        <input type="text" class="form-control" value="550.00" readonly>
-                                                    </div> -->
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
+                                                        <input type="text" class="form-control" name="montoEfectivo" id="montoEfectivo" placeholder="Monto efectivo" >
+                                                    </div>
                                                 </td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="3"></td>
+                                                <td class="text-right"> <b>Monto tranferido</b> </td>
+                                                <td class="text-center">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
+                                                        <input type="text" class="form-control" name="monotTransferido" id="monotTransferido" placeholder="Monto efectivo" >
+                                                    </div>
+                                                </td>
+                                                <td></td>
                                             </tr>
                                         </tfoot>
                                     </table>
                                 </div>
+
                                 <div class="col-12 mt-5 d-flex justify-content-center">
                                     <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelarPagoModalCenter">Cancelar</button>
                                     <button class="btn btn-primary" data-toggle="modal" data-target="#asegurarPagoModalCenter">Pagar</button>
                                 </div>
-                                <!-- <div class="result">
-                                    @if ($idmatricula)
-                                    <div class="col-md-12 col-12">
-                                        <h2 class="text-center">Código de matrícula 0000007 </h2>
-                                    </div>
-                                    <div class="col-md-10 offset-1 col-12 mt-3">
-                                        <p>
-                                            <b>Concepto</b> Nueva matrícula <br>
-                                        </p>
-                                        <p>
-                                            <b>Alumno</b> Juan Perez Mancilla <br>
-                                            <b>Documento </b>identidad DNi  - 87654321 <br>
-                                        </p>
-                                        <p>
-                                            <b>Temporada</b>  verano 2023 <br>
-                                            <b>Programa</b> niños <br>
-                                            <b>Piscina</b> piscina grande <br>
-                                            <b>Carril </b> 4 <br>
-                                            <b>Actividad semanal</b> L-M-V <br>
-                                        </p>
-                                        <p>
-                                            <b>Caja</b> caja1 <br>
-                                            <b>Sucursal</b> Sucursal 1 <br>
-                                            <b>Dirección</b> Lorem ipsum dolor sit amet consectetur adipisicing elit. <br>
-                                        </p>
-                                    </div>
-                                    @endif
-                                </div> -->
+
                             </div>
                         </div>
                     </div>
@@ -507,117 +464,16 @@
 
 
 
-        <!-- <div class="row justify-content-center align-items-center">
-            <div class="col-md-10 col-12 mt-5">
-                <div class="row">
-                    <div class="col-md-6 col-12">
-                        <div class="row">
-
-                            <div class="col-12 montosToggle monedaSoles" style="display none;" >
-                                <div class="form-group">
-                                    <label for="montoEfectivoSoles">Monto efectivo</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">S/.</span>
-                                        </div>
-                                        <input type="text" class="form-control form-control-sm format-number-price" name="montoEfectivoSoles" id="montoEfectivoSoles" placeholder="Monto efectivo" >
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 montosToggle monedaSoles" style="display none;" >
-                                <div class="form-group">
-                                    <label for="montoTranferidoSoles">Monto Tranferido</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">S/.</span>
-                                        </div>
-                                        <input type="text" class="form-control form-control-sm format-number-price" name="montoTranferidoSoles" id="montoTranferidoSoles" placeholder="Monto efectivo" >
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 montosToggle monedaDolares" style="display none;" >
-                                <div class="form-group">
-                                    <label for="montoEfectivoDolares">Monto efectivo </label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">$</span>
-                                        </div>
-                                        <input type="text" class="form-control form-control-sm format-number-price" name="montoEfectivoDolares" id="montoEfectivoDolares" placeholder="Monto efectivo" >
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 montosToggle monedaDolares" style="display none;" >
-                                <div class="form-group">
-                                    <label for="montoTranferidoDolares">Monto Tranferido</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">$</span>
-                                        </div>
-                                        <input type="text" class="form-control form-control-sm format-number-price" name="montoTranferidoDolares" id="montoTranferidoDolares" placeholder="Monto efectivo" >
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-12">
-                        <div class="row-">
-                            <div class="col-12 form-group row">
-                                <label for="montoTotal" class="col-md-4 col-form-label" >Monto Total</label>
-                                <div class="col-md-8 input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">S/.</span>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm" id="montoTotal" value="350.00" placeholder="Monto Total" readonly>
-                                </div>
-                            </div>
-
-                            <div class="col-12 form-group row">
-                                <label for="montoPagar" class="col-md-4 col-form-label" >Monto a pagar</label>
-                                <div class="col-md-8 input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">S/.</span>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm" id="montoPagar" value="0.00" placeholder="Monto a pagar" readonly>
-                                </div>
-                            </div>
-
-                            <div class="col-12 form-group row">
-                                <label for="igv" class="col-md-4 col-form-label" >IGV</label>
-                                <div class="col-md-8 input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">S/.</span>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm" id="igv" value="0.00 " placeholder="IGV" readonly>
-                                </div>
-                            </div>
-
-                            <div class="col-12 form-group row">
-                                <label for="deuda" class="col-md-4 col-form-label" >Deuda</label>
-                                <div class="col-md-8 input-group">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">S/.</span>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm" id="deuda" value="0.00" placeholder="Deuda" readonly>
-                                </div>
-                            </div>
-
-                            <div class="col-12 mt-5 d-flex justify-content-center">
-                                <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelarPagoModalCenter">Cancelar</button>
-                                <button class="btn btn-primary" data-toggle="modal" data-target="#asegurarPagoModalCenter">Pagar</button>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> -->
 
     </div>
 </template>
 <script>
 import Autocomplete from '../../components/AutocompleteComponent.vue';
+
 export default {
-    components: {Autocomplete},
+    components: {
+        Autocomplete
+    },
     data() {
         return {
             cliente: {

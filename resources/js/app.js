@@ -7,9 +7,16 @@ import { ZiggyVue } from 'ziggy';
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
 
+// primeVue
+// import PrimeVue from 'primevue/config';
+
+// import 'primevue/resources/themes/lara-light-indigo/theme.css'
+// import 'primevue/resources/primevue.min.css'
+// import 'primeicons/primeicons.css'
 
 // import route from 'ziggy';
 Vue.use(ZiggyVue, Ziggy);
+// Vue.use(PrimeVue);
 
 // Register Vue Components Global
 Vue.component('DatePicker', DatePicker);
