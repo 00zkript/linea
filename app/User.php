@@ -24,8 +24,8 @@ class User extends Authenticatable
 
     public function sucursal()
     {
-        return $this->hasOne(App\Models\Sucursal::class, 'idsucursal', 'idsucursal')->withDefault([
-            'nombre' => 'Sin sucrusal'
+        return $this->hasOne(Models\Sucursal::class, 'idsucursal', 'idsucursal')->withDefault([
+            'nombre' => 'Sin sucursal'
         ]);
     }
 

@@ -143,19 +143,14 @@
                                     </ul>
                                 </li>
 
-                                <li class=""><a><i class="fa fa-user"></i> Clientes <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="javascript:void(0);">Tipos de Cliente</a></li>
-                                        <li><a href="{{ route('cliente.index') }}">Clientes</a></li>
-                                    </ul>
-                                </li>
 
                                 <li class=""><a><i class="fa fa-address-card"></i> Matriculas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
+                                        <li><a href="{{ route('cliente.index') }}">Alumno</a></li>
                                         <li><a href="{{ route('matricula.create') }}">Nueva matrícula</a></li>
                                         <li><a href="{{ route('matricula.index') }}">Matrículas</a></li>
-                                        <li><a href="{{ route('matriculaGym.create') }}">Nueva inscripción GyM</a></li>
-                                        <li><a href="{{ route('matriculaGym.index') }}">Inscripciones GyM</a></li>
+                                        {{-- <li><a href="{{ route('matriculaGym.create') }}">Nueva inscripción GyM</a></li> --}}
+                                        {{-- <li><a href="{{ route('matriculaGym.index') }}">Inscripciones GyM</a></li> --}}
                                     </ul>
                                 </li>
 
@@ -220,9 +215,8 @@
 
 
                     <nav class="nav navbar-nav w-25">
-                        <div class="nav-midium">
-                            <h5>{{ auth()->user()->sucursal()->nombre }}</h5>
-                            {{-- @dd(auth()->user()) --}}
+                        <div class="nav-midium mt-2">
+                            <h6>{{ auth()->user()->sucursal->nombre }}</h6>
                         </div>
 
                         <ul class="navbar-right">
