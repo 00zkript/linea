@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/test/permissions',[\App\Http\Controllers\TestController::class,'testPermission']);
 
 
-Route::get('/lang/{lang}', [\App\Http\Controllers\LanguageController::class, 'changeLanguage'])->name('lang');
+/* Route::get('/lang/{lang}', [\App\Http\Controllers\LanguageController::class, 'changeLanguage'])->name('lang');
 
 Route::middleware(['translate'])->group(function () {
 
@@ -141,7 +141,6 @@ Route::middleware(['translate'])->group(function () {
 
 
 
-    /* INICIO ----> RUTAS PROTEGIDAS USUARIO AUTENTICADO PARA ACCESO A LA WEB */
     Route::middleware(['autenticado:web'])->group(function (){
 
         Route::get('/usuario/perfil',[\App\Http\Controllers\Web\UsuarioController::class,'index'])->name('web.usuario.index');
@@ -152,10 +151,11 @@ Route::middleware(['translate'])->group(function () {
 
 
     });
-    /* FIN ----> RUTAS PROTEGIDAS USUARIO AUTENTICADO  PARA ACCESO A LA WEB */
 
 
-});
+}); */
+
+Route::redirect('/{url?}','/panel/login');
 
 
 

@@ -17,18 +17,18 @@ class User extends Authenticatable
     protected $primaryKey = "idusuario";
     protected $rememberTokenName = "";
 
-    public const CREATED_AT = 'creado';
-    public const UPDATED_AT = 'actualizado';
+    public $timestamps = true;
+    // public const CREATED_AT = 'creado';
+    // public const UPDATED_AT = 'actualizado';
 
 
+    public function sucursal()
+    {
+        return $this->hasOne(App\Models\Sucursal::class, 'idsucursal', 'idsucursal')->withDefault([
+            'nombre' => 'Sin sucrusal'
+        ]);
+    }
 
 
-   public function cliente()
-   {
-       return $this->hasOne(Cliente::class,'idusuario','idusuario')->withDefault([
-           "nombres" => "Sin nombre",
-           "apellidos" => "Sin apellidos",
-       ]);
-   }
 
 }

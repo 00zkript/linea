@@ -2541,14 +2541,14 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "row"
   }, [_c("div", {
-    staticClass: "col-md-6 col-12"
+    staticClass: "col-md-8 col-12 mb-3 row"
   }, [_c("div", {
-    staticClass: "form-group"
+    staticClass: "col-md-6 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "nombres"
     }
-  }, [_vm._v("Nombres alumno: "), _c("span", {
+  }, [_vm._v("Nombres alumno "), _c("span", {
     staticClass: "text-danger"
   }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
     directives: [{
@@ -2573,15 +2573,13 @@ var render = function render() {
         _vm.$set(_vm.alumno, "nombres", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "apellidos"
     }
-  }, [_vm._v("Apellidos alumno: "), _c("span", {
+  }, [_vm._v("Apellidos alumno "), _c("span", {
     staticClass: "text-danger"
   }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
     directives: [{
@@ -2606,81 +2604,13 @@ var render = function render() {
         _vm.$set(_vm.alumno, "apellidos", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "personaReferenciaNombres"
-    }
-  }, [_vm._v("Nombres (Apoderado / persona referencial): "), _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.persona_referencia_nombres,
-      expression: "alumno.persona_referencia_nombres"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      name: "personaReferenciaNombres",
-      id: "personaReferenciaNombres",
-      placeholder: "Nombres"
-    },
-    domProps: {
-      value: _vm.alumno.persona_referencia_nombres
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "persona_referencia_nombres", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "personaReferenciaApellidos"
-    }
-  }, [_vm._v("Apellidos (Apoderado / persona referencial): "), _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.persona_referencia_apellidos,
-      expression: "alumno.persona_referencia_apellidos"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      name: "personaReferenciaApellidos",
-      id: "personaReferenciaApellidos",
-      placeholder: "Apellidos"
-    },
-    domProps: {
-      value: _vm.alumno.persona_referencia_apellidos
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "persona_referencia_apellidos", $event.target.value);
-      }
-    }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "correo"
     }
-  }, [_vm._v("Correo: "), _c("span", {
+  }, [_vm._v("Correo "), _c("span", {
     staticClass: "text-danger"
   }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
     directives: [{
@@ -2705,15 +2635,13 @@ var render = function render() {
         _vm.$set(_vm.alumno, "correo", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "telefono"
     }
-  }, [_vm._v("Teléfono: "), _c("span", {
+  }, [_vm._v("Teléfono "), _c("span", {
     staticClass: "text-danger"
   }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
     directives: [{
@@ -2738,15 +2666,13 @@ var render = function render() {
         _vm.$set(_vm.alumno, "telefono", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "tipoDocumentoIdentidad"
     }
-  }, [_vm._v("Documento de identidad: "), _c("span", {
+  }, [_vm._v("Documento de identidad "), _c("span", {
     staticClass: "text-danger"
   }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
     directives: [{
@@ -2784,15 +2710,13 @@ var render = function render() {
         textContent: _vm._s(item.nombre)
       }
     });
-  })], 2)])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "numeroDocumentoIdentidad"
     }
-  }, [_vm._v("N° de Documento: "), _c("span", {
+  }, [_vm._v("N° de Documento "), _c("span", {
     staticClass: "text-danger"
   }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
     directives: [{
@@ -2819,15 +2743,13 @@ var render = function render() {
         _vm.$set(_vm.alumno, "numero_documento_identidad", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "fechaNacimiento"
     }
-  }, [_vm._v("Fecha de nacimiento:")]), _vm._v(" "), _c("DatePicker", {
+  }, [_vm._v("Fecha de nacimiento")]), _vm._v(" "), _c("DatePicker", {
     attrs: {
       "input-class": "form-control",
       format: "DD/MM/Y"
@@ -2839,15 +2761,13 @@ var render = function render() {
       },
       expression: "alumno.fecha_nacimiento"
     }
-  })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "sexo"
     }
-  }, [_vm._v("Sexo:")]), _vm._v(" "), _c("select", {
+  }, [_vm._v("Sexo")]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -2887,15 +2807,13 @@ var render = function render() {
     attrs: {
       value: "Otro"
     }
-  }, [_vm._v("Otro")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  }, [_vm._v("Otro")])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "departamento"
     }
-  }, [_vm._v("Departamento:")]), _vm._v(" "), _c("select", {
+  }, [_vm._v("Departamento")]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -2928,15 +2846,13 @@ var render = function render() {
       value: "15",
       selected: ""
     }
-  }, [_vm._v("Lima")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  }, [_vm._v("Lima")])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "provincia"
     }
-  }, [_vm._v("Provincia:")]), _vm._v(" "), _c("select", {
+  }, [_vm._v("Provincia")]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -2969,15 +2885,13 @@ var render = function render() {
       value: "1501",
       selected: ""
     }
-  }, [_vm._v("Lima")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  }, [_vm._v("Lima")])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "distrito"
     }
-  }, [_vm._v("Distrito:")]), _vm._v(" "), _c("select", {
+  }, [_vm._v("Distrito")]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -3011,15 +2925,13 @@ var render = function render() {
       value: "150101",
       selected: ""
     }
-  }, [_vm._v("Lima")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-12 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  }, [_vm._v("Lima")])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "direccion"
     }
-  }, [_vm._v("Direción:")]), _vm._v(" "), _c("textarea", {
+  }, [_vm._v("Direción")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -3028,10 +2940,10 @@ var render = function render() {
     }],
     staticClass: "form-control",
     attrs: {
+      type: "text",
       name: "direccion",
       id: "direccion",
-      placeholder: "Direción",
-      rows: "3"
+      placeholder: "Direción"
     },
     domProps: {
       value: _vm.alumno.direccion
@@ -3042,15 +2954,120 @@ var render = function render() {
         _vm.$set(_vm.alumno, "direccion", $event.target.value);
       }
     }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 mb-3 mt-3"
+  }, [_c("h4", [_vm._v("Apoderado o persona de referencia")])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "personaReferenciaNombres"
+    }
+  }, [_vm._v("Nombres "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.persona_referencia_nombres,
+      expression: "alumno.persona_referencia_nombres"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "personaReferenciaNombres",
+      id: "personaReferenciaNombres",
+      placeholder: "Nombres"
+    },
+    domProps: {
+      value: _vm.alumno.persona_referencia_nombres
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "persona_referencia_nombres", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "personaReferenciaApellidos"
+    }
+  }, [_vm._v("Apellidos "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.persona_referencia_apellidos,
+      expression: "alumno.persona_referencia_apellidos"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "personaReferenciaApellidos",
+      id: "personaReferenciaApellidos",
+      placeholder: "Apellidos"
+    },
+    domProps: {
+      value: _vm.alumno.persona_referencia_apellidos
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "persona_referencia_apellidos", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "personaReferenciaCorreo"
+    }
+  }, [_vm._v("Correo")]), _vm._v(" "), _c("input", {
+    staticClass: "form-control",
+    attrs: {
+      type: "email",
+      name: "personaReferenciaCorreo",
+      id: "personaReferenciaCorreo",
+      placeholder: "Correo"
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "personaReferenciaTelefono"
+    }
+  }, [_vm._v("Telefono")]), _vm._v(" "), _c("input", {
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "personaReferenciaTelefono",
+      id: "personaReferenciaTelefono",
+      placeholder: "Telefono"
+    }
   })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-12 col-12"
+    staticClass: "col-md-4 col-12 row"
   }, [_c("div", {
-    staticClass: "form-group"
+    staticClass: "col-12 h-25 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "imagen"
+    }
+  }, [_vm._v("Imagen")]), _vm._v(" "), _c("input", {
+    staticClass: "form-control",
+    attrs: {
+      type: "file",
+      id: "imagen",
+      name: "imagen"
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "nota"
     }
-  }, [_vm._v("Nota:")]), _vm._v(" "), _c("textarea", {
+  }, [_vm._v("Nota")]), _vm._v(" "), _c("textarea", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -3073,21 +3090,6 @@ var render = function render() {
         _vm.$set(_vm.alumno, "nota", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-12 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "imagen"
-    }
-  }, [_vm._v("Imagen:")]), _vm._v(" "), _c("input", {
-    staticClass: "form-control",
-    attrs: {
-      type: "file",
-      id: "imagen",
-      name: "imagen"
-    }
   })])])])]), _vm._v(" "), _c("Step", {
     attrs: {
       number: 2,
@@ -3102,9 +3104,7 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "row"
   }, [_c("div", {
-    staticClass: "col-md-8 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+    staticClass: "col-md-8 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "alumno"
@@ -3118,10 +3118,8 @@ var render = function render() {
       readonly: "",
       placeholder: "Alumno"
     }
-  })])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "concepto"
@@ -3141,10 +3139,8 @@ var render = function render() {
       value: "1",
       selected: ""
     }
-  }, [_vm._v(" Nueva matrícula")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  }, [_vm._v(" Nueva matrícula")])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "fecha"
@@ -3161,10 +3157,8 @@ var render = function render() {
       },
       expression: "matricula.fecha"
     }
-  })], 1)]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "temporada"
@@ -3187,10 +3181,8 @@ var render = function render() {
     attrs: {
       value: "2"
     }
-  }, [_vm._v("invierno 2023")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  }, [_vm._v("invierno 2023")])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "programa"
@@ -3213,10 +3205,8 @@ var render = function render() {
     attrs: {
       value: "2"
     }
-  }, [_vm._v("Para niños")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  }, [_vm._v("Para niños")])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "pisciona"
@@ -3243,10 +3233,8 @@ var render = function render() {
     attrs: {
       value: "3"
     }
-  }, [_vm._v("Piscina pequeña")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  }, [_vm._v("Piscina pequeña")])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "carril"
@@ -3301,10 +3289,8 @@ var render = function render() {
     attrs: {
       value: "10"
     }
-  }, [_vm._v("#10")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  }, [_vm._v("#10")])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "diasDeActividad"
@@ -3327,10 +3313,8 @@ var render = function render() {
     attrs: {
       value: "2"
     }
-  }, [_vm._v("M-J-S")])])])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12"
-  }, [_c("div", {
-    staticClass: "form-group"
+  }, [_vm._v("M-J-S")])])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "cantidadDeSessiones"
@@ -3349,7 +3333,7 @@ var render = function render() {
       value: "1",
       selected: ""
     }
-  }, [_vm._v("8 sesiones  x S/. 350.00 ")])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("8 sesiones  x S/. 350.00 ")])])]), _vm._v(" "), _c("div", {
     staticClass: "col-12 mt-3 pl-0 pr-0"
   }, [_c("table", {
     staticClass: "table table-bordered table-striped"
@@ -3429,9 +3413,9 @@ var render = function render() {
     }
   }, [_c("h3", [_vm._v("Alumno")]), _vm._v(" "), _c("p", {
     staticClass: "fs-12"
-  }, [_c("b", [_vm._v("Nombre completo:")]), _vm._v(" Juan Manual Perez Aguila "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Correo:")]), _vm._v(" juanpa@gmail.com "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Teléfono:")]), _vm._v(" 987654321 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Documento de identidad:")]), _vm._v(" DNI - 87654321 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Direción:")]), _vm._v(" Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima\n        ")]), _vm._v(" "), _c("h3", [_vm._v("Matricula")]), _vm._v(" "), _c("p", {
+  }, [_c("b", [_vm._v("Nombre completo")]), _vm._v(" Juan Manual Perez Aguila "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Correo")]), _vm._v(" juanpa@gmail.com "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Teléfono")]), _vm._v(" 987654321 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Documento de identidad")]), _vm._v(" DNI - 87654321 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Direción")]), _vm._v(" Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima\n        ")]), _vm._v(" "), _c("h3", [_vm._v("Matricula")]), _vm._v(" "), _c("p", {
     staticClass: "fs-12"
-  }, [_c("b", [_vm._v("Codígo:")]), _vm._v(" 0000007"), _c("br"), _vm._v(" "), _c("b", [_vm._v("Concepto:")]), _vm._v(" Nueva Matricula "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Empleado:")]), _vm._v(" Roberto raymundo espinoza "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Sucursal Direción:")]), _vm._v(" sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Fecha:")]), _vm._v(" 01/01/2023 - 01/02/2023 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Temporada:")]), _vm._v(" Verano "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Programa:")]), _vm._v(" Para adultos "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Piscina:")]), _vm._v(" Piscina grande "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Carril:")]), _vm._v(" #6 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Dias de actividad:")]), _vm._v(" L-M-V "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Cantidad de sessiones:")]), _vm._v(" 4 sessiones X 350 soles "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Horario: ")]), _vm._v(" "), _c("ul", [_c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Martes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Miercoles : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")])])])]), _vm._v(" "), _c("Step", {
+  }, [_c("b", [_vm._v("Codígo")]), _vm._v(" 0000007"), _c("br"), _vm._v(" "), _c("b", [_vm._v("Concepto")]), _vm._v(" Nueva Matricula "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Empleado")]), _vm._v(" Roberto raymundo espinoza "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Sucursal Direción")]), _vm._v(" sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Fecha")]), _vm._v(" 01/01/2023 - 01/02/2023 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Temporada")]), _vm._v(" Verano "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Programa")]), _vm._v(" Para adultos "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Piscina")]), _vm._v(" Piscina grande "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Carril")]), _vm._v(" #6 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Dias de actividad")]), _vm._v(" L-M-V "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Cantidad de sessiones")]), _vm._v(" 4 sessiones X 350 soles "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Horario: ")]), _vm._v(" "), _c("ul", [_c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Martes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Miercoles : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")])])])]), _vm._v(" "), _c("Step", {
     attrs: {
       number: 4,
       title: "Final",

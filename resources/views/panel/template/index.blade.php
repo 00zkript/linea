@@ -62,6 +62,15 @@
             overflow-y: auto;
             height: 90%;
         }
+        .nav-midium {
+            color: #fff;
+        }
+        .nav.navbar-nav{
+            flex-direction: row;
+            flex-wrap: nowrap;
+            justify-content: flex-end;
+            align-items: center;
+        }
 
     </style>
 
@@ -114,12 +123,10 @@
                                             @can('usuario.manage')
                                                 <li><a href="{{ route('usuario.index') }}">Usuarios</a></li>
                                             @endcan
-                                            @can('empleado.manage')
-                                                <li><a href="{{ route('empleado.index') }}">Empleado</a></li>
-                                            @endcan
                                             @can('rol.manage')
                                                 <li><a href="javascript:void(0);">Roles</a></li>
                                             @endcan
+                                            {{-- <li><a href="{{ route('empleado.index') }}">Empleado</a></li> --}}
                                         </li>
                                     </ul>
                                 </li>
@@ -132,6 +139,7 @@
                                         <li><a href="javascript:void(0);">Carriles</a></li>
                                         <li><a href="javascript:void(0);">Dias de actividad</a></li>
                                         <li><a href="javascript:void(0);">Cantidad de sesiones</a></li>
+                                        {{-- <li><a href="{{ route('productos.index') }}">Productos</a></li> --}}
                                     </ul>
                                 </li>
 
@@ -172,69 +180,16 @@
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('empresa.index') }}">Empresa</a></li>
                                         <li><a href="{{ route('moneda.index') }}">Moneda</a></li>
-                                        {{-- <li><a href="{{ route('menu.index') }}">Menú</a></li> --}}
-                                        {{-- <li><a href="{{ route('seo.index') }}">SEO</a></li> --}}
-                                        {{-- <li><a href="{{ route('contacto.index') }}">Contacto</a></li> --}}
-                                        {{-- <li><a href="{{ route('terminos-condiciones.index') }}">Términos y condicones</a></li> --}}
-                                        {{-- <li><a href="{{ route('politicas-privacidad.index') }}">Políticas de privacidad</a></li> --}}
-                                        {{-- <li><a href="{{ route('puntoVentas.index') }}">Puntos de venta</a></li> --}}
                                     </ul>
                                 </li>
 
 
-                                {{-- <li class=""><a><i class="fa fa-shopping-cart"></i> Catálogo <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="{{ route('marcas.index') }}">Marcas</a></li>
-                                        <li><a href="{{ route('categorias.index') }}">Categorias</a></li>
-                                        <li><a href="{{ route('section.index') }}">Secciones</a></li>
-                                        <li><a href="{{ route('atributo.index') }}">Atributos</a></li>
-                                        <li><a href="{{ route('productos.index') }}">Productos</a></li>
-                                    </ul>
-                                </li> --}}
 
                                 {{-- <li class=""><a><i class="fa fa-money-check-dollar"></i> Ventas o pedidos <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="{{ route('cupon.index') }}">Cupones</a></li>
-                                        <li><a href="{{ route('ventas.index') }}">Ventas</a></li>
-                                        <li><a href="{{ route('costo-envio.index') }}">Costo de envío</a></li>
                                     </ul>
-                                </li> --}}
 
-                                {{-- <li class=""><a><i class="fa fa-file"></i> Pagina de Inicio <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="{{ route('section-home.index') }}">Secciones Home</a></li>
-                                    </ul>
-                                </li> --}}
-
-                                {{-- <li class=""><a><i class="fa fa-file-circle-plus"></i> Paginas <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="{{ route('asesores.index') }}">Asesores</a></li>
-                                        <li><a href="{{ route('pagina.index') }}">Página</a></li>
-                                        <li><a href="{{ route('instagram.index') }}">instagram</a></li>
-                                        <li><a href="{{ route('testimonio.index') }}">Testimonios</a></li>
-                                        <li><a href="{{ route('preguntas-frecuentes.index') }}">Preguntas frecuentes</a></li>
-                                    </ul>
-                                </li> --}}
-
-                                {{-- <li class=""><a><i class="fa fa-image"></i> Banners - Popups<span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="{{ route('banner.index') }}">Banners</a></li>
-                                        <li><a href="{{ route('popup.index') }}">Popups</a></li>
-                                    </ul>
-                                </li> --}}
-
-                                {{-- <li class=""><a><i class="fa fa-globe"></i> Noticias <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="{{ route('blogCategoria.index') }}">Blog Categoria</a></li>
-                                        <li><a href="{{ route('blog.index') }}">Blog</a></li>
-                                    </ul>
-                                </li> --}}
-
-                                {{-- <li class=""><a><i class="fa fa-people-group"></i> Marketing <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu">
-                                        <li><a href="{{ route('suscripcion.index') }}">Lista de suscripciones</a></li>
-                                    </ul>
-                                </li> --}}
 
                                 {{-- <li class=""><a><i class="fa fa-file-text"></i> Reportes <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
@@ -263,19 +218,21 @@
                         <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                     </div>
 
-                    {{-- <div class="text-right">Sucursal 1</div> --}}
 
-                    <nav class="nav navbar-nav">
-                        <ul class=" navbar-right">
+                    <nav class="nav navbar-nav w-25">
+                        <div class="nav-midium">
+                            <h5>{{ auth()->user()->sucursal()->nombre }}</h5>
+                            {{-- @dd(auth()->user()) --}}
+                        </div>
+
+                        <ul class="navbar-right">
                             <li class="nav-item dropdown open" style="padding-left: 15px;">
-                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true"
-                                id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
+                                <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
                                     @if(empty(auth()->user()->foto))
                                         <img src="{{ asset('panel/default/foto_defecto.jpg') }}" alt="">{{ auth()->user()->usuario }}
                                     @else
                                         <img src="{{ asset('panel/img/usuarios/'.auth()->user()->foto) }}" alt="">{{ auth()->user()->usuario }}
                                     @endif
-
                                 </a>
                                 <div class="dropdown-menu dropdown-usermenu float-right" aria-labelledby="navbarDropdown">
                                     <a class="dropdown-item" href="{{ route('configuracion.edit') }}">
