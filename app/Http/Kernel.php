@@ -106,6 +106,10 @@ class Kernel extends HttpKernel
         'validarIdventa' => \App\Http\Middleware\ValidarIdVenta::class,
         'translate' => \App\Http\Middleware\CheckLanguage::class,
 
+        'role' => \Spatie\Permission\Middlewares\RoleMiddleware::class,
+        'permission' => \Spatie\Permission\Middlewares\PermissionMiddleware::class,
+        'role_or_permission' => \Spatie\Permission\Middlewares\RoleOrPermissionMiddleware::class,
+
     ];
 
 

@@ -11,7 +11,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header" style="background-color: #2a3f54">
-                         <p style="font-size: 20px" class="card-title text-center text-white mb-0"> Gestionar Registros</p>
+                         <p style="font-size: 20px" class="card-title text-center text-white mb-0"> Gestionar roles</p>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -61,13 +61,13 @@
     <script type="module" >
 
 
-        const URL_LISTADO     = "{{ route('example.listar') }}";
-        const URL_GUARDAR     = "{{ route('example.store') }}";
-        const URL_VER         = "{{ route('example.show',':id') }}";
-        const URL_EDIT        = "{{ route('example.edit',':id') }}";
-        const URL_MODIFICAR   = "{{ route('example.update',':id') }}";
-        const URL_HABILITAR   = "{{ route('example.habilitar',':id') }}";
-        const URL_INHABILITAR = "{{ route('example.inhabilitar',':id') }}";
+        const URL_LISTADO     = "{{ route('panel.roles.listar') }}";
+        const URL_GUARDAR     = "{{ route('panel.roles.store') }}";
+        const URL_VER         = "{{ route('panel.roles.show',':id') }}";
+        const URL_EDIT        = "{{ route('panel.roles.edit',':id') }}";
+        const URL_MODIFICAR   = "{{ route('panel.roles.update',':id') }}";
+        const URL_HABILITAR   = "{{ route('panel.roles.habilitar',':id') }}";
+        const URL_INHABILITAR = "{{ route('panel.roles.inhabilitar',':id') }}";
 
 
 

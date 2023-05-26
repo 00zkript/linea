@@ -15,6 +15,9 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Models\TipoDocumentoIdentidad;
 use App\Mail\Web\VentaConfirmacionMail;
+use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 use Throwable;
 
 class TestController extends Controller
@@ -167,6 +170,20 @@ class TestController extends Controller
 
     }
 
+    public function testPermission()
+    {
+
+        // Role::create(['name' => 'super-admin']);
+        // Role::create(['name' => 'Admin']);
+        // Role::create(['name' => 'Informe']);
+        // Role::create(['name' => 'Caja']);
+
+        $super = User::query()->find(1);
+        $super->assignRole('super-admin');
+
+        dd('done...');
+
+    }
 
 
 

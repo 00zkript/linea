@@ -111,10 +111,15 @@
                                 <li class=""><a><i class="fa fa-lock"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
-                                            <li><a href="{{ route('usuario.index') }}">Usuarios</a></li>
-                                            <li><a href="{{ route('empleado.index') }}">Empleado</a></li>
-                                            <li><a href="javascript:void(0);">Roles</a></li>
-                                            <li><a href="javascript:void(0);">Permisos</a></li>
+                                            @can('usuario.manage')
+                                                <li><a href="{{ route('usuario.index') }}">Usuarios</a></li>
+                                            @endcan
+                                            @can('empleado.manage')
+                                                <li><a href="{{ route('empleado.index') }}">Empleado</a></li>
+                                            @endcan
+                                            @can('rol.manage')
+                                                <li><a href="javascript:void(0);">Roles</a></li>
+                                            @endcan
                                         </li>
                                     </ul>
                                 </li>

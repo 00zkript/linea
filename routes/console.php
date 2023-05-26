@@ -1,5 +1,7 @@
 <?php
 
+use Faker\Guesser\Name;
+use Illuminate\Support\Str;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 
@@ -29,30 +31,79 @@ use Illuminate\Support\Facades\Artisan;
 //     print_r("este es un test");
 // })->describe('job sub comando');
 
+/*
+Artisan::command('comando:nombre {nombre} {--m= : Mensaje adicional} {--r : Realizar acción adicional}', function ($nombre) {
+    $mensaje = $this->option('m');
+    $realizarAccion = $this->option('r');
 
-Artisan::command('create-roles',function () {
+    $this->info("El nombre ingresado es: " . $nombre);
 
-    $roeles = Spatie\Permission\Models\Role::create([
-        [ 'name' => 'superadmin' ],
-        [ 'name' => 'Admin' ],
-        [ 'name' => 'Gerente' ],
-        [ 'name' => 'Caja' ],
-        [ 'name' => 'Vendedor' ],
-        [ 'name' => 'Supervisor' ],
-        [ 'name' => 'Admision' ],
-        [ 'name' => 'Instructor' ],
-        [ 'name' => 'Cliente' ]
-    ]);
+    if ($mensaje) {
+        $this->info("Mensaje adicional: " . $mensaje);
+    }
+
+    if ($realizarAccion) {
+        $this->info("Realizando acción adicional");
+        // Lógica de la acción adicional
+    }
+})->describe('crear comando con parametros'); */
+
+Artisan::command('create:permission {model} {--action= : Accion que realizara } {--alias= : Nombre custom para el alias del permiso} {--r : Agregar resources} {--all : Todos los permisos}', function ($model) {
+    $realizarAccion = $this->option('r');
+    $alias = $this->option('alias');
+    $actionCustom = $this->option('action');
+    $all = $this->option('all');
+
+    $permssionResources = [
+        'create' => 'Crear',
+        'edit' => 'Editar',
+        'enable' => 'Habilitar',
+        'disable' => 'Inhabilitar',
+        'destroy' => 'Eliminar',
+        'manage' => 'Gestionar'
+    ];
 
 
-    $permisos = Spatie\Permission\Models\Permission::create([
-        [ 'name' => 'Buscar Cliente' ],
-        [ 'name' => 'Crear Cliente' ],
-        [ 'name' => 'Editar Cliente' ],
-        [ 'name' => 'Borrar Cliente' ]
-    ]);
+    if ($realizarAccion) {
+        $alias = $alias ?: $model;
+
+        foreach ( $permssionResources as $key => $action ) {
+            $namePermission = "$model.$key";
+            $aliasPermssion = "$action $alias";
+
+            $permision = [ 'name' => $namePermission, 'alias' => $aliasPermssion];
+            Spatie\Permission\Models\Permission::create($permision);
+
+            $this->info("Permiso \"$namePermission\" con el alias \"$aliasPermssion\" a sido creado correctamente.");
+        }
+
+        return;
+    }
+
+
+    $actionCustom = $actionCustom ?: Str::random(10);
+    $alias = $alias ?: $model.".".Str::random(10);
+
+    $namePermission = "$model.$actionCustom";
+    $aliasPermssion = $alias;
+
+    $permision = [ 'name' => $namePermission, 'alias' => $aliasPermssion];
+    Spatie\Permission\Models\Permission::create($permision);
+    $this->info("Permiso \"$namePermission\" con el alias \"$aliasPermssion\" a sido creado correctamente.");
 
 
 
-})->describe('Job test');
 
+    // ┌─────────────────┐
+    // │ Test for comand │
+    // └─────────────────┘
+    // Name => model + acttion
+    // Alias => descripcion en español
+
+    // php artisan create:permission alumno --alias="Create Alumno" --action="create"
+    // php artisan create:permission alumno --alias="Create Alumno"
+    // php artisan create:permission alumno --alias="Alumno" --r
+    // php artisan create:permission alumno --r
+
+
+})->describe('crear permiso con parametros');

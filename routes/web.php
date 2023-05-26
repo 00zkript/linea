@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/test/ver-estado-venta/{idventa}',[\App\Http\Controllers\TestController::class,'viewMailStateSales']);
 // Route::get('/test/ver-comprobante-pago/{idventa}',[\App\Http\Controllers\TestController::class,'viewMailComprobantepago']);
 // Route::get('/test/prueba-envio',[\App\Http\Controllers\TestController::class,'testSend']);
+Route::get('/test/permissions',[\App\Http\Controllers\TestController::class,'testPermission']);
 
 
 Route::get('/lang/{lang}', [\App\Http\Controllers\LanguageController::class, 'changeLanguage'])->name('lang');
@@ -172,7 +173,7 @@ Route::get('/panel/login/salir',[\App\Http\Controllers\Panel\LoginController::cl
 
 
 /* INICIO ----> RUTAS PROTEGIDAS USUARIO AUTENTICADO Y CON CARGO ADMINISTRADOR PARA ACCESO AL PANEL */
-Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(function (){
+Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
 
     // Route::get('inicio/salesForMonth',[\App\Http\Controllers\Panel\InicioController::class,'salesForMonth'])->name('inicio.salesForMonth');
     // Route::get('inicio/getSalesForYearVsYearOld',[\App\Http\Controllers\Panel\InicioController::class,'getSalesForYearVsYearOld'])->name('inicio.getSalesForYearVsYearOld');
@@ -231,6 +232,14 @@ Route::middleware(['autenticado:panel','rol:1'])->prefix("panel")->group(functio
     Route::get('historial-cambio',[\App\Http\Controllers\Panel\HistorialCambioMonedaController::class,'index'])->name("historialCambio.index");
     Route::get('historial-cambio/listado',[\App\Http\Controllers\Panel\HistorialCambioMonedaController::class,'listado'])->name("historialCambio.listado");
     // Route::resource( 'caja', \App\Http\Controllers\Panel\ArqueoCajaController::class )->only(['index','store'])->names('caja');
+
+
+    Route::put('roles/{idrol}/habilitar',[\App\Http\Controllers\Panel\RolesController::class,'habilitar'])->name("panel.roles.habilitar");
+    Route::put('roles/{idrol}/inhabilitar',[\App\Http\Controllers\Panel\RolesController::class,'inhabilitar'])->name("panel.roles.inhabilitar");
+    Route::get('roles/listar',[\App\Http\Controllers\Panel\RolesController::class,'listar'])->name("panel.roles.listar");
+    Route::resource('roles',\App\Http\Controllers\Panel\RolesController::class)->names('panel.roles');
+
+
 
 
 

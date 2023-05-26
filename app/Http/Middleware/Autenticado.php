@@ -19,11 +19,11 @@ class Autenticado
     {
       if (!auth()->check()){
 
-//            if ($tipo == "panel"){
-//                return redirect()->route('panel.login.index');
-//            }else{
+           if ($tipo == "panel"){
+               return redirect()->route('panel.login.index');
+           }else{
                 return redirect()->route('web.login');
-//            }
+           }
 
         }
 
