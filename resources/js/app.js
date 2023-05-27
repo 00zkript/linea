@@ -6,6 +6,7 @@ import { ZiggyVue } from 'ziggy';
 // datapicker
 import DatePicker from 'vue2-datepicker';
 import 'vue2-datepicker/index.css';
+import 'vue2-datepicker/locale/es';
 
 // primeVue
 // import PrimeVue from 'primevue/config';

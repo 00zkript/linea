@@ -17,6 +17,7 @@ use App\Models\ActividadSemanal;
 use App\Models\CantidadSesiones;
 use App\Http\Controllers\Controller;
 use App\Models\Cliente;
+use App\Models\Programa;
 use App\Models\TipoDocumentoIdentidad;
 use Illuminate\Support\Facades\Storage;
 
@@ -56,16 +57,68 @@ class MatriculaController extends Controller
         $departamentos = Departamento::query()->where('estado',1)->get();
         $conceptos = Concepto::query()->where('estado',1)->get();
         $empleado = auth()->user()->only(['idusuario','nombres','apellidos']);
-        $sucursal = auth()->user()->sucursal;
+
         $sucursales = Sucursal::query()->where('estado',1)->get();
-        $temporadas = Temporada::query()->where('estado',1)->get();
-        $piscinas = Piscina::query()->where('estado',1)->get();
-        $actividadSemanal = ActividadSemanal::query()->where('estado',1)->get();
+        $sucursalCurrent = auth()->user()->sucursal;
+
+        $temporadas = Temporada::query()
+            ->with([
+                'programas' => function ($query) {
+                    return $query->where('estado',1);
+                }
+            ])
+            ->whereDate("fecha_desde", "<", now()->format('Y-m-d'))
+            ->whereDate("fecha_hasta", ">=", now()->format('Y-m-d'))
+            ->where('estado',1)
+            ->orderBy('idtemporada','desc')
+            ->get();
+
+        $temporadaCurrent = $temporadas[0];
+        $programas = $temporadaCurrent->programas;
+
+        $piscinas = Piscina::query()
+            ->with([
+                'carriles' => function ($query) {
+                    return $query->where('estado',1);
+                }
+            ])
+            ->where('estado',1)
+            ->get();
+
+        $actividadSemanal = ActividadSemanal::query()
+            ->with([
+                'dias' => function ($query) {
+                    return $query->where('estado',1);
+                }
+            ])
+            ->where('estado',1)
+            ->get();
+
         $cantidadesDeSesiones = CantidadSesiones::query()->where('estado',1)->get();
         $horarios = Horario::query()->where('estado',1)->get();
-        $dias = Dia::query()->where('estado',1)->get();
 
-        return response()->json(compact('tipoDocumentoIdentidad', 'departamentos', 'conceptos', 'empleado', 'sucursales', 'sucursal', 'temporadas', 'piscinas', 'actividadSemanal', 'cantidadesDeSesiones', 'horarios', 'dias'));
+
+
+
+        return response()->json([
+            "resources" => [
+                'tipoDocumentoIdentidad' => $tipoDocumentoIdentidad,
+                'departamentos' => $departamentos,
+                'conceptos' => $conceptos,
+                'sucursales' => $sucursales,
+                'temporadas' => $temporadas,
+                'programas' => $programas,
+                'piscinas' => $piscinas,
+                'actividadSemanal' => $actividadSemanal,
+                'cantidadesDeSesiones' => $cantidadesDeSesiones,
+                'horarios' => $horarios,
+            ],
+            "current" => [
+                'empleado' => $empleado,
+                'sucursal' => $sucursalCurrent,
+                "temporada" => $temporadaCurrent,
+            ]
+        ]);
     }
 
     public function create()
@@ -135,11 +188,11 @@ class MatriculaController extends Controller
             $cliente->telefono                   = $telefono;
             $cliente->idtipo_documento_identidad = $tipoDocumentoIdentidad;
             $cliente->numero_documento_identidad = $numeroDocumentoIdentidad;
-            $cliente->apoderado_nombres   = $apoderadoNombres;
-            $cliente->apoderado_apellidos = $apoderadoApellidos;
-            $cliente->apoderado_correo    = $apoderadoCorreo;
-            $cliente->apoderado_telefono  = $apoderadoTelefono;
-            $cliente->fecha_nacimiento           = $fechaNacimiento;
+            $cliente->apoderado_nombres          = $apoderadoNombres;
+            $cliente->apoderado_apellidos        = $apoderadoApellidos;
+            $cliente->apoderado_correo           = $apoderadoCorreo;
+            $cliente->apoderado_telefono         = $apoderadoTelefono;
+            $cliente->fecha_nacimiento           = now()->parse($fechaNacimiento)->format('Y-m-d');
             $cliente->sexo                       = $sexo;
             $cliente->iddepartamento             = $departamento;
             $cliente->idprovincia                = $provincia;
