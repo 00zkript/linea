@@ -24,8 +24,17 @@
     <link href="{{ asset('generales/waitMe/waitMe.min.css') }}" rel="stylesheet">
 
     <style>
-        [ui-pnotify].ui-pnotify.stack-bar-top {
+        /* [ui-pnotify].ui-pnotify.stack-bar-top {
             width: 100%;
+        } */
+        [ui-pnotify].ui-pnotify .brighttheme.ui-pnotify-container{
+            width: 100% !important;
+        }
+        [ui-pnotify].ui-pnotify .brighttheme-error {
+            background: #f8d7da;
+        }
+        .ui-pnotify-text{
+            word-break: break-word;
         }
 
         .page-item.active .page-link {

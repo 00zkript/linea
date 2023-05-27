@@ -2,21 +2,23 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Http\Controllers\Controller;
+use App\Models\Dia;
+use App\Models\Horario;
+use App\Models\Piscina;
+use App\Models\Concepto;
+use App\Models\Distrito;
+use App\Models\Sucursal;
+use App\Models\Matricula;
+use App\Models\Provincia;
+use App\Models\Temporada;
+use App\Models\Departamento;
+use Illuminate\Http\Request;
 use App\Models\ActividadSemanal;
 use App\Models\CantidadSesiones;
-use App\Models\Concepto;
-use App\Models\Departamento;
-use App\Models\Dia;
-use App\Models\Distrito;
-use App\Models\Horario;
-use App\Models\Matricula;
-use App\Models\Piscina;
-use App\Models\Provincia;
-use App\Models\Sucursal;
-use App\Models\Temporada;
+use App\Http\Controllers\Controller;
+use App\Models\Cliente;
 use App\Models\TipoDocumentoIdentidad;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class MatriculaController extends Controller
 {
@@ -53,16 +55,17 @@ class MatriculaController extends Controller
         $tipoDocumentoIdentidad = TipoDocumentoIdentidad::query()->where('estado',1)->get();
         $departamentos = Departamento::query()->where('estado',1)->get();
         $conceptos = Concepto::query()->where('estado',1)->get();
-        $empleado = [];
+        $empleado = auth()->user()->only(['idusuario','nombres','apellidos']);
+        $sucursal = auth()->user()->sucursal;
         $sucursales = Sucursal::query()->where('estado',1)->get();
         $temporadas = Temporada::query()->where('estado',1)->get();
-        $piscionas = Piscina::query()->where('estado',1)->get();
+        $piscinas = Piscina::query()->where('estado',1)->get();
         $actividadSemanal = ActividadSemanal::query()->where('estado',1)->get();
         $cantidadesDeSesiones = CantidadSesiones::query()->where('estado',1)->get();
         $horarios = Horario::query()->where('estado',1)->get();
         $dias = Dia::query()->where('estado',1)->get();
 
-        return response()->json(compact('tipoDocumentoIdentidad', 'departamentos', 'conceptos', 'empleado', 'sucursales', 'temporadas', 'piscionas', 'actividadSemanal', 'cantidadesDeSesiones', 'horarios', 'dias'));
+        return response()->json(compact('tipoDocumentoIdentidad', 'departamentos', 'conceptos', 'empleado', 'sucursales', 'sucursal', 'temporadas', 'piscinas', 'actividadSemanal', 'cantidadesDeSesiones', 'horarios', 'dias'));
     }
 
     public function create()
@@ -91,6 +94,87 @@ class MatriculaController extends Controller
 
         return response()->json($distritos);
     }
+
+
+    public function storeAlumno(Request $request)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $idcliente                = $request->input('idcliente');
+        $idsucursal               = auth()->user()->sucursal->idsucursal ?? null;
+        $nombres                  = $request->input('nombres');
+        $apellidos                = $request->input('apellidos');
+        $correo                   = $request->input('correo');
+        $telefono                 = $request->input('telefono');
+        $apoderadoNombres   = $request->input('apoderado_nombres');
+        $apoderadoApellidos = $request->input('apoderado_apellidos');
+        $apoderadoCorreo    = $request->input('apoderado_correo');
+        $apoderadoTelefono  = $request->input('apoderado_telefono');
+        $tipoDocumentoIdentidad   = $request->input('idtipo_documento_identidad');
+        $numeroDocumentoIdentidad = $request->input('numero_documento_identidad');
+        $fechaNacimiento          = $request->input('fecha_nacimiento');
+        $sexo                     = $request->input('sexo');
+        $departamento             = $request->input('iddepartamento');
+        $provincia                = $request->input('idprovincia');
+        $distrito                 = $request->input('iddistrito');
+        $direccion                = $request->input('direccion');
+        $nota                     = $request->input('nota');
+        $estado                   = 1;
+
+
+        try {
+
+            $cliente = Cliente::findOrNew($idcliente);
+
+            $cliente->idsucursal                 = $idsucursal;
+            $cliente->nombres                    = $nombres;
+            $cliente->apellidos                  = $apellidos;
+            $cliente->correo                     = $correo;
+            $cliente->telefono                   = $telefono;
+            $cliente->idtipo_documento_identidad = $tipoDocumentoIdentidad;
+            $cliente->numero_documento_identidad = $numeroDocumentoIdentidad;
+            $cliente->apoderado_nombres   = $apoderadoNombres;
+            $cliente->apoderado_apellidos = $apoderadoApellidos;
+            $cliente->apoderado_correo    = $apoderadoCorreo;
+            $cliente->apoderado_telefono  = $apoderadoTelefono;
+            $cliente->fecha_nacimiento           = $fechaNacimiento;
+            $cliente->sexo                       = $sexo;
+            $cliente->iddepartamento             = $departamento;
+            $cliente->idprovincia                = $provincia;
+            $cliente->iddistrito                 = $distrito;
+            $cliente->direccion                  = $direccion;
+            $cliente->nota                       = $nota;
+            $cliente->estado                     = $estado;
+
+            // if ( $request->hasFile('imagen') ) {
+            //     $filename = Storage::disk('panel')->put('cliente', $request->file('imagen'));
+            //     $cliente->imagen = $filename;
+            // }
+
+            $cliente->save();
+
+            return response()->json([
+                'mensaje'=> "Alumno creado exitosamente.",
+                'idcliente' => $cliente->idcliente
+            ]);
+
+
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                'mensaje'=> "No se pudo crear el Alumno.",
+                "error" => $th->getMessage(),
+                "linea" => $th->getLine(),
+            ],400);
+
+        }
+
+    }
+
+
+
 
 
 

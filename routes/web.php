@@ -75,6 +75,8 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::get('matricula/resources',[\App\Http\Controllers\Panel\MatriculaController::class,'resources'])->name("matricula.resources");
     Route::get('matricula/{id}/provincias',[\App\Http\Controllers\Panel\MatriculaController::class,'provincias'])->name("matricula.provincias");
     Route::get('matricula/{id}/distritos',[\App\Http\Controllers\Panel\MatriculaController::class,'distritos'])->name("matricula.distritos");
+    Route::post('matricula/crear-alumno',[\App\Http\Controllers\Panel\MatriculaController::class,'storeAlumno'])->name("matricula.storeAlumno");
+
     Route::resource( 'matricula', \App\Http\Controllers\Panel\MatriculaController::class )->names('matricula');
 
 

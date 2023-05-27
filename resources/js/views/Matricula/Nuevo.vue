@@ -1,16 +1,16 @@
 <template>
     <StepsContainer>
 
-        <Step :number="1" title="Nuevo Alumno" :currentValue="stepCurrent" @next="storeAlumno();stepCurrent = 2"  >
+        <Step :number="1" title="Nuevo Alumno" :currentValue="stepCurrent" @next="storeAlumno()"  >
             <div class="row">
                 <div class="col-md-8 col-12 mb-3 row">
                     <div class="col-md-6 col-12 form-group">
-                        <label for="nombres">Nombres alumno <span class="text-danger">(*)</span></label>
+                        <label for="nombres">Nombres <span class="text-danger">(*)</span></label>
                         <input type="text" name="nombres" id="nombres" class="form-control" placeholder="Nombres" v-model="alumno.nombres" >
                     </div>
 
                     <div class="col-md-6 col-12 form-group">
-                        <label for="apellidos">Apellidos alumno <span class="text-danger">(*)</span></label>
+                        <label for="apellidos">Apellidos <span class="text-danger">(*)</span></label>
                         <input type="text" name="apellidos" id="apellidos" class="form-control" placeholder="Apellidos" v-model="alumno.apellidos" >
                     </div>
 
@@ -21,12 +21,12 @@
 
                     <div class="col-md-6 col-12 form-group">
                         <label for="telefono">Teléfono <span class="text-danger">(*)</span></label>
-                        <input type="text" name="telefono" id="telefono" class="form-control soloNumeros" placeholder="Teléfono" v-model="alumno.telefono" >
+                        <input type="text" name="telefono" id="telefono" class="form-control" @keypress="soloNumeros" placeholder="Teléfono" v-model="alumno.telefono" >
                     </div>
 
                     <div class="col-md-6 col-12 form-group">
                         <label for="tipoDocumentoIdentidad">Documento de identidad <span class="text-danger">(*)</span></label>
-                        <select name="tipoDocumentoIdentidad" id="tipoDocumentoIdentidad" class="form-control" v-model="alumno.idtipo_documento_identidad" >
+                        <select name="tipoDocumentoIdentidad" id="tipoDocumentoIdentidad" class="form-control" v-model="alumno.idtipo_documento_identidad" @change="changeTipoDocumentoIdentidad()" >
                             <option hidden selected >[---Seleccione---]</option>
                             <option v-for="(item, index) in resources.tipoDocumentoIdentidad" :key="index" :value="item.idtipo_documento_identidad" v-text="item.nombre" ></option>
                         </select>
@@ -34,7 +34,7 @@
 
                     <div class="col-md-6 col-12 form-group">
                         <label for="numeroDocumentoIdentidad">N° de Documento <span class="text-danger">(*)</span></label>
-                        <input type="text" name="numeroDocumentoIdentidad" id="numeroDocumentoIdentidad" class="form-control soloNumeros"  minlength="8" maxlength="8" placeholder="N°" v-model="alumno.numero_documento_identidad" >
+                        <input type="text" name="numeroDocumentoIdentidad" id="numeroDocumentoIdentidad" class="form-control" @keypress="soloNumeros"  :minlength="alumno.numero_documento_identidad_lemgth" :maxlength="alumno.numero_documento_identidad_lemgth" placeholder="N°" v-model="alumno.numero_documento_identidad" >
                     </div>
 
                     <div class="col-md-6 col-12 form-group">
@@ -54,28 +54,25 @@
 
                     <div class="col-md-4 col-12 form-group">
                         <label for="departamento">Departamento</label>
-                        <select class="form-control" name="departamento" id="departamento" title="Departamento" v-model="alumno.iddepartaento" >
-                            <option hidden >[---Seleccione---]</option>
-                            <option value="15" selected >Lima</option>
-                            <!-- <option v-for="(item, index) in resources.departamentos" :key="index" :value="item.iddepartamento" v-text="item.nombre"></option> -->
+                        <select class="form-control" name="departamento" id="departamento" title="Departamento" v-model="alumno.iddepartamento" @change="getProvincias()" >
+                            <option value="" hidden selected >[---Seleccione---]</option>
+                            <option v-for="(item, index) in resources.departamentos" :key="index" :value="item.iddepartamento" v-text="item.nombre"></option>
                         </select>
                     </div>
 
                     <div class="col-md-4 col-12 form-group">
                         <label for="provincia">Provincia</label>
-                        <select class="form-control" name="provincia" id="provincia" title="Provincia" v-model="alumno.idprovincia" >
-                            <option hidden >[---Seleccione---]</option>
-                            <option value="1501" selected >Lima</option>
-                            <!-- <option v-for="(item, index) in resources.provincias" :key="index" :value="item.idprovincia" v-text="item.nombre"></option> -->
+                        <select class="form-control" name="provincia" id="provincia" title="Provincia" v-model="alumno.idprovincia" @change="getDistritos()" >
+                            <option value="" hidden selected>[---Seleccione---]</option>
+                            <option v-for="(item, index) in resources.provincias" :key="index" :value="item.idprovincia" v-text="item.nombre"></option>
                         </select>
                     </div>
 
                     <div class="col-md-4 col-12 form-group">
                         <label for="distrito">Distrito</label>
                         <select class="form-control" name="distrito" id="distrito" title="Distrito" v-model="alumno.iddistrito" >
-                            <option hidden selected >[---Seleccione---]</option>
-                            <option value="150101" selected >Lima</option>
-                            <!-- <option v-for="(item, index) in resources.distritos" :key="index" :value="item.iddistrito" v-text="item.nombre"></option> -->
+                            <option value="" hidden selected >[---Seleccione---]</option>
+                            <option v-for="(item, index) in resources.distritos" :key="index" :value="item.iddistrito" v-text="item.nombre"></option>
                         </select>
                     </div>
                     <div class="col-md-12 col-12 form-group">
@@ -90,30 +87,32 @@
 
                     <div class="col-md-6 col-12 form-group">
                         <label for="personaReferenciaNombres">Nombres <span class="text-danger">(*)</span></label>
-                        <input type="text" name="personaReferenciaNombres" id="personaReferenciaNombres" class="form-control" placeholder="Nombres" v-model="alumno.persona_referencia_nombres" >
+                        <input type="text" name="personaReferenciaNombres" id="personaReferenciaNombres" class="form-control" placeholder="Nombres" v-model="alumno.apoderado_nombres" >
                     </div>
 
                     <div class="col-md-6 col-12 form-group">
                         <label for="personaReferenciaApellidos">Apellidos <span class="text-danger">(*)</span></label>
-                        <input type="text" name="personaReferenciaApellidos" id="personaReferenciaApellidos" class="form-control" placeholder="Apellidos" v-model="alumno.persona_referencia_apellidos" >
+                        <input type="text" name="personaReferenciaApellidos" id="personaReferenciaApellidos" class="form-control" placeholder="Apellidos" v-model="alumno.apoderado_apellidos" >
                     </div>
 
                     <div class="col-md-6 col-12 form-group">
-                        <label for="personaReferenciaCorreo">Correo</label>
-                        <input type="email" class="form-control" name="personaReferenciaCorreo" id="personaReferenciaCorreo" placeholder="Correo" >
+                        <label for="personaReferenciaCorreo">Correo <span class="text-danger">(*)</span></label>
+                        <input type="email" class="form-control" name="personaReferenciaCorreo" id="personaReferenciaCorreo" placeholder="Correo" v-model="alumno.apoderado_correo" >
                     </div>
 
                     <div class="col-md-6 col-12 form-group">
-                        <label for="personaReferenciaTelefono">Telefono</label>
-                        <input type="text" class="form-control" name="personaReferenciaTelefono" id="personaReferenciaTelefono" placeholder="Telefono" >
+                        <label for="personaReferenciaTelefono">Teléfono <span class="text-danger">(*)</span></label>
+                        <input type="text" class="form-control" @keypress="soloNumeros" name="personaReferenciaTelefono" id="personaReferenciaTelefono" placeholder="Teléfono" v-model="alumno.apoderado_telefono" >
                     </div>
 
                 </div>
+
                 <div class="col-md-4 col-12 row">
 
+
                     <div class="col-12 h-25 form-group">
-                        <label for="imagen">Imagen</label>
-                        <input type="file" id="imagen" name="imagen" class="form-control">
+                        <label for="imagenAlumno">Imagen</label>
+                        <input type="file" id="imagenAlumno" name="imagenAlumno" class="form-control">
                     </div>
 
                     <div class="col-12 form-group">
@@ -357,6 +356,15 @@ import AutoComplete from 'primevue/autocomplete';
 
 export default {
     components: { StepsContainer, Step, AutoComplete },
+    props: {
+        alumnoCurrent: {
+            type: Object,
+            default() {
+                return {};
+            },
+            required: false
+        },
+    },
     data() {
         return {
             resources: {
@@ -371,9 +379,10 @@ export default {
                     apellidos: 'perez aguilar',
                 },
                 sucursales: [],
+                sucursal: [],
                 temporadas: [],
                 programas: [],
-                piscionas: [],
+                piscinas: [],
                 carriles: [],
                 actividadSemanal: [],
                 cantidadesDeSesiones: [],
@@ -383,20 +392,23 @@ export default {
             stepCurrent : 1,
             alumno: {
                 idcliente: null,
-                nombres: 'Juan Manual',
-                apellidos: 'Perez Aguila',
-                persona_referencia_nombres: 'Juan Manual',
-                persona_referencia_apellidos: 'Perez Aguila',
-                correo: 'JuanPa@gmail.com',
-                telefono: '987654321',
-                idtipo_documento_identidad: 1,
-                numero_documento_identidad: '87654321',
-                fecha_nacimiento: new Date('1990-5-10'),
-                sexo: 'hombre',
-                iddepartaento: 15,
-                idprovincia: 1501,
-                iddistrito: 150101,
-                direccion: 'av mazanares lt 10',
+                nombres: '',
+                apellidos: '',
+                correo: '',
+                telefono: '',
+                apoderado_nombres: '',
+                apoderado_apellidos: '',
+                apoderado_correo: '',
+                apoderado_telefono: '',
+                idtipo_documento_identidad: '',
+                numero_documento_identidad: '',
+                numero_documento_identidad_lemgth: 8,
+                fecha_nacimiento: null,
+                sexo: '',
+                iddepartamento: '',
+                idprovincia: '',
+                iddistrito: '',
+                direccion: null,
                 nota: null,
                 imagen: null,
             },
@@ -417,25 +429,27 @@ export default {
         };
     },
     methods: {
+        soloNumeros: soloNumeros,
         resetData() {
             Object.assign(this.$data, this.$options.data.call(this));
             this.getResources();
             setTimeout(() => {
-                $("input[type=file]").fileinput({});
+                $("#imagenAlumno").fileinput({});
             }, 100);
         },
         getResources() {
-            console.log('get resources...');
             axios(route('matricula.resources'))
             .then( response => {
                 const data = response.data;
                 this.resources.tipoDocumentoIdentidad = data.tipoDocumentoIdentidad;
                 this.resources.departamentos        = data.departamentos;
+
                 this.resources.conceptos            = data.conceptos;
                 this.resources.empleado             = data.empleado;
                 this.resources.sucursales           = data.sucursales;
+                this.resources.sucrusal             = data.sucrusal;
                 this.resources.temporadas           = data.temporadas;
-                this.resources.piscionas            = data.piscionas;
+                this.resources.piscinas             = data.piscinas;
                 this.resources.actividadSemanal     = data.actividadSemanal;
                 this.resources.cantidadesDeSesiones = data.cantidadesDeSesiones;
                 this.resources.horarios             = data.horarios;
@@ -446,30 +460,148 @@ export default {
                 const data = response.data;
             })
         },
-        getProvincias( iddepartamento ) {
-            console.log('get provincias...');
+        changeTipoDocumentoIdentidad() {
+            const tipoDocumento = this.resources.tipoDocumentoIdentidad.find( ele => ele.idtipo_documento_identidad  === this.alumno.idtipo_documento_identidad);
+            this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
         },
-        getDistritos( idprovincia ) {
-            console.log('get distritos...');
+        getProvincias() {
+            return axios.get(route('matricula.provincias',[ this.alumno.iddepartamento ]))
+            .then( response => {
+                const data = response.data;
+                this.resources.provincias = data;
+            })
+        },
+        getDistritos() {
+            return axios.get(route('matricula.distritos',[ this.alumno.idprovincia ]))
+            .then( response => {
+                const data = response.data;
+                this.resources.distritos = data;
+            })
+        },
+        validateAlumno() {
+            const errors = [];
+
+            if (this.alumno.nombres.trim() === '') {
+                errors.push('Por favor, ingrese su(s) nombre(s).')
+            }
+
+            if (this.alumno.apellidos.trim() === '') {
+                errors.push('Por favor, ingrese su(s) apellido(s).')
+            }
+
+            if (!validarEmail(this.alumno.correo)) {
+                errors.push('Por favor, proporcione una dirección de correo electrónico válida.')
+            }
+
+            if (this.alumno.telefono.trim() === '') {
+                errors.push('Por favor, ingrese su número de teléfono de contacto.')
+            }
+
+            if (this.alumno.idtipo_documento_identidad === '' || this.alumno.idtipo_documento_identidad === null) {
+                errors.push('Por favor, seleccione el tipo de documento de identidad válido.')
+            }
+
+            if (this.alumno.numero_documento_identidad.trim() === '') {
+                errors.push('Por favor, ingrese el número de documento de identidad asociado.')
+            }
+
+            if (this.alumno.numero_documento_identidad.length > 0 && this.alumno.numero_documento_identidad.length < this.alumno.numero_documento_identidad_lemgth) {
+                errors.push('Por favor, ingrese lo caracteres minimos del número de documento de identidad asociado.')
+            }
+
+
+            if (this.alumno.apoderado_nombres.trim() === '') {
+                errors.push('Por favor, ingrese el nombre de una persona de referencia.')
+            }
+
+            if (this.alumno.apoderado_apellidos.trim() === '') {
+                errors.push('Por favor, ingrese los apellidos de la persona de referencia.')
+            }
+
+            if (!validarEmail(this.alumno.apoderado_correo)) {
+                errors.push('Por favor, proporcione una dirección de correo electrónico válida para la persona de referencia.')
+            }
+
+            if (this.alumno.apoderado_telefono.trim() === '') {
+                errors.push('Por favor, ingrese el número de teléfono de contacto de la persona de referencia.')
+            }
+
+            return errors;
         },
         storeAlumno() {
-            console.log('stored alumno :)',this.alumno);
+            const errors = this.validateAlumno();
+            if (errors.length > 0) {
+                notificacion('error','Errores encontrados:', listErrorsForm(errors));
+                return;
+            }
+
+            // const imagenes = $('#imagenAlumno').fileinput('getFileList');
+            // const imagen = imagenes[0];
+            // console.log(imagen);
+
+            const alumnoData = jsonToFormData(this.alumno);
+
+            axios.post(route('matricula.storeAlumno'), alumnoData)
+            .then( response => {
+                const data = response.data;
+                this.stepCurrent = 2;
+                this.alumno.idcliente = data.idcliente;
+                console.log('stored alumno :)',this.alumno);
+            })
+
+
         },
-
         getProgramas( idtemporada ) {
-
         },
         getCarriles( idpisciona ) {
-
         },
         storeMatricula(){
-
         }
     },
     mounted(){
         this.getResources();
+        if (Object.keys(this.alumnoCurrent).length > 0) {
+            this.alumno = Object.assign(this.alumno, this.alumnoCurrent);
+            this.getProvincias().then( _ => {
+                this.alumno.idprovincia = this.alumnoCurrent.idprovincia ?? '';
+            });
+            this.getDistritos().then( _ => {
+                this.alumno.iddistrito = this.alumnoCurrent.iddistrito ?? '';
+            });
+
+        }
+        const alumno = {
+            idcliente: null,
+            nombres: 'Juan Manual',
+            apellidos: 'Perez Aguila',
+            correo: 'JuanPa@gmail.com',
+            telefono: '987654321',
+            apoderado_nombres: 'Juan Manual',
+            apoderado_apellidos: 'Perez Aguila',
+            apoderado_correo: 'JuanPa@gmail.com',
+            idtipo_documento_identidad: 1,
+            numero_documento_identidad: '87654321',
+            fecha_nacimiento: new Date('1990-5-10'),
+            sexo: 'hombre',
+            iddepartamento:  15,
+            idprovincia: 1501,
+            iddistrito: 150101,
+            direccion: 'av mazanares lt 10',
+            nota: null,
+            imagen: null,
+        };
+        this.alumno = Object.assign(this.alumno, alumno);
+        this.getProvincias().then( _ => {
+            this.alumno.idprovincia = '1501';
+        });
+        this.getDistritos().then( _ => {
+            this.alumno.iddistrito = '150101';
+        });
+
+
+
         setTimeout(() => {
-            $("input[type=file]").fileinput({});
+            $("#imagenAlumno").fileinput({});
         }, 100);
     }
 

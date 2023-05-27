@@ -2092,6 +2092,15 @@ __webpack_require__.r(__webpack_exports__);
     Step: _components_StepComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     AutoComplete: primevue_autocomplete__WEBPACK_IMPORTED_MODULE_2___default.a
   },
+  props: {
+    alumnoCurrent: {
+      type: Object,
+      "default": function _default() {
+        return {};
+      },
+      required: false
+    }
+  },
   data: function data() {
     return {
       resources: {
@@ -2106,9 +2115,10 @@ __webpack_require__.r(__webpack_exports__);
           apellidos: 'perez aguilar'
         },
         sucursales: [],
+        sucursal: [],
         temporadas: [],
         programas: [],
-        piscionas: [],
+        piscinas: [],
         carriles: [],
         actividadSemanal: [],
         cantidadesDeSesiones: [],
@@ -2118,20 +2128,23 @@ __webpack_require__.r(__webpack_exports__);
       stepCurrent: 1,
       alumno: {
         idcliente: null,
-        nombres: 'Juan Manual',
-        apellidos: 'Perez Aguila',
-        persona_referencia_nombres: 'Juan Manual',
-        persona_referencia_apellidos: 'Perez Aguila',
-        correo: 'JuanPa@gmail.com',
-        telefono: '987654321',
-        idtipo_documento_identidad: 1,
-        numero_documento_identidad: '87654321',
-        fecha_nacimiento: new Date('1990-5-10'),
-        sexo: 'hombre',
-        iddepartaento: 15,
-        idprovincia: 1501,
-        iddistrito: 150101,
-        direccion: 'av mazanares lt 10',
+        nombres: '',
+        apellidos: '',
+        correo: '',
+        telefono: '',
+        apoderado_nombres: '',
+        apoderado_apellidos: '',
+        apoderado_correo: '',
+        apoderado_telefono: '',
+        idtipo_documento_identidad: '',
+        numero_documento_identidad: '',
+        numero_documento_identidad_lemgth: 8,
+        fecha_nacimiento: null,
+        sexo: '',
+        iddepartamento: '',
+        idprovincia: '',
+        iddistrito: '',
+        direccion: null,
         nota: null,
         imagen: null
       },
@@ -2152,16 +2165,16 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    soloNumeros: soloNumeros,
     resetData: function resetData() {
       Object.assign(this.$data, this.$options.data.call(this));
       this.getResources();
       setTimeout(function () {
-        $("input[type=file]").fileinput({});
+        $("#imagenAlumno").fileinput({});
       }, 100);
     },
     getResources: function getResources() {
       var _this = this;
-      console.log('get resources...');
       axios(route('matricula.resources')).then(function (response) {
         var data = response.data;
         _this.resources.tipoDocumentoIdentidad = data.tipoDocumentoIdentidad;
@@ -2169,8 +2182,9 @@ __webpack_require__.r(__webpack_exports__);
         _this.resources.conceptos = data.conceptos;
         _this.resources.empleado = data.empleado;
         _this.resources.sucursales = data.sucursales;
+        _this.resources.sucrusal = data.sucrusal;
         _this.resources.temporadas = data.temporadas;
-        _this.resources.piscionas = data.piscionas;
+        _this.resources.piscinas = data.piscinas;
         _this.resources.actividadSemanal = data.actividadSemanal;
         _this.resources.cantidadesDeSesiones = data.cantidadesDeSesiones;
         _this.resources.horarios = data.horarios;
@@ -2180,23 +2194,131 @@ __webpack_require__.r(__webpack_exports__);
         var data = response.data;
       });
     },
-    getProvincias: function getProvincias(iddepartamento) {
-      console.log('get provincias...');
+    changeTipoDocumentoIdentidad: function changeTipoDocumentoIdentidad() {
+      var _this2 = this;
+      var tipoDocumento = this.resources.tipoDocumentoIdentidad.find(function (ele) {
+        return ele.idtipo_documento_identidad === _this2.alumno.idtipo_documento_identidad;
+      });
+      this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
     },
-    getDistritos: function getDistritos(idprovincia) {
-      console.log('get distritos...');
+    getProvincias: function getProvincias() {
+      var _this3 = this;
+      return axios.get(route('matricula.provincias', [this.alumno.iddepartamento])).then(function (response) {
+        var data = response.data;
+        _this3.resources.provincias = data;
+      });
+    },
+    getDistritos: function getDistritos() {
+      var _this4 = this;
+      return axios.get(route('matricula.distritos', [this.alumno.idprovincia])).then(function (response) {
+        var data = response.data;
+        _this4.resources.distritos = data;
+      });
+    },
+    validateAlumno: function validateAlumno() {
+      var errors = [];
+      if (this.alumno.nombres.trim() === '') {
+        errors.push('Por favor, ingrese su(s) nombre(s).');
+      }
+      if (this.alumno.apellidos.trim() === '') {
+        errors.push('Por favor, ingrese su(s) apellido(s).');
+      }
+      if (!validarEmail(this.alumno.correo)) {
+        errors.push('Por favor, proporcione una dirección de correo electrónico válida.');
+      }
+      if (this.alumno.telefono.trim() === '') {
+        errors.push('Por favor, ingrese su número de teléfono de contacto.');
+      }
+      if (this.alumno.idtipo_documento_identidad === '' || this.alumno.idtipo_documento_identidad === null) {
+        errors.push('Por favor, seleccione el tipo de documento de identidad válido.');
+      }
+      if (this.alumno.numero_documento_identidad.trim() === '') {
+        errors.push('Por favor, ingrese el número de documento de identidad asociado.');
+      }
+      if (this.alumno.numero_documento_identidad.length > 0 && this.alumno.numero_documento_identidad.length < this.alumno.numero_documento_identidad_lemgth) {
+        errors.push('Por favor, ingrese lo caracteres minimos del número de documento de identidad asociado.');
+      }
+      if (this.alumno.apoderado_nombres.trim() === '') {
+        errors.push('Por favor, ingrese el nombre de una persona de referencia.');
+      }
+      if (this.alumno.apoderado_apellidos.trim() === '') {
+        errors.push('Por favor, ingrese los apellidos de la persona de referencia.');
+      }
+      if (!validarEmail(this.alumno.apoderado_correo)) {
+        errors.push('Por favor, proporcione una dirección de correo electrónico válida para la persona de referencia.');
+      }
+      if (this.alumno.apoderado_telefono.trim() === '') {
+        errors.push('Por favor, ingrese el número de teléfono de contacto de la persona de referencia.');
+      }
+      return errors;
     },
     storeAlumno: function storeAlumno() {
-      console.log('stored alumno :)', this.alumno);
+      var _this5 = this;
+      var errors = this.validateAlumno();
+      if (errors.length > 0) {
+        notificacion('error', 'Errores encontrados:', listErrorsForm(errors));
+        return;
+      }
+
+      // const imagenes = $('#imagenAlumno').fileinput('getFileList');
+      // const imagen = imagenes[0];
+      // console.log(imagen);
+
+      var alumnoData = jsonToFormData(this.alumno);
+      axios.post(route('matricula.storeAlumno'), alumnoData).then(function (response) {
+        var data = response.data;
+        _this5.stepCurrent = 2;
+        _this5.alumno.idcliente = data.idcliente;
+        console.log('stored alumno :)', _this5.alumno);
+      });
     },
     getProgramas: function getProgramas(idtemporada) {},
     getCarriles: function getCarriles(idpisciona) {},
     storeMatricula: function storeMatricula() {}
   },
   mounted: function mounted() {
+    var _this6 = this;
     this.getResources();
+    if (Object.keys(this.alumnoCurrent).length > 0) {
+      this.alumno = Object.assign(this.alumno, this.alumnoCurrent);
+      this.getProvincias().then(function (_) {
+        var _this6$alumnoCurrent$;
+        _this6.alumno.idprovincia = (_this6$alumnoCurrent$ = _this6.alumnoCurrent.idprovincia) !== null && _this6$alumnoCurrent$ !== void 0 ? _this6$alumnoCurrent$ : '';
+      });
+      this.getDistritos().then(function (_) {
+        var _this6$alumnoCurrent$2;
+        _this6.alumno.iddistrito = (_this6$alumnoCurrent$2 = _this6.alumnoCurrent.iddistrito) !== null && _this6$alumnoCurrent$2 !== void 0 ? _this6$alumnoCurrent$2 : '';
+      });
+    }
+    var alumno = {
+      idcliente: null,
+      nombres: 'Juan Manual',
+      apellidos: 'Perez Aguila',
+      correo: 'JuanPa@gmail.com',
+      telefono: '987654321',
+      apoderado_nombres: 'Juan Manual',
+      apoderado_apellidos: 'Perez Aguila',
+      apoderado_correo: 'JuanPa@gmail.com',
+      idtipo_documento_identidad: 1,
+      numero_documento_identidad: '87654321',
+      fecha_nacimiento: new Date('1990-5-10'),
+      sexo: 'hombre',
+      iddepartamento: 15,
+      idprovincia: 1501,
+      iddistrito: 150101,
+      direccion: 'av mazanares lt 10',
+      nota: null,
+      imagen: null
+    };
+    this.alumno = Object.assign(this.alumno, alumno);
+    this.getProvincias().then(function (_) {
+      _this6.alumno.idprovincia = '1501';
+    });
+    this.getDistritos().then(function (_) {
+      _this6.alumno.iddistrito = '150101';
+    });
     setTimeout(function () {
-      $("input[type=file]").fileinput({});
+      $("#imagenAlumno").fileinput({});
     }, 100);
   }
 });
@@ -2534,8 +2656,7 @@ var render = function render() {
     },
     on: {
       next: function next($event) {
-        _vm.storeAlumno();
-        _vm.stepCurrent = 2;
+        return _vm.storeAlumno();
       }
     }
   }, [_c("div", {
@@ -2548,7 +2669,7 @@ var render = function render() {
     attrs: {
       "for": "nombres"
     }
-  }, [_vm._v("Nombres alumno "), _c("span", {
+  }, [_vm._v("Nombres "), _c("span", {
     staticClass: "text-danger"
   }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
     directives: [{
@@ -2579,7 +2700,7 @@ var render = function render() {
     attrs: {
       "for": "apellidos"
     }
-  }, [_vm._v("Apellidos alumno "), _c("span", {
+  }, [_vm._v("Apellidos "), _c("span", {
     staticClass: "text-danger"
   }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
     directives: [{
@@ -2650,7 +2771,7 @@ var render = function render() {
       value: _vm.alumno.telefono,
       expression: "alumno.telefono"
     }],
-    staticClass: "form-control soloNumeros",
+    staticClass: "form-control",
     attrs: {
       type: "text",
       name: "telefono",
@@ -2661,6 +2782,7 @@ var render = function render() {
       value: _vm.alumno.telefono
     },
     on: {
+      keypress: _vm.soloNumeros,
       input: function input($event) {
         if ($event.target.composing) return;
         _vm.$set(_vm.alumno, "telefono", $event.target.value);
@@ -2687,7 +2809,7 @@ var render = function render() {
       id: "tipoDocumentoIdentidad"
     },
     on: {
-      change: function change($event) {
+      change: [function ($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
           return o.selected;
         }).map(function (o) {
@@ -2695,7 +2817,9 @@ var render = function render() {
           return val;
         });
         _vm.$set(_vm.alumno, "idtipo_documento_identidad", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
+      }, function ($event) {
+        return _vm.changeTipoDocumentoIdentidad();
+      }]
     }
   }, [_c("option", {
     attrs: {
@@ -2725,19 +2849,20 @@ var render = function render() {
       value: _vm.alumno.numero_documento_identidad,
       expression: "alumno.numero_documento_identidad"
     }],
-    staticClass: "form-control soloNumeros",
+    staticClass: "form-control",
     attrs: {
       type: "text",
       name: "numeroDocumentoIdentidad",
       id: "numeroDocumentoIdentidad",
-      minlength: "8",
-      maxlength: "8",
+      minlength: _vm.alumno.numero_documento_identidad_lemgth,
+      maxlength: _vm.alumno.numero_documento_identidad_lemgth,
       placeholder: "N°"
     },
     domProps: {
       value: _vm.alumno.numero_documento_identidad
     },
     on: {
+      keypress: _vm.soloNumeros,
       input: function input($event) {
         if ($event.target.composing) return;
         _vm.$set(_vm.alumno, "numero_documento_identidad", $event.target.value);
@@ -2817,8 +2942,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.alumno.iddepartaento,
-      expression: "alumno.iddepartaento"
+      value: _vm.alumno.iddepartamento,
+      expression: "alumno.iddepartamento"
     }],
     staticClass: "form-control",
     attrs: {
@@ -2827,26 +2952,33 @@ var render = function render() {
       title: "Departamento"
     },
     on: {
-      change: function change($event) {
+      change: [function ($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
           return o.selected;
         }).map(function (o) {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.$set(_vm.alumno, "iddepartaento", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
+        _vm.$set(_vm.alumno, "iddepartamento", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.getProvincias();
+      }]
     }
   }, [_c("option", {
     attrs: {
-      hidden: ""
-    }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "15",
+      value: "",
+      hidden: "",
       selected: ""
     }
-  }, [_vm._v("Lima")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.departamentos, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.iddepartamento,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
@@ -2866,7 +2998,7 @@ var render = function render() {
       title: "Provincia"
     },
     on: {
-      change: function change($event) {
+      change: [function ($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
           return o.selected;
         }).map(function (o) {
@@ -2874,18 +3006,25 @@ var render = function render() {
           return val;
         });
         _vm.$set(_vm.alumno, "idprovincia", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
+      }, function ($event) {
+        return _vm.getDistritos();
+      }]
     }
   }, [_c("option", {
     attrs: {
-      hidden: ""
-    }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "1501",
+      value: "",
+      hidden: "",
       selected: ""
     }
-  }, [_vm._v("Lima")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.provincias, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idprovincia,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
@@ -2917,15 +3056,19 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
+      value: "",
       hidden: "",
       selected: ""
     }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "150101",
-      selected: ""
-    }
-  }, [_vm._v("Lima")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.distritos, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.iddistrito,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
     staticClass: "col-md-12 col-12 form-group"
   }, [_c("label", {
     attrs: {
@@ -2968,8 +3111,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.alumno.persona_referencia_nombres,
-      expression: "alumno.persona_referencia_nombres"
+      value: _vm.alumno.apoderado_nombres,
+      expression: "alumno.apoderado_nombres"
     }],
     staticClass: "form-control",
     attrs: {
@@ -2979,12 +3122,12 @@ var render = function render() {
       placeholder: "Nombres"
     },
     domProps: {
-      value: _vm.alumno.persona_referencia_nombres
+      value: _vm.alumno.apoderado_nombres
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "persona_referencia_nombres", $event.target.value);
+        _vm.$set(_vm.alumno, "apoderado_nombres", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -2999,8 +3142,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.alumno.persona_referencia_apellidos,
-      expression: "alumno.persona_referencia_apellidos"
+      value: _vm.alumno.apoderado_apellidos,
+      expression: "alumno.apoderado_apellidos"
     }],
     staticClass: "form-control",
     attrs: {
@@ -3010,12 +3153,12 @@ var render = function render() {
       placeholder: "Apellidos"
     },
     domProps: {
-      value: _vm.alumno.persona_referencia_apellidos
+      value: _vm.alumno.apoderado_apellidos
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "persona_referencia_apellidos", $event.target.value);
+        _vm.$set(_vm.alumno, "apoderado_apellidos", $event.target.value);
       }
     }
   })]), _vm._v(" "), _c("div", {
@@ -3024,13 +3167,30 @@ var render = function render() {
     attrs: {
       "for": "personaReferenciaCorreo"
     }
-  }, [_vm._v("Correo")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Correo "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.apoderado_correo,
+      expression: "alumno.apoderado_correo"
+    }],
     staticClass: "form-control",
     attrs: {
       type: "email",
       name: "personaReferenciaCorreo",
       id: "personaReferenciaCorreo",
       placeholder: "Correo"
+    },
+    domProps: {
+      value: _vm.alumno.apoderado_correo
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "apoderado_correo", $event.target.value);
+      }
     }
   })]), _vm._v(" "), _c("div", {
     staticClass: "col-md-6 col-12 form-group"
@@ -3038,13 +3198,31 @@ var render = function render() {
     attrs: {
       "for": "personaReferenciaTelefono"
     }
-  }, [_vm._v("Telefono")]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Teléfono "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.apoderado_telefono,
+      expression: "alumno.apoderado_telefono"
+    }],
     staticClass: "form-control",
     attrs: {
       type: "text",
       name: "personaReferenciaTelefono",
       id: "personaReferenciaTelefono",
-      placeholder: "Telefono"
+      placeholder: "Teléfono"
+    },
+    domProps: {
+      value: _vm.alumno.apoderado_telefono
+    },
+    on: {
+      keypress: _vm.soloNumeros,
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "apoderado_telefono", $event.target.value);
+      }
     }
   })])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 col-12 row"
@@ -3052,14 +3230,14 @@ var render = function render() {
     staticClass: "col-12 h-25 form-group"
   }, [_c("label", {
     attrs: {
-      "for": "imagen"
+      "for": "imagenAlumno"
     }
   }, [_vm._v("Imagen")]), _vm._v(" "), _c("input", {
     staticClass: "form-control",
     attrs: {
       type: "file",
-      id: "imagen",
-      name: "imagen"
+      id: "imagenAlumno",
+      name: "imagenAlumno"
     }
   })]), _vm._v(" "), _c("div", {
     staticClass: "col-12 form-group"
