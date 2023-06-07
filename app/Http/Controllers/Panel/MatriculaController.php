@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\Models\ActividadSemanal;
 use App\Models\CantidadSesiones;
 use App\Http\Controllers\Controller;
+use App\Models\Carril;
 use App\Models\Cliente;
 use App\Models\Programa;
 use App\Models\TipoDocumentoIdentidad;
@@ -94,7 +95,7 @@ class MatriculaController extends Controller
             ->where('estado',1)
             ->get();
 
-        $cantidadesDeSesiones = CantidadSesiones::query()->where('estado',1)->get();
+        $cantidadSesiones = CantidadSesiones::query()->where('estado',1)->get();
         $horarios = Horario::query()->where('estado',1)->get();
 
 
@@ -110,7 +111,7 @@ class MatriculaController extends Controller
                 'programas' => $programas,
                 'piscinas' => $piscinas,
                 'actividadSemanal' => $actividadSemanal,
-                'cantidadesDeSesiones' => $cantidadesDeSesiones,
+                'cantidadSesiones' => $cantidadSesiones,
                 'horarios' => $horarios,
             ],
             "current" => [
@@ -121,9 +122,15 @@ class MatriculaController extends Controller
         ]);
     }
 
-    public function create()
+    public function create($clienteID = 3)
     {
-        return view('panel.matricula.create');
+        $alumno = Cliente::query()
+            ->where('idcliente',$clienteID)
+            ->where('idsucursal', auth()->user()->sucursal->idsucursal)
+            ->where('estado',1)
+            ->first();
+
+        return view('panel.matricula.create')->with(compact('alumno'));
     }
 
     public function provincias(Request $request, $iddepartamento)
@@ -224,6 +231,32 @@ class MatriculaController extends Controller
 
         }
 
+    }
+
+    public function cantidadDeAlumnosMatriculados(Request $request)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $temporadaID = $request->input('idtemporada');
+        $programaID = $request->input('idprograma');
+        $piscinaID = $request->input('idpiscina');
+        $carrilID = $request->input('idcarril');
+
+        $carril = Carril::query()->where('idcarril',$carrilID)->first();
+
+        $cantidadMatriculados = Matricula::query()
+            ->where('idtemporada', $temporadaID)
+            ->where('idprograma', $programaID)
+            ->where('idpiscina', $piscinaID)
+            ->where('idcarril', $carrilID)
+            ->count('idcliente');
+
+        return response()->json([
+            'cantidad_matriculados' => $cantidadMatriculados,
+            'capacidad_maxima' => $carril->capacidad_maxima
+        ]);
     }
 
 

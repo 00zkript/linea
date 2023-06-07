@@ -11,7 +11,9 @@
                     </div>
                     <div class="card-body">
                         <div id="instanceVue">
-                            <matricula-nuevo :alumnoCurrent="{ a: 1}"/>
+                            <matricula-nuevo
+                            :alumno_current="{{ json_encode($alumno) }}"
+                            />
                         </div>
                     </div>
                 </div>

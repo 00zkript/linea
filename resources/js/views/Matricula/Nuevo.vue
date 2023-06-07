@@ -139,59 +139,117 @@
                     <input type="text" class="form-control bg-warning font-weight-bold" id="alumno" :value="alumno.nombres+' '+alumno.apellidos" readonly placeholder="Alumno" >
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <label for="concepto">Concepto <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="concepto" readonly v-model="matricula.idconcepto">
-                        <option value="" hidden >[---Seleccione---]</option>
-                        <option v-for="(item, index) in resources.conceptos" :key="index" :value="item.idconcepto" v-text="item.nombre"></option>
-                    </select>
+                    <SelectForm
+                        label="Concepto"
+                        class-name="form-control"
+                        id="concepto"
+                        name="concepto"
+                        :required="true"
+                        :readonly="true"
+                        :collect="resources.conceptos"
+                        value-key="idconcepto"
+                        value-label="nombre"
+                        v-model="matricula.idconcepto"
+                        @itemSelected="current.concepto = $event"
+                    />
                 </div>
                 <div class="col-md-4 col-12 form-group">
                     <label for="fecha">Periodo desde - hasta <span class="text-danger">(*)</span></label>
                     <DatePicker input-class="form-control" value-type="format" range v-model="matricula.fecha" placeholder="Periodo desde - hasta" ></DatePicker>
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <label for="temporada">Temporada <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="temporada" v-model="matricula.idtemporada" @change="getProgramas()" >
-                        <option value="" hidden >[---Seleccione---]</option>
-                        <option v-for="(item, index) in resources.temporadas" :key="index" :value="item.idtemporada" v-text="item.nombre"></option>
-                    </select>
+                    <SelectForm
+                        label="Temporada"
+                        class-name="form-control"
+                        id="temporada"
+                        name="temporada"
+                        :required="true"
+                        :collect="resources.temporadas"
+                        value-key="idtemporada"
+                        value-label="nombre"
+                        v-model="matricula.idtemporada"
+                        @itemSelected="current.temporada = $event"
+                        @change="getProgramas()"
+                    />
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <label for="programa">Programa <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="programa" v-model="matricula.idprograma">
-                        <option value="" hidden >[---Seleccione---]</option>
-                        <option v-for="(item, index) in resources.programas" :key="index" :value="item.idprograma" v-text="item.nombre"></option>
-                    </select>
+                    <SelectForm
+                        class-name="form-control"
+                        id="programa"
+                        name="programa"
+                        label="Programa"
+                        :required="true"
+                        :collect="resources.programas"
+                        value-key="idprograma"
+                        value-label="nombre"
+                        v-model="matricula.idprograma"
+                        @itemSelected="current.programa = $event"
+                    />
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <label for="pisciona">Piscina <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="pisciona" v-model="matricula.idpiscina" @change="getCarriles()">
-                        <option value="" hidden >[---Seleccione---]</option>
-                        <option v-for="(item, index) in resources.piscinas" :key="index" :value="item.idpiscina" v-text="item.nombre"></option>
-                    </select>
+                    <SelectForm
+                        label="Piscina"
+                        class-name="form-control"
+                        id="piscina"
+                        name="piscina"
+                        :required="true"
+                        :collect="resources.piscinas"
+                        value-key="idpiscina"
+                        value-label="nombre"
+                        v-model="matricula.idpiscina"
+                        @itemSelected="current.piscina = $event"
+                        @change="getCarriles()"
+                    />
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <label for="carril">Carril <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="carril" v-model="matricula.idcarril">
-                        <option value="" hidden >[---Seleccione---]</option>
-                        <option v-for="(item, index) in resources.carriles" :key="index" :value="item.idcarril" v-text="item.nombre"></option>
-                    </select>
+                    <SelectForm
+                        label="Carril"
+                        class-name="form-control"
+                        id="carril"
+                        name="carril"
+                        :required="true"
+                        :collect="resources.carriles"
+                        value-key="idcarril"
+                        value-label="nombre"
+                        v-model="matricula.idcarril"
+                        @itemSelected="current.carril = $event"
+                        @change="getCountMatriculados()"
+                    />
+                    <span> Capacidad maxima: {{ capacidadMaxima }} / matriculados : {{ cantidadAlumnosMatriculados }}</span>
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <label for="diasDeActividad">Dias de actividad <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="diasDeActividad" v-model="matricula.idactividad_semanal" @change="changeActividadSemanal()">
-                        <option value="" hidden >[---Seleccione---]</option>
-                        <option v-for="(item, index) in resources.actividadSemanal" :key="index" :value="item.idactividad_semanal" v-text="item.nombre"></option>
-                    </select>
+                    <SelectForm
+                        label="Dias de actividad"
+                        class-name="form-control"
+                        id="diasDeActividad"
+                        name="diasDeActividad"
+                        :required="true"
+                        :collect="resources.actividadSemanal"
+                        value-key="idactividad_semanal"
+                        value-label="nombre"
+                        v-model="matricula.idactividad_semanal"
+                        @itemSelected="current.actividadSemanal = $event"
+                        @change="getDias()"
+                    />
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <label for="cantidadDeSessiones">Cantidad de sessiones <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="cantidadDeSessiones" v-model="matricula.idcantidad_sessiones">
-                        <option value="" hidden >[---Seleccione---]</option>
-                        <option v-for="(item, index) in resources.cantidadesDeSesiones" :key="index" :value="item.idcantidad_sesiion" v-text="item.nombre"></option>
-                    </select>
+                    <SelectForm
+                        label="Cantidad de sesiones"
+                        class-name="form-control"
+                        id="cantidadDeSessiones"
+                        name="cantidadDeSessiones"
+                        :required="true"
+                        :collect="resources.cantidadSesiones"
+                        value-key="idcantidad_sessiones"
+                        value-label="nombre"
+                        v-model="matricula.idcantidad_sessiones"
+                        @itemSelected="current.cantidadSesiones = $event"
+                    />
                 </div>
+
+
                 <div class="col-12 mt-3 pl-0 pr-0" v-if="showTableSelectHorario" >
+                    <h3 class="text-center">Seleccione el horario</h3>
                     <table class="table table-bordered table-striped">
                         <thead class="table-primary">
                             <tr>
@@ -206,12 +264,12 @@
                                 <td class="table-primary" v-text="horario.nombre"></td>
                                 <td
                                     :class="{
-                                        active: hasHorarioAnDia(horario.idhorario, dia.iddia)
+                                        active: hasHorarioDia(horario.idhorario, dia.iddia)
                                     }"
                                     v-for="(dia, index2) in resources.dias" :key="index2"
-                                    @click="selectDia( horario.idhorario, dia.iddia )"
+                                    @click="selectHorarioDia( horario.idhorario, dia.iddia )"
                                     >
-                                    <i class="fa-solid fa-check" v-if="hasHorarioAnDia(horario.idhorario, dia.iddia)"></i>
+                                    <i class="fa-solid fa-check" v-if="hasHorarioDia(horario.idhorario, dia.iddia)"></i>
                                 </td>
                             </tr>
                         </tbody>
@@ -225,11 +283,11 @@
         <Step :number="3" title="Ver registro" :currentValue="stepCurrent" @next="stepCurrent = 4" btnNextText="Guardar" >
             <h3>Alumno</h3>
             <p class="fs-12">
-                <b>Nombre completo</b> Juan Manual Perez Aguila <br>
-                <b>Correo</b> juanpa@gmail.com <br>
-                <b>Teléfono</b> 987654321 <br>
-                <b>Documento de identidad</b> DNI - 87654321 <br>
-                <b>Direción</b> Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima
+                <b>Nombre completo</b> {{ alumno.nombres+' '+alumno.apellidos }} <br>
+                <b>Correo</b> {{ alumno.correo }} <br>
+                <b>Teléfono</b> {{ alumno.telefono }} <br>
+                <b>Documento de identidad</b> DNI - {{ alumno.numero_documento_identidad }} <br>
+                <b>Direción</b> {{ alumno.direccion }}
             </p>
 
             <h3>Matricula</h3>
@@ -272,6 +330,7 @@
 <script>
 import StepsContainer from "../../components/StepsContainerComponent.vue";
 import Step from '../../components/StepComponent.vue';
+import SelectForm from '../../components/SelectFormComponent.vue';
 import AutoComplete from 'primevue/autocomplete';
 
 const settingFileInput = {
@@ -294,9 +353,9 @@ const settingFileInput = {
 
 
 export default {
-    components: { StepsContainer, Step, AutoComplete },
+    components: { StepsContainer, Step, AutoComplete,SelectForm },
     props: {
-        alumnoCurrent: {
+        alumno_current: {
             type: Object,
             default() {
                 return {};
@@ -319,7 +378,7 @@ export default {
                 piscinas: [],
                 carriles: [],
                 actividadSemanal: [],
-                cantidadesDeSesiones: [],
+                cantidadSesiones: [],
                 horarios: [],
                 dias: [],
             },
@@ -327,6 +386,11 @@ export default {
                 empleado: {},
                 sucursal: {},
                 temporada: {},
+                programa: {},
+                piscina: {},
+                carril: {},
+                actividadSemanal: {},
+                cantidadSesiones: {},
             },
             stepCurrent : 1,
             alumno: {
@@ -366,6 +430,8 @@ export default {
             },
             matriculaDetalle: [],
             showTableSelectHorario: false,
+            cantidadAlumnosMatriculados: 0,
+            capacidadMaxima: 0,
         };
     },
     methods: {
@@ -386,10 +452,10 @@ export default {
                 this.resources.conceptos            = data.resources.conceptos;
                 this.resources.sucursales           = data.resources.sucursales;
                 this.resources.temporadas           = data.resources.temporadas;
-                this.resources.programas           = data.resources.programas;
+                this.resources.programas            = data.resources.programas;
                 this.resources.piscinas             = data.resources.piscinas;
                 this.resources.actividadSemanal     = data.resources.actividadSemanal;
-                this.resources.cantidadesDeSesiones = data.resources.cantidadesDeSesiones;
+                this.resources.cantidadSesiones     = data.resources.cantidadSesiones;
                 this.resources.horarios             = data.resources.horarios;
                 this.resources.dias                 = data.resources.dias;
 
@@ -499,34 +565,47 @@ export default {
 
         },
         getProgramas() {
-            const idtemporada = this.matricula.idtemporada;
-            const temporada = this.resources.temporadas.find( ele => ele.idtemporada === idtemporada);
-            const programas = temporada.programas;
-            this.resources.programas = programas;
-            this.matricula.idprograma = '';
+            const temporada = this.current.temporada;
+
+            this.resources.programas = temporada.programas;
+            this.matricula.idprograma = null;
         },
         getCarriles() {
-            const idpiscina = this.matricula.idpiscina;
-            const piscina = this.resources.piscinas.find( ele => ele.idpiscina === idpiscina);
-            const carriles = piscina.carriles;
-            this.resources.carriles = carriles;
-            this.matricula.idcarril = '';
-        },
-        changeActividadSemanal() {
-            const idactividadSemanal = this.matricula.idactividad_semanal;
-            const actividadSemanal = this.resources.actividadSemanal.find( ele => ele.idactividad_semanal === idactividadSemanal );
-            const dias = actividadSemanal.dias;
+            const piscina = this.current.piscina;
 
-            this.resources.dias = dias;
+            this.resources.carriles = piscina.carriles;
+            this.matricula.idcarril = null;
+        },
+        getCountMatriculados() {
+            return axios.get(route('matricula.cantidadDeAlumnosMatriculados'),{
+                params: {
+                    idtemporada: this.matricula.idtemporada,
+                    idprograma: this.matricula.idprograma,
+                    idpiscina: this.matricula.idpiscina,
+                    idcarril: this.matricula.idcarril,
+                }
+            })
+            .then( response => {
+                const data = response.data;
+
+                this.cantidadAlumnosMatriculados = data.cantidad_matriculados;
+                this.capacidadMaxima = data.capacidad_maxima;
+
+            })
+        },
+        getDias() {
+            const actividadSemanal = this.current.actividadSemanal;
+
+            this.resources.dias = actividadSemanal.dias;
             this.matriculaDetalle = [];
             this.showTableSelectHorario = true;
         },
-        hasHorarioAnDia( idmatricula, iddia) {
+        hasHorarioDia( idmatricula, iddia) {
             return this.matriculaDetalle.some( ele => ele.idmatricula === idmatricula && ele.iddia === iddia)
         },
-        selectDia( idmatricula, iddia) {
+        selectHorarioDia( idmatricula, iddia) {
 
-            if (this.hasHorarioAnDia( idmatricula, iddia)) {
+            if (this.hasHorarioDia( idmatricula, iddia)) {
                 this.matriculaDetalle = this.matriculaDetalle.filter( ele => ele.idmatricula === idmatricula && ele.iddia !== iddia || ele.idmatricula !== idmatricula && ele.iddia === iddia || ele.idmatricula !== idmatricula && ele.iddia !== iddia )
                 return ;
             }
@@ -544,45 +623,17 @@ export default {
     },
     mounted(){
         this.getResources();
-        if (Object.keys(this.alumnoCurrent).length > 0) {
-            this.alumno = Object.assign(this.alumno, this.alumnoCurrent);
+
+        if (Object.keys(this.alumno_current).length > 0) {
+            this.alumno = Object.assign(this.alumno, this.alumno_current);
             this.getProvincias().then( _ => {
-                this.alumno.idprovincia = this.alumnoCurrent.idprovincia ?? '';
+                this.alumno.idprovincia = this.alumno_current.idprovincia ?? '';
             });
             this.getDistritos().then( _ => {
-                this.alumno.iddistrito = this.alumnoCurrent.iddistrito ?? '';
+                this.alumno.iddistrito = this.alumno_current.iddistrito ?? '';
             });
 
         }
-        const alumno = {
-            idcliente: 3,
-            nombres: 'Juan Manual',
-            apellidos: 'Perez Aguila',
-            correo: 'JuanPa@gmail.com',
-            telefono: '987654321',
-            apoderado_nombres: 'Juan Manual',
-            apoderado_apellidos: 'Perez Aguila',
-            apoderado_correo: 'JuanPa@gmail.com',
-            apoderado_telefono: '987654321',
-            idtipo_documento_identidad: 1,
-            numero_documento_identidad: '87654321',
-            fecha_nacimiento: '1990-05-10',
-            sexo: 'hombre',
-            iddepartamento:  15,
-            idprovincia: 1501,
-            iddistrito: 150101,
-            direccion: 'av mazanares lt 10',
-            nota: null,
-            imagen: null,
-        };
-        this.alumno = Object.assign(this.alumno, alumno);
-        this.getProvincias().then( _ => {
-            this.alumno.idprovincia = '1501';
-        });
-        this.getDistritos().then( _ => {
-            this.alumno.iddistrito = '150101';
-        });
-
 
 
         setTimeout(() => {
