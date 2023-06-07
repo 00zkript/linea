@@ -255,7 +255,7 @@ class MatriculaController extends Controller
 
         return response()->json([
             'cantidad_matriculados' => $cantidadMatriculados,
-            'capacidad_maxima' => $carril->capacidad_maxima
+            'capacidad_maxima' => $carril->capacidad_maxima ?? 0
         ]);
     }
 

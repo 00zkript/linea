@@ -26,7 +26,7 @@
 
                     <div class="col-md-6 col-12 form-group">
                         <label for="tipoDocumentoIdentidad">Documento de identidad <span class="text-danger">(*)</span></label>
-                        <select name="tipoDocumentoIdentidad" id="tipoDocumentoIdentidad" class="form-control" v-model="alumno.idtipo_documento_identidad" @change="changeTipoDocumentoIdentidad()" >
+                        <select name="tipoDocumentoIdentidad" id="tipoDocumentoIdentidad" class="form-control" v-model="alumno.idtipo_documento_identidad" @change="changeAlumnoTipoDocumentoIdentidad()" >
                             <option hidden selected >[---Seleccione---]</option>
                             <option v-for="(item, index) in resources.tipoDocumentoIdentidad" :key="index" :value="item.idtipo_documento_identidad" v-text="item.nombre" ></option>
                         </select>
@@ -44,17 +44,17 @@
 
                     <div class="col-md-6 col-12 form-group">
                         <label for="sexo">Sexo</label>
-                        <select class="form-control" name="sexo" id="sexo" v-model="alumno.sexo" >
+                        <select class="form-control" name="sexo" id="sexo" v-model="alumno.sexo"
+                            @change=" current.alumno.sexo = resources.sexos.find(ele => ele.idsexo === alumno.idsexo ); "
+                            >
                             <option hidden selected >[---Seleccione---]</option>
-                            <option value="hombre">Hombre</option>
-                            <option value="mujer">Mujer</option>
-                            <option value="Otro">Otro</option>
+                            <option v-for="(item, index) in resources.sexos" :key="index" :value="item.idsexo" v-text="item.nombre"></option>
                         </select>
                     </div>
 
                     <div class="col-md-4 col-12 form-group">
                         <label for="departamento">Departamento</label>
-                        <select class="form-control" name="departamento" id="departamento" title="Departamento" v-model="alumno.iddepartamento" @change="getProvincias()" >
+                        <select class="form-control" name="departamento" id="departamento" title="Departamento" v-model="alumno.iddepartamento" @change="changeAlumnoDepartamento()" >
                             <option value="" hidden >[---Seleccione---]</option>
                             <option v-for="(item, index) in resources.departamentos" :key="index" :value="item.iddepartamento" v-text="item.nombre"></option>
                         </select>
@@ -62,7 +62,7 @@
 
                     <div class="col-md-4 col-12 form-group">
                         <label for="provincia">Provincia</label>
-                        <select class="form-control" name="provincia" id="provincia" title="Provincia" v-model="alumno.idprovincia" @change="getDistritos()" >
+                        <select class="form-control" name="provincia" id="provincia" title="Provincia" v-model="alumno.idprovincia" @change="changeAlumnoProvincia()" >
                             <option value="" hidden selected>[---Seleccione---]</option>
                             <option v-for="(item, index) in resources.provincias" :key="index" :value="item.idprovincia" v-text="item.nombre"></option>
                         </select>
@@ -70,11 +70,12 @@
 
                     <div class="col-md-4 col-12 form-group">
                         <label for="distrito">Distrito</label>
-                        <select class="form-control" name="distrito" id="distrito" title="Distrito" v-model="alumno.iddistrito" >
+                        <select class="form-control" name="distrito" id="distrito" title="Distrito" v-model="alumno.iddistrito" @change="changeAlumnoDistrito()" >
                             <option value="" hidden >[---Seleccione---]</option>
                             <option v-for="(item, index) in resources.distritos" :key="index" :value="item.iddistrito" v-text="item.nombre"></option>
                         </select>
                     </div>
+
                     <div class="col-md-12 col-12 form-group">
                         <label for="direccion">Direción</label>
                         <input type="text" class="form-control" name="direccion" id="direccion" placeholder="Direción" v-model="alumno.direccion" >
@@ -139,112 +140,59 @@
                     <input type="text" class="form-control bg-warning font-weight-bold" id="alumno" :value="alumno.nombres+' '+alumno.apellidos" readonly placeholder="Alumno" >
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <SelectForm
-                        label="Concepto"
-                        class-name="form-control"
-                        id="concepto"
-                        name="concepto"
-                        :required="true"
-                        :readonly="true"
-                        :collect="resources.conceptos"
-                        value-key="idconcepto"
-                        value-label="nombre"
-                        v-model="matricula.idconcepto"
-                        @itemSelected="current.concepto = $event"
-                    />
+                    <label for="concepto">Concepto <span class="text-danger">(*)</span></label>
+                    <select class="form-control" id="concepto" readonly v-model="matricula.idconcepto">
+                        <option value="" hidden >[---Seleccione---]</option>
+                        <option v-for="(item, index) in resources.conceptos" :key="index" :value="item.idconcepto" v-text="item.nombre"></option>
+                    </select>
                 </div>
                 <div class="col-md-4 col-12 form-group">
                     <label for="fecha">Periodo desde - hasta <span class="text-danger">(*)</span></label>
                     <DatePicker input-class="form-control" value-type="format" range v-model="matricula.fecha" placeholder="Periodo desde - hasta" ></DatePicker>
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <SelectForm
-                        label="Temporada"
-                        class-name="form-control"
-                        id="temporada"
-                        name="temporada"
-                        :required="true"
-                        :collect="resources.temporadas"
-                        value-key="idtemporada"
-                        value-label="nombre"
-                        v-model="matricula.idtemporada"
-                        @itemSelected="current.temporada = $event"
-                        @change="getProgramas()"
-                    />
+                    <label for="temporada">Temporada <span class="text-danger">(*)</span></label>
+                    <select class="form-control" id="temporada" v-model="matricula.idtemporada" @change="changeTemporada()">
+                        <option value="" hidden >[---Seleccione---]</option>
+                        <option v-for="(item, index) in resources.temporadas" :key="index" :value="item.idtemporada" v-text="item.nombre"></option>
+                    </select>
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <SelectForm
-                        class-name="form-control"
-                        id="programa"
-                        name="programa"
-                        label="Programa"
-                        :required="true"
-                        :collect="resources.programas"
-                        value-key="idprograma"
-                        value-label="nombre"
-                        v-model="matricula.idprograma"
-                        @itemSelected="current.programa = $event"
-                    />
+                    <label for="programa">Programa <span class="text-danger">(*)</span></label>
+                    <select class="form-control" id="programa" v-model="matricula.idprograma" @change="changePrograma()">
+                        <option value="" hidden >[---Seleccione---]</option>
+                        <option v-for="(item, index) in resources.programas" :key="index" :value="item.idprograma" v-text="item.nombre"></option>
+                    </select>
+
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <SelectForm
-                        label="Piscina"
-                        class-name="form-control"
-                        id="piscina"
-                        name="piscina"
-                        :required="true"
-                        :collect="resources.piscinas"
-                        value-key="idpiscina"
-                        value-label="nombre"
-                        v-model="matricula.idpiscina"
-                        @itemSelected="current.piscina = $event"
-                        @change="getCarriles()"
-                    />
+                    <label for="piscina">Piscina <span class="text-danger">(*)</span></label>
+                    <select class="form-control" id="piscina" v-model="matricula.idpiscina" @change="changePiscina()">
+                        <option value="" hidden >[---Seleccione---]</option>
+                        <option v-for="(item, index) in resources.piscinas" :key="index" :value="item.idpiscina" v-text="item.nombre"></option>
+                    </select>
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <SelectForm
-                        label="Carril"
-                        class-name="form-control"
-                        id="carril"
-                        name="carril"
-                        :required="true"
-                        :collect="resources.carriles"
-                        value-key="idcarril"
-                        value-label="nombre"
-                        v-model="matricula.idcarril"
-                        @itemSelected="current.carril = $event"
-                        @change="getCountMatriculados()"
-                    />
+                    <label for="carril">Carril <span class="text-danger">(*)</span></label>
+                    <select class="form-control" id="carril" v-model="matricula.idcarril" @change="changeCarril()">
+                        <option value="" hidden >[---Seleccione---]</option>
+                        <option v-for="(item, index) in resources.carriles" :key="index" :value="item.idcarril" v-text="item.nombre"></option>
+                    </select>
                     <span> Capacidad maxima: {{ capacidadMaxima }} / matriculados : {{ cantidadAlumnosMatriculados }}</span>
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <SelectForm
-                        label="Dias de actividad"
-                        class-name="form-control"
-                        id="diasDeActividad"
-                        name="diasDeActividad"
-                        :required="true"
-                        :collect="resources.actividadSemanal"
-                        value-key="idactividad_semanal"
-                        value-label="nombre"
-                        v-model="matricula.idactividad_semanal"
-                        @itemSelected="current.actividadSemanal = $event"
-                        @change="getDias()"
-                    />
+                    <label for="diasDeActividad">Dias de actividad <span class="text-danger">(*)</span></label>
+                    <select class="form-control" id="diasDeActividad" v-model="matricula.idactividad_semanal" @change="changeDiasActividad()">
+                        <option value="" hidden >[---Seleccione---]</option>
+                        <option v-for="(item, index) in resources.actividadSemanal" :key="index" :value="item.idactividad_semanal" v-text="item.nombre"></option>
+                    </select>
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <SelectForm
-                        label="Cantidad de sesiones"
-                        class-name="form-control"
-                        id="cantidadDeSessiones"
-                        name="cantidadDeSessiones"
-                        :required="true"
-                        :collect="resources.cantidadSesiones"
-                        value-key="idcantidad_sessiones"
-                        value-label="nombre"
-                        v-model="matricula.idcantidad_sessiones"
-                        @itemSelected="current.cantidadSesiones = $event"
-                    />
+                    <label for="cantidadDeSessiones">Cantidad de sessiones <span class="text-danger">(*)</span></label>
+                    <select class="form-control" id="cantidadDeSessiones" v-model="matricula.idcantidad_sesiones" @change="changeCantidadSesiones()">
+                        <option value="" hidden >[---Seleccione---]</option>
+                        <option v-for="(item, index) in resources.cantidadesDeSesiones" :key="index" :value="item.idcantidad_sesiion" v-text="item.nombre"></option>
+                    </select>
                 </div>
 
 
@@ -367,9 +315,15 @@ export default {
         return {
             resources: {
                 tipoDocumentoIdentidad: [],
+                sexos: [
+                    { idsexo: 'hombre', nombre: 'Hombre'},
+                    { idsexo: 'mujer', nombre: 'Mujer'},
+                    { idsexo: 'otro', nombre: 'Otro'}
+                ],
                 departamentos: [],
                 provincias: [],
                 distritos: [],
+
                 conceptos: [],
                 sucursales: [],
                 sucursal: [],
@@ -383,6 +337,14 @@ export default {
                 dias: [],
             },
             current: {
+                alumno: {
+                    tipoDocumentoIdentidad: {},
+                    sexo: {},
+                    departamento: {},
+                    provincia: {},
+                    distrito: {},
+                },
+
                 empleado: {},
                 sucursal: {},
                 temporada: {},
@@ -417,7 +379,7 @@ export default {
             },
             matricula: {
                 codigo: null,
-                idcliente: null,
+                idcliente: '',
                 idconcepto: 1,
                 idempleado: '',
                 idsucursal: '',
@@ -426,7 +388,7 @@ export default {
                 idpiscina: '',
                 idcarril: '',
                 idactividad_semanal: '',
-                idcantidad_sessiones: '',
+                idcantidad_sesiones: '',
             },
             matriculaDetalle: [],
             showTableSelectHorario: false,
@@ -472,15 +434,10 @@ export default {
                 const data = response.data;
             })
         },
-        changeTipoDocumentoIdentidad() {
-            const tipoDocumento = this.resources.tipoDocumentoIdentidad.find( ele => ele.idtipo_documento_identidad  === this.alumno.idtipo_documento_identidad);
-            this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
-        },
         getProvincias() {
             return axios.get(route('matricula.provincias',[ this.alumno.iddepartamento ]))
             .then( response => {
                 const data = response.data;
-                this.resources.provincias = data;
                 this.resources.provincias = data;
             })
         },
@@ -490,6 +447,32 @@ export default {
                 const data = response.data;
                 this.resources.distritos = data;
             })
+        },
+        changeAlumnoTipoDocumentoIdentidad() {
+            const tipoDocumento = this.resources.tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad === this.alumno.idtipo_documento_identidad );
+            this.current.alumno.tipoDocumentoIdentidad = tipoDocumento;
+            this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
+        },
+        changeAlumnoDepartamento() {
+            this.current.alumno.departamento = this.resources.departamentos.find(ele => ele.iddepartamento === this.alumno.iddepartamento );
+            this.getProvincias().then( data => {
+                this.current.alumno.provincia = {};
+                this.alumno.idprovincia = '';
+
+                this.resources.distritos = [];
+                this.alumno.iddistrito = '';
+                this.current.alumno.distrito = {};
+            });
+        },
+        changeAlumnoProvincia() {
+            this.current.alumno.provincia = this.resources.provincias.find(ele => ele.idprovincia === this.alumno.idprovincia );
+            this.getDistritos().then( data => {
+                this.alumno.iddistrito = '';
+                this.current.alumno.distrito = {};
+            });
+        },
+        changeAlumnoDistrito() {
+            this.current.alumno.distrito = this.resources.distritos.find(ele => ele.iddistrito === this.alumno.iddistrito );
         },
         validateAlumno() {
             const errors = [];
@@ -564,17 +547,21 @@ export default {
 
 
         },
+
+
         getProgramas() {
             const temporada = this.current.temporada;
 
+            this.current.programa = {};
             this.resources.programas = temporada.programas;
-            this.matricula.idprograma = null;
+            this.matricula.idprograma = '';
         },
         getCarriles() {
             const piscina = this.current.piscina;
 
+            this.current.carril = {};
             this.resources.carriles = piscina.carriles;
-            this.matricula.idcarril = null;
+            this.matricula.idcarril = '';
         },
         getCountMatriculados() {
             return axios.get(route('matricula.cantidadDeAlumnosMatriculados'),{
@@ -595,11 +582,34 @@ export default {
         },
         getDias() {
             const actividadSemanal = this.current.actividadSemanal;
-
             this.resources.dias = actividadSemanal.dias;
+        },
+
+        changeTemporada() {
+            this.current.temporada = this.resources.temporadas.find(ele => ele.idtemporada === this.matricula.idtemporada );
+            this.getProgramas();
+        },
+        changePrograma() {
+            this.current.programa = this.resources.programas.find(ele => ele.idprograma === this.matricula.idprograma );
+        },
+        changePiscina() {
+            this.current.piscina = this.resources.piscinas.find(ele => ele.idpiscina === this.matricula.idpiscina );
+            this.getCarriles();
+        },
+        changeCarril() {
+            this.current.carril = this.resources.carriles.find(ele => ele.idcarril === this.matricula.idcarril );
+            this.getCountMatriculados();
+        },
+        changeDiasActividad() {
+            this.current.actividadSemanal = this.resources.actividadSemanal.find(ele => ele.idactividad_semanal === this.matricula.idactividad_semanal );
+            this.getDias();
             this.matriculaDetalle = [];
             this.showTableSelectHorario = true;
         },
+        changeCantidadSesiones() {
+            this.current.cantidadSesiones = this.resources.cantidadSesiones.find(ele => ele.idcantidad_sesiones === this.matricula.idcantidad_sesiones );
+        },
+
         hasHorarioDia( idmatricula, iddia) {
             return this.matriculaDetalle.some( ele => ele.idmatricula === idmatricula && ele.iddia === iddia)
         },

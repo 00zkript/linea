@@ -2195,6 +2195,16 @@ var settingFileInput = {
     return {
       resources: {
         tipoDocumentoIdentidad: [],
+        sexos: [{
+          idsexo: 'hombre',
+          nombre: 'Hombre'
+        }, {
+          idsexo: 'mujer',
+          nombre: 'Mujer'
+        }, {
+          idsexo: 'otro',
+          nombre: 'Otro'
+        }],
         departamentos: [],
         provincias: [],
         distritos: [],
@@ -2211,6 +2221,13 @@ var settingFileInput = {
         dias: []
       },
       current: {
+        alumno: {
+          tipoDocumentoIdentidad: {},
+          sexo: {},
+          departamento: {},
+          provincia: {},
+          distrito: {}
+        },
         empleado: {},
         sucursal: {},
         temporada: {},
@@ -2245,7 +2262,7 @@ var settingFileInput = {
       },
       matricula: {
         codigo: null,
-        idcliente: null,
+        idcliente: '',
         idconcepto: 1,
         idempleado: '',
         idsucursal: '',
@@ -2254,7 +2271,7 @@ var settingFileInput = {
         idpiscina: '',
         idcarril: '',
         idactividad_semanal: '',
-        idcantidad_sessiones: ''
+        idcantidad_sesiones: ''
       },
       matriculaDetalle: [],
       showTableSelectHorario: false,
@@ -2296,26 +2313,55 @@ var settingFileInput = {
         var data = response.data;
       });
     },
-    changeTipoDocumentoIdentidad: function changeTipoDocumentoIdentidad() {
-      var _this2 = this;
-      var tipoDocumento = this.resources.tipoDocumentoIdentidad.find(function (ele) {
-        return ele.idtipo_documento_identidad === _this2.alumno.idtipo_documento_identidad;
-      });
-      this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
-    },
     getProvincias: function getProvincias() {
-      var _this3 = this;
+      var _this2 = this;
       return axios.get(route('matricula.provincias', [this.alumno.iddepartamento])).then(function (response) {
         var data = response.data;
-        _this3.resources.provincias = data;
-        _this3.resources.provincias = data;
+        _this2.resources.provincias = data;
       });
     },
     getDistritos: function getDistritos() {
-      var _this4 = this;
+      var _this3 = this;
       return axios.get(route('matricula.distritos', [this.alumno.idprovincia])).then(function (response) {
         var data = response.data;
-        _this4.resources.distritos = data;
+        _this3.resources.distritos = data;
+      });
+    },
+    changeAlumnoTipoDocumentoIdentidad: function changeAlumnoTipoDocumentoIdentidad() {
+      var _this4 = this;
+      var tipoDocumento = this.resources.tipoDocumentoIdentidad.find(function (ele) {
+        return ele.idtipo_documento_identidad === _this4.alumno.idtipo_documento_identidad;
+      });
+      this.current.alumno.tipoDocumentoIdentidad = tipoDocumento;
+      this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
+    },
+    changeAlumnoDepartamento: function changeAlumnoDepartamento() {
+      var _this5 = this;
+      this.current.alumno.departamento = this.resources.departamentos.find(function (ele) {
+        return ele.iddepartamento === _this5.alumno.iddepartamento;
+      });
+      this.getProvincias().then(function (data) {
+        _this5.current.alumno.provincia = {};
+        _this5.alumno.idprovincia = '';
+        _this5.resources.distritos = [];
+        _this5.alumno.iddistrito = '';
+        _this5.current.alumno.distrito = {};
+      });
+    },
+    changeAlumnoProvincia: function changeAlumnoProvincia() {
+      var _this6 = this;
+      this.current.alumno.provincia = this.resources.provincias.find(function (ele) {
+        return ele.idprovincia === _this6.alumno.idprovincia;
+      });
+      this.getDistritos().then(function (data) {
+        _this6.alumno.iddistrito = '';
+        _this6.current.alumno.distrito = {};
+      });
+    },
+    changeAlumnoDistrito: function changeAlumnoDistrito() {
+      var _this7 = this;
+      this.current.alumno.distrito = this.resources.distritos.find(function (ele) {
+        return ele.iddistrito === _this7.alumno.iddistrito;
       });
     },
     validateAlumno: function validateAlumno() {
@@ -2356,7 +2402,7 @@ var settingFileInput = {
       return errors;
     },
     storeAlumno: function storeAlumno() {
-      var _this5 = this;
+      var _this8 = this;
       var errors = this.validateAlumno();
       if (errors.length > 0) {
         notificacion('error', 'Errores encontrados:', listErrorsForm(errors));
@@ -2371,22 +2417,24 @@ var settingFileInput = {
       var alumnoData = jsonToFormData(this.alumno);
       axios.post(route('matricula.storeAlumno'), alumnoData).then(function (response) {
         var data = response.data;
-        _this5.stepCurrent = 2;
-        _this5.alumno.idcliente = data.idcliente;
+        _this8.stepCurrent = 2;
+        _this8.alumno.idcliente = data.idcliente;
       });
     },
     getProgramas: function getProgramas() {
       var temporada = this.current.temporada;
+      this.current.programa = {};
       this.resources.programas = temporada.programas;
-      this.matricula.idprograma = null;
+      this.matricula.idprograma = '';
     },
     getCarriles: function getCarriles() {
       var piscina = this.current.piscina;
+      this.current.carril = {};
       this.resources.carriles = piscina.carriles;
-      this.matricula.idcarril = null;
+      this.matricula.idcarril = '';
     },
     getCountMatriculados: function getCountMatriculados() {
-      var _this6 = this;
+      var _this9 = this;
       return axios.get(route('matricula.cantidadDeAlumnosMatriculados'), {
         params: {
           idtemporada: this.matricula.idtemporada,
@@ -2396,15 +2444,55 @@ var settingFileInput = {
         }
       }).then(function (response) {
         var data = response.data;
-        _this6.cantidadAlumnosMatriculados = data.cantidad_matriculados;
-        _this6.capacidadMaxima = data.capacidad_maxima;
+        _this9.cantidadAlumnosMatriculados = data.cantidad_matriculados;
+        _this9.capacidadMaxima = data.capacidad_maxima;
       });
     },
     getDias: function getDias() {
       var actividadSemanal = this.current.actividadSemanal;
       this.resources.dias = actividadSemanal.dias;
+    },
+    changeTemporada: function changeTemporada() {
+      var _this10 = this;
+      this.current.temporada = this.resources.temporadas.find(function (ele) {
+        return ele.idtemporada === _this10.matricula.idtemporada;
+      });
+      this.getProgramas();
+    },
+    changePrograma: function changePrograma() {
+      var _this11 = this;
+      this.current.programa = this.resources.programas.find(function (ele) {
+        return ele.idprograma === _this11.matricula.idprograma;
+      });
+    },
+    changePiscina: function changePiscina() {
+      var _this12 = this;
+      this.current.piscina = this.resources.piscinas.find(function (ele) {
+        return ele.idpiscina === _this12.matricula.idpiscina;
+      });
+      this.getCarriles();
+    },
+    changeCarril: function changeCarril() {
+      var _this13 = this;
+      this.current.carril = this.resources.carriles.find(function (ele) {
+        return ele.idcarril === _this13.matricula.idcarril;
+      });
+      this.getCountMatriculados();
+    },
+    changeDiasActividad: function changeDiasActividad() {
+      var _this14 = this;
+      this.current.actividadSemanal = this.resources.actividadSemanal.find(function (ele) {
+        return ele.idactividad_semanal === _this14.matricula.idactividad_semanal;
+      });
+      this.getDias();
       this.matriculaDetalle = [];
       this.showTableSelectHorario = true;
+    },
+    changeCantidadSesiones: function changeCantidadSesiones() {
+      var _this15 = this;
+      this.current.cantidadSesiones = this.resources.cantidadSesiones.find(function (ele) {
+        return ele.idcantidad_sesiones === _this15.matricula.idcantidad_sesiones;
+      });
     },
     hasHorarioDia: function hasHorarioDia(idmatricula, iddia) {
       return this.matriculaDetalle.some(function (ele) {
@@ -2428,17 +2516,17 @@ var settingFileInput = {
     storeMatricula: function storeMatricula() {}
   },
   mounted: function mounted() {
-    var _this7 = this;
+    var _this16 = this;
     this.getResources();
     if (Object.keys(this.alumno_current).length > 0) {
       this.alumno = Object.assign(this.alumno, this.alumno_current);
       this.getProvincias().then(function (_) {
-        var _this7$alumno_current;
-        _this7.alumno.idprovincia = (_this7$alumno_current = _this7.alumno_current.idprovincia) !== null && _this7$alumno_current !== void 0 ? _this7$alumno_current : '';
+        var _this16$alumno_curren;
+        _this16.alumno.idprovincia = (_this16$alumno_curren = _this16.alumno_current.idprovincia) !== null && _this16$alumno_curren !== void 0 ? _this16$alumno_curren : '';
       });
       this.getDistritos().then(function (_) {
-        var _this7$alumno_current2;
-        _this7.alumno.iddistrito = (_this7$alumno_current2 = _this7.alumno_current.iddistrito) !== null && _this7$alumno_current2 !== void 0 ? _this7$alumno_current2 : '';
+        var _this16$alumno_curren2;
+        _this16.alumno.iddistrito = (_this16$alumno_curren2 = _this16.alumno_current.iddistrito) !== null && _this16$alumno_curren2 !== void 0 ? _this16$alumno_curren2 : '';
       });
     }
     setTimeout(function () {
@@ -2717,9 +2805,9 @@ var render = function render() {
     domProps: {
       value: null
     }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.collect, function (item) {
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.collect, function (item, index) {
     return _c("option", {
-      key: item[_vm.valueKey],
+      key: index,
       domProps: {
         value: item[_vm.valueKey]
       }
@@ -3009,7 +3097,7 @@ var render = function render() {
         });
         _vm.$set(_vm.alumno, "idtipo_documento_identidad", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }, function ($event) {
-        return _vm.changeTipoDocumentoIdentidad();
+        return _vm.changeAlumnoTipoDocumentoIdentidad();
       }]
     }
   }, [_c("option", {
@@ -3096,7 +3184,7 @@ var render = function render() {
       id: "sexo"
     },
     on: {
-      change: function change($event) {
+      change: [function ($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
           return o.selected;
         }).map(function (o) {
@@ -3104,26 +3192,26 @@ var render = function render() {
           return val;
         });
         _vm.$set(_vm.alumno, "sexo", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
+      }, function ($event) {
+        _vm.current.alumno.sexo = _vm.resources.sexos.find(function (ele) {
+          return ele.idsexo === _vm.alumno.idsexo;
+        });
+      }]
     }
   }, [_c("option", {
     attrs: {
       hidden: "",
       selected: ""
     }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "hombre"
-    }
-  }, [_vm._v("Hombre")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "mujer"
-    }
-  }, [_vm._v("Mujer")]), _vm._v(" "), _c("option", {
-    attrs: {
-      value: "Otro"
-    }
-  }, [_vm._v("Otro")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.sexos, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idsexo,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
@@ -3152,7 +3240,7 @@ var render = function render() {
         });
         _vm.$set(_vm.alumno, "iddepartamento", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }, function ($event) {
-        return _vm.getProvincias();
+        return _vm.changeAlumnoDepartamento();
       }]
     }
   }, [_c("option", {
@@ -3197,7 +3285,7 @@ var render = function render() {
         });
         _vm.$set(_vm.alumno, "idprovincia", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }, function ($event) {
-        return _vm.getDistritos();
+        return _vm.changeAlumnoProvincia();
       }]
     }
   }, [_c("option", {
@@ -3234,7 +3322,7 @@ var render = function render() {
       title: "Distrito"
     },
     on: {
-      change: function change($event) {
+      change: [function ($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
           return o.selected;
         }).map(function (o) {
@@ -3242,7 +3330,9 @@ var render = function render() {
           return val;
         });
         _vm.$set(_vm.alumno, "iddistrito", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
+      }, function ($event) {
+        return _vm.changeAlumnoDistrito();
+      }]
     }
   }, [_c("option", {
     attrs: {
@@ -3488,31 +3578,49 @@ var render = function render() {
     }
   })]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 col-12 form-group"
-  }, [_c("SelectForm", {
+  }, [_c("label", {
     attrs: {
-      label: "Concepto",
-      "class-name": "form-control",
+      "for": "concepto"
+    }
+  }, [_vm._v("Concepto "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.matricula.idconcepto,
+      expression: "matricula.idconcepto"
+    }],
+    staticClass: "form-control",
+    attrs: {
       id: "concepto",
-      name: "concepto",
-      required: true,
-      readonly: true,
-      collect: _vm.resources.conceptos,
-      "value-key": "idconcepto",
-      "value-label": "nombre"
+      readonly: ""
     },
     on: {
-      itemSelected: function itemSelected($event) {
-        _vm.current.concepto = $event;
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.matricula, "idconcepto", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
-    },
-    model: {
-      value: _vm.matricula.idconcepto,
-      callback: function callback($$v) {
-        _vm.$set(_vm.matricula, "idconcepto", $$v);
-      },
-      expression: "matricula.idconcepto"
     }
-  })], 1), _vm._v(" "), _c("div", {
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.conceptos, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idconcepto,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
@@ -3536,167 +3644,275 @@ var render = function render() {
     }
   })], 1), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 col-12 form-group"
-  }, [_c("SelectForm", {
+  }, [_c("label", {
     attrs: {
-      label: "Temporada",
-      "class-name": "form-control",
-      id: "temporada",
-      name: "temporada",
-      required: true,
-      collect: _vm.resources.temporadas,
-      "value-key": "idtemporada",
-      "value-label": "nombre"
-    },
-    on: {
-      itemSelected: function itemSelected($event) {
-        _vm.current.temporada = $event;
-      },
-      change: function change($event) {
-        return _vm.getProgramas();
-      }
-    },
-    model: {
+      "for": "temporada"
+    }
+  }, [_vm._v("Temporada "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
       value: _vm.matricula.idtemporada,
-      callback: function callback($$v) {
-        _vm.$set(_vm.matricula, "idtemporada", $$v);
-      },
       expression: "matricula.idtemporada"
-    }
-  })], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12 form-group"
-  }, [_c("SelectForm", {
+    }],
+    staticClass: "form-control",
     attrs: {
-      "class-name": "form-control",
-      id: "programa",
-      name: "programa",
-      label: "Programa",
-      required: true,
-      collect: _vm.resources.programas,
-      "value-key": "idprograma",
-      "value-label": "nombre"
+      id: "temporada"
     },
     on: {
-      itemSelected: function itemSelected($event) {
-        _vm.current.programa = $event;
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.matricula, "idtemporada", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.changeTemporada();
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.temporadas, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idtemporada,
+        textContent: _vm._s(item.nombre)
       }
-    },
-    model: {
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "programa"
+    }
+  }, [_vm._v("Programa "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
       value: _vm.matricula.idprograma,
-      callback: function callback($$v) {
-        _vm.$set(_vm.matricula, "idprograma", $$v);
-      },
       expression: "matricula.idprograma"
-    }
-  })], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12 form-group"
-  }, [_c("SelectForm", {
+    }],
+    staticClass: "form-control",
     attrs: {
-      label: "Piscina",
-      "class-name": "form-control",
-      id: "piscina",
-      name: "piscina",
-      required: true,
-      collect: _vm.resources.piscinas,
-      "value-key": "idpiscina",
-      "value-label": "nombre"
+      id: "programa"
     },
     on: {
-      itemSelected: function itemSelected($event) {
-        _vm.current.piscina = $event;
-      },
-      change: function change($event) {
-        return _vm.getCarriles();
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.matricula, "idprograma", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.changePrograma();
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.programas, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idprograma,
+        textContent: _vm._s(item.nombre)
       }
-    },
-    model: {
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "piscina"
+    }
+  }, [_vm._v("Piscina "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
       value: _vm.matricula.idpiscina,
-      callback: function callback($$v) {
-        _vm.$set(_vm.matricula, "idpiscina", $$v);
-      },
       expression: "matricula.idpiscina"
-    }
-  })], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12 form-group"
-  }, [_c("SelectForm", {
+    }],
+    staticClass: "form-control",
     attrs: {
-      label: "Carril",
-      "class-name": "form-control",
-      id: "carril",
-      name: "carril",
-      required: true,
-      collect: _vm.resources.carriles,
-      "value-key": "idcarril",
-      "value-label": "nombre"
+      id: "piscina"
     },
     on: {
-      itemSelected: function itemSelected($event) {
-        _vm.current.carril = $event;
-      },
-      change: function change($event) {
-        return _vm.getCountMatriculados();
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.matricula, "idpiscina", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.changePiscina();
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.piscinas, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idpiscina,
+        textContent: _vm._s(item.nombre)
       }
-    },
-    model: {
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "carril"
+    }
+  }, [_vm._v("Carril "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
       value: _vm.matricula.idcarril,
-      callback: function callback($$v) {
-        _vm.$set(_vm.matricula, "idcarril", $$v);
-      },
       expression: "matricula.idcarril"
-    }
-  }), _vm._v(" "), _c("span", [_vm._v(" Capacidad maxima: " + _vm._s(_vm.capacidadMaxima) + " / matriculados : " + _vm._s(_vm.cantidadAlumnosMatriculados))])], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12 form-group"
-  }, [_c("SelectForm", {
+    }],
+    staticClass: "form-control",
     attrs: {
-      label: "Dias de actividad",
-      "class-name": "form-control",
-      id: "diasDeActividad",
-      name: "diasDeActividad",
-      required: true,
-      collect: _vm.resources.actividadSemanal,
-      "value-key": "idactividad_semanal",
-      "value-label": "nombre"
+      id: "carril"
     },
     on: {
-      itemSelected: function itemSelected($event) {
-        _vm.current.actividadSemanal = $event;
-      },
-      change: function change($event) {
-        return _vm.getDias();
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.matricula, "idcarril", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.changeCarril();
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.carriles, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idcarril,
+        textContent: _vm._s(item.nombre)
       }
-    },
-    model: {
+    });
+  })], 2), _vm._v(" "), _c("span", [_vm._v(" Capacidad maxima: " + _vm._s(_vm.capacidadMaxima) + " / matriculados : " + _vm._s(_vm.cantidadAlumnosMatriculados))])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "diasDeActividad"
+    }
+  }, [_vm._v("Dias de actividad "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
       value: _vm.matricula.idactividad_semanal,
-      callback: function callback($$v) {
-        _vm.$set(_vm.matricula, "idactividad_semanal", $$v);
-      },
       expression: "matricula.idactividad_semanal"
-    }
-  })], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12 form-group"
-  }, [_c("SelectForm", {
+    }],
+    staticClass: "form-control",
     attrs: {
-      label: "Cantidad de sesiones",
-      "class-name": "form-control",
-      id: "cantidadDeSessiones",
-      name: "cantidadDeSessiones",
-      required: true,
-      collect: _vm.resources.cantidadSesiones,
-      "value-key": "idcantidad_sessiones",
-      "value-label": "nombre"
+      id: "diasDeActividad"
     },
     on: {
-      itemSelected: function itemSelected($event) {
-        _vm.current.cantidadSesiones = $event;
-      }
-    },
-    model: {
-      value: _vm.matricula.idcantidad_sessiones,
-      callback: function callback($$v) {
-        _vm.$set(_vm.matricula, "idcantidad_sessiones", $$v);
-      },
-      expression: "matricula.idcantidad_sessiones"
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.matricula, "idactividad_semanal", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.changeDiasActividad();
+      }]
     }
-  })], 1), _vm._v(" "), _vm.showTableSelectHorario ? _c("div", {
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.actividadSemanal, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idactividad_semanal,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "cantidadDeSessiones"
+    }
+  }, [_vm._v("Cantidad de sessiones "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.matricula.idcantidad_sesiones,
+      expression: "matricula.idcantidad_sesiones"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      id: "cantidadDeSessiones"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.matricula, "idcantidad_sesiones", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.changeCantidadSesiones();
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.cantidadesDeSesiones, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idcantidad_sesiion,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _vm.showTableSelectHorario ? _c("div", {
     staticClass: "col-12 mt-3 pl-0 pr-0"
   }, [_c("h3", {
     staticClass: "text-center"

@@ -6,7 +6,7 @@
         </label>
         <select :class="className" :name="name" :id="id" v-model="selected" :required="required" :readonly="readonly" @change="handleChange">
             <option :value="null" hidden>[---Seleccione---]</option>
-            <option v-for="item in collect" :key="item[valueKey]" :value="item[valueKey]">
+            <option v-for="(item,index) in collect" :key="index" :value="item[valueKey]">
                 {{ item[valueLabel] }}
             </option>
         </select>
