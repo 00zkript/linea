@@ -425,7 +425,7 @@ export default {
                 this.current.empleado = data.current.empleado;
 
                 this.matricula.idsucursal = data.current.sucursal.idsucursal;
-                this.matricula.idempleado = data.current.sucursal.idusuario;
+                this.matricula.idempleado = data.current.empleado.idusuario;
                 this.matricula.idtemporada = data.current.temporada.idtemporada;
 
             })
@@ -450,6 +450,8 @@ export default {
         },
         changeAlumnoTipoDocumentoIdentidad() {
             const tipoDocumento = this.resources.tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad === this.alumno.idtipo_documento_identidad );
+
+            this.alumno.numero_documento_identidad = this.alumno.numero_documento_identidad.slice(0,tipoDocumento.caracteres_length);
             this.current.alumno.tipoDocumentoIdentidad = tipoDocumento;
             this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
         },
@@ -700,9 +702,24 @@ export default {
 
             console.log(matriculaData);
 
+            axios.post(route('matricula.storeMatricula'), matriculaData)
+            .then( response => {
+                const data = response.data;
 
-            this.codigoMatricula = "1".toString().padStart(7,0);
-            this.stepCurrent = 4;
+                this.codigoMatricula = data.codigo;
+                this.stepCurrent = 4;
+
+            })
+            .catch( error => {
+                if ( error.response === undefined) return console.error(error);
+
+                const response = error.response;
+                const data = response.data;
+
+
+            });
+
+
         },
     },
     mounted(){

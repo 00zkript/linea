@@ -18,6 +18,7 @@ use App\Models\CantidadSesiones;
 use App\Http\Controllers\Controller;
 use App\Models\Carril;
 use App\Models\Cliente;
+use App\Models\MatriculaDetalle;
 use App\Models\Programa;
 use App\Models\TipoDocumentoIdentidad;
 use Illuminate\Support\Facades\Storage;
@@ -263,6 +264,87 @@ class MatriculaController extends Controller
             'cantidad_matriculados' => $cantidadMatriculados,
             'capacidad_maxima' => $carril->capacidad_maxima ?? 0
         ]);
+    }
+
+    public function storeMatricula(Request $request)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $fecha               = $request->input('fecha');
+        $idconcepto          = $request->input('idconcepto');
+        $idempleado          = $request->input('idempleado');
+        $idsucursal          = $request->input('idsucursal');
+        $idtemporada         = $request->input('idtemporada');
+        $idprograma          = $request->input('idprograma');
+        $idpiscina           = $request->input('idpiscina');
+        $idcarril            = $request->input('idcarril');
+        $idactividad_semanal = $request->input('idactividad_semanal');
+        $idcantidad_sesiones = $request->input('idcantidad_sesiones');
+        $idcliente           = $request->input('idcliente');
+        $detalle             = $request->input('detalle');
+
+
+
+        $fecha_inicio     = now()->parse($fecha[0])->format('Y-m-d');
+        $fecha_fin        = now()->parse($fecha[1])->format('Y-m-d');
+        $cliente          = Cliente::query()->find($idcliente);
+        $empleado         = auth()->user();
+        $sucursal         = auth()->user()->sucursal;
+        $temporada        = Temporada::query()->find($idtemporada);
+        $programa         = Programa::query()->find($idprograma);
+        $cantidadSesiones = CantidadSesiones::query()->find($idcantidad_sesiones);
+        $actividadSemanal = ActividadSemanal::query()->find($idactividad_semanal);
+
+
+        $matricula = new Matricula();
+        $matricula->idsucursal                          = $idsucursal;
+        $matricula->sucursal_nombre                     = $sucursal->nombre;
+        $matricula->sucursal_direccion                  = $sucursal->direccion;
+        $matricula->idcliente                           = $idcliente;
+        $matricula->cliente_nombres                     = $cliente->nombres;
+        $matricula->cliente_apellidos                   = $cliente->apellidos;
+        $matricula->cliente_idtipo_documento_identidad  = $cliente->idtipo_documento_identidad;
+        $matricula->cliente_numero_documento_identidad  = $cliente->numero_documento_identidad;
+        $matricula->idempleado                          = $idempleado;
+        $matricula->empleado_nombres                    = $empleado->nombres;
+        $matricula->empleado_apellidos                  = $empleado->apellidos;
+        $matricula->empleado_idtipo_documento_identidad = $empleado->idtipo_documento_identidad;
+        $matricula->empleado_numero_documento_identidad = $empleado->numero_documento_identidad;
+        $matricula->fecha_inicio                        = $fecha_inicio;
+        $matricula->fecha_fin                           = $fecha_fin;
+        $matricula->idconcepto                          = $idconcepto;
+        $matricula->idtemporada                         = $idtemporada;
+        $matricula->temporada_nombre                    = $temporada->nombre;
+        $matricula->idprograma                          = $idprograma;
+        $matricula->programa_nombre                     = $programa->nombre;
+        $matricula->idcantidad_sesiones                 = $idcantidad_sesiones;
+        $matricula->cantidad_sesiones_nombre            = $cantidadSesiones->nombre;
+        $matricula->cantidad_sesiones_cantidad          = $cantidadSesiones->cantidad;
+        $matricula->idactividad_semanal                 = $idactividad_semanal;
+        $matricula->actividad_semanal_nombre            = $actividadSemanal->nombre;
+        $matricula->idpiscina                           = $idpiscina;
+        $matricula->idcarril                            = $idcarril;
+        $matricula->monto_total                         = $cantidadSesiones->precio;
+        $matricula->estado                              = 1;
+        $matricula->save();
+
+        foreach ($detalle as $item) {
+            $horario = new MatriculaDetalle();
+            $horario->idmatricula = $matricula->idmatricula;
+            $horario->iddia = $item['iddia'];
+            $horario->idhorario = $item['idhorario'];
+            $horario->dia_nombre = $item['dia_nombre'];
+            $horario->horario_nombre = $item['horario_nombre'];
+            $horario->save();
+        }
+
+
+        return response()->json([
+            'codigo' => str_pad($matricula->idmatricula,7,0,STR_PAD_LEFT)
+        ]);
+
     }
 
 

@@ -2319,7 +2319,7 @@ var settingFileInput = {
         _this.current.temporada = data.current.temporada;
         _this.current.empleado = data.current.empleado;
         _this.matricula.idsucursal = data.current.sucursal.idsucursal;
-        _this.matricula.idempleado = data.current.sucursal.idusuario;
+        _this.matricula.idempleado = data.current.empleado.idusuario;
         _this.matricula.idtemporada = data.current.temporada.idtemporada;
       })["catch"](function (error) {
         var response = error.response;
@@ -2345,6 +2345,7 @@ var settingFileInput = {
       var tipoDocumento = this.resources.tipoDocumentoIdentidad.find(function (ele) {
         return ele.idtipo_documento_identidad === _this4.alumno.idtipo_documento_identidad;
       });
+      this.alumno.numero_documento_identidad = this.alumno.numero_documento_identidad.slice(0, tipoDocumento.caracteres_length);
       this.current.alumno.tipoDocumentoIdentidad = tipoDocumento;
       this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
     },
@@ -2575,6 +2576,7 @@ var settingFileInput = {
       this.stepCurrent = 3;
     },
     storeMatricula: function storeMatricula() {
+      var _this16 = this;
       var matricula = this.matricula,
         alumno = this.alumno,
         matriculaHorarioDia = this.matriculaHorarioDia;
@@ -2583,12 +2585,19 @@ var settingFileInput = {
         detalle: matriculaHorarioDia
       });
       console.log(matriculaData);
-      this.codigoMatricula = "1".toString().padStart(7, 0);
-      this.stepCurrent = 4;
+      axios.post(route('matricula.storeMatricula'), matriculaData).then(function (response) {
+        var data = response.data;
+        _this16.codigoMatricula = data.codigo;
+        _this16.stepCurrent = 4;
+      })["catch"](function (error) {
+        if (error.response === undefined) return console.error(error);
+        var response = error.response;
+        var data = response.data;
+      });
     }
   },
   mounted: function mounted() {
-    var _this16 = this;
+    var _this17 = this;
     this.getResources();
     if (Object.keys(this.alumno_current).length > 0) {
       this.current.alumno.tipoDocumentoIdentidad = this.alumno_current.tipo_documento_identidad;
@@ -2597,12 +2606,12 @@ var settingFileInput = {
       this.current.alumno.distrito = this.alumno_current.distrito;
       this.alumno = Object.assign(this.alumno, this.alumno_current);
       this.getProvincias().then(function (_) {
-        var _this16$alumno_curren;
-        _this16.alumno.idprovincia = (_this16$alumno_curren = _this16.alumno_current.idprovincia) !== null && _this16$alumno_curren !== void 0 ? _this16$alumno_curren : '';
+        var _this17$alumno_curren;
+        _this17.alumno.idprovincia = (_this17$alumno_curren = _this17.alumno_current.idprovincia) !== null && _this17$alumno_curren !== void 0 ? _this17$alumno_curren : '';
       });
       this.getDistritos().then(function (_) {
-        var _this16$alumno_curren2;
-        _this16.alumno.iddistrito = (_this16$alumno_curren2 = _this16.alumno_current.iddistrito) !== null && _this16$alumno_curren2 !== void 0 ? _this16$alumno_curren2 : '';
+        var _this17$alumno_curren2;
+        _this17.alumno.iddistrito = (_this17$alumno_curren2 = _this17.alumno_current.iddistrito) !== null && _this17$alumno_curren2 !== void 0 ? _this17$alumno_curren2 : '';
       });
     }
     setTimeout(function () {

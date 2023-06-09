@@ -9,5 +9,5 @@ class CantidadSesiones extends Model
     //
  	protected $table = 'cantidad_sesiones';
 	protected $primaryKey = 'idcantidad_sesiones';
-	// public $timestamps = false;
+	public $timestamps = true;
 }
