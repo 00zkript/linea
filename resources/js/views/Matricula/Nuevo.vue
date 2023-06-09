@@ -131,7 +131,7 @@
             </div>
         </Step>
 
-        <Step :number="2" title="Matrícula" :currentValue="stepCurrent" @next="stepCurrent = 3" >
+        <Step :number="2" title="Matrícula" :currentValue="stepCurrent" @next="goPreviewMatricula()" >
 
             <div class="row">
 
@@ -191,7 +191,7 @@
                     <label for="cantidadDeSessiones">Cantidad de sessiones <span class="text-danger">(*)</span></label>
                     <select class="form-control" id="cantidadDeSessiones" v-model="matricula.idcantidad_sesiones" @change="changeCantidadSesiones()">
                         <option value="" hidden >[---Seleccione---]</option>
-                        <option v-for="(item, index) in resources.cantidadesDeSesiones" :key="index" :value="item.idcantidad_sesiion" v-text="item.nombre"></option>
+                        <option v-for="(item, index) in resources.cantidadSesiones" :key="index" :value="item.idcantidad_sesiones" v-text="item.nombre"></option>
                     </select>
                 </div>
 
@@ -215,7 +215,7 @@
                                         active: hasHorarioDia(horario.idhorario, dia.iddia)
                                     }"
                                     v-for="(dia, index2) in resources.dias" :key="index2"
-                                    @click="selectHorarioDia( horario.idhorario, dia.iddia )"
+                                    @click="selectHorarioDia( horario, dia )"
                                     >
                                     <i class="fa-solid fa-check" v-if="hasHorarioDia(horario.idhorario, dia.iddia)"></i>
                                 </td>
@@ -228,35 +228,34 @@
 
         </Step>
 
-        <Step :number="3" title="Ver registro" :currentValue="stepCurrent" @next="stepCurrent = 4" btnNextText="Guardar" >
+        <Step :number="3" title="Ver registro" :currentValue="stepCurrent" @next="storeMatricula()" btnNextText="Guardar" >
             <h3>Alumno</h3>
             <p class="fs-12">
                 <b>Nombre completo</b> {{ alumno.nombres+' '+alumno.apellidos }} <br>
                 <b>Correo</b> {{ alumno.correo }} <br>
                 <b>Teléfono</b> {{ alumno.telefono }} <br>
-                <b>Documento de identidad</b> DNI - {{ alumno.numero_documento_identidad }} <br>
+                <b>Documento de identidad</b> {{ current.alumno.tipoDocumentoIdentidad.nombre }} - {{ alumno.numero_documento_identidad }} <br>
                 <b>Direción</b> {{ alumno.direccion }}
             </p>
 
             <h3>Matricula</h3>
             <p class="fs-12">
-                <b>Codígo</b> 0000007<br>
                 <b>Concepto</b> Nueva Matricula <br>
-                <b>Empleado</b> Roberto raymundo espinoza <br>
-                <b>Sucursal Direción</b> sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  <br>
-                <b>Fecha</b> 01/01/2023 - 01/02/2023 <br>
-                <b>Temporada</b> Verano <br>
-                <b>Programa</b> Para adultos <br>
-                <b>Piscina</b> Piscina grande <br>
-                <b>Carril</b> #6 <br>
-                <b>Dias de actividad</b> L-M-V <br>
-                <b>Cantidad de sessiones</b> 4 sessiones X 350 soles <br>
+                <b>Empleado</b> {{ current.empleado.nombres }} <br>
+                <b>Sucursal Direción</b> {{ current.sucursal.nombre }} - {{ current.sucursal.direccion }} <br>
+                <b>Fecha</b> {01/01/2023 - 01/02/2023} <br>
+                <b>Temporada</b> {{ current.temporada.nombre }} <br>
+                <b>Programa</b> {{ current.programa.nombre }} <br>
+                <b>Piscina</b> {{ current.piscina.nombre }} <br>
+                <b>Carril</b> {{ current.carril.nombre }} <br>
+                <b>Dias de actividad</b> {{ current.actividadSemanal.nombre }} <br>
+                <b>Cantidad de sessiones</b> {{ current.cantidadSesiones.nombre }} <br>
                 <b>Horario: </b>
                 <ul>
-                    <li>Lunes : 08:00 AM - 09:00 AM</li>
-                    <li>Martes : 08:00 AM - 09:00 AM</li>
-                    <li>Miercoles : 08:00 AM - 09:00 AM</li>
-                    <li>Lunes : 08:00 AM - 09:00 AM</li>
+                    <li v-for="(item, index) in matriculaHorarioDia" :key="index"
+                        v-text="item.dia_nombre+' :  '+item.horario_nombre"
+                        >
+                    </li>
                 </ul>
 
             </p>
@@ -265,7 +264,7 @@
         <Step :number="4" title="Final" :currentValue="stepCurrent" :showFooter="false" classContent="step-final" >
             <div class="alert alert-success text-center">
                 <h2>¡Felicidades, la matrícula se realizó con éxito!</h2>
-                <h4>Codígo : 0000007</h4>
+                <h4>Codígo :  {{ codigoMatricula }}</h4>
             </div>
             <div class="div-btn-reset">
                 <button class="btn btn-primary" @click.prevent="resetData()">Nueva matrícula</button>
@@ -378,8 +377,7 @@ export default {
                 imagen: null,
             },
             matricula: {
-                codigo: null,
-                idcliente: '',
+                fecha: [],
                 idconcepto: 1,
                 idempleado: '',
                 idsucursal: '',
@@ -390,7 +388,8 @@ export default {
                 idactividad_semanal: '',
                 idcantidad_sesiones: '',
             },
-            matriculaDetalle: [],
+            matriculaHorarioDia: [],
+            codigoMatricula: null,
             showTableSelectHorario: false,
             cantidadAlumnosMatriculados: 0,
             capacidadMaxima: 0,
@@ -426,6 +425,7 @@ export default {
                 this.current.empleado = data.current.empleado;
 
                 this.matricula.idsucursal = data.current.sucursal.idsucursal;
+                this.matricula.idempleado = data.current.sucursal.idusuario;
                 this.matricula.idtemporada = data.current.temporada.idtemporada;
 
             })
@@ -603,39 +603,120 @@ export default {
         changeDiasActividad() {
             this.current.actividadSemanal = this.resources.actividadSemanal.find(ele => ele.idactividad_semanal === this.matricula.idactividad_semanal );
             this.getDias();
-            this.matriculaDetalle = [];
+            this.matriculaHorarioDia = [];
             this.showTableSelectHorario = true;
         },
         changeCantidadSesiones() {
             this.current.cantidadSesiones = this.resources.cantidadSesiones.find(ele => ele.idcantidad_sesiones === this.matricula.idcantidad_sesiones );
         },
 
-        hasHorarioDia( idmatricula, iddia) {
-            return this.matriculaDetalle.some( ele => ele.idmatricula === idmatricula && ele.iddia === iddia)
+        hasHorarioDia( idhorario, iddia) {
+            return this.matriculaHorarioDia.some( ele => ele.idhorario === idhorario && ele.iddia === iddia);
         },
-        selectHorarioDia( idmatricula, iddia) {
+        selectHorarioDia( horario, dia) {
 
-            if (this.hasHorarioDia( idmatricula, iddia)) {
-                this.matriculaDetalle = this.matriculaDetalle.filter( ele => ele.idmatricula === idmatricula && ele.iddia !== iddia || ele.idmatricula !== idmatricula && ele.iddia === iddia || ele.idmatricula !== idmatricula && ele.iddia !== iddia )
+            if (this.hasHorarioDia( horario.idhorario, dia.iddia)) {
+                this.matriculaHorarioDia = this.matriculaHorarioDia.filter(ele => !(ele.idhorario === horario.idhorario && ele.iddia === dia.iddia) );
                 return ;
             }
 
-            this.matriculaDetalle.push({
-                idmatricula: idmatricula,
-                iddia: iddia,
-                matricula_nombre: '',
-                dia_nombre: '',
+            this.matriculaHorarioDia.push({
+                idhorario: horario.idhorario,
+                iddia: dia.iddia,
+                horario_nombre: horario.nombre,
+                dia_nombre: dia.nombre,
             })
 
         },
+        validateMatricula() {
+            const errors = [];
+
+            const { matricula, matriculaHorarioDia } = this;
+
+            if (!matricula.fecha || matricula.fecha.length !== 2) {
+                errors.push('Por favor, ingrese un rango de fechas válido para la matrícula.');
+            } else {
+                const [fechaInicio, fechaFin] = matricula.fecha;
+
+                if (!fechaInicio || !fechaFin || fechaInicio > fechaFin) {
+                    errors.push('Por favor, ingrese un rango de fechas válido para la matrícula.');
+                }
+
+            }
+
+            if (!matricula.idconcepto) {
+                errors.push('Por favor, seleccione un concepto válido.');
+            }
+
+            if (!matricula.idtemporada) {
+                errors.push('Por favor, seleccione una temporada válida.');
+            }
+
+            if (!matricula.idprograma) {
+                errors.push('Por favor, seleccione un programa válido.');
+            }
+
+            if (!matricula.idpiscina) {
+                errors.push('Por favor, seleccione una piscina válida.');
+            }
+
+            if (!matricula.idcarril) {
+                errors.push('Por favor, seleccione un carril válido.');
+            }
+
+            if (!matricula.idactividad_semanal) {
+                errors.push('Por favor, seleccione una actividad semanal válida.');
+            }
+
+            if (!matricula.idcantidad_sesiones) {
+                errors.push('Por favor, seleccione una cantidad de sesiones válida.');
+            }
+
+            if (matriculaHorarioDia.length === 0) {
+                errors.push('Por favor, ingrese al menos un horario y día para la matrícula.');
+            }
+
+            return errors;
+
+
+        },
+        goPreviewMatricula(){
+            const errors = this.validateMatricula();
+            if (errors.length > 0) {
+                notificacion('error','Errores encontrados:', listErrorsForm(errors));
+                return;
+            }
+            this.stepCurrent = 3;
+        },
         storeMatricula(){
-        }
+
+            const { matricula, alumno, matriculaHorarioDia } = this;
+
+            const matriculaData = {
+                ...matricula,
+                idcliente: alumno.idcliente,
+                detalle : matriculaHorarioDia,
+            };
+
+            console.log(matriculaData);
+
+
+            this.codigoMatricula = "1".toString().padStart(7,0);
+            this.stepCurrent = 4;
+        },
     },
     mounted(){
         this.getResources();
 
         if (Object.keys(this.alumno_current).length > 0) {
+
+            this.current.alumno.tipoDocumentoIdentidad = this.alumno_current.tipo_documento_identidad;
+            this.current.alumno.departamento = this.alumno_current.departamento;
+            this.current.alumno.provincia = this.alumno_current.provincia;
+            this.current.alumno.distrito = this.alumno_current.distrito;
+
             this.alumno = Object.assign(this.alumno, this.alumno_current);
+
             this.getProvincias().then( _ => {
                 this.alumno.idprovincia = this.alumno_current.idprovincia ?? '';
             });

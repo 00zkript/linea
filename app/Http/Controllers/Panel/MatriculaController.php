@@ -125,6 +125,12 @@ class MatriculaController extends Controller
     public function create($clienteID = 3)
     {
         $alumno = Cliente::query()
+            ->with([
+                'tipoDocumentoIdentidad',
+                'departamento',
+                'provincia',
+                'distrito',
+            ])
             ->where('idcliente',$clienteID)
             ->where('idsucursal', auth()->user()->sucursal->idsucursal)
             ->where('estado',1)

@@ -2154,6 +2154,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_SelectFormComponent_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/SelectFormComponent.vue */ "./resources/js/components/SelectFormComponent.vue");
 /* harmony import */ var primevue_autocomplete__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! primevue/autocomplete */ "./node_modules/primevue/autocomplete/index.js");
 /* harmony import */ var primevue_autocomplete__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(primevue_autocomplete__WEBPACK_IMPORTED_MODULE_3__);
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i["return"] && (_r = _i["return"](), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
@@ -2261,8 +2273,7 @@ var settingFileInput = {
         imagen: null
       },
       matricula: {
-        codigo: null,
-        idcliente: '',
+        fecha: [],
         idconcepto: 1,
         idempleado: '',
         idsucursal: '',
@@ -2273,7 +2284,8 @@ var settingFileInput = {
         idactividad_semanal: '',
         idcantidad_sesiones: ''
       },
-      matriculaDetalle: [],
+      matriculaHorarioDia: [],
+      codigoMatricula: null,
       showTableSelectHorario: false,
       cantidadAlumnosMatriculados: 0,
       capacidadMaxima: 0
@@ -2307,6 +2319,7 @@ var settingFileInput = {
         _this.current.temporada = data.current.temporada;
         _this.current.empleado = data.current.empleado;
         _this.matricula.idsucursal = data.current.sucursal.idsucursal;
+        _this.matricula.idempleado = data.current.sucursal.idusuario;
         _this.matricula.idtemporada = data.current.temporada.idtemporada;
       })["catch"](function (error) {
         var response = error.response;
@@ -2485,7 +2498,7 @@ var settingFileInput = {
         return ele.idactividad_semanal === _this14.matricula.idactividad_semanal;
       });
       this.getDias();
-      this.matriculaDetalle = [];
+      this.matriculaHorarioDia = [];
       this.showTableSelectHorario = true;
     },
     changeCantidadSesiones: function changeCantidadSesiones() {
@@ -2494,31 +2507,94 @@ var settingFileInput = {
         return ele.idcantidad_sesiones === _this15.matricula.idcantidad_sesiones;
       });
     },
-    hasHorarioDia: function hasHorarioDia(idmatricula, iddia) {
-      return this.matriculaDetalle.some(function (ele) {
-        return ele.idmatricula === idmatricula && ele.iddia === iddia;
+    hasHorarioDia: function hasHorarioDia(idhorario, iddia) {
+      return this.matriculaHorarioDia.some(function (ele) {
+        return ele.idhorario === idhorario && ele.iddia === iddia;
       });
     },
-    selectHorarioDia: function selectHorarioDia(idmatricula, iddia) {
-      if (this.hasHorarioDia(idmatricula, iddia)) {
-        this.matriculaDetalle = this.matriculaDetalle.filter(function (ele) {
-          return ele.idmatricula === idmatricula && ele.iddia !== iddia || ele.idmatricula !== idmatricula && ele.iddia === iddia || ele.idmatricula !== idmatricula && ele.iddia !== iddia;
+    selectHorarioDia: function selectHorarioDia(horario, dia) {
+      if (this.hasHorarioDia(horario.idhorario, dia.iddia)) {
+        this.matriculaHorarioDia = this.matriculaHorarioDia.filter(function (ele) {
+          return !(ele.idhorario === horario.idhorario && ele.iddia === dia.iddia);
         });
         return;
       }
-      this.matriculaDetalle.push({
-        idmatricula: idmatricula,
-        iddia: iddia,
-        matricula_nombre: '',
-        dia_nombre: ''
+      this.matriculaHorarioDia.push({
+        idhorario: horario.idhorario,
+        iddia: dia.iddia,
+        horario_nombre: horario.nombre,
+        dia_nombre: dia.nombre
       });
     },
-    storeMatricula: function storeMatricula() {}
+    validateMatricula: function validateMatricula() {
+      var errors = [];
+      var matricula = this.matricula,
+        matriculaHorarioDia = this.matriculaHorarioDia;
+      if (!matricula.fecha || matricula.fecha.length !== 2) {
+        errors.push('Por favor, ingrese un rango de fechas válido para la matrícula.');
+      } else {
+        var _matricula$fecha = _slicedToArray(matricula.fecha, 2),
+          fechaInicio = _matricula$fecha[0],
+          fechaFin = _matricula$fecha[1];
+        if (!fechaInicio || !fechaFin || fechaInicio > fechaFin) {
+          errors.push('Por favor, ingrese un rango de fechas válido para la matrícula.');
+        }
+      }
+      if (!matricula.idconcepto) {
+        errors.push('Por favor, seleccione un concepto válido.');
+      }
+      if (!matricula.idtemporada) {
+        errors.push('Por favor, seleccione una temporada válida.');
+      }
+      if (!matricula.idprograma) {
+        errors.push('Por favor, seleccione un programa válido.');
+      }
+      if (!matricula.idpiscina) {
+        errors.push('Por favor, seleccione una piscina válida.');
+      }
+      if (!matricula.idcarril) {
+        errors.push('Por favor, seleccione un carril válido.');
+      }
+      if (!matricula.idactividad_semanal) {
+        errors.push('Por favor, seleccione una actividad semanal válida.');
+      }
+      if (!matricula.idcantidad_sesiones) {
+        errors.push('Por favor, seleccione una cantidad de sesiones válida.');
+      }
+      if (matriculaHorarioDia.length === 0) {
+        errors.push('Por favor, ingrese al menos un horario y día para la matrícula.');
+      }
+      return errors;
+    },
+    goPreviewMatricula: function goPreviewMatricula() {
+      var errors = this.validateMatricula();
+      if (errors.length > 0) {
+        notificacion('error', 'Errores encontrados:', listErrorsForm(errors));
+        return;
+      }
+      this.stepCurrent = 3;
+    },
+    storeMatricula: function storeMatricula() {
+      var matricula = this.matricula,
+        alumno = this.alumno,
+        matriculaHorarioDia = this.matriculaHorarioDia;
+      var matriculaData = _objectSpread(_objectSpread({}, matricula), {}, {
+        idcliente: alumno.idcliente,
+        detalle: matriculaHorarioDia
+      });
+      console.log(matriculaData);
+      this.codigoMatricula = "1".toString().padStart(7, 0);
+      this.stepCurrent = 4;
+    }
   },
   mounted: function mounted() {
     var _this16 = this;
     this.getResources();
     if (Object.keys(this.alumno_current).length > 0) {
+      this.current.alumno.tipoDocumentoIdentidad = this.alumno_current.tipo_documento_identidad;
+      this.current.alumno.departamento = this.alumno_current.departamento;
+      this.current.alumno.provincia = this.alumno_current.provincia;
+      this.current.alumno.distrito = this.alumno_current.distrito;
       this.alumno = Object.assign(this.alumno, this.alumno_current);
       this.getProvincias().then(function (_) {
         var _this16$alumno_curren;
@@ -3554,7 +3630,7 @@ var render = function render() {
     },
     on: {
       next: function next($event) {
-        _vm.stepCurrent = 3;
+        return _vm.goPreviewMatricula();
       }
     }
   }, [_c("div", {
@@ -3904,11 +3980,11 @@ var render = function render() {
       value: "",
       hidden: ""
     }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.cantidadesDeSesiones, function (item, index) {
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.cantidadSesiones, function (item, index) {
     return _c("option", {
       key: index,
       domProps: {
-        value: item.idcantidad_sesiion,
+        value: item.idcantidad_sesiones,
         textContent: _vm._s(item.nombre)
       }
     });
@@ -3948,7 +4024,7 @@ var render = function render() {
         },
         on: {
           click: function click($event) {
-            return _vm.selectHorarioDia(horario.idhorario, dia.iddia);
+            return _vm.selectHorarioDia(horario, dia);
           }
         }
       }, [_vm.hasHorarioDia(horario.idhorario, dia.iddia) ? _c("i", {
@@ -3964,14 +4040,21 @@ var render = function render() {
     },
     on: {
       next: function next($event) {
-        _vm.stepCurrent = 4;
+        return _vm.storeMatricula();
       }
     }
   }, [_c("h3", [_vm._v("Alumno")]), _vm._v(" "), _c("p", {
     staticClass: "fs-12"
-  }, [_c("b", [_vm._v("Nombre completo")]), _vm._v(" " + _vm._s(_vm.alumno.nombres + " " + _vm.alumno.apellidos) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Correo")]), _vm._v(" " + _vm._s(_vm.alumno.correo) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Teléfono")]), _vm._v(" " + _vm._s(_vm.alumno.telefono) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Documento de identidad")]), _vm._v(" DNI - " + _vm._s(_vm.alumno.numero_documento_identidad) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Direción")]), _vm._v(" " + _vm._s(_vm.alumno.direccion) + "\n        ")]), _vm._v(" "), _c("h3", [_vm._v("Matricula")]), _vm._v(" "), _c("p", {
+  }, [_c("b", [_vm._v("Nombre completo")]), _vm._v(" " + _vm._s(_vm.alumno.nombres + " " + _vm.alumno.apellidos) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Correo")]), _vm._v(" " + _vm._s(_vm.alumno.correo) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Teléfono")]), _vm._v(" " + _vm._s(_vm.alumno.telefono) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Documento de identidad")]), _vm._v(" " + _vm._s(_vm.current.alumno.tipoDocumentoIdentidad.nombre) + " - " + _vm._s(_vm.alumno.numero_documento_identidad) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Direción")]), _vm._v(" " + _vm._s(_vm.alumno.direccion) + "\n        ")]), _vm._v(" "), _c("h3", [_vm._v("Matricula")]), _vm._v(" "), _c("p", {
     staticClass: "fs-12"
-  }, [_c("b", [_vm._v("Codígo")]), _vm._v(" 0000007"), _c("br"), _vm._v(" "), _c("b", [_vm._v("Concepto")]), _vm._v(" Nueva Matricula "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Empleado")]), _vm._v(" Roberto raymundo espinoza "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Sucursal Direción")]), _vm._v(" sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Fecha")]), _vm._v(" 01/01/2023 - 01/02/2023 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Temporada")]), _vm._v(" Verano "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Programa")]), _vm._v(" Para adultos "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Piscina")]), _vm._v(" Piscina grande "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Carril")]), _vm._v(" #6 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Dias de actividad")]), _vm._v(" L-M-V "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Cantidad de sessiones")]), _vm._v(" 4 sessiones X 350 soles "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Horario: ")]), _vm._v(" "), _c("ul", [_c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Martes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Miercoles : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")])])])]), _vm._v(" "), _c("Step", {
+  }, [_c("b", [_vm._v("Concepto")]), _vm._v(" Nueva Matricula "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Empleado")]), _vm._v(" " + _vm._s(_vm.current.empleado.nombres) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Sucursal Direción")]), _vm._v(" " + _vm._s(_vm.current.sucursal.nombre) + " - " + _vm._s(_vm.current.sucursal.direccion) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Fecha")]), _vm._v(" {01/01/2023 - 01/02/2023} "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Temporada")]), _vm._v(" " + _vm._s(_vm.current.temporada.nombre) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Programa")]), _vm._v(" " + _vm._s(_vm.current.programa.nombre) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Piscina")]), _vm._v(" " + _vm._s(_vm.current.piscina.nombre) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Carril")]), _vm._v(" " + _vm._s(_vm.current.carril.nombre) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Dias de actividad")]), _vm._v(" " + _vm._s(_vm.current.actividadSemanal.nombre) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Cantidad de sessiones")]), _vm._v(" " + _vm._s(_vm.current.cantidadSesiones.nombre) + " "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Horario: ")]), _vm._v(" "), _c("ul", _vm._l(_vm.matriculaHorarioDia, function (item, index) {
+    return _c("li", {
+      key: index,
+      domProps: {
+        textContent: _vm._s(item.dia_nombre + " :  " + item.horario_nombre)
+      }
+    });
+  }), 0)])]), _vm._v(" "), _c("Step", {
     attrs: {
       number: 4,
       title: "Final",
@@ -3981,7 +4064,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "alert alert-success text-center"
-  }, [_c("h2", [_vm._v("¡Felicidades, la matrícula se realizó con éxito!")]), _vm._v(" "), _c("h4", [_vm._v("Codígo : 0000007")])]), _vm._v(" "), _c("div", {
+  }, [_c("h2", [_vm._v("¡Felicidades, la matrícula se realizó con éxito!")]), _vm._v(" "), _c("h4", [_vm._v("Codígo :  " + _vm._s(_vm.codigoMatricula))])]), _vm._v(" "), _c("div", {
     staticClass: "div-btn-reset"
   }, [_c("button", {
     staticClass: "btn btn-primary",
