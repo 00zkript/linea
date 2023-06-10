@@ -36,6 +36,9 @@
         .ui-pnotify-text{
             word-break: break-word;
         }
+        .ui-pnotify-text {
+            margin: 0 !important;
+        }
 
         .page-item.active .page-link {
             z-index: 1;

@@ -14,7 +14,7 @@ use App\Models\Temporada;
 use App\Models\Departamento;
 use Illuminate\Http\Request;
 use App\Models\ActividadSemanal;
-use App\Models\CantidadSesiones;
+use App\Models\CantidadClases;
 use App\Http\Controllers\Controller;
 use App\Models\Carril;
 use App\Models\Cliente;
@@ -88,15 +88,10 @@ class MatriculaController extends Controller
             ->get();
 
         $actividadSemanal = ActividadSemanal::query()
-            ->with([
-                'dias' => function ($query) {
-                    return $query->where('estado',1);
-                }
-            ])
             ->where('estado',1)
             ->get();
 
-        $cantidadSesiones = CantidadSesiones::query()->where('estado',1)->get();
+        $cantidadClases = CantidadClases::query()->where('estado',1)->get();
         $horarios = Horario::query()->where('estado',1)->get();
 
 
@@ -112,7 +107,7 @@ class MatriculaController extends Controller
                 'programas' => $programas,
                 'piscinas' => $piscinas,
                 'actividadSemanal' => $actividadSemanal,
-                'cantidadSesiones' => $cantidadSesiones,
+                'cantidadClases' => $cantidadClases,
                 'horarios' => $horarios,
             ],
             "current" => [
@@ -123,7 +118,7 @@ class MatriculaController extends Controller
         ]);
     }
 
-    public function create($clienteID = 3)
+    public function create($clienteID = null)
     {
         $alumno = Cliente::query()
             ->with([
@@ -281,7 +276,7 @@ class MatriculaController extends Controller
         $idpiscina           = $request->input('idpiscina');
         $idcarril            = $request->input('idcarril');
         $idactividad_semanal = $request->input('idactividad_semanal');
-        $idcantidad_sesiones = $request->input('idcantidad_sesiones');
+        $idcantidad_clases = $request->input('idcantidad_clases');
         $idcliente           = $request->input('idcliente');
         $detalle             = $request->input('detalle');
 
@@ -294,7 +289,7 @@ class MatriculaController extends Controller
         $sucursal         = auth()->user()->sucursal;
         $temporada        = Temporada::query()->find($idtemporada);
         $programa         = Programa::query()->find($idprograma);
-        $cantidadSesiones = CantidadSesiones::query()->find($idcantidad_sesiones);
+        $cantidadClases   = CantidadClases::query()->find($idcantidad_clases);
         $actividadSemanal = ActividadSemanal::query()->find($idactividad_semanal);
 
 
@@ -319,23 +314,23 @@ class MatriculaController extends Controller
         $matricula->temporada_nombre                    = $temporada->nombre;
         $matricula->idprograma                          = $idprograma;
         $matricula->programa_nombre                     = $programa->nombre;
-        $matricula->idcantidad_sesiones                 = $idcantidad_sesiones;
-        $matricula->cantidad_sesiones_nombre            = $cantidadSesiones->nombre;
-        $matricula->cantidad_sesiones_cantidad          = $cantidadSesiones->cantidad;
+        $matricula->idcantidad_clases                   = $idcantidad_clases;
+        $matricula->cantidad_clases_nombre              = $cantidadClases->nombre;
+        $matricula->cantidad_clases_cantidad            = $cantidadClases->cantidad;
         $matricula->idactividad_semanal                 = $idactividad_semanal;
         $matricula->actividad_semanal_nombre            = $actividadSemanal->nombre;
         $matricula->idpiscina                           = $idpiscina;
         $matricula->idcarril                            = $idcarril;
-        $matricula->monto_total                         = $cantidadSesiones->precio;
+        $matricula->monto_total                         = $cantidadClases->precio;
         $matricula->estado                              = 1;
         $matricula->save();
 
         foreach ($detalle as $item) {
             $horario = new MatriculaDetalle();
             $horario->idmatricula = $matricula->idmatricula;
-            $horario->iddia = $item['iddia'];
+            $horario->fecha = $item['fecha'];
             $horario->idhorario = $item['idhorario'];
-            $horario->dia_nombre = $item['dia_nombre'];
+            $horario->dia_nombre = $item['dia_name'];
             $horario->horario_nombre = $item['horario_nombre'];
             $horario->save();
         }

@@ -78,8 +78,9 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::get('matricula/{id}/provincias',[\App\Http\Controllers\Panel\MatriculaController::class,'provincias'])->name("matricula.provincias");
     Route::get('matricula/{id}/distritos',[\App\Http\Controllers\Panel\MatriculaController::class,'distritos'])->name("matricula.distritos");
     Route::post('matricula/crear-alumno',[\App\Http\Controllers\Panel\MatriculaController::class,'storeAlumno'])->name("matricula.storeAlumno");
+    Route::get('matricula/create/{id?}',[\App\Http\Controllers\Panel\MatriculaController::class,'create'])->name("matricula.create");
 
-    Route::resource( 'matricula', \App\Http\Controllers\Panel\MatriculaController::class )->names('matricula');
+    Route::resource( 'matricula', \App\Http\Controllers\Panel\MatriculaController::class )->names('matricula')->only('index');
 
 
     Route::get('matricula-gym/listar',[\App\Http\Controllers\Panel\MatriculaGymController::class,'listar'])->name("matriculaGym.listar");

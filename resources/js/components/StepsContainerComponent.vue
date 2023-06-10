@@ -15,6 +15,7 @@ export default {
     .steps-container {
         display: flex;
         flex-direction: column;
-        margin-left: 60px;
+        /*margin-left: 60px;*/
+        margin: 0 1rem;
     }
 </style>

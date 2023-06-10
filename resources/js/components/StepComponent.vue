@@ -60,6 +60,7 @@ export default {
         flex-direction: column;
         align-items: flex-start;
         margin-bottom: 1rem;
+        width: 100%;
     }
 
     .step-title{
@@ -93,7 +94,9 @@ export default {
 
     .step-content {
         /*display: none;*/
-        margin-left: 3rem;
+        /*margin-left: 3rem;*/
+        margin-top: 1rem;
+        width: 100%;
     }
     .step-footer{
         text-align: center;

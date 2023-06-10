@@ -12,8 +12,4 @@ class ActividadSemanal extends Model
 	// public $timestamps = false;
 
 
-    public function dias()
-    {
-        return $this->belongsToMany(Dia::class, 'actividad_semanal_has_dia', 'idactividad_semanal', 'iddia');
-    }
 }

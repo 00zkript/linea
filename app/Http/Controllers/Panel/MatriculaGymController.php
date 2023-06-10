@@ -14,7 +14,7 @@ use App\Models\Temporada;
 use App\Models\Departamento;
 use Illuminate\Http\Request;
 use App\Models\ActividadSemanal;
-use App\Models\CantidadSesiones;
+use App\Models\CantidadClases;
 use App\Http\Controllers\Controller;
 use App\Models\TipoDocumentoIdentidad;
 
@@ -55,11 +55,21 @@ class MatriculaGymController extends Controller
         $temporadas = Temporada::query()->where('estado',1)->get();
         $piscionas = Piscina::query()->where('estado',1)->get();
         $actividadSemanal = ActividadSemanal::query()->where('estado',1)->get();
-        $cantidadesDeSesiones = CantidadSesiones::query()->where('estado',1)->get();
+        $cantidadesClases = CantidadClases::query()->where('estado',1)->get();
         $horarios = Horario::query()->where('estado',1)->get();
-        $dias = Dia::query()->where('estado',1)->get();
 
-        return response()->json(compact('tipoDocumentoIdentidad', 'departamentos', 'conceptos', 'empleado', 'sucursales', 'temporadas', 'piscionas', 'actividadSemanal', 'cantidadesDeSesiones', 'horarios', 'dias'));
+        return response()->json(compact(
+            'tipoDocumentoIdentidad',
+            'departamentos',
+            'conceptos',
+            'empleado',
+            'sucursales',
+            'temporadas',
+            'piscionas',
+            'actividadSemanal',
+            'cantidadesClases',
+            'horarios'
+        ));
     }
 
     public function create()
