@@ -1,7 +1,7 @@
 <template>
     <StepsContainer>
 
-        <Step :number="1" title="Nuevo Alumno" :currentValue="stepCurrent" @next="storeAlumno()"  >
+        <Step :number="1" id="step-1" title="Nuevo Alumno" :currentValue="stepCurrent" @next="storeAlumno()"  >
             <div class="row">
                 <div class="col-md-6 col-12 form-group">
                     <label for="nombres">Nombres <span class="text-danger">(*)</span></label>
@@ -120,7 +120,7 @@
             </div>
         </Step>
 
-        <Step :number="2" title="Matrícula" :currentValue="stepCurrent" @next="saveMatricula()" >
+        <Step :number="2" id="step-2" title="Matrícula" :currentValue="stepCurrent" @next="saveMatricula()" >
             <div class="row">
 
                 <div class="col-md-8 col-12 form-group">
@@ -184,7 +184,7 @@
             </div>
         </Step>
 
-        <Step :number="3" title="Selección de horario" :currentValue="stepCurrent" @next="savehorario()" >
+        <Step :number="3" id="step-3" title="Selección de horario" :currentValue="stepCurrent" @next="savehorario()" >
             <div class="row">
                 <div class="col-12 mt-3 pl-0 pr-0" >
                     <div class="tableSelectHorario">
@@ -220,7 +220,7 @@
             </div>
         </Step>
 
-        <Step :number="4" title="Datos de matrícula" :currentValue="stepCurrent" @next="storeMatriculaHorario()" btnNextText="Guardar" >
+        <Step :number="4" id="step-4" title="Datos de matrícula" :currentValue="stepCurrent" @next="storeMatriculaHorario()" btnNextText="Guardar" >
 
 
             <table class="table table-bordered">
@@ -294,7 +294,7 @@
 
         </Step>
 
-        <Step :number="5" title="Final" :currentValue="stepCurrent" :showFooter="false" classContent="step-final" >
+        <Step :number="5" id="step-5" title="Final" :currentValue="stepCurrent" :showFooter="false" classContent="step-final" >
             <div class="alert alert-success text-center">
                 <h2>¡Felicidades, la matrícula se realizó con éxito!</h2>
                 <h4>Codígo :  {{ codigoMatricula }}</h4>
@@ -546,8 +546,9 @@ export default {
             axios.post(route('matricula.storeAlumno'), alumnoData)
             .then( response => {
                 const data = response.data;
-                this.stepCurrent = 2;
                 this.alumno.idcliente = data.idcliente;
+                this.stepCurrent = 2;
+                scrollTo('#step-2',50,0);
             })
 
 
@@ -672,6 +673,7 @@ export default {
             this.matriculaHorarioDia = [];
             this.resources.dias = dias;
             this.stepCurrent = 3;
+            scrollTo('#step-3',50,0);
 
         },
 
@@ -730,6 +732,7 @@ export default {
             this.temp.cantidadClases = cantidadClases.find(ele => ele.idcantidad_clases === this.matricula.idcantidad_clases );
 
             this.stepCurrent = 4;
+            scrollTo('#step-4',50,0);
         },
 
         storeMatriculaHorario(){

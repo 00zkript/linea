@@ -1,5 +1,5 @@
 <template>
-    <div class="step" :class="{ active: currentValue == number, completed: currentValue > number }">
+    <div class="step" :class="{ active: currentValue == number, completed: currentValue > number }" :id="id" >
         <div class="step-title" @click="showContent = !showContent" >
             <div class="step-number"><span v-text="number"></span><i class="fas fa-check"></i></div>
             <h3 v-text="title"></h3>
@@ -23,6 +23,10 @@
 <script>
 export default {
     props: {
+        id: {
+            type: String,
+            default: ''
+        },
         title: String,
         number: Number,
         currentValue: Number,
@@ -34,7 +38,7 @@ export default {
             type: [String, Object],
             default: ''
         },
-        btnNextText:{
+        btnNextText: {
             type: String,
             default: 'Siguiente'
         }

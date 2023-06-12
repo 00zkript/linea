@@ -2027,6 +2027,10 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
+    id: {
+      type: String,
+      "default": ''
+    },
     title: String,
     number: Number,
     currentValue: Number,
@@ -2320,8 +2324,9 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       var alumnoData = jsonToFormData(this.alumno);
       axios.post(route('matricula.storeAlumno'), alumnoData).then(function (response) {
         var data = response.data;
-        _this7.stepCurrent = 2;
         _this7.alumno.idcliente = data.idcliente;
+        _this7.stepCurrent = 2;
+        scrollTo('#step-2', 50, 0);
       });
     },
     getProgramas: function getProgramas() {
@@ -2431,6 +2436,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       this.matriculaHorarioDia = [];
       this.resources.dias = dias;
       this.stepCurrent = 3;
+      scrollTo('#step-3', 50, 0);
     },
     hasHorarioDia: function hasHorarioDia(idhorario, dia) {
       return this.matriculaHorarioDia.some(function (ele) {
@@ -2511,6 +2517,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         return ele.idcantidad_clases === _this12.matricula.idcantidad_clases;
       });
       this.stepCurrent = 4;
+      scrollTo('#step-4', 50, 0);
     },
     storeMatriculaHorario: function storeMatriculaHorario() {
       var _this13 = this;
@@ -2787,6 +2794,9 @@ var render = function render() {
     "class": {
       active: _vm.currentValue == _vm.number,
       completed: _vm.currentValue > _vm.number
+    },
+    attrs: {
+      id: _vm.id
     }
   }, [_c("div", {
     staticClass: "step-title",
@@ -2878,6 +2888,7 @@ var render = function render() {
   return _c("StepsContainer", [_c("Step", {
     attrs: {
       number: 1,
+      id: "step-1",
       title: "Nuevo Alumno",
       currentValue: _vm.stepCurrent
     },
@@ -3481,6 +3492,7 @@ var render = function render() {
   })])])]), _vm._v(" "), _c("Step", {
     attrs: {
       number: 2,
+      id: "step-2",
       title: "Matrícula",
       currentValue: _vm.stepCurrent
     },
@@ -3839,6 +3851,7 @@ var render = function render() {
   })], 1)])]), _vm._v(" "), _c("Step", {
     attrs: {
       number: 3,
+      id: "step-3",
       title: "Selección de horario",
       currentValue: _vm.stepCurrent
     },
@@ -3901,6 +3914,7 @@ var render = function render() {
   }), 0)])])])])])]), _vm._v(" "), _c("Step", {
     attrs: {
       number: 4,
+      id: "step-4",
       title: "Datos de matrícula",
       currentValue: _vm.stepCurrent,
       btnNextText: "Guardar"
@@ -3974,6 +3988,7 @@ var render = function render() {
   }), 0)])]), _vm._v(" "), _c("Step", {
     attrs: {
       number: 5,
+      id: "step-5",
       title: "Final",
       currentValue: _vm.stepCurrent,
       showFooter: false,
