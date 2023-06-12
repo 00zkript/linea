@@ -16,6 +16,36 @@
                             <hr>
                         </div>
 
+                        <div class="col-12 mt-5">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Matricula </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    #idmatriculaShow
+                                    #conceptoShow
+                                    #sucursalShow
+
+                                    #clienteShow
+                                    #clienteIdtipoDocumentoIdentidadShow
+
+                                    #empleadoShow
+                                    #empleadoIdtipoDocumentoIdentidadShow
+
+                                    #periodoShow
+                                    #temporadaShow
+                                    #idprogramaShow
+                                    #cantidadSesionesShow
+                                    #cantidadSesionesCantidadShow
+                                    #actividadSemanalShow
+                                    #piscinaShow
+                                    #carrilShow
+                                    #montoTotalShow
+                                </tbody>
+                            </table>
+                        </div>
 
                         <div class="col-md-12 col-12 pl-5">
                             <h3>Alumno</h3>

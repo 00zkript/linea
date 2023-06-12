@@ -32,7 +32,7 @@
                                     @csrf
                                     <div class="form-group">
                                         <div class="input-group">
-                                            <input type="text" id="txtBuscar" name="txtBuscar" class="form-control" placeholder="Buscar...">
+                                            <input type="text" id="txtBuscar" name="txtBuscar" class="form-control" placeholder="ID / Cliente / Temporada / Programa ">
                                             <div class="input-group-append">
                                                 <button class="btn btn-secondary"><i class="fa fa-search"></i></button>
                                             </div>
@@ -61,8 +61,8 @@
 
 
         const URL_LISTADO     = "{{ route('matricula.listar') }}";
+        const URL_VER         = "{{ route('matricula.show',':id') }}";
         {{-- // const URL_GUARDAR     = "{{ route('matricula.store') }}"; --}}
-        {{-- // const URL_VER         = "{{ route('matricula.show',':id') }}"; --}}
         {{-- // const URL_EDIT        = "{{ route('matricula.edit',':id') }}"; --}}
         {{-- // const URL_MODIFICAR   = "{{ route('matricula.update',':id') }}"; --}}
         {{-- // const URL_HABILITAR   = "{{ route('matricula.habilitar',':id') }}"; --}}
@@ -197,15 +197,30 @@
                 const idmatricula = $(this).closest('div.dropdown-menu').data('idmatricula');
 
 
-                /* cargando('Procesando...');
+                cargando('Procesando...');
                 axios.get(URL_VER.replace(':id',idmatricula))
                 .then(response => {
                     const data = response.data;
 
                     stop();
 
-                    $("#nombreShow").html(data.nombre);
-                    $("#contenidoShow").html(data.contenido);
+
+                    $('#idmatriculaShow').html(data.idmatricula);
+                    $('#sucursalShow').html(data.sucursal_nombre+' - '+data.sucursal_direccion);
+                    $('#clienteShow').html(data.cliente_nombres+' '+data.cliente_apellidos);
+                    $('#clienteIdtipoDocumentoIdentidadShow').html( data.cliente_tipo_documento_identidad +' - '+ data.cliente_numero_documento_identidad);
+                    $('#empleadoShow').html(data.empleado_nombres+' '+data.empleado_apellidos);
+                    $('#empleadoIdtipoDocumentoIdentidadShow').html( data.empleado_tipo_documento_identidad +' - '+ data.empleado_numero_documento_identidad);
+                    $('#periodoShow').html(data.fecha_inicio+' - '+data.fecha_fin);
+                    $('#conceptoShow').html(data.concepto);
+                    $('#temporadaShow').html(data.temporada_nombre);
+                    $('#idprogramaShow').html(data.idprograma);
+                    $('#cantidadSesionesShow').html(data.cantidad_sesiones_nombre);
+                    $('#cantidadSesionesCantidadShow').html(data.cantidad_sesiones_cantidad);
+                    $('#actividadSemanalShow').html(data.actividad_semanal_nombre);
+                    $('#piscinaShow').html(data.piscina);
+                    $('#carrilShow').html(data.carril);
+                    $('#montoTotalShow').html(data.monto_total);
 
                     if (data.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');
@@ -217,8 +232,7 @@
                     $("#modalVer").modal("show");
 
                 })
-                .catch(errorCatch) */
-                $("#modalVer").modal("show");
+                .catch(errorCatch)
 
 
             });

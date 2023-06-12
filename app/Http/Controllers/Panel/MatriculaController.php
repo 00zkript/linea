@@ -27,7 +27,11 @@ class MatriculaController extends Controller
 {
     public function index()
     {
-        return view('panel.matricula.index');
+        $registros = Matricula::query()
+            ->orderBy('idmatricula','DESC')
+            ->paginate(10,['*'],'pagina',1);
+
+        return view('panel.matricula.index')->with(compact('registros'));
     }
 
     public function listar(Request $request)
@@ -36,14 +40,20 @@ class MatriculaController extends Controller
             return abort(400);
         }
 
-        $text = $request->input('text');
+        $cantidadRegistros = $request->input('cantidadRegistros');
+        $paginaActual = $request->input('paginaActual');
+        $txtBuscar = $request->input('txtBuscar');
 
         $registros = Matricula::query()
-            ->when($text, function ($query) {
-                // return $query->where('cliente')
+            ->when($txtBuscar,function($query) use($txtBuscar){
+                return $query->where('idmatricula','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('cliente_nombres','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('cliente_apellidos','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('temporada_nombre','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('programa_nombre','LIKE','%'.$txtBuscar.'%');
             })
-            ->where('estado',1)
-            ->paginate();
+            ->orderBy('idmatricula','DESC')
+            ->paginate($cantidadRegistros,['*'],'pagina',$paginaActual);
 
         return view('panel.matricula.listado')->with(compact('registros'))->render();
     }
@@ -342,7 +352,28 @@ class MatriculaController extends Controller
 
     }
 
+    public function show( Request $request, $id)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
 
+        $matricula = Matricula::query()
+            ->with([
+                'clienteTipoDocumentoIdentidad',
+                'empleadoTipoDocumentoIdentidad',
+                'concepto',
+                'piscina',
+                'carril',
+            ])
+            ->find($id);
+
+        if(!$matricula){
+            return response()->json( ['mensaje' => "Registro no encontrado"],400);
+        }
+
+        return response()->json($matricula);
+    }
 
 
 
