@@ -9,7 +9,32 @@ try {
 }
 
 
-let notificacion = function (tipo,titulo,mensaje,tiempo = 3000, options = null) {
+const alertErrorModal = ({ title = '', content = '', time = 5000 }) => {
+
+    $('#alertErrorModalCenter .titleAlertModal').html(title);
+    $('#alertErrorModalCenter .contentAlertModal').html(content);
+    $('#alertErrorModalCenter').modal('show');
+
+    setTimeout(() => {
+        $('#alertErrorModalCenter').modal('hide');
+        $('#alertErrorModalCenter .titleAlertModal').html('');
+        $('#alertErrorModalCenter .contentAlertModal').html('');
+    }, time);
+
+}
+
+
+
+let notificacion = function (tipo,titulo,mensaje,tiempo = 5*1000, options = null) {
+    if (tipo === 'error') {
+        alertErrorModal({
+            title: titulo,
+            content: mensaje,
+            time: tiempo
+        });
+        return ;
+    }
+
     let config = {
         type:tipo,
         title: titulo,
@@ -616,4 +641,5 @@ $('.format-number-float').on('keypress', soloNumerosFloat);
 $('.format-number-price').on('keypress', soloNumerosPrice);
 
 $('.format-text').on('keypress', soloLetras);
+
 

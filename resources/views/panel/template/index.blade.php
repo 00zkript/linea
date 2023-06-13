@@ -96,6 +96,7 @@
 
     @include('panel.arqueoCaja.abrirCaja')
     @include('panel.arqueoCaja.cerrarCaja')
+    @include('panel.template.alertModal')
 
 
     <div class="container body">
