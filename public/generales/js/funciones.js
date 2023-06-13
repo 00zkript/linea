@@ -9,7 +9,7 @@ try {
 }
 
 
-let notificacion = function (tipo,titulo,mensaje,tiempo=5000, options = null) {
+let notificacion = function (tipo,titulo,mensaje,tiempo = 3000, options = null) {
     let config = {
         type:tipo,
         title: titulo,
@@ -73,14 +73,14 @@ let waitMeEffectBounce = {
 
 
 // funcion que simplifica las opcion y configuracion de la libreria toastr
-const toast = (type, message, title = "",time = 5000) => {
+const toast = ({ type, message, title = "", time = 5000, positionClass = "toast-top-full-width"}) => {
     toastr.options = {
         "closeButton": true,
         "debug": false,
         "newestOnTop": false,
-        "progressBar": true,
-        // "positionClass": "toast-top-full-width",
-        "positionClass": "toast-top-right",
+        "progressBar": false,
+        "positionClass": positionClass,
+        // "positionClass": "toast-top-right",
         "preventDuplicates": true,
         "onclick": null,
         "showDuration": "300",

@@ -71,16 +71,19 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::resource('empleado',\App\Http\Controllers\Panel\EmpleadoController::class);
 
 
-    Route::get('matricula/cantidad-de-alumnos-matriculados',[\App\Http\Controllers\Panel\MatriculaController::class,'cantidadDeAlumnosMatriculados'])->name("matricula.cantidadDeAlumnosMatriculados");
-    Route::post('matricula/guardar-matricula',[\App\Http\Controllers\Panel\MatriculaController::class,'storeMatricula'])->name("matricula.storeMatricula");
-    Route::get('matricula/listar',[\App\Http\Controllers\Panel\MatriculaController::class,'listar'])->name("matricula.listar");
     Route::get('matricula/resources',[\App\Http\Controllers\Panel\MatriculaController::class,'resources'])->name("matricula.resources");
     Route::get('matricula/{id}/provincias',[\App\Http\Controllers\Panel\MatriculaController::class,'provincias'])->name("matricula.provincias");
     Route::get('matricula/{id}/distritos',[\App\Http\Controllers\Panel\MatriculaController::class,'distritos'])->name("matricula.distritos");
     Route::post('matricula/crear-alumno',[\App\Http\Controllers\Panel\MatriculaController::class,'storeAlumno'])->name("matricula.storeAlumno");
+    Route::get('matricula/cantidad-de-alumnos-matriculados',[\App\Http\Controllers\Panel\MatriculaController::class,'cantidadDeAlumnosMatriculados'])->name("matricula.cantidadDeAlumnosMatriculados");
+    Route::post('matricula/guardar-matricula',[\App\Http\Controllers\Panel\MatriculaController::class,'storeMatricula'])->name("matricula.storeMatricula");
+
+    Route::get('matricula/listar',[\App\Http\Controllers\Panel\MatriculaController::class,'listar'])->name("matricula.listar");
+    Route::put('matricula/{idmatricula}/habilitar',[\App\Http\Controllers\Panel\MatriculaController::class,'habilitar'])->name("matricula.habilitar");
+    Route::put('matricula/{idmatricula}/inhabilitar',[\App\Http\Controllers\Panel\MatriculaController::class,'inhabilitar'])->name("matricula.inhabilitar");
     Route::get('matricula/create/{id?}',[\App\Http\Controllers\Panel\MatriculaController::class,'create'])->name("matricula.create");
 
-    Route::resource( 'matricula', \App\Http\Controllers\Panel\MatriculaController::class )->names('matricula')->only('index');
+    Route::resource( 'matricula', \App\Http\Controllers\Panel\MatriculaController::class )->names('matricula')->only(['index','show']);
 
 
     Route::get('matricula-gym/listar',[\App\Http\Controllers\Panel\MatriculaGymController::class,'listar'])->name("matriculaGym.listar");

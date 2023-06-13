@@ -3,7 +3,6 @@
         <table class="table table-bordered">
             <thead class="thead-dark">
             <tr class="text-center">
-                <th>Identificador</th>
                 <th>Código</th>
                 <th>Nombres</th>
                 <th>Apellidos</th>
@@ -18,7 +17,6 @@
             @foreach($clientes AS $item)
                 <tr>
                     <td class="text-nowrap">{{ str_pad($item->idcliente,7,'0000000',STR_PAD_LEFT) }}</td>
-                    <td>{{ $item->codigo }}</td>
                     <td>{{ $item->nombres }}</td>
                     <td>{{ $item->apellidos }}</td>
                     <td>{{ $item->tipoDocumentoIdentidad->nombre }} - {{ $item->numero_documento_identidad }}</td>
@@ -37,7 +35,7 @@
                                 @else
                                     <button class="dropdown-item btnModalHabilitar" type="button"><i class="fa fa-check"></i> Habilitar</button>
                                 @endif
-{{--                                <button class="dropdown-item btnModalEliminar" type="button"><i class="fa fa-trash"></i> Eliminar</button>--}}
+                               {{-- <button class="dropdown-item btnModalEliminar" type="button"><i class="fa fa-trash"></i> Eliminar</button> --}}
 
                             </div>
                         </div>

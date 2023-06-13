@@ -52,7 +52,7 @@ class ClienteController extends Controller
                     ->orWhere('correo','LIKE','%'.$txtBuscar.'%')
                     ->orWhere('telefono','LIKE','%'.$txtBuscar.'%')
                     ->orWhere('numero_documento_identidad','LIKE','%'.$txtBuscar.'%')
-                    ->orWhere('codigo','LIKE','%'.$txtBuscar.'%');
+                    ->orWhere('idcliente','LIKE','%'.$txtBuscar.'%');
             })
             ->orderBy('idcliente','DESC')
             ->paginate($cantidadRegistros,['*'],'pagina',$paginaActual);
@@ -82,6 +82,10 @@ class ClienteController extends Controller
         $provincia                = $request->input('provincia');
         $distrito                 = $request->input('distrito');
         $direccion                = $request->input('direccion');
+        $apoderadoNombres         = $request->input('apoderadoNombres');
+        $apoderadoApellidos       = $request->input('apoderadoApellidos');
+        $apoderadoCorreo          = $request->input('apoderadoCorreo');
+        $apoderadoTelefono        = $request->input('apoderadoTelefono');
         // $referencia               = $request->input('referencia');
         $nota                     = $request->input('nota');
         $estado                   = $request->input('estado');
@@ -90,7 +94,6 @@ class ClienteController extends Controller
         try {
 
             $cliente = new Cliente();
-            $cliente->codigo                     = $codigo;
             $cliente->nombres                    = $nombres;
             $cliente->apellidos                  = $apellidos;
             $cliente->correo                     = $correo;
@@ -103,6 +106,10 @@ class ClienteController extends Controller
             $cliente->idprovincia                = $provincia;
             $cliente->iddistrito                 = $distrito;
             $cliente->direccion                  = $direccion;
+            $cliente->apoderado_nombres          = $apoderadoNombres;
+            $cliente->apoderado_apellidos        = $apoderadoApellidos;
+            $cliente->apoderado_correo           = $apoderadoCorreo;
+            $cliente->apoderado_telefono         = $apoderadoTelefono;
             // $cliente->referencia                 = $referencia;
             $cliente->nota                       = $nota;
             $cliente->estado                     = $estado;
@@ -193,6 +200,10 @@ class ClienteController extends Controller
         $provincia                = $request->input('provinciaEditar');
         $distrito                 = $request->input('distritoEditar');
         $direccion                = $request->input('direccionEditar');
+        $apoderadoNombres         = $request->input('apoderadoNombresEditar');
+        $apoderadoApellidos       = $request->input('apoderadoApellidosEditar');
+        $apoderadoCorreo          = $request->input('apoderadoCorreoEditar');
+        $apoderadoTelefono        = $request->input('apoderadoTelefonoEditar');
         // $referencia               = $request->input('referenciaEditar');
         $nota                     = $request->input('notaEditar');
         $estado                   = $request->input('estadoEditar');
@@ -200,7 +211,7 @@ class ClienteController extends Controller
 
         try {
             $cliente = Cliente::query()->findOrFail($request->input('idcliente'));
-            $cliente->codigo                     = $codigo;
+            // $cliente->codigo                     = $codigo;
             $cliente->nombres                    = $nombres;
             $cliente->apellidos                  = $apellidos;
             $cliente->correo                     = $correo;
@@ -213,6 +224,10 @@ class ClienteController extends Controller
             $cliente->idprovincia                = $provincia;
             $cliente->iddistrito                 = $distrito;
             $cliente->direccion                  = $direccion;
+            $cliente->apoderado_nombres          = $apoderadoNombres;
+            $cliente->apoderado_apellidos        = $apoderadoApellidos;
+            $cliente->apoderado_correo           = $apoderadoCorreo;
+            $cliente->apoderado_telefono         = $apoderadoTelefono;
             // $cliente->referencia                 = $referencia;
             $cliente->nota                       = $nota;
             $cliente->estado                     = $estado;

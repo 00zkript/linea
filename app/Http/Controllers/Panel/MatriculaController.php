@@ -325,13 +325,12 @@ class MatriculaController extends Controller
         $matricula->idprograma                          = $idprograma;
         $matricula->programa_nombre                     = $programa->nombre;
         $matricula->idcantidad_clases                   = $idcantidad_clases;
-        $matricula->cantidad_clases_nombre              = $cantidadClases->nombre;
         $matricula->cantidad_clases_cantidad            = $cantidadClases->cantidad;
+        $matricula->monto_total                         = $cantidadClases->precio;
         $matricula->idactividad_semanal                 = $idactividad_semanal;
         $matricula->actividad_semanal_nombre            = $actividadSemanal->nombre;
         $matricula->idpiscina                           = $idpiscina;
         $matricula->idcarril                            = $idcarril;
-        $matricula->monto_total                         = $cantidadClases->precio;
         $matricula->estado                              = 1;
         $matricula->save();
 
@@ -360,6 +359,7 @@ class MatriculaController extends Controller
 
         $matricula = Matricula::query()
             ->with([
+                'detalle',
                 'clienteTipoDocumentoIdentidad',
                 'empleadoTipoDocumentoIdentidad',
                 'concepto',
@@ -373,6 +373,56 @@ class MatriculaController extends Controller
         }
 
         return response()->json($matricula);
+    }
+
+    public function habilitar(Request $request,$idmatricula)
+    {
+        if (!$request->ajax()){
+            return abort(404);
+        }
+
+        try {
+            $registro = Matricula::query()->findOrFail($idmatricula);
+            $registro->estado    = 1;
+            $registro->update();
+
+            return response()->json([
+                'mensaje'=> "Registro habilitado exitosamente.",
+            ]);
+
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                'mensaje'=> "No se pudo habilitar el registro.",
+                "error" => $th->getMessage(),
+                "linea" => $th->getLine(),
+            ],400);
+        }
+    }
+
+    public function inhabilitar(Request $request,$idmatricula)
+    {
+        if (!$request->ajax()){
+            return abort(404);
+        }
+
+        try {
+            $registro = Matricula::query()->findOrFail($idmatricula);
+            $registro->estado    = 0;
+            $registro->update();
+
+            return response()->json([
+                'mensaje'=> "Registro inhabilitado exitosamente.",
+            ]);
+
+        } catch (\Throwable $th) {
+
+            return response()->json([
+                'mensaje'=> "No se pudo inhabilitar el registro.",
+                "error" => $th->getMessage(),
+                "linea" => $th->getLine(),
+            ],400);
+        }
     }
 
 

@@ -18,68 +18,54 @@
 
                         <div class="col-12 mt-5">
                             <table class="table table-bordered">
+                                <tr>
+                                    <td><b>Código: </b><span id="idmatriculaShow"></span></td>
+                                    <td><b>Concepto: </b><span id="conceptoShow"></span></td>
+                                    <td colspan="2"><b>Sucursal: </b><span id="sucursalShow"></span></td>
+                                </tr>
+                                <tr>
+                                    <td colspan="4"><b>Estado: </b><span id="estadoShow"></span></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2"><b>Cliente: </b><span id="clienteShow"></span></td>
+                                    <td colspan="2"><b>Cliente documento identidad: </b><span id="clienteIdtipoDocumentoIdentidadShow"></span></td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="2" ><b>Empleado: </b><span id="empleadoShow"></span></td>
+                                    <td colspan="2" ><b>Empleado documento identidad: </b><span id="empleadoIdtipoDocumentoIdentidadShow"></span></td>
+                                </tr>
+
+                                <tr>
+                                    <td><b>Temporada: </b><span id="temporadaShow"></span></td>
+                                    <td><b>Programa: </b><span id="programaShow"></span></td>
+                                    <td><b>Piscina: </b><span id="piscinaShow"></span></td>
+                                    <td><b>Carril: </b><span id="carrilShow"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Periodo: </b><span id="periodoShow"></span></td>
+                                    <td><b>Actividad semanal: </b><span id="actividadSemanalShow"></span></td>
+                                    <td><b>Cantidad clases: </b><span id="cantidadClasesShow"></span></td>
+                                    <td><b>Monto total: </b><span id="montoTotalShow"></span></td>
+                                </tr>
+                            </table>
+
+                            <table class="table table-bordered">
                                 <thead>
                                     <tr>
-                                        <th>Matricula </th>
+                                        <th colspan="2" class="text-center">Horario</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">Dia</th>
+                                        <th class="text-center">Hora</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    #idmatriculaShow
-                                    #conceptoShow
-                                    #sucursalShow
-
-                                    #clienteShow
-                                    #clienteIdtipoDocumentoIdentidadShow
-
-                                    #empleadoShow
-                                    #empleadoIdtipoDocumentoIdentidadShow
-
-                                    #periodoShow
-                                    #temporadaShow
-                                    #idprogramaShow
-                                    #cantidadSesionesShow
-                                    #cantidadSesionesCantidadShow
-                                    #actividadSemanalShow
-                                    #piscinaShow
-                                    #carrilShow
-                                    #montoTotalShow
+                                <tbody id="horarioShow">
                                 </tbody>
                             </table>
                         </div>
 
-                        <div class="col-md-12 col-12 pl-5">
-                            <h3>Alumno</h3>
-                            <p class="fs-12">
-                                <b>Nombre completo:</b> Juan Manual Perez Aguila <br>
-                                <b>Correo:</b> juanpa@gmail.com <br>
-                                <b>Teléfono:</b> 987654321 <br>
-                                <b>Documento de identidad:</b> DNI - 87654321 <br>
-                                <b>Direción:</b> Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima
-                            </p>
-
-                            <h3>Matricula</h3>
-                            <p class="fs-12">
-                                <b>Codígo:</b> 0000007<br>
-                                <b>Concepto:</b> Nueva Matricula <br>
-                                <b>Empleado:</b> Roberto raymundo espinoza <br>
-                                <b>Sucursal Direción:</b> sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  <br>
-                                <b>Fecha:</b> 01/01/2023 - 01/02/2023 <br>
-                                <b>Temporada:</b> Verano <br>
-                                <b>Programa:</b> Para adultos <br>
-                                <b>Piscina:</b> Piscina grande <br>
-                                <b>Carril:</b> #6 <br>
-                                <b>Dias de actividad:</b> L-M-V <br>
-                                <b>Cantidad de sessiones:</b> 4 sessiones X 350 soles <br>
-                                <b>Horario: </b>
-                                <ul>
-                                    <li>Lunes : 08:00 AM - 09:00 AM</li>
-                                    <li>Martes : 08:00 AM - 09:00 AM</li>
-                                    <li>Miercoles : 08:00 AM - 09:00 AM</li>
-                                    <li>Lunes : 08:00 AM - 09:00 AM</li>
-                                </ul>
-
-                            </p>
-                        </div>
 
 
 

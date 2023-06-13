@@ -1181,7 +1181,7 @@ a {
 .nav-sm .main_container .top_nav {
     display: block;
     margin-left: 70px;
-    z-index: 2
+    z-index: 3;
 }
 .nav-sm .nav.side-menu li a {
     text-align: center !important;
@@ -4291,7 +4291,7 @@ ul.project_files li a i {
     position: fixed;
     top: 0;
     width: calc(100% - 230px);
-    z-index: 2;
+    z-index: 3;
 }
 .nav_menu {
     /*    position: static;*/

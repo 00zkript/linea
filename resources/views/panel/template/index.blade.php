@@ -17,6 +17,7 @@
     <link href="{{ asset('panel/css/bootstrap-progressbar-3.3.4.min.css') }}" rel="stylesheet">
     <link href="{{ asset('panel/css/custom.min.css') }}" rel="stylesheet">
     <link href="{{ asset('panel/pnotify/PNotifyBrightTheme.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('generales/toast/toastr.css') }}">
     <link href="{{ asset('panel/fileinput/css/fileinput.min.css') }}" rel="stylesheet">
     <link href="{{ asset('panel/fileinput/themes/explorer-fa/theme.min.css') }}" rel="stylesheet">
     <link href="{{ asset('panel/css/bootstrap-select.min.css') }}" rel="stylesheet">
@@ -299,6 +300,8 @@
         axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
     </script>
     <script src="{{ asset('generales/waitMe/waitMe.min.js') }}"></script>
+
+    <script src="{{ asset('generales/toast/toastr.min.js') }}"></script>
     <script src="{{ asset('generales/js/jquery.mask.js') }}"></script>
     <script src="{{ asset('generales/js/funciones.js') }}"></script>
 
@@ -365,7 +368,6 @@
 
             const response = error.response;
             const data = response.data;
-            let mensaje = '';
             stop();
 
 
@@ -374,19 +376,12 @@
 
             }
 
-            if (response.status == 500){
-                notificacion("error","Error","Error del servidor, contácte con soporte.");
-            }
-
-
-            if (response.status == 419){
+            if (response.status == 500 || response.status == 419){
                 notificacion("error","Error","Error del servidor, contácte con soporte.");
             }
 
             if (response.status == 400){
-                mensaje = data.mensaje
-                notificacion("error","Error",mensaje);
-
+                notificacion("error","Error",data.mensaje);
             }
 
             console.log(data);
@@ -397,6 +392,8 @@
 
 
     </script>
+
+
 
     @stack('js')
 

@@ -3,6 +3,8 @@
 @endpush
 @section('cuerpo')
     @include('panel.matricula.ver')
+    @include('panel.matricula.habilitar')
+    @include('panel.matricula.inhabilitar')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -62,18 +64,12 @@
 
         const URL_LISTADO     = "{{ route('matricula.listar') }}";
         const URL_VER         = "{{ route('matricula.show',':id') }}";
-        {{-- // const URL_GUARDAR     = "{{ route('matricula.store') }}"; --}}
-        {{-- // const URL_EDIT        = "{{ route('matricula.edit',':id') }}"; --}}
-        {{-- // const URL_MODIFICAR   = "{{ route('matricula.update',':id') }}"; --}}
-        {{-- // const URL_HABILITAR   = "{{ route('matricula.habilitar',':id') }}"; --}}
-        {{-- // const URL_INHABILITAR = "{{ route('matricula.inhabilitar',':id') }}"; --}}
-        {{-- // const URL_ELIMINAR    = "{{ route('matricula.destroy',':id') }}"; --}}
-
+        const URL_HABILITAR   = "{{ route('matricula.habilitar',':id') }}";
+        const URL_INHABILITAR = "{{ route('matricula.inhabilitar',':id') }}";
 
 
 
         const filtros = () => {
-
 
             $(document).on("click","a.page-link", function(e) {
                 e.preventDefault();
@@ -84,8 +80,6 @@
                 listado(cantidadRegistros,paginaActual);
             } )
 
-
-
             $(document).on("change","#cantidadRegistros", function(e) {
                 e.preventDefault();
                 const paginaActual      = $("#paginaActual").val();
@@ -94,8 +88,6 @@
                 listado(cantidadRegistros,paginaActual);
 
             } )
-
-
 
             $(document).on("submit","#frmBuscar", function(e) {
                 e.preventDefault();
@@ -136,61 +128,19 @@
 
         const modales = () => {
 
-            /* $(document).on("click","#btnModalCrear", function (e) {
-                e.preventDefault();
-                $("#frmCrear span.error").remove();
-                $("#frmCrear")[0].reset();
-                CKEDITOR.instances.contenido.setData('');
-
-                $("#frmCrear .selectpicker").selectpicker("refresh");
-                $("#modalCrear").modal("show");
-
-
-            }); */
-
-            /* $(document).on("click",".btnModalHabilitar",function(e){
+            $(document).on("click",".btnModalHabilitar",function(e){
                 e.preventDefault();
                 const idmatricula = $(this).closest('div.dropdown-menu').data('idmatricula');
                 $("#frmHabilitar input[name=idmatricula]").val(idmatricula);
                 $("#modalHabilitar").modal("show");
-            }); */
+            });
 
-            /* $(document).on("click",".btnModalInhabilitar",function(e){
+            $(document).on("click",".btnModalInhabilitar",function(e){
                 e.preventDefault();
                 const idmatricula = $(this).closest('div.dropdown-menu').data('idmatricula');
                 $("#frmInhabilitar input[name=idmatricula]").val(idmatricula);
                 $("#modalInhabilitar").modal("show");
-            }); */
-
-            /* $(document).on("click",".btnModalEliminar",function(e){
-                e.preventDefault();
-                const idmatricula = $(this).closest('div.dropdown-menu').data('idmatricula');
-                $("#frmEliminar input[name=idmatricula]").val(idmatricula);
-                $("#modalEliminar").modal("show");
-            }); */
-
-            /* $(document).on("click",".btnModalEditar",function(e){
-                e.preventDefault();
-                const idmatricula = $(this).closest('div.dropdown-menu').data('idmatricula');
-
-                cargando('Procesando...');
-                axios.get(URL_EDIT.replace(':id',idmatricula))
-                .then(response => {
-                    const data = response.data;
-
-                    stop();
-                    $("#frmEditar")[0].reset();
-                    $("#frmEditar input[name=idmatricula]").val(data.idmatricula);
-
-                    $("#frmEditar .selectpicker").selectpicker("render");
-                    $("#modalEditar").modal("show");
-
-                })
-                .catch(errorCatch)
-
-
-
-            }); */
+            });
 
             $(document).on("click",".btnModalVer",function(e){
                 e.preventDefault();
@@ -205,22 +155,36 @@
                     stop();
 
 
-                    $('#idmatriculaShow').html(data.idmatricula);
-                    $('#sucursalShow').html(data.sucursal_nombre+' - '+data.sucursal_direccion);
+                    $('#idmatriculaShow').html( data.idmatricula.toString().padStart(7,0) );
+                    $('#sucursalShow').html(data.sucursal_nombre+(data.sucursal_direccion ? ' - '+data.sucursal_direccion : ''));
                     $('#clienteShow').html(data.cliente_nombres+' '+data.cliente_apellidos);
-                    $('#clienteIdtipoDocumentoIdentidadShow').html( data.cliente_tipo_documento_identidad +' - '+ data.cliente_numero_documento_identidad);
-                    $('#empleadoShow').html(data.empleado_nombres+' '+data.empleado_apellidos);
-                    $('#empleadoIdtipoDocumentoIdentidadShow').html( data.empleado_tipo_documento_identidad +' - '+ data.empleado_numero_documento_identidad);
+                    $('#clienteIdtipoDocumentoIdentidadShow').html( data.cliente_tipo_documento_identidad.nombre +' - '+ data.cliente_numero_documento_identidad);
+                    $('#empleadoShow').html(data.empleado_nombres+' '+(data.empleado_apellidos??''));
+                    $('#empleadoIdtipoDocumentoIdentidadShow').html( data.empleado_tipo_documento_identidad.nombre +(data.empleado_numero_documento_identidad ? ' - '+data.empleado_numero_documento_identidad : ''));
                     $('#periodoShow').html(data.fecha_inicio+' - '+data.fecha_fin);
-                    $('#conceptoShow').html(data.concepto);
+                    $('#conceptoShow').html(data.concepto.nombre);
                     $('#temporadaShow').html(data.temporada_nombre);
-                    $('#idprogramaShow').html(data.idprograma);
-                    $('#cantidadSesionesShow').html(data.cantidad_sesiones_nombre);
-                    $('#cantidadSesionesCantidadShow').html(data.cantidad_sesiones_cantidad);
+                    $('#programaShow').html(data.programa_nombre);
                     $('#actividadSemanalShow').html(data.actividad_semanal_nombre);
-                    $('#piscinaShow').html(data.piscina);
-                    $('#carrilShow').html(data.carril);
-                    $('#montoTotalShow').html(data.monto_total);
+                    $('#piscinaShow').html(data.piscina.nombre);
+                    $('#carrilShow').html(data.carril.nombre);
+                    $('#cantidadClasesShow').html(data.cantidad_clases_cantidad);
+                    $('#montoTotalShow').html('S/. '+data.monto_total);
+
+                    let detalleHtml = '';
+                    data.detalle.forEach( detalle => {
+                        detalleHtml +=  `
+                            <tr>
+                                <td class="text-center" >${ detalle.dia_nombre }</td>
+                                <td class="text-center" >${ detalle.horario_nombre }</td>
+                            </tr>
+                        `;
+                    });
+
+                    $('#horarioShow').html(detalleHtml);
+
+
+
 
                     if (data.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');
@@ -239,61 +203,7 @@
 
         }
 
-        /* const guardar = () => {
-            $(document).on("submit","#frmCrear",function(e){
-                e.preventDefault();
-                const form = new FormData($(this)[0]);
-                form.append('contenido',CKEDITOR.instances.contenido.getData());
-
-                cargando('Procesando...');
-                axios.post(URL_GUARDAR,form)
-                .then(response => {
-                    const data = response.data;
-                    stop();
-                    // $("#imagen").fileinput("upload");
-                    // $("#manual").fileinput("upload");
-
-                    $("#modalCrear").modal("hide");
-                    notificacion("success","Registro exitoso",data.mensaje);
-                    listado();
-
-                })
-                .catch(errorCatch)
-
-
-
-
-            });
-        } */
-
-        /* const modificar = () => {
-            $(document).on("submit","#frmEditar",function(e){
-                e.preventDefault();
-
-                const idmatricula = $("#frmEditar input[name=idmatricula]").val();
-                const form = new FormData($(this)[0]);
-                form.append('contenidoEditar',CKEDITOR.instances.contenidoEditar.getData());
-
-                cargando('Procesando...');
-                axios.post(URL_MODIFICAR.replace(':id',idmatricula),form)
-                .then(response => {
-                    const data = response.data;
-                    // $("#imagenEditar").fileinput("upload");
-                    // $("#manualEditar").fileinput("upload");
-
-                    stop();
-                    $("#modalEditar").modal("hide");
-                    notificacion("success","Modificación exitosa",data.mensaje);
-                    listado($("#cantidadRegistros").val(),$("#paginaActual").val());
-
-                })
-                .catch(errorCatch)
-
-
-            });
-        } */
-
-        /* const habilitar = () => {
+        const habilitar = () => {
             $(document).on( "submit" ,"#frmHabilitar", function(e){
                 e.preventDefault();
                 // const form = new FormData($(this)[0]);
@@ -317,9 +227,9 @@
 
             } )
 
-        } */
+        }
 
-        /* const inhabilitar = () => {
+        const inhabilitar = () => {
             $(document).on( "submit","#frmInhabilitar" , function(e){
                 e.preventDefault();
 
@@ -341,40 +251,15 @@
                 .catch( errorCatch )
 
             } )
-        } */
+        }
 
-        /* const eliminar = () => {
-            $(document).on( "submit","#frmEliminar" , function(e){
-                e.preventDefault();
-
-                // const form = new FormData($(this)[0]);
-                const idmatricula = $("#frmEliminar input[name=idmatricula]").val();
-                cargando('Procesando...');
-
-                axios.delete(URL_ELIMINAR.replace(':id',idmatricula))
-                .then( response => {
-                    const data = response.data;
-                    stop();
-                    $("#modalEliminar").modal("hide");
-
-                    notificacion("success","Eliminado",data.mensaje);
-
-                    listado($("#cantidadRegistros").val(),$("#paginaActual").val());
-
-                } )
-                .catch( errorCatch )
-
-            } )
-        } */
 
 
         $(function () {
             modales();
             filtros();
-            // guardar();
-            // modificar();
-            // habilitar();
-            // inhabilitar();
+            habilitar();
+            inhabilitar();
 
         });
 

@@ -32,12 +32,12 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu-{{$item->idmatricula}}" data-idmatricula="{{$item->idmatricula}}">
                                 <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
-                                <a href="{{ route('pago.create',$item->idcliente) }}" class="dropdown-item" type="button"><i class="fa fa-eye"></i> Pagar</a>
-                                <button class="dropdown-item btnModalEditar" type="button"><i class="fa fa-pencil"></i> Editar</button>
+                                <a href="{{ route('pago.create',$item->idcliente) }}" class="dropdown-item" type="button"><i class="fa fa-money-bill"></i> Pagar</a>
+                                {{-- <button class="dropdown-item btnModalEditar" type="button"><i class="fa fa-pencil"></i> Editar</button> --}}
                                 @if($item->estado)
-                                    <button class="dropdown-item btnModalInhabilitar" type="button"><i class="fa fa-times"> Inhabilitar</i></button>
+                                    <button class="dropdown-item btnModalInhabilitar" type="button"><i class="fa fa-times"></i> Inhabilitar</button>
                                 @else
-                                    <button class="dropdown-item btnModalHabilitar" type="button"><i class="fa fa-check"> Habilitar</i></button>
+                                    <button class="dropdown-item btnModalHabilitar" type="button"><i class="fa fa-check"></i> Habilitar</button>
                                 @endif
                                 {{-- <button class="dropdown-item btnModalEliminar" type="button"><i class="fa fa-trash"> Eliminar</i></button> --}}
                             </div>

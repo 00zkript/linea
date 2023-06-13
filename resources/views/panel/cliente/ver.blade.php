@@ -17,47 +17,75 @@
                         </div>
 
 
-                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
+                        <div class="col-12">
                             <p class="text-capitalize">codígo</p>
-                            <p id="codigoShow"></p>
+                            <p id="idclienteShow"></p>
                             <hr>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
+                        <div class="col-12">
                             <p class="text-capitalize">Nombres</p>
                             <p id="nombreShow"></p>
                             <hr>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
+                        <div class="col-12">
                             <p class="text-capitalize">Apellidos</p>
                             <p id="apellidosShow"></p>
                             <hr>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
+                        <div class="col-12">
                             <p class="text-capitalize">Correo</p>
                             <p id="correoShow"></p>
                             <hr>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
+                        <div class="col-12">
                             <p class="text-capitalize">Teléfono</p>
                             <p id="telefonoShow"></p>
                             <hr>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
+                        <div class="col-12">
                             <p class="text-capitalize">Documento de identidad</p>
                             <p id="tipoDocumentoIdentidadShow"></p>
                             <hr>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
+                        <div class="col-12">
                             <p class="text-capitalize">Fecha de nacimiento</p>
                             <p id="fechaNacimientoShow"></p>
                             <hr>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
+                        <div class="col-12">
                             <p class="text-capitalize">Dirección</p>
                             <p id="direccionShow"></p>
                             <hr>
                         </div>
-                        <div class="col-xl-12 col-lg-12 col-md 12 col-sm-12 col-12">
+
+                        <div class="col-12 mt-3 mb-3">
+                            <h4>Apoderado o persona de referencia</h4>
+                        </div>
+
+
+                         <div class="col-12">
+                            <p class="text-capitalize">Nombres</p>
+                            <p id="apoderadoNombreShow"></p>
+                            <hr>
+                        </div>
+                        <div class="col-12">
+                            <p class="text-capitalize">Apellidos</p>
+                            <p id="apoderadoApellidosShow"></p>
+                            <hr>
+                        </div>
+                        <div class="col-12">
+                            <p class="text-capitalize">Correo</p>
+                            <p id="apoderadoCorreoShow"></p>
+                            <hr>
+                        </div>
+                        <div class="col-12">
+                            <p class="text-capitalize">Teléfono</p>
+                            <p id="apoderadoTelefonoShow"></p>
+                            <hr>
+                        </div>
+
+
+                        <div class="col-12">
                             <p class="text-capitalize">Nota</p>
                             <p id="notaShow"></p>
                             <hr>

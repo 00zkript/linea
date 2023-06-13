@@ -74,6 +74,8 @@
         const URL_DISTRITOS   = "{{ route('cliente.distritos',':id') }}";
         const URL_CARPETA     = BASE_URL+"/panel/img/";
 
+        const tipoDocumentoidentidad = @json($tipoDocumentoIdentidad);
+
 
 
 
@@ -202,6 +204,12 @@
                     getDistrito({ selector: '#distritoEditar', idprovincia: data.idprovincia, newValue: data.iddistrito });
 
                     $('#direccionEditar').val(data.direccion);
+
+                    $('#apoderadoNombresEditar').val(data.apoderado_nombres);
+                    $('#apoderadoApellidosEditar').val(data.apoderado_apellidos);
+                    $('#apoderadoCorreoEditar').val(data.apoderado_correo);
+                    $('#apoderadoTelefonoEditar').val(data.apoderado_telefono);
+
                     $('#referenciaEditar').val(data.referencia);
                     $('#notaEditar').val(data.nota);
 
@@ -209,13 +217,6 @@
                         dropZoneTitle : 'Arrastre la imagen aquí',
                         initialPreview : [ URL_CARPETA+data.imagen ],
                         initialPreviewConfig : { caption : data.imagen , width: "120px", height : "120px" },
-                        // fileActionSettings : { showRemove : false, showUpload : false, showZoom : true, showDrag : false},
-                        // uploadUrl : URL_FILE_UPDATE,
-                        // uploadExtraData : _ => {
-                        // },
-                        // deleteUrl : URL_FILE_DESTROY,
-                        // deleteExtraData : _ => {
-                        // },
                     });
 
 
@@ -242,6 +243,7 @@
 
                     stop();
 
+                    $('#idclienteShow').html(data.idcliente.toString().padStart(7,0));
                     $('#nombreShow').html(data.nombres);
                     $('#apellidosShow').html(data.apellidos);
                     $('#correoShow').html(data.correo);
@@ -250,6 +252,11 @@
                     $('#fechaNacimientoShow').html(data.fecha_nacimiento);
                     $('#notaShow').html(data.nota);
                     $('#direccionShow').html(data.direccion+" "+ data.distrito.nombre+" / "+data.provincia.nombre+" / "+data.departamento.nombre);
+
+                    $('#apoderadoNombreShow').html(data.nombres);
+                    $('#apoderadoApellidosShow').html(data.apellidos);
+                    $('#apoderadoCorreoShow').html(data.correo);
+                    $('#apoderadoTelefonoShow').html(data.telefono);
 
 
 
@@ -391,23 +398,15 @@
         }
 
         const changeTipoDocumentoIdentidad = () => {
-            const documentoIdentidad = [
-                { id: 1, name: 'DNI', caracter_min: 8, caracter_max: 8 },
-                { id: 2, name: 'CARNET DE EXTRANJERIA', caracter_min: 12, caracter_max: 12 },
-                { id: 3, name: 'RUC', caracter_min: 12, caracter_max: 12 },
-                { id: 4, name: 'PASAPORTE', caracter_min: 12, caracter_max: 12 }
-            ];
-
             const handleChange = (selector, inputSelector) => {
                 $(document).on('change', selector, function (e) {
                     e.preventDefault();
-
                     const val = $(this).val();
-                    const documento = documentoIdentidad.find(ele => ele.id == val);
+                    const documento = tipoDocumentoidentidad.find(ele => ele.idtipo_documento_identidad == val);
 
-                    $(inputSelector).attr('minLength', documento.caracter_min)
-                        .attr('maxLength', documento.caracter_max)
-                        .val($(inputSelector).val().substring(0, documento.caracter_min));
+                    $(inputSelector).attr('minLength', documento.caracteres_length)
+                        .attr('maxLength', documento.caracteres_length)
+                        .val($(inputSelector).val().slice(0, documento.caracteres_length));
 
                 });
             };
