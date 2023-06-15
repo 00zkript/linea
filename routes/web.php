@@ -110,6 +110,10 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::resource('roles',\App\Http\Controllers\Panel\RolesController::class)->names('panel.roles');
 
 
+    Route::post('arqueo-caja/abrir', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'abrir' ])->name('arqueoCaja.abrir');
+    Route::post('arqueo-caja/cerrar', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'cerrar' ])->name('arqueoCaja.cerrar');
+
+
 
 
 
