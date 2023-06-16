@@ -1,4 +1,4 @@
-@if (!$arqueoCajaCurrent)
+
 
     <div class="modal fade" id="advertenciaAbrirArqueoCajaModalCenter" tabindex="-1" role="dialog" aria-labelledby="advertenciaAbrirArqueoCajaModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -102,13 +102,41 @@
                 $('#advertenciaAbrirArqueoCajaModalCenter').modal('hide');
             }
 
+            const validateArqueoCaja = () => {
+                const errors = [];
 
+                if (!$('#montoCambio').val()) {
+                    errors.push("Por favor, ingresa un monto de cambio.");
+                }
+                if (!$('#montoInicialSoles').val()) {
+                    errors.push("Por favor, ingresa un monto inicial en soles.");
+                }
+                if (!$('#montoInicialDolares').val()) {
+                    errors.push("Por favor, ingresa un monto inicial en dólares.");
+                }
 
-            const modalesAbrirArqueoCaja = () => {
-                $(document).on( 'click', '#openAdevertenciaAbrirArqueoCaja', abrirArqueoAdvertencia);
-                $(document).on( 'click', '#closeAdevertenciaAbrirArqueoCaja', abrirArqueoModal);
+                return errors;
             }
 
+            const modalesAbrirArqueoCaja = () => {
+                $(document).on( 'click', '#openAdevertenciaAbrirArqueoCaja', function (e) {
+                    e.preventDefault();
+
+                    const errors = validateArqueoCaja();
+                    if (errors.length > 0) {
+                        notificacion('error','Errores encontrados', listErrorsForm(errors));
+                        return;
+                    }
+
+                    abrirArqueoAdvertencia();
+
+                });
+                $(document).on( 'click', '#closeAdevertenciaAbrirArqueoCaja', function (e) {
+                    e.preventDefault();
+
+                    abrirArqueoModal();
+                });
+            }
 
             const storeAbrirArqueoCaja = () => {
                 $(document).on( 'click', '#resetAbrirArqueoCaja', function (e) {
@@ -164,10 +192,12 @@
             (() => {
                 modalesAbrirArqueoCaja();
                 storeAbrirArqueoCaja();
+                @if (!$arqueoCajaCurrent)
+                    abrirArqueoModal();
+                @endif
             })()
 
         </script>
     @endpush
 
-@endif
 

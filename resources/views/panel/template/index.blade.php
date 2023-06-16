@@ -95,7 +95,6 @@
 <body class="nav-md">
 
     @include('panel.arqueoCaja.abrirCaja')
-    @include('panel.arqueoCaja.cerrarCaja')
     @include('panel.template.alertModal')
 
 
@@ -179,8 +178,8 @@
                                 <li class=""><a><i class="fa fa-cash-register"></i> Arqueo de caja y cambio <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirArqueoCajaModalCenter" >Abrir Caja</a></li>
-                                        <li><a href="javascript:void(0);" data-toggle="modal" data-target="#cerrarArqueoCajaModalCenter" >Cerrar caja</a></li>
-                                        <li><a href="javascript:void(0);">Operaciones</a></li>
+                                        <li><a href="{{ route('arqueoCaja.cerrar') }}">Cerrar caja</a></li>
+                                        <li><a href="{{ route('arqueoCaja.operaciones') }}">Operaciones</a></li>
                                         <li><a href="{{ route('historialCambio.index') }}" >Historial de camnio de moneda</a></li>
                                     </ul>
                                 </li>

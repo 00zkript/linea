@@ -50,10 +50,7 @@ class AppServiceProvider extends ServiceProvider
             $arqueoCaja = ArqueoCaja::query()->where( 'fecha', now()->subDays(1)->format('Y-m-d') )->first();
             $arqueoCajaCurrent = ArqueoCaja::query()->where( 'fecha', $currentDate )->first();
 
-
-
             $view->with(compact( 'currentDate', 'usuario', 'arqueoCaja', 'arqueoCajaCurrent' ));
-
         });
 
 

@@ -111,10 +111,10 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
 
 
     Route::post('arqueo-caja/abrir', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'abrir' ])->name('arqueoCaja.abrir');
-    Route::post('arqueo-caja/cerrar', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'cerrar' ])->name('arqueoCaja.cerrar');
-
-
-
+    Route::get('arqueo-caja/operaciones', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'operaciones' ])->name('arqueoCaja.operaciones');
+    Route::post('arqueo-caja/operaciones', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'saveOperacion' ])->name('arqueoCaja.saveOperacion');
+    Route::get('arqueo-caja/cerrar', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'cerrar' ])->name('arqueoCaja.cerrar');
+    Route::put('arqueo-caja/cerrar', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'saveCerrar' ])->name('arqueoCaja.saveCerrar');
 
 
 
