@@ -46,11 +46,11 @@
                                 <div class="row">
                                     <div class="col-md-6 col-12 input-group">
                                         <div class="input-group-prepend"> <span class="input-group-text">S/. </span> </div>
-                                        <input type="text" class="form-control format-number-price" name="cierreCajaAnteriorSoles" id="cierreCajaAnteriorSoles" placeholder="Cierre anterior soles" value="{{ $arqueoCaja->monto_inicial_sol ?? '0.00' }}" readonly >
+                                        <input type="text" class="form-control format-number-price" name="cierreCajaAnteriorSoles" id="cierreCajaAnteriorSoles" placeholder="Cierre anterior soles" value="{{ number_format($arqueoCajaAnterior->monto_final_sol ?? '0.00',2,'.','') }}" readonly >
                                     </div>
                                     <div class="col-md-6 col-12 input-group">
                                         <div class="input-group-prepend"> <span class="input-group-text">$ </span> </div>
-                                        <input type="text" class="form-control format-number-price" name="cierreCajaAnteriorDolar" id="cierreCajaAnteriorDolar" placeholder="Cierre anterior dolares" value="{{ $arqueoCaja->monto_inicial_dolar ?? '0.00' }}" readonly >
+                                        <input type="text" class="form-control format-number-price" name="cierreCajaAnteriorDolar" id="cierreCajaAnteriorDolar" placeholder="Cierre anterior dolares" value="{{ number_format($arqueoCajaAnterior->monto_i_finalolar ?? '0.00',2,'.','') }}" readonly >
                                     </div>
                                 </div>
                             </div>
@@ -152,7 +152,7 @@
                     axios.post("{{ route('arqueoCaja.abrir') }}",form)
                     .then( response => {
                         const data = response.data;
-                        notificacion( 'success', '!Enhorabuena¡', 'Se abrió la caja correctamente.' );
+                        notificacion( 'success', '¡Felicidades!', 'Se abrió la caja correctamente.' );
 
                         $('#advertenciaAbrirArqueoCajaModalCenter').modal('hide');
                     })

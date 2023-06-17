@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\ArqueoCaja;
-use App\Models\ArqueoCajaOperacion;
-use App\Models\TipoOperacion;
 use App\Models\Venta;
+use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Http\Request;
 
 class ArqueoCajaController extends Controller
@@ -52,86 +51,126 @@ class ArqueoCajaController extends Controller
         $fecha = now()->format('Y-m-d');
         $arqueoCaja = ArqueoCaja::query()->where('fecha', $fecha )->first();
 
-        $sumatoriaMontoTotal = Venta::query()->where('fecha',$fecha)->where('estado',1)->sum('monto_total');
-        $sumatoriaOperacionesIngresos = $arqueoCaja->operaciones()->where('idtipo_operacion', $INGRESO_ID)->sum('monto');
-        $sumatoriaOperacionesEgresos = $arqueoCaja->operaciones()->where('idtipo_operacion', $EGRESO_ID)->sum('monto');
+        $ventasHoy = Venta::query()->where('fecha',$fecha)->where('estado',1)->get();
+        $operacionesIngreso = $arqueoCaja->operaciones()->where('idtipo_operacion', $INGRESO_ID)->get();
+        $operacionesEgreso = $arqueoCaja->operaciones()->where('idtipo_operacion', $EGRESO_ID)->get();
 
-        $ingresos =  number_format( $arqueoCaja->monto_inicial + $sumatoriaMontoTotal + $sumatoriaOperacionesIngresos, 4, '.', '' );
-        $egresos =  number_format( $sumatoriaOperacionesEgresos, 4, '.', '' );
+        //*Sol
+        $EVentasSolEfectivo    = $ventasHoy->sum('monto_sol_efectivo');
+        $EVentasSolTransferido = $ventasHoy->sum('monto_sol_transferido');
+        $EVentasSolTotal       = $EVentasSolEfectivo + $EVentasSolTransferido;
 
-        $montoFinalSolEfectivo      = $arqueoCaja->monto_actual_sol_efectivo + $ingresos;
-        $montoFinalSolTransferido   = $arqueoCaja->monto_actual_sol_transferido;
-        $montoFinalDolarEfectivo    = $arqueoCaja->monto_actual_dolar_efectivo;
-        $montoFinalDolarTransferido = $arqueoCaja->monto_actual_dolar_transferido;
+        $EOperacionesIngresosSolEfectivo    = $operacionesIngreso->sum('monto_sol_efectivo');
+        $EOperacionesIngresosSolTransferido = $operacionesIngreso->sum('monto_sol_tranferido');
+        $EOperacionesIngresosSolTotal       = $EOperacionesIngresosSolEfectivo + $EOperacionesIngresosSolTransferido;
+
+        $EOperacionesEgresosSolEfectivo     = $operacionesEgreso->sum('monto_sol_efectivo');
+        $EOperacionesEgresosSolTransferido  = $operacionesEgreso->sum('monto_sol_tranferido');
+        $EOperacionesEgresosSolTotal        = $EOperacionesEgresosSolEfectivo + $EOperacionesEgresosSolTransferido;
+
+        $ingresosSol = $arqueoCaja->monto_inicial_sol + $EVentasSolTotal + $EOperacionesIngresosSolTotal;
+        $egresosSol =  $EOperacionesEgresosSolTotal;
+
+        $montoFinalSolEfectivo      = ($arqueoCaja->monto_inicial_sol + $EVentasSolEfectivo + $EOperacionesIngresosSolEfectivo) - $EOperacionesEgresosSolEfectivo;
+        $montoFinalSolTransferido   = ($EVentasSolTransferido + $EOperacionesIngresosSolTransferido) - $EOperacionesEgresosSolTransferido;
+
+        //*Dolar
+        $EVentasDolarEfectivo    = $ventasHoy->sum('monto_dolar_efectivo');
+        $EVentasDolarTransferido = $ventasHoy->sum('monto_dolar_transferido');
+        $EVentasDolarTotal       = $EVentasDolarEfectivo + $EVentasDolarTransferido;
+
+        $EOperacionesIngresosDolarEfectivo    = $operacionesIngreso->sum('monto_dolar_efectivo');
+        $EOperacionesIngresosDolarTransferido = $operacionesIngreso->sum('monto_dolar_tranferido');
+        $EOperacionesIngresosDolarTotal       = $EOperacionesIngresosDolarEfectivo + $EOperacionesIngresosDolarTransferido;
+
+        $EOperacionesEgresosDolarEfectivo     = $operacionesEgreso->sum('monto_dolar_efectivo');
+        $EOperacionesEgresosDolarTransferido  = $operacionesEgreso->sum('monto_dolar_tranferido');
+        $EOperacionesEgresosDolarTotal        = $EOperacionesEgresosDolarEfectivo + $EOperacionesEgresosDolarTransferido;
+
+        $ingresosDolar = $arqueoCaja->monto_inicial_dolar + $EVentasDolarTotal + $EOperacionesIngresosDolarTotal;
+        $egresosDolar =  $EOperacionesEgresosDolarTotal;
+
+        $montoFinalDolarEfectivo      = ($arqueoCaja->monto_inicial_dolar + $EVentasDolarEfectivo + $EOperacionesIngresosDolarEfectivo) - $EOperacionesEgresosDolarEfectivo;
+        $montoFinalDolarTransferido   = ($EVentasDolarTransferido + $EOperacionesIngresosDolarTransferido) - $EOperacionesEgresosDolarTransferido;
 
 
-        return view('panel.arqueoCaja.cerrarCaja')->with(compact( 'fecha', 'arqueoCaja', 'ingresos', 'egresos'));
+        return view('panel.arqueoCaja.cerrarCaja')->with(compact(
+            'fecha',
+            'arqueoCaja',
+            'ingresosSol',
+            'egresosSol',
+            'montoFinalSolEfectivo',
+            'montoFinalSolTransferido',
+            'ingresosDolar',
+            'egresosDolar',
+            'montoFinalDolarEfectivo',
+            'montoFinalDolarTransferido',
+        ));
     }
 
-    public function saveCerrar(Request $request)
+    public function cerrarStore(Request $request)
     {
         if ( !$request->ajax() ) {
             return abort(400);
         }
 
-        $montoFinal = $request->input('montoFinal');
-        $fecha      = now()->format('Y-m-d');
+        $montoFinalSolEfectivo      = $request->input('montoFinalSolEfectivo',0);
+        $montoFinalSolTransferido   = $request->input('montoFinalSolTransferido',0);
+        $montoFinalSolFaltante      = $request->input('montoFinalSolFaltante',0);
+        $montoFinalSolSobrante      = $request->input('montoFinalSolSobrante',0);
+        $montoFinalDolarEfectivo    = $request->input('montoFinalDolarEfectivo',0);
+        $montoFinalDolarTransferido = $request->input('montoFinalDolarTransferido',0);
+        $montoFinalDolarFaltante    = $request->input('montoFinalDolarFaltante',0);
+        $montoFinalDolarSobrante    = $request->input('montoFinalDolarSobrante',0);
+
+        $montoFinalSol              = $montoFinalSolEfectivo + $montoFinalSolTransferido;
+        $montoFinalDolar            = $montoFinalDolarEfectivo + $montoFinalDolarTransferido;
+        $fecha                      = now()->format('Y-m-d');
 
         $arqueoCaja = ArqueoCaja::query()->where('fecha', $fecha )->first();
-        $arqueoCaja->monto_final = number_format($montoFinal,4,'.','');
-        $arqueoCaja->fecha       = $fecha;
-        $arqueoCaja->save();
+        $arqueoCaja->monto_final_sol_efectivo      = $montoFinalSolEfectivo;
+        $arqueoCaja->monto_final_sol_transferido   = $montoFinalSolTransferido;
+        $arqueoCaja->monto_final_sol               = $montoFinalSol;
+        $arqueoCaja->monto_final_sol_faltante      = $montoFinalSolFaltante;
+        $arqueoCaja->monto_final_sol_sobrante      = $montoFinalSolSobrante;
+        $arqueoCaja->monto_final_dolar_efectivo    = $montoFinalDolarEfectivo;
+        $arqueoCaja->monto_final_dolar_transferido = $montoFinalDolarTransferido;
+        $arqueoCaja->monto_final_dolar             = $montoFinalDolar;
+        $arqueoCaja->monto_final_dolar_faltante    = $montoFinalDolarFaltante;
+        $arqueoCaja->monto_final_dolar_sobrante    = $montoFinalDolarSobrante;
+        $arqueoCaja->fecha_cierre                  = now()->format('Y-m-d H:i:s');
+        $arqueoCaja->update();
 
         return response()->json([
-            'mensaje' => 'Se agrego el monto final correctamente.'
+            'mensaje' => 'La caja se cerro correctamente.'
         ]);
     }
 
-    public function operaciones()
+    public function reportePdf(Request $request)
     {
-        $tiposDeOperaciones = TipoOperacion::query()->where('estado',1)->get();
 
-        return view('panel.arqueoCaja.operaciones')->with(compact('tiposDeOperaciones'));
-    }
-
-    public function saveOperacion(Request $request)
-    {
-        if ( !$request->ajax() ) {
-            return abort(400);
-        }
-
-        $tipoOperacion         = $request->input('tipoOperacion');
-        $montoSolEfectivo      = $request->input('montoSolEfectivo');
-        $montoSolTransferido   = $request->input('montoSolTransferido');
-        $montoDolarEfectivo    = $request->input('montoDolarEfectivo');
-        $montoDolarTransferido = $request->input('montoDolarTransferido');
-        $descripcion           = $request->input('descripcion');
+        $INGRESO_ID = 1;
+        $EGRESO_ID = 2;
+        $fecha = now()->format('Y-m-d');
 
 
-        $fecha      = now()->format('Y-m-d');
         $arqueoCaja = ArqueoCaja::query()->where('fecha', $fecha )->first();
-        $cambio     = $arqueoCaja->monto_cambio_moneda ?: 1;
-        $final      = $montoSolEfectivo + $montoSolTransferido + (($montoDolarEfectivo + $montoDolarTransferido) * $cambio);
+        $ventasHoy = Venta::query()->where('fecha',$fecha)->where('estado',1)->get();
 
 
-        $operacion = new ArqueoCajaOperacion();
-        $operacion->idarqueo_caja           = $arqueoCaja->idarqueo_caja;
-        $operacion->idusuario               = auth()->id();
-        $operacion->idtipo_operacion        = $tipoOperacion;
-        $operacion->fecha                   = $fecha;
-        $operacion->descripcion             = $descripcion;
-        $operacion->monto_sol_efectivo      = number_format($montoSolEfectivo,4,'.','');
-        $operacion->monto_sol_transferido   = number_format($montoSolTransferido,4,'.','');
-        $operacion->monto_dolar_efectivo    = number_format($montoDolarEfectivo,4,'.','');
-        $operacion->monto_dolar_transferido = number_format($montoDolarTransferido,4,'.','');
-        $operacion->monto                   = number_format($final,4,'.','');
-        $operacion->save();
+        $pdf = SnappyPdf::loadView('reporte.pdf.arqueoCaja.index', compact('arqueoCaja'));
 
 
-        return response()->json([
-            'mensaje' => 'La operación se guardó con éxito'
+        $pdf->setOptions([
+            'margin-top' => 3,
+            'margin-left' => 5,
+            'margin-right' => 5,
+            // 'header-html' => view('reporte.pdf.template.cabecera'),
+            'footer-center' => '[page]/[toPage]',
+            // 'orientation' => 'Landscape'
         ]);
-    }
 
+        return $pdf->inline();
+    }
 
 }

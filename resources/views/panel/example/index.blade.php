@@ -1,11 +1,11 @@
 @extends('panel.template.index')
 @section('cuerpo')
-@include('panel.carpeta.crear')
-@include('panel.carpeta.editar')
-@include('panel.carpeta.habilitar')
-@include('panel.carpeta.inhabilitar')
-@include('panel.carpeta.eliminar')
-@include('panel.carpeta.ver')
+    @include('panel.carpeta.crear')
+    @include('panel.carpeta.editar')
+    @include('panel.carpeta.habilitar')
+    @include('panel.carpeta.inhabilitar')
+    @include('panel.carpeta.eliminar')
+    @include('panel.carpeta.ver')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -18,17 +18,15 @@
                             <div class="col-12 text-right">
                                 <button id="btnModalCrear" class="btn btn-primary btn-lg"><i class="fa fa-plus"></i> Nuevo registro</button>
                             </div>
-                            <div class="col-md-6 col-md-12">
-                                <div class="form-group">
-                                    <label for="cantidadRegistros">Cantidad de registros</label>
-                                    <select name="cantidadRegistros" id="cantidadRegistros" class="form-control form-control-sm">
-                                        <option value="10" selected>10</option>
-                                        <option value="25">25</option>
-                                        <option value="50">50</option>
-                                        <option value="100">100</option>
-                                        <option value="9999999">Todos</option>
-                                    </select>
-                                </div>
+                            <div class="col-md-6 col-12 form-group">
+                                <label for="cantidadRegistros">Cantidad de registros</label>
+                                <select name="cantidadRegistros" id="cantidadRegistros" class="form-control form-control-sm">
+                                    <option value="10" selected>10</option>
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="100">100</option>
+                                    <option value="9999999">Todos</option>
+                                </select>
                             </div>
                             <div class="col-12 my-2">
                                 <form id="frmBuscar">

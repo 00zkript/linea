@@ -111,11 +111,13 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
 
 
     Route::post('arqueo-caja/abrir', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'abrir' ])->name('arqueoCaja.abrir');
-    Route::get('arqueo-caja/operaciones', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'operaciones' ])->name('arqueoCaja.operaciones');
-    Route::post('arqueo-caja/operaciones', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'saveOperacion' ])->name('arqueoCaja.saveOperacion');
     Route::get('arqueo-caja/cerrar', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'cerrar' ])->name('arqueoCaja.cerrar');
-    Route::put('arqueo-caja/cerrar', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'saveCerrar' ])->name('arqueoCaja.saveCerrar');
+    Route::post('arqueo-caja/guardar-cierre', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'cerrarStore' ])->name('arqueoCaja.cerrarStore');
+    Route::get('arqueo-caja/reporte/pdf', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'reportePdf' ])->name('arqueoCaja.reportePdf');
 
+
+    Route::get('arqueo-caja-operaciones/listar',[\App\Http\Controllers\Panel\ArqueoCajaOperacionesController::class,'listar'])->name("arqueoCajaOperacion.listar");
+    Route::resource('arqueo-caja-operaciones', \App\Http\Controllers\Panel\ArqueoCajaOperacionesController::class)->names('arqueoCajaOperacion')->only(['index','show','create','store']);
 
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class ArqueoCajaOperacion extends Model
@@ -14,5 +15,10 @@ class ArqueoCajaOperacion extends Model
     public function tipoOperacion()
     {
         return $this->hasOne(TipoOperacion::class, 'idtipo_operacion', 'idtipo_operacion');
+    }
+
+    public function usuario()
+    {
+        return $this->hasOne(User::class, 'idusuario', 'idusuario');
     }
 }

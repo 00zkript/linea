@@ -100,7 +100,7 @@
                 errors.push("Por favor, selecciona un tipo de operación.");
             }
 
-            if ( fields.every(field => !field.value || field.value === '0' || field.value === '0.00') ) {
+            if ( fields.every(field => !field.value || parseFloat(field.value) === 0 ) ) {
                 errors.push("Debes agregar al menos un monto válido.");
             }
 
@@ -122,7 +122,7 @@
 
                 const form = new FormData(this);
 
-                axios.post("{{ route('arqueoCaja.saveOperacion') }}", form)
+                axios.post("{{ route('arqueoCajaOperacion.store') }}", form)
                 .then( response => {
                     const data = response.data;
                     notificacion('success','Felicidades!','La operación se guardó con éxito');
