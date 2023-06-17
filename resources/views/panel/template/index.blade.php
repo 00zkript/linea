@@ -179,6 +179,7 @@
                                     <ul class="nav child_menu">
                                         <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirArqueoCajaModalCenter" >Abrir Caja</a></li>
                                         <li><a href="{{ route('arqueoCaja.cerrar') }}">Cerrar caja</a></li>
+                                        <li><a href="{{ route('arqueoCaja.index') }}">Arqueos de caja</a></li>
                                         <li><a href="{{ route('arqueoCaja.reportePdf') }}">Reporte Arqueo</a></li>
                                         <li><a href="{{ route('historialCambio.index') }}" >Historial de camnio de moneda</a></li>
                                         <li><a href="{{ route('arqueoCajaOperacion.create') }}">Crear operaciones</a></li>

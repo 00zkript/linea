@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class ArqueoCaja extends Model
 {
@@ -16,5 +18,15 @@ class ArqueoCaja extends Model
     public function operaciones()
     {
         return $this->hasMany(ArqueoCajaOperacion::class, 'idarqueo_caja', 'idarqueo_caja');
+    }
+
+    public function ventas()
+    {
+        return $this->hasMany(venta::class, 'fecha', 'fecha');
+    }
+
+    public function supervisor()
+    {
+        return $this->hasOne(User::class,'idusuario', 'idsupervisor');
     }
 }

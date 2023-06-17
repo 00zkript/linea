@@ -10,27 +10,6 @@
     {{-- <link href="{{ asset('panel/css/custom.min.css') }}" rel="stylesheet"> --}}
 
     <style>
-        body{
-            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-        }
-        .header .logo{
-            width: 200px;
-            height: 100px;
-        }
-        .header h3,h4,h5{
-            /* background: #aaa; */
-            margin: 0.25rem;
-        }
-
-
-        .table{
-            border-spacing: 0;
-        }
-        .table td{
-            padding: 0.5rem;
-        }
-
-
         .text-center{ text-align: center; }
         .text-start{ text-align: left; }
         .text-end{ text-align: right; }
@@ -128,74 +107,374 @@
         .me-3{ margin-right: 1rem; }
         .me-4{ margin-right: 1.5rem; }
         .me-5{ margin-right: 3rem; }
+    </style>
+
+    <style>
+        body{
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+        }
+        .header .logo{
+            width: 200px;
+            height: 100px;
+        }
+        .header h3,
+        .header h4,
+        .header h5{
+            margin: 0.25rem;
+        }
+
+
+        .table{
+            border-spacing: 0;
+            width: 100%;
+        }
+        .table th{
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+        .table td{
+            padding: 0.5rem;
+        }
+
+        .table-bordered th,
+        .table-bordered td {
+            border: 1px solid #aaa;
+        }
+        .table-border th,
+        .table-border td {
+            border-bottom: 1px solid #aaa;
+        }
+
+        .table-border tr:first-child th{
+            border-top: 1px solid #aaa;
+        }
+
+        .table-striped tr:nth-child(even){
+            background: #e3e3e3;
+        }
+
+        .table-dark{
+            background: #1E1E1E;
+            color: #fff;
+        }
+
+        .table-secondary{
+            background: #cecece;
+            color: #1E1E1E;
+            font-weight: bold;
+        }
+
+        .table-min{
+            border-spacing: 0;
+        }
+        .table-min th{
+            padding-left: 0.5rem;
+            padding-right: 0.5rem;
+            padding-top: 0.75rem;
+            padding-bottom: 0.75rem;
+        }
+        .table-min td{
+            padding: 0.5rem;
+        }
+
+
+
 
     </style>
 </head>
 <body>
 
 
-    <section class="header border-bottom-2">
+    <section class="header border-bottom-1 pb-3">
         <table class="table">
             <tr>
                 <td colspan="2" class="">
                     <img src="http://via.placeholder.com/500x300" class="logo ps-5 pe-5">
                 </td>
                 <td colspan="4">
-                    <h4 class="title">ARQUEO DE CAJA NO : 0000038</h4>
-                    <h5 class="subtitle">fecha y hora de impresión : 23/11/2011 - 18:31:07</h5>
-                    <h5 class="subsubtitle">por : admin</h5>
+                    <h4 class="title">ARQUEO DE CAJA NO : 000000001</h4>
+                    <h5 class="subtitle">fecha y hora de impresión : {{ now()->format('d/m/Y - h:i A') }}</h5>
+                    <h5 class="subsubtitle">por : {{ auth()->user()->nombres }} {{ auth()->user()->apellidos }}</h5>
                 </td>
             </tr>
         </table>
     </section>
 
 
-    <section>
-        <h3 class="text-center">ARQUEO DE CAJA DEL 23/11/2011 AL 23/11/2011</h3>
+    <section class="border-bottom-1 pb-3">
+        <h3 class="text-center">ARQUEO DE CAJA DEL {{ now()->parse($fechaDesde)->format('d/m/Y') }} AL {{ now()->parse($fechaHasta)->format('d/m/Y') }}</h3>
+
+        <table class="table table-border mt-5">
+            <thead>
+                <tr>
+                    <th colspan="2">SALDO INICIAL EFECTIVO EN CAJA</th>
+                </tr>
+                <tr class="table-dark">
+                    <th>Soles</th>
+                    <th>Dolares</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($registros as $item)
+                    <tr>
+                        <td class="text-center">S/. {{ number_format($item->monto_inicial_sol,2) }}</td>
+                        <td class="text-center">$ {{ number_format($item->monto_inicial_dolar,2) }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+        <table class="table table-border mt-5">
+            <thead>
+                <tr>
+                    <th colspan="7">INGRESOS EFECTIVO EN CAJA</th>
+                </tr>
+                <tr class="table-dark">
+                    <th>Codígo</th>
+                    <th>Apellidos y nombres</th>
+                    <th>Concepto</th>
+                    <th>Efectivo (S/.)</th>
+                    <th>Tarjeta (S/.)</th>
+                    <th>Efectivo ($)</th>
+                    <th>Tarjeta ($)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Codígo</td>
+                    <td>Apellidos y nombres</td>
+                    <td>Concepto</td>
+                    <td>Efectivo (S/.)</td>
+                    <td>Tarjeta (S/.)</td>
+                    <td>Efectivo ($)</td>
+                    <td>Tarjeta ($)</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3"> Total:</td>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <table class="table table-border mt-5">
+            <thead>
+                <tr>
+                    <th colspan="5">INGRESOS - MOVIMIENTOS CAJA</th>
+                </tr>
+                <tr class="table-dark">
+                    <th>Codígo</th>
+                    <th>Descripción</th>
+                    <th>Efectivo(S/.)</th>
+                    <th>Efectivo($)</th>
+                    <th>Autorizado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($registros as $item)
+                    @foreach ($operacionesIngresos as $operacion)
+                        @if ($item->idarqueo_caja === $operacion->idarqueo_caja)
+                            <tr>
+                                <td>{{ str_pad($operacion->idarqueo_caja_operaciones,7,0,STR_PAD_LEFT) }}</td>
+                                <td>{{ $operacion->descripcion }}</td>
+                                <td>S/. {{ number_format($operacion->monto_sol,2) }}</td>
+                                <td>$ {{ number_format($operacion->monto_dolar,2) }}</td>
+                                <td>{{ $item->supervisor->nombres }} {{ $item->supervisor->apellidos }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"> Total:</td>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <table class="table table-border mt-5">
+            <thead>
+                <tr>
+                    <th colspan="5">EGRESOS - MOVIMIENTOS CAJA</th>
+                </tr>
+                <tr class="table-dark">
+                    <th>Codígo</th>
+                    <th>Descripción</th>
+                    <th>Efectivo(S/.)</th>
+                    <th>Efectivo($)</th>
+                    <th>Autorizado</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($registros as $item)
+                    @foreach ($operacionesEgresos as $operacion)
+                        @if ($item->idarqueo_caja === $operacion->idarqueo_caja)
+                            <tr>
+                                <td>{{ str_pad($operacion->idarqueo_caja_operaciones,7,0,STR_PAD_LEFT) }}</td>
+                                <td>{{ $operacion->descripcion }}</td>
+                                <td>S/. {{ number_format($operacion->monto_sol,2) }}</td>
+                                <td>$ {{ number_format($operacion->monto_dolar,2) }}</td>
+                                <td>{{ $item->supervisor->nombres }} {{ $item->supervisor->apellidos }}</td>
+                            </tr>
+                        @endif
+                    @endforeach
+                @endforeach
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2"> Total:</td>
+                    <td>0.00</td>
+                    <td>0.00</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <table class="table border-botttom-1 mt-3">
+            <tr>
+                <td>EXCEDENTES SOLES</td>
+                <td>EXCEDENTES DOLARES</td>
+            </tr>
+            <tr>
+                <td>FALTA SOLES</td>
+                <td>FALTA DOLARES</td>
+            </tr>
+        </table>
     </section>
 
 
+    <section class="pb-3 border-bottom-1">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>DINERO EN CAJA </th>
+                    <th>VENTAS DEL DíA </th>
+                    <th>ESTADÍSIICAS </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        Soles (S/.):
+                        <br>
+                        Tarjeta (S/.):
+                        <br>
+                        Cheque (S/.):
+                        <br>
+                        Transferencia (S/.):
+                        <br>
+                        dolares (S/.):
+                    </td>
+                    <td>
+                        Total soles (Sí.):
+                        <br>
+                        Total dolaes (S.USD):
+                        <br>
+                        Total tarjeta (S/.):
+                        <br>
+                        Total cheque (S/.):
+                        <br>
+                        Total transferencia (S/.):
+                    </td>
+                    <td>
+                        N° alumnos nuevos:
+                        <br>
+                        N° alumnos renovados:
+                        <br>
+                        N° pagos por deuda:
+                        <br>
+                        N° pagos con tarjeta:
+                        <br>
+                        N° pagos con cheque:
+                        <br>
+                        N° pagos por transferencia:
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table border-1 mt-5">
+            <tr>
+                <td>TOTAL DINERO CAJA SOLES: </td>
+                <td>2500 </td>
+                <td>TOTAL DINERO CAJA DOLARES: </td>
+                <td>456 </td>
+            </tr>
+        </table>
+    </section>
 
-    <table class="table">
-        <tr>
-            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptatibus, saepe officia placeat ipsam repudiandae harum perferendis, quis, fugiat eaque doloribus? Adipisci cum aperiam autem libero quos inventore a aut?</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-        </tr>
-    </table>
-    <table class="table">
-        <tr>
-            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptatibus, saepe officia placeat ipsam repudiandae harum perferendis, quis, fugiat eaque doloribus? Adipisci cum aperiam autem libero quos inventore a aut?</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-        </tr>
-    </table>
-    <table class="table">
-        <tr>
-            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptatibus, saepe officia placeat ipsam repudiandae harum perferendis, quis, fugiat eaque doloribus? Adipisci cum aperiam autem libero quos inventore a aut?</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-        </tr>
-    </table>
-    <table class="table">
-        <tr>
-            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptatibus, saepe officia placeat ipsam repudiandae harum perferendis, quis, fugiat eaque doloribus? Adipisci cum aperiam autem libero quos inventore a aut?</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-        </tr>
-    </table>
-    <table class="table table-bordered mt-4">
-        <tr>
-            <td>Lorem ipsum dolor sit amet consectetur adipisicing elit. Reiciendis voluptatibus, saepe officia placeat ipsam repudiandae harum perferendis, quis, fugiat eaque doloribus? Adipisci cum aperiam autem libero quos inventore a aut?</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-            <td>Harum inventore asperiores unde similique placeat ducimus pariatur est, dicta optio omnis nisi itaque doloribus nulla repellendus facere molestiae modi sunt atque eaque aliquid assumenda beatae iusto nihil. Tempore, sit!</td>
-        </tr>
-    </table>
+    <section class="mt-4">
+        @php( $year = now()->year )
+        <table class="table-min table-striped">
+            <thead class="table-secondary">
+                <tr>
+                    <td>Mes</td>
+                    <td>N° Alumnos</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Enero - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+                <tr>
+                    <td>Febrero - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+                <tr>
+                    <td>Marzo - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+                <tr>
+                    <td>Abril - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+                <tr>
+                    <td>Mayo - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+                <tr>
+                    <td>Junio - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+                <tr>
+                    <td>Julio - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+                <tr>
+                    <td>Agosto - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+                <tr>
+                    <td>Septiembre - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+                <tr>
+                    <td>Octubre - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+                <tr>
+                    <td>Noviembre - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+                <tr>
+                    <td>Diciembre - {{ $year }}</td>
+                    <td class="text-end">10</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </section>
+
+
 
 </body>
 </html>

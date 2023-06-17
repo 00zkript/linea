@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Models\ArqueoCaja;
+use App\Models\ArqueoCajaOperacion;
 use App\Models\Venta;
+use App\User;
 use Barryvdh\Snappy\Facades\SnappyPdf;
 use Illuminate\Http\Request;
 
@@ -35,7 +37,6 @@ class ArqueoCajaController extends Controller
 
         $arqueoCaja->monto_inicial_sol         = number_format($montoInicialSol,4,'.','');
         $arqueoCaja->monto_inicial_dolar       = number_format($montoInicialDolar,4,'.','');
-        $arqueoCaja->monto_inicial             = number_format($montoInicial,4,'.','');
 
         $arqueoCaja->save();
 
@@ -54,6 +55,16 @@ class ArqueoCajaController extends Controller
         $ventasHoy = Venta::query()->where('fecha',$fecha)->where('estado',1)->get();
         $operacionesIngreso = $arqueoCaja->operaciones()->where('idtipo_operacion', $INGRESO_ID)->get();
         $operacionesEgreso = $arqueoCaja->operaciones()->where('idtipo_operacion', $EGRESO_ID)->get();
+
+        $usuarios = User::query()
+            ->select([
+                'idusuario',
+                'nombres',
+                'apellidos',
+                'estado',
+            ])
+            ->where('estado',1)
+            ->get();
 
         //*Sol
         $EVentasSolEfectivo    = $ventasHoy->sum('monto_sol_efectivo');
@@ -97,6 +108,7 @@ class ArqueoCajaController extends Controller
         return view('panel.arqueoCaja.cerrarCaja')->with(compact(
             'fecha',
             'arqueoCaja',
+            'usuarios',
             'ingresosSol',
             'egresosSol',
             'montoFinalSolEfectivo',
@@ -122,6 +134,7 @@ class ArqueoCajaController extends Controller
         $montoFinalDolarTransferido = $request->input('montoFinalDolarTransferido',0);
         $montoFinalDolarFaltante    = $request->input('montoFinalDolarFaltante',0);
         $montoFinalDolarSobrante    = $request->input('montoFinalDolarSobrante',0);
+        $idsupervisor    = $request->input('idsupervisor',0);
 
         $montoFinalSol              = $montoFinalSolEfectivo + $montoFinalSolTransferido;
         $montoFinalDolar            = $montoFinalDolarEfectivo + $montoFinalDolarTransferido;
@@ -138,6 +151,7 @@ class ArqueoCajaController extends Controller
         $arqueoCaja->monto_final_dolar             = $montoFinalDolar;
         $arqueoCaja->monto_final_dolar_faltante    = $montoFinalDolarFaltante;
         $arqueoCaja->monto_final_dolar_sobrante    = $montoFinalDolarSobrante;
+        $arqueoCaja->idsupervisor                  = $idsupervisor;
         $arqueoCaja->fecha_cierre                  = now()->format('Y-m-d H:i:s');
         $arqueoCaja->update();
 
@@ -146,23 +160,128 @@ class ArqueoCajaController extends Controller
         ]);
     }
 
+    public function index()
+    {
+
+        $registros = ArqueoCaja::query()
+            ->orderBy('idarqueo_caja','DESC')
+            ->paginate(10,['*'],'pagina',1);
+
+
+
+
+        return view('panel.arqueoCaja.index')->with(compact('registros'));
+
+    }
+
+    public function listar(Request $request)
+    {
+        if (!$request->ajax()){
+            return abort(404);
+        }
+
+        $cantidadRegistros = $request->input('cantidadRegistros');
+        $paginaActual = $request->input('paginaActual');
+        $txtBuscar = $request->input('txtBuscar');
+        $fechaDesde = $request->input('fechaDesde');
+        $fechaHasta = $request->input('fechaHasta');
+
+        $registros = ArqueoCaja::query()
+            ->when($txtBuscar,function($query) use($txtBuscar){
+                return $query->where('idarqueo_caja','LIKE','%'.$txtBuscar.'%');
+            })
+            ->when($fechaDesde, function ($query) use($fechaDesde){
+                return $query->whereDate('fecha', '>=', now()->parse($fechaDesde)->format('Y-m-d'));
+            })
+            ->when($fechaHasta, function ($query) use ($fechaHasta) {
+                return $query->whereDate('fecha','<=', now()->parse($fechaHasta)->format('Y-m-d'));
+            })
+            ->orderBy('idarqueo_caja','DESC')
+            ->paginate($cantidadRegistros,['*'],'pagina',$paginaActual);
+
+
+        return view('panel.arqueoCaja.listado')->with(compact('registros'))->render();
+
+    }
+
+    public function show(Request $request,$idregistro)
+    {
+        if (!$request->ajax()){
+            return abort(404);
+        }
+
+        $registro = ArqueoCaja::query()->with(['supervisor'])->find($idregistro);
+
+        if(!$registro){
+            return response()->json( ['mensaje' => "Registro no encontrado"],400);
+        }
+
+        return response()->json($registro);
+
+    }
+
     public function reportePdf(Request $request)
     {
+        $txtBuscar = $request->input('txtBuscar');
+        $fechaDesde = $request->input('fechaDesde') ?: now()->months(1)->days(1)->format('Y-m-d');
+        $fechaHasta = $request->input('fechaHasta') ?: now()->format('Y-m-d');
+
 
         $INGRESO_ID = 1;
         $EGRESO_ID = 2;
         $fecha = now()->format('Y-m-d');
 
+        $months = [
+            "Enero",
+            "Febrero",
+            "Marzo",
+            "Abril",
+            "Mayo",
+            "Junio",
+            "Julio",
+            "Agosto",
+            "Septiembre",
+            "Octubre",
+            "Noviembre",
+            "Diciembre",
+        ];
 
-        $arqueoCaja = ArqueoCaja::query()->where('fecha', $fecha )->first();
-        $ventasHoy = Venta::query()->where('fecha',$fecha)->where('estado',1)->get();
+
+        $registros = ArqueoCaja::query()
+            ->with([
+                'ventas' => function ($query) {
+                    return $query->where('estado',1);
+                },
+                'supervisor'
+            ])
+            ->when($txtBuscar,function($query) use($txtBuscar){
+                return $query->where('idarqueo_caja','LIKE','%'.$txtBuscar.'%');
+            })
+            ->whereDate('fecha', '>=', now()->parse($fechaDesde)->format('Y-m-d'))
+            ->whereDate('fecha','<=', now()->parse($fechaHasta)->format('Y-m-d'))
+            ->orderBy('idarqueo_caja','DESC')
+            ->get();
+
+        $operacionesIngresos = ArqueoCajaOperacion::query()
+            ->whereDate('fecha', '>=', now()->parse($fechaDesde)->format('Y-m-d'))
+            ->whereDate('fecha','<=', now()->parse($fechaHasta)->format('Y-m-d'))
+            ->where('idtipo_operacion',$INGRESO_ID)
+            ->where('estado',1)
+            ->get();
+
+        $operacionesEgresos = ArqueoCajaOperacion::query()
+            ->whereDate('fecha', '>=', now()->parse($fechaDesde)->format('Y-m-d'))
+            ->whereDate('fecha','<=', now()->parse($fechaHasta)->format('Y-m-d'))
+            ->where('idtipo_operacion',$EGRESO_ID)
+            ->where('estado',1)
+            ->get();
 
 
-        $pdf = SnappyPdf::loadView('reporte.pdf.arqueoCaja.index', compact('arqueoCaja'));
+        $pdf = SnappyPdf::loadView('reporte.pdf.arqueoCaja.index', compact( 'fechaDesde', 'fechaHasta', 'registros', 'operacionesIngresos', 'operacionesEgresos'));
 
 
         $pdf->setOptions([
-            'margin-top' => 3,
+            'margin-top' => 5,
             'margin-left' => 5,
             'margin-right' => 5,
             // 'header-html' => view('reporte.pdf.template.cabecera'),

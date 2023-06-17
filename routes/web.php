@@ -114,6 +114,8 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::get('arqueo-caja/cerrar', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'cerrar' ])->name('arqueoCaja.cerrar');
     Route::post('arqueo-caja/guardar-cierre', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'cerrarStore' ])->name('arqueoCaja.cerrarStore');
     Route::get('arqueo-caja/reporte/pdf', [ \App\Http\Controllers\Panel\ArqueoCajaController::class, 'reportePdf' ])->name('arqueoCaja.reportePdf');
+    Route::get('arqueo-caja/listar',[\App\Http\Controllers\Panel\ArqueoCajaController::class,'listar'])->name("arqueoCaja.listar");
+    Route::resource('arqueo-caja', \App\Http\Controllers\Panel\ArqueoCajaController::class)->names('arqueoCaja')->only(['index','show']);
 
 
     Route::get('arqueo-caja-operaciones/listar',[\App\Http\Controllers\Panel\ArqueoCajaOperacionesController::class,'listar'])->name("arqueoCajaOperacion.listar");

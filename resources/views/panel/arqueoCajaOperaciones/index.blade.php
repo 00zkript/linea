@@ -19,7 +19,7 @@
                         </select>
                     </div>
                     <div class="col-md-6 col-12">
-                        <label for="rangoFechaDesde">Ragno de Fecha</label>
+                        <label for="rangoFechaDesde">Rango de Fecha</label>
                         <div class="input-group">
                             <input type="text" class="form-control datepicker" placeholder="Desde" id="rangoFechaDesde" >
                             <div class="input-group-addon">-</div>
@@ -168,13 +168,7 @@
 
         }
 
-
-
-
         $('.datepicker').datepicker()
-
-
-
         $(function () {
             modales();
             filtros();
