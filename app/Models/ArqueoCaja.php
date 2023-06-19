@@ -22,7 +22,7 @@ class ArqueoCaja extends Model
 
     public function ventas()
     {
-        return $this->hasMany(venta::class, 'fecha', 'fecha');
+        return $this->hasMany(Venta::class, 'fecha', 'fecha');
     }
 
     public function supervisor()
