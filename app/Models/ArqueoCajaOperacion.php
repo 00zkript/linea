@@ -19,6 +19,19 @@ class ArqueoCajaOperacion extends Model
 
     public function usuario()
     {
-        return $this->hasOne(User::class, 'idusuario', 'idusuario');
+        return $this->hasOne(User::class, 'idusuario', 'idusuario')
+            ->withDefault([
+                'nombres' => '',
+                'apellidos' => '',
+            ]);
     }
+
+    public function supervisor()
+    {
+        return $this->hasOne(User::class,'idusuario', 'idsupervisor')->withDefault([
+            'nombres' => '',
+            'apellidos' => '',
+        ]);
+    }
+
 }

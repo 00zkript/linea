@@ -249,9 +249,6 @@ class ArqueoCajaController extends Controller
 
         $registros = ArqueoCaja::query()
             ->with([
-                'ventas' => function ($query) {
-                    return $query->where('estado',1);
-                },
                 'supervisor'
             ])
             ->when($txtBuscar,function($query) use($txtBuscar){
@@ -262,7 +259,14 @@ class ArqueoCajaController extends Controller
             ->orderBy('idarqueo_caja','DESC')
             ->get();
 
+        $ventas = Venta::query()
+            ->whereDate('fecha', '>=', now()->parse($fechaDesde)->format('Y-m-d'))
+            ->whereDate('fecha','<=', now()->parse($fechaHasta)->format('Y-m-d'))
+            ->where('estado',1)
+            ->get();
+
         $operacionesIngresos = ArqueoCajaOperacion::query()
+            ->with(['supervisor'])
             ->whereDate('fecha', '>=', now()->parse($fechaDesde)->format('Y-m-d'))
             ->whereDate('fecha','<=', now()->parse($fechaHasta)->format('Y-m-d'))
             ->where('idtipo_operacion',$INGRESO_ID)
@@ -270,12 +274,15 @@ class ArqueoCajaController extends Controller
             ->get();
 
         $operacionesEgresos = ArqueoCajaOperacion::query()
+            ->with(['supervisor'])
             ->whereDate('fecha', '>=', now()->parse($fechaDesde)->format('Y-m-d'))
             ->whereDate('fecha','<=', now()->parse($fechaHasta)->format('Y-m-d'))
             ->where('idtipo_operacion',$EGRESO_ID)
             ->where('estado',1)
             ->get();
 
+        $totalCajaSoles = ($registros->sum('monto_final_sol') + $operacionesIngresos->sum('monto_sol') + $ventas->sum('monto_total_sol') ) - $operacionesEgresos->sum('monto_sol');
+        $totalCajaDolares = ($registros->sum('monto_final_dolar') + $operacionesIngresos->sum('monto_dolar') + $ventas->sum('monto_total_dolar') ) - $operacionesEgresos->sum('monto_dolar');
 
         $pdf = SnappyPdf::loadView('reporte.pdf.arqueoCaja.index', compact( 'fechaDesde', 'fechaHasta', 'registros', 'operacionesIngresos', 'operacionesEgresos'));
 

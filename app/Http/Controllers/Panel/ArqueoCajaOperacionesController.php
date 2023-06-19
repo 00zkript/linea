@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ArqueoCaja;
 use App\Models\ArqueoCajaOperacion;
 use App\Models\TipoOperacion;
+use App\User;
 use Illuminate\Http\Request;
 
 class ArqueoCajaOperacionesController extends Controller
@@ -61,8 +62,17 @@ class ArqueoCajaOperacionesController extends Controller
     public function create()
     {
         $tiposDeOperaciones = TipoOperacion::query()->where('estado',1)->get();
+        $usuarios = User::query()
+            ->select([
+                'idusuario',
+                'nombres',
+                'apellidos',
+                'estado',
+            ])
+            ->where('estado',1)
+            ->get();
 
-        return view('panel.arqueoCajaOperaciones.create')->with(compact('tiposDeOperaciones'));
+        return view('panel.arqueoCajaOperaciones.create')->with(compact('tiposDeOperaciones', 'usuarios'));
     }
 
     public function store(Request $request)
@@ -77,6 +87,7 @@ class ArqueoCajaOperacionesController extends Controller
         $montoDolarEfectivo    = $request->input('montoDolarEfectivo');
         $montoDolarTransferido = $request->input('montoDolarTransferido');
         $descripcion           = $request->input('descripcion');
+        $idsupervisor          = $request->input('idsupervisor');
 
 
         $fecha      = now()->format('Y-m-d');
@@ -88,6 +99,7 @@ class ArqueoCajaOperacionesController extends Controller
         $operacion = new ArqueoCajaOperacion();
         $operacion->idarqueo_caja           = $arqueoCaja->idarqueo_caja;
         $operacion->idusuario               = auth()->id();
+        $operacion->idsupervisor            = $idsupervisor;
         $operacion->idtipo_operacion        = $tipoOperacion;
         $operacion->fecha                   = $fecha;
         $operacion->descripcion             = $descripcion;
@@ -112,7 +124,7 @@ class ArqueoCajaOperacionesController extends Controller
             return abort(400);
         }
 
-        $registro = ArqueoCajaOperacion::query()->with(['tipoOperacion','usuario'])->find($id);
+        $registro = ArqueoCajaOperacion::query()->with(['tipoOperacion','usuario', 'supervisor'])->find($id);
 
         if(!$registro){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);

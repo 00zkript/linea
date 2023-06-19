@@ -20,6 +20,15 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="col-12 form-group">
+                            <label for="idsupervisor">Revisado por:</label>
+                            <select class="form-control" name="idsupervisor" id="idsupervisor" title="Revisado por" required >
+                                <option value="" hidden selected >[---Seleccione---]</option>
+                                @foreach ($usuarios as $item)
+                                    <option value="{{ $item->idusuario }}">{{ $item->nombres }} {{ $item->apellidos }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
 
                     <div class="row">

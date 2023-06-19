@@ -277,6 +277,8 @@
                 </tr>
             </thead>
             <tbody>
+                @php($sumIngresosSol = 0)
+                @php($sumIngresosDolar = 0)
                 @foreach ($registros as $item)
                     @foreach ($operacionesIngresos as $operacion)
                         @if ($item->idarqueo_caja === $operacion->idarqueo_caja)
@@ -285,8 +287,10 @@
                                 <td>{{ $operacion->descripcion }}</td>
                                 <td>S/. {{ number_format($operacion->monto_sol,2) }}</td>
                                 <td>$ {{ number_format($operacion->monto_dolar,2) }}</td>
-                                <td>{{ $item->supervisor->nombres }} {{ $item->supervisor->apellidos }}</td>
+                                <td>{{ $operacion->supervisor->nombres }} {{ $operacion->supervisor->apellidos }}</td>
                             </tr>
+                            @php($sumIngresosSol += $operacion->monto_sol)
+                            @php($sumIngresosDolar += $operacion->monto_dolar)
                         @endif
                     @endforeach
                 @endforeach
@@ -294,8 +298,8 @@
             <tfoot>
                 <tr>
                     <td colspan="2"> Total:</td>
-                    <td>0.00</td>
-                    <td>0.00</td>
+                    <td>S/. {{ number_format($sumIngresosSol,2) }}</td>
+                    <td>$ {{ number_format($sumIngresosDolar,2) }}</td>
                     <td></td>
                 </tr>
             </tfoot>
@@ -315,6 +319,8 @@
                 </tr>
             </thead>
             <tbody>
+                @php($sumEgresosSol = 0)
+                @php($sumEgresosDolar = 0)
                 @foreach ($registros as $item)
                     @foreach ($operacionesEgresos as $operacion)
                         @if ($item->idarqueo_caja === $operacion->idarqueo_caja)
@@ -323,8 +329,10 @@
                                 <td>{{ $operacion->descripcion }}</td>
                                 <td>S/. {{ number_format($operacion->monto_sol,2) }}</td>
                                 <td>$ {{ number_format($operacion->monto_dolar,2) }}</td>
-                                <td>{{ $item->supervisor->nombres }} {{ $item->supervisor->apellidos }}</td>
+                                <td>{{ $operacion->supervisor->nombres }} {{ $operacion->supervisor->apellidos }}</td>
                             </tr>
+                            @php($sumEgresosSol += $operacion->monto_sol)
+                            @php($sumEgresosDolar += $operacion->monto_dolar)
                         @endif
                     @endforeach
                 @endforeach
@@ -332,8 +340,8 @@
             <tfoot>
                 <tr>
                     <td colspan="2"> Total:</td>
-                    <td>0.00</td>
-                    <td>0.00</td>
+                    <td>S/. {{ number_format($sumEgresosSol,2) }}</td>
+                    <td>$ {{ number_format($sumEgresosDolar,2) }}</td>
                     <td></td>
                 </tr>
             </tfoot>
@@ -341,12 +349,12 @@
 
         <table class="table border-botttom-1 mt-3">
             <tr>
-                <td>EXCEDENTES SOLES</td>
-                <td>EXCEDENTES DOLARES</td>
+                <td>EXCEDENTES SOLES: S/. {{ number_format($registros->sum('monto_final_sol_excedente'),2) }}</td>
+                <td>EXCEDENTES DOLARES: $ {{ number_format($registros->sum('monto_final_dolar_excedente'),2) }}</td>
             </tr>
             <tr>
-                <td>FALTA SOLES</td>
-                <td>FALTA DOLARES</td>
+                <td>FALTA SOLES: S/. {{ number_format($registros->sum('monto_final_sol_faltante'),2) }}</td>
+                <td>FALTA DOLARES: $ {{ number_format($registros->sum('monto_final_dolar_faltante'),2) }}</td>
             </tr>
         </table>
     </section>

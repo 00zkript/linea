@@ -31,6 +31,10 @@
                                 <td id="tipoOperacion"></td>
                             </tr>
                             <tr>
+                                <td><b>Revisado por</b></td>
+                                <td id="supervisor"></td>
+                            </tr>
+                            <tr>
                                 <td><b>Monto Efectivo (S/.)</b></td>
                                 <td id="montoSolEfectivo"></td>
                             </tr>
