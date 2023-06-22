@@ -4,6 +4,7 @@
             <thead class="thead-dark">
             <tr class="text-center">
                 <th>Código</th>
+                <th>Programa</th>
                 <th>Nombre</th>
                 <th>Estado</th>
                 <th>Opciones</th>
@@ -13,15 +14,16 @@
 
             @foreach($registros AS $item)
                 <tr>
-                    <td>{{ str_pad($item->idregistro,7,'0000000',STR_PAD_LEFT)}}</td>
-                    <td>{{ $item->nombre}}</td>
+                    <td>{{ str_pad($item->idnivel,7,'0000000',STR_PAD_LEFT) }}</td>
+                    <td>{{ $item->programa->nombre }}</td>
+                    <td>{{ $item->nombre }}</td>
                     <td>{!! $item->estado ? '<label class="badge badge-success">Habilidado</label>' : '<label class="badge badge-danger">Inhabilitado</label>' !!}</td>
                     <td class="text-center">
                         <div class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-{{$item->idregistro}}" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-{{$item->idnivel}}" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
                                 Seleccione
                             </button>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenu-{{$item->idregistro}}" data-idregistro="{{$item->idregistro}}">
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenu-{{$item->idnivel}}" data-idnivel="{{$item->idnivel}}">
                                 <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
                                 <button class="dropdown-item btnModalEditar" type="button"><i class="fa fa-pencil"></i> Editar</button>
                                 @if($item->estado)

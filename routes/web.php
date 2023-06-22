@@ -122,6 +122,32 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::resource('arqueo-caja-operaciones', \App\Http\Controllers\Panel\ArqueoCajaOperacionesController::class)->names('arqueoCajaOperacion')->only(['index','show','create','store']);
 
 
+    Route::put('temporada/{temporada}/habilitar',[\App\Http\Controllers\Panel\TemporadaController::class,'habilitar'])->name("temporada.habilitar");
+    Route::put('temporada/{temporada}/inhabilitar',[\App\Http\Controllers\Panel\TemporadaController::class,'inhabilitar'])->name("temporada.inhabilitar");
+    Route::get('temporada/listar',[\App\Http\Controllers\Panel\TemporadaController::class,'listar'])->name("temporada.listar");
+    Route::resource('temporada',\App\Http\Controllers\Panel\TemporadaController::class);
+
+    Route::put('programa/{programa}/habilitar',[\App\Http\Controllers\Panel\ProgramaController::class,'habilitar'])->name("programa.habilitar");
+    Route::put('programa/{programa}/inhabilitar',[\App\Http\Controllers\Panel\ProgramaController::class,'inhabilitar'])->name("programa.inhabilitar");
+    Route::get('programa/listar',[\App\Http\Controllers\Panel\ProgramaController::class,'listar'])->name("programa.listar");
+    Route::resource('programa',\App\Http\Controllers\Panel\ProgramaController::class);
+
+    Route::put('nivel/{nivel}/habilitar',[\App\Http\Controllers\Panel\NivelController::class,'habilitar'])->name("nivel.habilitar");
+    Route::put('nivel/{nivel}/inhabilitar',[\App\Http\Controllers\Panel\NivelController::class,'inhabilitar'])->name("nivel.inhabilitar");
+    Route::get('nivel/listar',[\App\Http\Controllers\Panel\NivelController::class,'listar'])->name("nivel.listar");
+    Route::resource('nivel',\App\Http\Controllers\Panel\NivelController::class);
+
+    Route::put('carril/{carril}/habilitar',[\App\Http\Controllers\Panel\CarrilController::class,'habilitar'])->name("carril.habilitar");
+    Route::put('carril/{carril}/inhabilitar',[\App\Http\Controllers\Panel\CarrilController::class,'inhabilitar'])->name("carril.inhabilitar");
+    Route::get('carril/listar',[\App\Http\Controllers\Panel\CarrilController::class,'listar'])->name("carril.listar");
+    Route::resource('carril',\App\Http\Controllers\Panel\CarrilController::class);
+
+    Route::put('frecuencia/{frecuencia}/habilitar',[\App\Http\Controllers\Panel\FrecuenciaController::class,'habilitar'])->name("frecuencia.habilitar");
+    Route::put('frecuencia/{frecuencia}/inhabilitar',[\App\Http\Controllers\Panel\FrecuenciaController::class,'inhabilitar'])->name("frecuencia.inhabilitar");
+    Route::get('frecuencia/listar',[\App\Http\Controllers\Panel\FrecuenciaController::class,'listar'])->name("frecuencia.listar");
+    Route::resource('frecuencia',\App\Http\Controllers\Panel\FrecuenciaController::class);
+
+
 
 
 

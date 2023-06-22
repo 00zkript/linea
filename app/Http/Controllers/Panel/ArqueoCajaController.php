@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Panel;
 use App\Http\Controllers\Controller;
 use App\Models\ArqueoCaja;
 use App\Models\ArqueoCajaOperacion;
+use App\Models\Empresa;
 use App\Models\Venta;
 use App\User;
 use Barryvdh\Snappy\Facades\SnappyPdf;
@@ -246,7 +247,7 @@ class ArqueoCajaController extends Controller
             "Diciembre",
         ];
 
-
+        $empresa = Empresa::query()->first();
         $registros = ArqueoCaja::query()
             ->with([
                 'supervisor'
@@ -284,7 +285,16 @@ class ArqueoCajaController extends Controller
         $totalCajaSoles = ($registros->sum('monto_final_sol') + $operacionesIngresos->sum('monto_sol') + $ventas->sum('monto_total_sol') ) - $operacionesEgresos->sum('monto_sol');
         $totalCajaDolares = ($registros->sum('monto_final_dolar') + $operacionesIngresos->sum('monto_dolar') + $ventas->sum('monto_total_dolar') ) - $operacionesEgresos->sum('monto_dolar');
 
-        $pdf = SnappyPdf::loadView('reporte.pdf.arqueoCaja.index', compact( 'fechaDesde', 'fechaHasta', 'registros', 'operacionesIngresos', 'operacionesEgresos'));
+        $pdf = SnappyPdf::loadView('reporte.pdf.arqueoCaja.index', compact(
+            'empresa',
+            'fechaDesde',
+            'fechaHasta',
+            'registros',
+            'operacionesIngresos',
+            'operacionesEgresos',
+            'totalCajaSoles',
+            'totalCajaDolares'
+        ));
 
 
         $pdf->setOptions([

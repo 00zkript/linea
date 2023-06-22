@@ -150,10 +150,10 @@
 
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <label for="piscina">Piscina <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="piscina" v-model="matricula.idpiscina" @change="getCarriles()">
+                    <label for="nivel">Nivel <span class="text-danger">(*)</span></label>
+                    <select class="form-control" id="nivel" v-model="matricula.idnivel" @change="getCarriles()">
                         <option value="" hidden >[---Seleccione---]</option>
-                        <option v-for="(item, index) in resources.piscinas" :key="index" :value="item.idpiscina" v-text="item.nombre"></option>
+                        <option v-for="(item, index) in resources.niveles" :key="index" :value="item.idnivel" v-text="item.nombre"></option>
                     </select>
                 </div>
                 <div class="col-md-4 col-12 form-group">
@@ -164,10 +164,16 @@
                     </select>
                 </div>
                 <div class="col-md-4 col-12 form-group">
-                    <label for="diasDeActividad">Dias de actividad <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="diasDeActividad" v-model="matricula.idactividad_semanal" >
+                    <label for="frecuencia">Frecuencia <span class="text-danger">(*)</span></label>
+                    <select class="form-control" id="frecuencia" v-model="matricula.idfrecuencia" >
                         <option value="" hidden >[---Seleccione---]</option>
-                        <option v-for="(item, index) in resources.actividadSemanal" :key="index" :value="item.idactividad_semanal" v-text="item.nombre"></option>
+                        <option v-for="(item, index) in resources.frecuencias" :key="index" :value="item.idfrecuencia" v-text="item.nombre"></option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-12 form-group">
+                    <label for="horario">Horario <span class="text-danger">(*)</span></label>
+                    <select class="form-control" id="horario" >
+                        <option value="" hidden >[---Seleccione---]</option>
                     </select>
                 </div>
                 <div class="col-md-4 col-12 form-group">
@@ -269,7 +275,7 @@
                         <td><b>Carril:</b> {{ temp.carril.nombre }} <br></td>
                     </tr>
                     <tr>
-                        <td colspan="2"><b>Dias de actividad:</b> {{ temp.actividadSemanal.nombre }} <br></td>
+                        <td colspan="2"><b>Dias de actividad:</b> {{ temp.frecuencias.nombre }} <br></td>
                         <td colspan="2"><b>Cantidad de clases:</b> {{ temp.cantidadClases.nombre }} <br></td>
                     </tr>
                 </tbody>
@@ -343,9 +349,9 @@ export default {
                 sucursal: [],
                 temporadas: [],
                 programas: [],
-                piscinas: [],
+                niveles: [],
                 carriles: [],
-                actividadSemanal: [],
+                frecuencias: [],
                 cantidadClases: [],
                 horarios: [],
                 dias: [],
@@ -365,7 +371,7 @@ export default {
                 programa: {},
                 piscina: {},
                 carril: {},
-                actividadSemanal: {},
+                frecuencias: {},
                 cantidadClases: {},
             },
             stepCurrent : 1,
@@ -398,9 +404,9 @@ export default {
                 idsucursal: '',
                 idtemporada: '',
                 idprograma: '',
-                idpiscina: '',
+                idnivel: '',
                 idcarril: '',
-                idactividad_semanal: '',
+                idfrecuencia: '',
                 idcantidad_clases: '',
             },
             matriculaHorarioDia: [],
@@ -429,8 +435,8 @@ export default {
                 this.resources.sucursales           = data.resources.sucursales;
                 this.resources.temporadas           = data.resources.temporadas;
                 this.resources.programas            = data.resources.programas;
-                this.resources.piscinas             = data.resources.piscinas;
-                this.resources.actividadSemanal     = data.resources.actividadSemanal;
+                this.resources.niveles             = data.resources.niveles;
+                this.resources.frecuencias     = data.resources.frecuencias;
                 this.resources.cantidadClases     = data.resources.cantidadClases;
                 this.resources.horarios             = data.resources.horarios;
                 this.resources.dias                 = data.resources.dias;
@@ -562,7 +568,7 @@ export default {
             this.matricula.idprograma = '';
         },
         getCarriles() {
-            const piscina = this.resources.piscinas.find(ele => ele.idpiscina === this.matricula.idpiscina );
+            const piscina = this.resources.niveles.find(ele => ele.idnivel === this.matricula.idnivel );
 
             this.resources.carriles = piscina.carriles;
             this.matricula.idcarril = '';
@@ -572,7 +578,7 @@ export default {
                 params: {
                     idtemporada: this.matricula.idtemporada,
                     idprograma: this.matricula.idprograma,
-                    idpiscina: this.matricula.idpiscina,
+                    idnivel: this.matricula.idnivel,
                     idcarril: this.matricula.idcarril,
                 }
             })
@@ -631,7 +637,7 @@ export default {
                 errors.push('Por favor, seleccione un programa válido.');
             }
 
-            if (!matricula.idpiscina) {
+            if (!matricula.idnivel) {
                 errors.push('Por favor, seleccione una piscina válida.');
             }
 
@@ -639,7 +645,7 @@ export default {
                 errors.push('Por favor, seleccione un carril válido.');
             }
 
-            if (!matricula.idactividad_semanal) {
+            if (!matricula.idfrecuencia) {
                 errors.push('Por favor, seleccione una actividad semanal válida.');
             }
 
@@ -661,9 +667,9 @@ export default {
 
             const { matricula, resources } = this;
 
-            const actividadSemanalFind = resources.actividadSemanal.find(ele => ele.idactividad_semanal === this.matricula.idactividad_semanal );
+            const frecuenciasFind = resources.frecuencias.find(ele => ele.idfrecuencia === this.matricula.idfrecuencia );
             const cantidadClasesFind = resources.cantidadClases.find(ele => ele.idcantidad_clases === this.matricula.idcantidad_clases );
-            const daysValid = actividadSemanalFind.dias.split('-');
+            const daysValid = frecuenciasFind.dias.split('-');
 
             const fechaInicio = moment(matricula.fecha[0]);
             const fechaFin = moment(matricula.fecha[1]);
@@ -717,7 +723,7 @@ export default {
                 return;
             }
 
-            const { resources: { tipoDocumentoIdentidad, departamentos, provincias, distritos, temporadas, programas, piscinas, carriles, actividadSemanal, cantidadClases } } = this;
+            const { resources: { tipoDocumentoIdentidad, departamentos, provincias, distritos, temporadas, programas, niveles, carriles, frecuencias, cantidadClases } } = this;
 
             this.temp.alumno.tipoDocumentoIdentidad = tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad === this.alumno.idtipo_documento_identidad );
             this.temp.alumno.departamento = departamentos.find(ele => ele.iddepartamento === this.alumno.iddepartamento );
@@ -726,9 +732,9 @@ export default {
 
             this.temp.temporada = temporadas.find(ele => ele.idtemporada === this.matricula.idtemporada );
             this.temp.programa = programas.find(ele => ele.idprograma === this.matricula.idprograma );
-            this.temp.piscina = piscinas.find(ele => ele.idpiscina === this.matricula.idpiscina );
+            this.temp.piscina = niveles.find(ele => ele.idnivel === this.matricula.idnivel );
             this.temp.carril = carriles.find(ele => ele.idcarril === this.matricula.idcarril );
-            this.temp.actividadSemanal = actividadSemanal.find(ele => ele.idactividad_semanal === this.matricula.idactividad_semanal );
+            this.temp.frecuencias = frecuencias.find(ele => ele.idfrecuencia === this.matricula.idfrecuencia );
             this.temp.cantidadClases = cantidadClases.find(ele => ele.idcantidad_clases === this.matricula.idcantidad_clases );
 
             this.stepCurrent = 4;
@@ -779,6 +785,7 @@ export default {
             this.getDistritos().then( _ => {
                 this.alumno.iddistrito = this.alumno_current.iddistrito ?? '';
             });
+            this.stepCurrent = 2;
 
         }
 

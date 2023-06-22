@@ -2139,9 +2139,9 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         sucursal: [],
         temporadas: [],
         programas: [],
-        piscinas: [],
+        niveles: [],
         carriles: [],
-        actividadSemanal: [],
+        frecuencias: [],
         cantidadClases: [],
         horarios: [],
         dias: []
@@ -2160,7 +2160,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         programa: {},
         piscina: {},
         carril: {},
-        actividadSemanal: {},
+        frecuencias: {},
         cantidadClases: {}
       },
       stepCurrent: 1,
@@ -2193,9 +2193,9 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         idsucursal: '',
         idtemporada: '',
         idprograma: '',
-        idpiscina: '',
+        idnivel: '',
         idcarril: '',
-        idactividad_semanal: '',
+        idfrecuencia: '',
         idcantidad_clases: ''
       },
       matriculaHorarioDia: [],
@@ -2224,8 +2224,8 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         _this.resources.sucursales = data.resources.sucursales;
         _this.resources.temporadas = data.resources.temporadas;
         _this.resources.programas = data.resources.programas;
-        _this.resources.piscinas = data.resources.piscinas;
-        _this.resources.actividadSemanal = data.resources.actividadSemanal;
+        _this.resources.niveles = data.resources.niveles;
+        _this.resources.frecuencias = data.resources.frecuencias;
         _this.resources.cantidadClases = data.resources.cantidadClases;
         _this.resources.horarios = data.resources.horarios;
         _this.resources.dias = data.resources.dias;
@@ -2339,8 +2339,8 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
     },
     getCarriles: function getCarriles() {
       var _this9 = this;
-      var piscina = this.resources.piscinas.find(function (ele) {
-        return ele.idpiscina === _this9.matricula.idpiscina;
+      var piscina = this.resources.niveles.find(function (ele) {
+        return ele.idnivel === _this9.matricula.idnivel;
       });
       this.resources.carriles = piscina.carriles;
       this.matricula.idcarril = '';
@@ -2351,7 +2351,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         params: {
           idtemporada: this.matricula.idtemporada,
           idprograma: this.matricula.idprograma,
-          idpiscina: this.matricula.idpiscina,
+          idnivel: this.matricula.idnivel,
           idcarril: this.matricula.idcarril
         }
       }).then(function (response) {
@@ -2398,13 +2398,13 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       if (!matricula.idprograma) {
         errors.push('Por favor, seleccione un programa válido.');
       }
-      if (!matricula.idpiscina) {
+      if (!matricula.idnivel) {
         errors.push('Por favor, seleccione una piscina válida.');
       }
       if (!matricula.idcarril) {
         errors.push('Por favor, seleccione un carril válido.');
       }
-      if (!matricula.idactividad_semanal) {
+      if (!matricula.idfrecuencia) {
         errors.push('Por favor, seleccione una actividad semanal válida.');
       }
       if (!matricula.idcantidad_clases) {
@@ -2422,13 +2422,13 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       this.getCountMatriculados();
       var matricula = this.matricula,
         resources = this.resources;
-      var actividadSemanalFind = resources.actividadSemanal.find(function (ele) {
-        return ele.idactividad_semanal === _this11.matricula.idactividad_semanal;
+      var frecuenciasFind = resources.frecuencias.find(function (ele) {
+        return ele.idfrecuencia === _this11.matricula.idfrecuencia;
       });
       var cantidadClasesFind = resources.cantidadClases.find(function (ele) {
         return ele.idcantidad_clases === _this11.matricula.idcantidad_clases;
       });
-      var daysValid = actividadSemanalFind.dias.split('-');
+      var daysValid = frecuenciasFind.dias.split('-');
       var fechaInicio = moment__WEBPACK_IMPORTED_MODULE_2___default()(matricula.fecha[0]);
       var fechaFin = moment__WEBPACK_IMPORTED_MODULE_2___default()(matricula.fecha[1]);
       var dias = this.getDaysFromDate(fechaInicio, fechaFin, daysValid);
@@ -2482,9 +2482,9 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         distritos = _this$resources.distritos,
         temporadas = _this$resources.temporadas,
         programas = _this$resources.programas,
-        piscinas = _this$resources.piscinas,
+        niveles = _this$resources.niveles,
         carriles = _this$resources.carriles,
-        actividadSemanal = _this$resources.actividadSemanal,
+        frecuencias = _this$resources.frecuencias,
         cantidadClases = _this$resources.cantidadClases;
       this.temp.alumno.tipoDocumentoIdentidad = tipoDocumentoIdentidad.find(function (ele) {
         return ele.idtipo_documento_identidad === _this12.alumno.idtipo_documento_identidad;
@@ -2504,14 +2504,14 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       this.temp.programa = programas.find(function (ele) {
         return ele.idprograma === _this12.matricula.idprograma;
       });
-      this.temp.piscina = piscinas.find(function (ele) {
-        return ele.idpiscina === _this12.matricula.idpiscina;
+      this.temp.piscina = niveles.find(function (ele) {
+        return ele.idnivel === _this12.matricula.idnivel;
       });
       this.temp.carril = carriles.find(function (ele) {
         return ele.idcarril === _this12.matricula.idcarril;
       });
-      this.temp.actividadSemanal = actividadSemanal.find(function (ele) {
-        return ele.idactividad_semanal === _this12.matricula.idactividad_semanal;
+      this.temp.frecuencias = frecuencias.find(function (ele) {
+        return ele.idfrecuencia === _this12.matricula.idfrecuencia;
       });
       this.temp.cantidadClases = cantidadClases.find(function (ele) {
         return ele.idcantidad_clases === _this12.matricula.idcantidad_clases;
@@ -2553,6 +2553,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         var _this14$alumno_curren2;
         _this14.alumno.iddistrito = (_this14$alumno_curren2 = _this14.alumno_current.iddistrito) !== null && _this14$alumno_curren2 !== void 0 ? _this14$alumno_curren2 : '';
       });
+      this.stepCurrent = 2;
     }
   }
 });
@@ -3656,20 +3657,20 @@ var render = function render() {
     staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
-      "for": "piscina"
+      "for": "nivel"
     }
-  }, [_vm._v("Piscina "), _c("span", {
+  }, [_vm._v("Nivel "), _c("span", {
     staticClass: "text-danger"
   }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.matricula.idpiscina,
-      expression: "matricula.idpiscina"
+      value: _vm.matricula.idnivel,
+      expression: "matricula.idnivel"
     }],
     staticClass: "form-control",
     attrs: {
-      id: "piscina"
+      id: "nivel"
     },
     on: {
       change: [function ($event) {
@@ -3679,7 +3680,7 @@ var render = function render() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.$set(_vm.matricula, "idpiscina", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.matricula, "idnivel", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }, function ($event) {
         return _vm.getCarriles();
       }]
@@ -3689,11 +3690,11 @@ var render = function render() {
       value: "",
       hidden: ""
     }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.piscinas, function (item, index) {
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.niveles, function (item, index) {
     return _c("option", {
       key: index,
       domProps: {
-        value: item.idpiscina,
+        value: item.idnivel,
         textContent: _vm._s(item.nombre)
       }
     });
@@ -3744,20 +3745,20 @@ var render = function render() {
     staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
-      "for": "diasDeActividad"
+      "for": "frecuencia"
     }
-  }, [_vm._v("Dias de actividad "), _c("span", {
+  }, [_vm._v("Frecuencia "), _c("span", {
     staticClass: "text-danger"
   }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.matricula.idactividad_semanal,
-      expression: "matricula.idactividad_semanal"
+      value: _vm.matricula.idfrecuencia,
+      expression: "matricula.idfrecuencia"
     }],
     staticClass: "form-control",
     attrs: {
-      id: "diasDeActividad"
+      id: "frecuencia"
     },
     on: {
       change: function change($event) {
@@ -3767,7 +3768,7 @@ var render = function render() {
           var val = "_value" in o ? o._value : o.value;
           return val;
         });
-        _vm.$set(_vm.matricula, "idactividad_semanal", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+        _vm.$set(_vm.matricula, "idfrecuencia", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
       }
     }
   }, [_c("option", {
@@ -3775,15 +3776,33 @@ var render = function render() {
       value: "",
       hidden: ""
     }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.actividadSemanal, function (item, index) {
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.frecuencias, function (item, index) {
     return _c("option", {
       key: index,
       domProps: {
-        value: item.idactividad_semanal,
+        value: item.idfrecuencia,
         textContent: _vm._s(item.nombre)
       }
     });
   })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "horario"
+    }
+  }, [_vm._v("Horario "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
+    staticClass: "form-control",
+    attrs: {
+      id: "horario"
+    }
+  }, [_c("option", {
+    attrs: {
+      value: "",
+      hidden: ""
+    }
+  }, [_vm._v("[---Seleccione---]")])])]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
@@ -3966,7 +3985,7 @@ var render = function render() {
     attrs: {
       colspan: "2"
     }
-  }, [_c("b", [_vm._v("Dias de actividad:")]), _vm._v(" " + _vm._s(_vm.temp.actividadSemanal.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", {
+  }, [_c("b", [_vm._v("Dias de actividad:")]), _vm._v(" " + _vm._s(_vm.temp.frecuencias.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", {
     attrs: {
       colspan: "2"
     }

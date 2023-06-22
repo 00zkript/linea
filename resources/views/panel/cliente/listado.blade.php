@@ -29,6 +29,7 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu-{{$item->idcliente}}" data-idcliente="{{$item->idcliente}}">
                                 <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
+                                <a class="dropdown-item" href="{{ route('matricula.create',$item->idcliente) }}" ><i class="fa fa-address-card"></i> Matricularse</a>
                                 <button class="dropdown-item btnModalEditar" type="button"><i class="fa fa-pencil"></i> Editar</button>
                                 @if($item->estado)
                                     <button class="dropdown-item btnModalInhabilitar" type="button"><i class="fa fa-times"></i> Inhabilitar</button>

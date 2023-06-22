@@ -27,6 +27,9 @@ class ArqueoCaja extends Model
 
     public function supervisor()
     {
-        return $this->hasOne(User::class,'idusuario', 'idsupervisor');
+        return $this->hasOne(User::class,'idusuario', 'idsupervisor')->withDefault([
+            'nombres' => '',
+            'apellidos' => '',
+        ]);
     }
 }

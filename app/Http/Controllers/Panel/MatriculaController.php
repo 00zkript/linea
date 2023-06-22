@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Models\Dia;
 use App\Models\Horario;
-use App\Models\Piscina;
+use App\Models\Nivel;
 use App\Models\Concepto;
 use App\Models\Distrito;
 use App\Models\Sucursal;
@@ -13,7 +13,7 @@ use App\Models\Provincia;
 use App\Models\Temporada;
 use App\Models\Departamento;
 use Illuminate\Http\Request;
-use App\Models\ActividadSemanal;
+use App\Models\Frecuencia;
 use App\Models\CantidadClases;
 use App\Http\Controllers\Controller;
 use App\Models\Carril;
@@ -88,7 +88,7 @@ class MatriculaController extends Controller
         $temporadaCurrent = $temporadas[0];
         $programas = $temporadaCurrent->programas;
 
-        $piscinas = Piscina::query()
+        $niveles = Nivel::query()
             ->with([
                 'carriles' => function ($query) {
                     return $query->where('estado',1);
@@ -97,7 +97,7 @@ class MatriculaController extends Controller
             ->where('estado',1)
             ->get();
 
-        $actividadSemanal = ActividadSemanal::query()
+        $frecuencias = Frecuencia::query()
             ->where('estado',1)
             ->get();
 
@@ -115,8 +115,8 @@ class MatriculaController extends Controller
                 'sucursales' => $sucursales,
                 'temporadas' => $temporadas,
                 'programas' => $programas,
-                'piscinas' => $piscinas,
-                'actividadSemanal' => $actividadSemanal,
+                'niveles' => $niveles,
+                'frecuencias' => $frecuencias,
                 'cantidadClases' => $cantidadClases,
                 'horarios' => $horarios,
             ],
@@ -253,7 +253,7 @@ class MatriculaController extends Controller
 
         $temporadaID = $request->input('idtemporada');
         $programaID = $request->input('idprograma');
-        $piscinaID = $request->input('idpiscina');
+        $piscinaID = $request->input('idnivel');
         $carrilID = $request->input('idcarril');
 
         $carril = Carril::query()->where('idcarril',$carrilID)->first();
@@ -261,7 +261,7 @@ class MatriculaController extends Controller
         $cantidadMatriculados = Matricula::query()
             ->where('idtemporada', $temporadaID)
             ->where('idprograma', $programaID)
-            ->where('idpiscina', $piscinaID)
+            ->where('idnivel', $piscinaID)
             ->where('idcarril', $carrilID)
             ->count('idcliente');
 
@@ -283,9 +283,9 @@ class MatriculaController extends Controller
         $idsucursal          = $request->input('idsucursal');
         $idtemporada         = $request->input('idtemporada');
         $idprograma          = $request->input('idprograma');
-        $idpiscina           = $request->input('idpiscina');
+        $idnivel           = $request->input('idnivel');
         $idcarril            = $request->input('idcarril');
-        $idactividad_semanal = $request->input('idactividad_semanal');
+        $idfrecuencia = $request->input('idfrecuencia');
         $idcantidad_clases = $request->input('idcantidad_clases');
         $idcliente           = $request->input('idcliente');
         $detalle             = $request->input('detalle');
@@ -296,17 +296,11 @@ class MatriculaController extends Controller
         $fecha_fin        = now()->parse($fecha[1])->format('Y-m-d');
         $cliente          = Cliente::query()->find($idcliente);
         $empleado         = auth()->user();
-        $sucursal         = auth()->user()->sucursal;
-        $temporada        = Temporada::query()->find($idtemporada);
-        $programa         = Programa::query()->find($idprograma);
         $cantidadClases   = CantidadClases::query()->find($idcantidad_clases);
-        $actividadSemanal = ActividadSemanal::query()->find($idactividad_semanal);
 
 
         $matricula = new Matricula();
         $matricula->idsucursal                          = $idsucursal;
-        $matricula->sucursal_nombre                     = $sucursal->nombre;
-        $matricula->sucursal_direccion                  = $sucursal->direccion;
         $matricula->idcliente                           = $idcliente;
         $matricula->cliente_nombres                     = $cliente->nombres;
         $matricula->cliente_apellidos                   = $cliente->apellidos;
@@ -321,16 +315,13 @@ class MatriculaController extends Controller
         $matricula->fecha_fin                           = $fecha_fin;
         $matricula->idconcepto                          = $idconcepto;
         $matricula->idtemporada                         = $idtemporada;
-        $matricula->temporada_nombre                    = $temporada->nombre;
         $matricula->idprograma                          = $idprograma;
-        $matricula->programa_nombre                     = $programa->nombre;
-        $matricula->idcantidad_clases                   = $idcantidad_clases;
-        $matricula->cantidad_clases_cantidad            = $cantidadClases->cantidad;
-        $matricula->monto_total                         = $cantidadClases->precio;
-        $matricula->idactividad_semanal                 = $idactividad_semanal;
-        $matricula->actividad_semanal_nombre            = $actividadSemanal->nombre;
-        $matricula->idpiscina                           = $idpiscina;
+        $matricula->idnivel                             = $idnivel;
         $matricula->idcarril                            = $idcarril;
+        $matricula->idfrecuencia                        = $idfrecuencia;
+        $matricula->idcantidad_clases                   = $idcantidad_clases;
+        $matricula->cantidad_clases                     = $cantidadClases->cantidad;
+        $matricula->monto_total                         = $cantidadClases->precio;
         $matricula->estado                              = 1;
         $matricula->save();
 

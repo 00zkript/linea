@@ -146,11 +146,11 @@
 
                                 <li class=""><a><i class="fa fa-warehouse"></i> Programas <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="javascript:void(0);">Temporada</a></li>
-                                        <li><a href="javascript:void(0);">Programas</a></li>
-                                        <li><a href="javascript:void(0);">Piscinas</a></li>
-                                        <li><a href="javascript:void(0);">Carriles</a></li>
-                                        <li><a href="javascript:void(0);">Dias de actividad</a></li>
+                                        <li><a href="{{ route('temporada.index') }}">Temporada</a></li>
+                                        <li><a href="{{ route('programa.index') }}">Programas</a></li>
+                                        <li><a href="{{ route('nivel.index') }}">Niveles</a></li>
+                                        <li><a href="{{ route('carril.index') }}">Carriles</a></li>
+                                        <li><a href="{{ route('frecuencia.index') }}">Frecuencias</a></li>
                                         <li><a href="javascript:void(0);">Cantidad de sesiones</a></li>
                                         {{-- <li><a href="{{ route('productos.index') }}">Productos</a></li> --}}
                                     </ul>

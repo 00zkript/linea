@@ -191,7 +191,7 @@
         <table class="table">
             <tr>
                 <td colspan="2" class="">
-                    <img src="http://via.placeholder.com/500x300" class="logo ps-5 pe-5">
+                    <img src="{{ asset('panel/img/empresa/'.$empresa->logo) }}" class="logo ps-5 pe-5">
                 </td>
                 <td colspan="4">
                     <h4 class="title">ARQUEO DE CAJA NO : 000000001</h4>
@@ -412,9 +412,9 @@
         <table class="table border-1 mt-5">
             <tr>
                 <td>TOTAL DINERO CAJA SOLES: </td>
-                <td>2500 </td>
+                <td>S/. {{ number_format($totalCajaSoles,2) }} </td>
                 <td>TOTAL DINERO CAJA DOLARES: </td>
-                <td>456 </td>
+                <td>$ {{ number_format($totalCajaDolares,2) }} </td>
             </tr>
         </table>
     </section>
