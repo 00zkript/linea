@@ -152,6 +152,11 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::get('horario/listar',[\App\Http\Controllers\Panel\HorarioController::class,'listar'])->name("horario.listar");
     Route::resource('horario',\App\Http\Controllers\Panel\HorarioController::class);
 
+    Route::put('cantidad-clases/{cantidadClases}/habilitar',[\App\Http\Controllers\Panel\CantidadClasesController::class,'habilitar'])->name("cantidadClases.habilitar");
+    Route::put('cantidad-clases/{cantidadClases}/inhabilitar',[\App\Http\Controllers\Panel\CantidadClasesController::class,'inhabilitar'])->name("cantidadClases.inhabilitar");
+    Route::get('cantidad-clases/listar',[\App\Http\Controllers\Panel\CantidadClasesController::class,'listar'])->name("cantidadClases.listar");
+    Route::resource('cantidad-clases',\App\Http\Controllers\Panel\CantidadClasesController::class)->names('cantidadClases');
+
 
 
 
