@@ -151,6 +151,7 @@
                                         <li><a href="{{ route('nivel.index') }}">Niveles</a></li>
                                         <li><a href="{{ route('carril.index') }}">Carriles</a></li>
                                         <li><a href="{{ route('frecuencia.index') }}">Frecuencias</a></li>
+                                        <li><a href="{{ route('horario.index') }}">Horarios</a></li>
                                         <li><a href="javascript:void(0);">Cantidad de sesiones</a></li>
                                         {{-- <li><a href="{{ route('productos.index') }}">Productos</a></li> --}}
                                     </ul>

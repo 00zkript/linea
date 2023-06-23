@@ -1,17 +1,17 @@
 @extends('panel.template.index')
 @section('cuerpo')
-    @include('panel.frecuencia.crear')
-    @include('panel.frecuencia.editar')
-    @include('panel.frecuencia.habilitar')
-    @include('panel.frecuencia.inhabilitar')
-    @include('panel.frecuencia.eliminar')
-    @include('panel.frecuencia.ver')
+    @include('panel.horario.crear')
+    @include('panel.horario.editar')
+    @include('panel.horario.habilitar')
+    @include('panel.horario.inhabilitar')
+    @include('panel.horario.eliminar')
+    @include('panel.horario.ver')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
                 <div class="card">
                     <div class="card-header" style="background-color: #2a3f54">
-                         <p style="font-size: 20px" class="card-title text-center text-white mb-0"> Gestionar frecuencias</p>
+                         <p style="font-size: 20px" class="card-title text-center text-white mb-0"> Gestionar horarios</p>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -43,7 +43,7 @@
                             </div>
 
                             <div class="col-12" id="listado">
-                                @include('panel.frecuencia.listado')
+                                @include('panel.horario.listado')
                             </div>
 
 
@@ -59,14 +59,14 @@
     <script type="module" >
 
 
-        const URL_LISTADO     = "{{ route('frecuencia.listar') }}";
-        const URL_GUARDAR     = "{{ route('frecuencia.store') }}";
-        const URL_VER         = "{{ route('frecuencia.show',':id') }}";
-        const URL_EDIT        = "{{ route('frecuencia.edit',':id') }}";
-        const URL_MODIFICAR   = "{{ route('frecuencia.update',':id') }}";
-        const URL_HABILITAR   = "{{ route('frecuencia.habilitar',':id') }}";
-        const URL_INHABILITAR = "{{ route('frecuencia.inhabilitar',':id') }}";
-        const URL_ELIMINAR    = "{{ route('frecuencia.destroy',':id') }}";
+        const URL_LISTADO     = "{{ route('horario.listar') }}";
+        const URL_GUARDAR     = "{{ route('horario.store') }}";
+        const URL_VER         = "{{ route('horario.show',':id') }}";
+        const URL_EDIT        = "{{ route('horario.edit',':id') }}";
+        const URL_MODIFICAR   = "{{ route('horario.update',':id') }}";
+        const URL_HABILITAR   = "{{ route('horario.habilitar',':id') }}";
+        const URL_INHABILITAR = "{{ route('horario.inhabilitar',':id') }}";
+        const URL_ELIMINAR    = "{{ route('horario.destroy',':id') }}";
 
 
 
@@ -148,41 +148,41 @@
 
             $(document).on("click",".btnModalHabilitar",function(e){
                 e.preventDefault();
-                const idfrecuencia = $(this).closest('div.dropdown-menu').data('idfrecuencia');
-                $("#frmHabilitar input[name=idfrecuencia]").val(idfrecuencia);
+                const idhorario = $(this).closest('div.dropdown-menu').data('idhorario');
+                $("#frmHabilitar input[name=idhorario]").val(idhorario);
                 $("#modalHabilitar").modal("show");
             });
 
             $(document).on("click",".btnModalInhabilitar",function(e){
                 e.preventDefault();
-                const idfrecuencia = $(this).closest('div.dropdown-menu').data('idfrecuencia');
-                $("#frmInhabilitar input[name=idfrecuencia]").val(idfrecuencia);
+                const idhorario = $(this).closest('div.dropdown-menu').data('idhorario');
+                $("#frmInhabilitar input[name=idhorario]").val(idhorario);
                 $("#modalInhabilitar").modal("show");
             });
 
             $(document).on("click",".btnModalEliminar",function(e){
                 e.preventDefault();
-                const idfrecuencia = $(this).closest('div.dropdown-menu').data('idfrecuencia');
-                $("#frmEliminar input[name=idfrecuencia]").val(idfrecuencia);
+                const idhorario = $(this).closest('div.dropdown-menu').data('idhorario');
+                $("#frmEliminar input[name=idhorario]").val(idhorario);
                 $("#modalEliminar").modal("show");
             });
 
             $(document).on("click",".btnModalEditar",function(e){
                 e.preventDefault();
-                const idfrecuencia = $(this).closest('div.dropdown-menu').data('idfrecuencia');
+                const idhorario = $(this).closest('div.dropdown-menu').data('idhorario');
 
                 cargando('Procesando...');
-                axios.get(URL_EDIT.replace(':id',idfrecuencia))
+                axios.get(URL_EDIT.replace(':id',idhorario))
                 .then(response => {
                     const data = response.data;
 
                     stop();
                     $("#frmEditar")[0].reset();
-                    $("#frmEditar input[name=idfrecuencia]").val(data.idfrecuencia);
+                    $("#frmEditar input[name=idhorario]").val(data.idhorario);
 
 
                     $("#nombreEditar").val(data.nombre);
-                    $("#idcarrilEditar").val(data.idcarril);
+                    $("#idfrecuenciaEditar").val(data.idfrecuencia);
 
 
 
@@ -198,18 +198,18 @@
 
             $(document).on("click",".btnModalVer",function(e){
                 e.preventDefault();
-                const idfrecuencia = $(this).closest('div.dropdown-menu').data('idfrecuencia');
+                const idhorario = $(this).closest('div.dropdown-menu').data('idhorario');
 
 
                 cargando('Procesando...');
-                axios.get(URL_VER.replace(':id',idfrecuencia))
+                axios.get(URL_VER.replace(':id',idhorario))
                 .then(response => {
                     const data = response.data;
 
                     stop();
 
                     $("#nombreShow").html(data.nombre);
-                    $("#carrilShow").html(data.carril.nombre);
+                    $("#frecuenciaShow").html(data.frecuencia.nombre);
 
                     if (data.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');
@@ -258,11 +258,11 @@
             $(document).on("submit","#frmEditar",function(e){
                 e.preventDefault();
 
-                const idfrecuencia = $("#frmEditar input[name=idfrecuencia]").val();
+                const idhorario = $("#frmEditar input[name=idhorario]").val();
                 const form = new FormData($(this)[0]);
 
                 cargando('Procesando...');
-                axios.post(URL_MODIFICAR.replace(':id',idfrecuencia),form)
+                axios.post(URL_MODIFICAR.replace(':id',idhorario),form)
                 .then(response => {
                     const data = response.data;
                     // $("#imagenEditar").fileinput("upload");
@@ -284,10 +284,10 @@
             $(document).on( "submit" ,"#frmHabilitar", function(e){
                 e.preventDefault();
                 // const form = new FormData($(this)[0]);
-                const idfrecuencia = $("#frmHabilitar input[name=idfrecuencia]").val();
+                const idhorario = $("#frmHabilitar input[name=idhorario]").val();
                 cargando('Procesando...');
 
-                axios.put(URL_HABILITAR.replace(':id',idfrecuencia))
+                axios.put(URL_HABILITAR.replace(':id',idhorario))
                 .then( response => {
                     const data = response.data;
                     stop();
@@ -311,10 +311,10 @@
                 e.preventDefault();
 
                 // const form = new FormData($(this)[0]);
-                const idfrecuencia = $("#frmInhabilitar input[name=idfrecuencia]").val();
+                const idhorario = $("#frmInhabilitar input[name=idhorario]").val();
                 cargando('Procesando...');
 
-                axios.put(URL_INHABILITAR.replace(':id',idfrecuencia))
+                axios.put(URL_INHABILITAR.replace(':id',idhorario))
                 .then( response => {
                     const data = response.data;
                     stop();
@@ -335,10 +335,10 @@
                 e.preventDefault();
 
                 // const form = new FormData($(this)[0]);
-                const idfrecuencia = $("#frmEliminar input[name=idfrecuencia]").val();
+                const idhorario = $("#frmEliminar input[name=idhorario]").val();
                 cargando('Procesando...');
 
-                axios.delete(URL_ELIMINAR.replace(':id',idfrecuencia))
+                axios.delete(URL_ELIMINAR.replace(':id',idhorario))
                 .then( response => {
                     const data = response.data;
                     stop();
