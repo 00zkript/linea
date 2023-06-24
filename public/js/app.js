@@ -2142,8 +2142,8 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         niveles: [],
         carriles: [],
         frecuencias: [],
-        cantidadClases: [],
         horarios: [],
+        cantidadClases: [],
         dias: []
       },
       temp: {
@@ -2158,7 +2158,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         sucursal: {},
         temporada: {},
         programa: {},
-        piscina: {},
+        nivel: {},
         carril: {},
         frecuencias: {},
         cantidadClases: {}
@@ -2196,6 +2196,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         idnivel: '',
         idcarril: '',
         idfrecuencia: '',
+        idhorario: '',
         idcantidad_clases: ''
       },
       matriculaHorarioDia: [],
@@ -2221,14 +2222,9 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         _this.resources.tipoDocumentoIdentidad = data.resources.tipoDocumentoIdentidad;
         _this.resources.departamentos = data.resources.departamentos;
         _this.resources.conceptos = data.resources.conceptos;
-        _this.resources.sucursales = data.resources.sucursales;
         _this.resources.temporadas = data.resources.temporadas;
         _this.resources.programas = data.resources.programas;
-        _this.resources.niveles = data.resources.niveles;
-        _this.resources.frecuencias = data.resources.frecuencias;
         _this.resources.cantidadClases = data.resources.cantidadClases;
-        _this.resources.horarios = data.resources.horarios;
-        _this.resources.dias = data.resources.dias;
         _this.temp.sucursal = data.current.sucursal;
         _this.temp.temporada = data.current.temporada;
         _this.temp.empleado = data.current.empleado;
@@ -2285,12 +2281,14 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       if (alumno.apellidos.trim() === '') {
         errors.push('Por favor, ingrese su(s) apellido(s).');
       }
-      if (!validarEmail(alumno.correo)) {
+      if (alumno.correo && !validarEmail(alumno.correo)) {
         errors.push('Por favor, proporcione una dirección de correo electrónico válida.');
       }
-      if (alumno.telefono.trim() === '') {
-        errors.push('Por favor, ingrese su número de teléfono de contacto.');
-      }
+
+      // if (alumno.telefono.trim() === '') {
+      //     errors.push('Por favor, ingrese su número de teléfono de contacto.')
+      // }
+
       if (alumno.idtipo_documento_identidad === '' || alumno.idtipo_documento_identidad === null) {
         errors.push('Por favor, seleccione el tipo de documento de identidad válido.');
       }
@@ -2306,12 +2304,14 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       if (alumno.apoderado_apellidos.trim() === '') {
         errors.push('Por favor, ingrese los apellidos de la persona de referencia.');
       }
-      if (!validarEmail(alumno.apoderado_correo)) {
+      if (alumno.apoderado_correo && !validarEmail(alumno.apoderado_correo)) {
         errors.push('Por favor, proporcione una dirección de correo electrónico válida para la persona de referencia.');
       }
-      if (alumno.apoderado_telefono.trim() === '') {
-        errors.push('Por favor, ingrese el número de teléfono de contacto de la persona de referencia.');
-      }
+
+      // if (alumno.apoderado_telefono.trim() === '') {
+      //     errors.push('Por favor, ingrese el número de teléfono de contacto de la persona de referencia.')
+      // }
+
       return errors;
     },
     storeAlumno: function storeAlumno() {
@@ -2331,33 +2331,59 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
     },
     getProgramas: function getProgramas() {
       var _this8 = this;
-      var temporada = this.resources.temporadas.find(function (ele) {
-        return ele.idtemporada === _this8.matricula.idtemporada;
+      return axios(route('matricula.programas', this.matricula.idtemporada)).then(function (response) {
+        var data = response.data;
+        _this8.resources.programas = data;
+        _this8.matricula.idprograma = '';
       });
-      this.resources.programas = temporada.programas;
-      this.matricula.idprograma = '';
+    },
+    getNiveles: function getNiveles() {
+      var _this9 = this;
+      return axios(route('matricula.niveles', this.matricula.idprograma)).then(function (response) {
+        var data = response.data;
+        _this9.resources.niveles = data;
+        _this9.matricula.idnivel = '';
+      });
     },
     getCarriles: function getCarriles() {
-      var _this9 = this;
-      var piscina = this.resources.niveles.find(function (ele) {
-        return ele.idnivel === _this9.matricula.idnivel;
+      var _this10 = this;
+      return axios(route('matricula.carriles', this.matricula.idnivel)).then(function (response) {
+        var data = response.data;
+        _this10.resources.carriles = data;
+        _this10.matricula.idcarril = '';
       });
-      this.resources.carriles = piscina.carriles;
-      this.matricula.idcarril = '';
+    },
+    getFrecuencias: function getFrecuencias() {
+      var _this11 = this;
+      return axios(route('matricula.frecuencias', this.matricula.idcarril)).then(function (response) {
+        var data = response.data;
+        _this11.resources.frecuencias = data;
+        _this11.matricula.idfrecuencia = '';
+      });
+    },
+    getHorarios: function getHorarios() {
+      var _this12 = this;
+      return axios(route('matricula.horarios', this.matricula.idfrecuencia)).then(function (response) {
+        var data = response.data;
+        _this12.resources.horarios = data;
+        _this12.matricula.idhorario = '';
+      });
     },
     getCountMatriculados: function getCountMatriculados() {
-      var _this10 = this;
+      var _this13 = this;
       return axios.get(route('matricula.cantidadDeAlumnosMatriculados'), {
         params: {
           idtemporada: this.matricula.idtemporada,
           idprograma: this.matricula.idprograma,
           idnivel: this.matricula.idnivel,
-          idcarril: this.matricula.idcarril
+          idcarril: this.matricula.idcarril,
+          idfrecuencia: this.matricula.idfrecuencia,
+          idhorario: this.matricula.idhorario
         }
       }).then(function (response) {
         var data = response.data;
-        _this10.capacidadMaxima = data.capacidad_maxima;
-        _this10.cantidadMatriculados = data.cantidad_matriculados;
+        _this13.capacidadMaxima = data.capacidad_maxima;
+        _this13.cantidadMatriculados = data.cantidad_matriculados;
       });
     },
     getDaysFromDate: function getDaysFromDate(fechaInicio, fechaFin, daysValid) {
@@ -2399,7 +2425,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         errors.push('Por favor, seleccione un programa válido.');
       }
       if (!matricula.idnivel) {
-        errors.push('Por favor, seleccione una piscina válida.');
+        errors.push('Por favor, seleccione una nivel válida.');
       }
       if (!matricula.idcarril) {
         errors.push('Por favor, seleccione un carril válido.');
@@ -2407,13 +2433,16 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       if (!matricula.idfrecuencia) {
         errors.push('Por favor, seleccione una actividad semanal válida.');
       }
+      if (!matricula.idhorario) {
+        errors.push('Por favor, seleccione un horario válido.');
+      }
       if (!matricula.idcantidad_clases) {
         errors.push('Por favor, seleccione una cantidad de sesiones válida.');
       }
       return errors;
     },
     saveMatricula: function saveMatricula() {
-      var _this11 = this;
+      var _this14 = this;
       var errors = this.validateMatricula();
       if (errors.length > 0) {
         notificacion('error', 'Errores encontrados:', listErrorsForm(errors));
@@ -2421,61 +2450,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       }
       this.getCountMatriculados();
       var matricula = this.matricula,
-        resources = this.resources;
-      var frecuenciasFind = resources.frecuencias.find(function (ele) {
-        return ele.idfrecuencia === _this11.matricula.idfrecuencia;
-      });
-      var cantidadClasesFind = resources.cantidadClases.find(function (ele) {
-        return ele.idcantidad_clases === _this11.matricula.idcantidad_clases;
-      });
-      var daysValid = frecuenciasFind.dias.split('-');
-      var fechaInicio = moment__WEBPACK_IMPORTED_MODULE_2___default()(matricula.fecha[0]);
-      var fechaFin = moment__WEBPACK_IMPORTED_MODULE_2___default()(matricula.fecha[1]);
-      var dias = this.getDaysFromDate(fechaInicio, fechaFin, daysValid);
-      this.cantidadClasesMaxima = cantidadClasesFind.cantidad;
-      this.matriculaHorarioDia = [];
-      this.resources.dias = dias;
-      this.stepCurrent = 3;
-      scrollTo('#step-3', 50, 0);
-    },
-    hasHorarioDia: function hasHorarioDia(idhorario, dia) {
-      return this.matriculaHorarioDia.some(function (ele) {
-        return ele.idhorario === idhorario && ele.fecha === dia.fecha;
-      });
-    },
-    selectHorarioDia: function selectHorarioDia(horario, dia) {
-      if (this.hasHorarioDia(horario.idhorario, dia.fecha)) {
-        this.matriculaHorarioDia = this.matriculaHorarioDia.filter(function (ele) {
-          return !(ele.idhorario === horario.idhorario && ele.fecha === dia.fecha);
-        });
-        return;
-      }
-      if (this.cantidadClasesMaxima <= this.matriculaHorarioDia.length) {
-        return;
-      }
-      this.matriculaHorarioDia.push({
-        idhorario: horario.idhorario,
-        fecha: dia.fecha,
-        horario_nombre: horario.nombre,
-        dia_name: dia.name
-      });
-    },
-    validateHorario: function validateHorario() {
-      var errors = [];
-      var matriculaHorarioDia = this.matriculaHorarioDia;
-      if (matriculaHorarioDia.length === 0) {
-        errors.push('Por favor, ingrese al menos un horario y día para la matrícula.');
-      }
-      return errors;
-    },
-    savehorario: function savehorario() {
-      var _this12 = this;
-      var errors = this.validateHorario();
-      if (errors.length > 0) {
-        notificacion('error', 'Errores encontrados:', listErrorsForm(errors));
-        return;
-      }
-      var _this$resources = this.resources,
+        _this$resources = this.resources,
         tipoDocumentoIdentidad = _this$resources.tipoDocumentoIdentidad,
         departamentos = _this$resources.departamentos,
         provincias = _this$resources.provincias,
@@ -2485,42 +2460,63 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         niveles = _this$resources.niveles,
         carriles = _this$resources.carriles,
         frecuencias = _this$resources.frecuencias,
-        cantidadClases = _this$resources.cantidadClases;
+        cantidadClases = _this$resources.cantidadClases,
+        horarios = _this$resources.horarios;
+      var frecuenciasFind = frecuencias.find(function (ele) {
+        return ele.idfrecuencia === _this14.matricula.idfrecuencia;
+      });
+      var cantidadClasesFind = cantidadClases.find(function (ele) {
+        return ele.idcantidad_clases === _this14.matricula.idcantidad_clases;
+      });
+      var horarioFind = horarios.find(function (ele) {
+        return ele.idhorario === _this14.matricula.idhorario;
+      });
+      var daysValid = frecuenciasFind.dias.split('-');
+      var fechaInicio = moment__WEBPACK_IMPORTED_MODULE_2___default()(matricula.fecha[0]);
+      var fechaFin = moment__WEBPACK_IMPORTED_MODULE_2___default()(matricula.fecha[1]);
+      var dias = this.getDaysFromDate(fechaInicio, fechaFin, daysValid);
+      var diasAMatricular = dias.slice(0, daysValid.length).map(function (ele) {
+        return {
+          fecha: ele.fecha,
+          dia_name: ele.name,
+          idhorario: horarioFind.idhorario,
+          horario_nombre: horarioFind.nombre
+        };
+      });
       this.temp.alumno.tipoDocumentoIdentidad = tipoDocumentoIdentidad.find(function (ele) {
-        return ele.idtipo_documento_identidad === _this12.alumno.idtipo_documento_identidad;
+        return ele.idtipo_documento_identidad === _this14.alumno.idtipo_documento_identidad;
       });
       this.temp.alumno.departamento = departamentos.find(function (ele) {
-        return ele.iddepartamento === _this12.alumno.iddepartamento;
+        return ele.iddepartamento === _this14.alumno.iddepartamento;
       });
       this.temp.alumno.provincia = provincias.find(function (ele) {
-        return ele.idprovincia === _this12.alumno.idprovincia;
+        return ele.idprovincia === _this14.alumno.idprovincia;
       });
       this.temp.alumno.distrito = distritos.find(function (ele) {
-        return ele.iddistrito === _this12.alumno.iddistrito;
+        return ele.iddistrito === _this14.alumno.iddistrito;
       });
       this.temp.temporada = temporadas.find(function (ele) {
-        return ele.idtemporada === _this12.matricula.idtemporada;
+        return ele.idtemporada === _this14.matricula.idtemporada;
       });
       this.temp.programa = programas.find(function (ele) {
-        return ele.idprograma === _this12.matricula.idprograma;
+        return ele.idprograma === _this14.matricula.idprograma;
       });
-      this.temp.piscina = niveles.find(function (ele) {
-        return ele.idnivel === _this12.matricula.idnivel;
+      this.temp.nivel = niveles.find(function (ele) {
+        return ele.idnivel === _this14.matricula.idnivel;
       });
       this.temp.carril = carriles.find(function (ele) {
-        return ele.idcarril === _this12.matricula.idcarril;
+        return ele.idcarril === _this14.matricula.idcarril;
       });
-      this.temp.frecuencias = frecuencias.find(function (ele) {
-        return ele.idfrecuencia === _this12.matricula.idfrecuencia;
-      });
-      this.temp.cantidadClases = cantidadClases.find(function (ele) {
-        return ele.idcantidad_clases === _this12.matricula.idcantidad_clases;
-      });
-      this.stepCurrent = 4;
-      scrollTo('#step-4', 50, 0);
+      this.temp.frecuencias = frecuenciasFind;
+      this.temp.cantidadClases = cantidadClasesFind;
+      this.cantidadClasesMaxima = cantidadClasesFind.cantidad;
+      this.matriculaHorarioDia = diasAMatricular;
+      this.resources.dias = dias;
+      this.stepCurrent = 3;
+      scrollTo('#step-3', 50, 0);
     },
     storeMatriculaHorario: function storeMatriculaHorario() {
-      var _this13 = this;
+      var _this15 = this;
       var matricula = this.matricula,
         alumno = this.alumno,
         matriculaHorarioDia = this.matriculaHorarioDia;
@@ -2531,27 +2527,24 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       console.log(matriculaData);
       axios.post(route('matricula.storeMatricula'), matriculaData).then(function (response) {
         var data = response.data;
-        _this13.codigoMatricula = data.codigo;
-        _this13.stepCurrent = 5;
-      })["catch"](function (error) {
-        if (error.response === undefined) return console.error(error);
-        var response = error.response;
-        var data = response.data;
+        _this15.codigoMatricula = data.codigo;
+        _this15.stepCurrent = 4;
+        scrollTo('#step-4', 50, 0);
       });
     }
   },
   mounted: function mounted() {
-    var _this14 = this;
+    var _this16 = this;
     this.getResources();
     if (Object.keys(this.alumno_current).length > 0) {
       this.alumno = Object.assign(this.alumno, this.alumno_current);
       this.getProvincias().then(function (_) {
-        var _this14$alumno_curren;
-        _this14.alumno.idprovincia = (_this14$alumno_curren = _this14.alumno_current.idprovincia) !== null && _this14$alumno_curren !== void 0 ? _this14$alumno_curren : '';
+        var _this16$alumno_curren;
+        _this16.alumno.idprovincia = (_this16$alumno_curren = _this16.alumno_current.idprovincia) !== null && _this16$alumno_curren !== void 0 ? _this16$alumno_curren : '';
       });
       this.getDistritos().then(function (_) {
-        var _this14$alumno_curren2;
-        _this14.alumno.iddistrito = (_this14$alumno_curren2 = _this14.alumno_current.iddistrito) !== null && _this14$alumno_curren2 !== void 0 ? _this14$alumno_curren2 : '';
+        var _this16$alumno_curren2;
+        _this16.alumno.iddistrito = (_this16$alumno_curren2 = _this16.alumno_current.iddistrito) !== null && _this16$alumno_curren2 !== void 0 ? _this16$alumno_curren2 : '';
       });
       this.stepCurrent = 2;
     }
@@ -2968,9 +2961,7 @@ var render = function render() {
     attrs: {
       "for": "correo"
     }
-  }, [_vm._v("Correo "), _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Correo ")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -2999,9 +2990,7 @@ var render = function render() {
     attrs: {
       "for": "telefono"
     }
-  }, [_vm._v("Teléfono "), _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Teléfono ")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -3404,9 +3393,7 @@ var render = function render() {
     attrs: {
       "for": "personaReferenciaCorreo"
     }
-  }, [_vm._v("Correo "), _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Correo ")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -3435,9 +3422,7 @@ var render = function render() {
     attrs: {
       "for": "personaReferenciaTelefono"
     }
-  }, [_vm._v("Teléfono "), _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
+  }, [_vm._v("Teléfono ")]), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -3630,7 +3615,7 @@ var render = function render() {
       id: "programa"
     },
     on: {
-      change: function change($event) {
+      change: [function ($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
           return o.selected;
         }).map(function (o) {
@@ -3638,7 +3623,9 @@ var render = function render() {
           return val;
         });
         _vm.$set(_vm.matricula, "idprograma", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
+      }, function ($event) {
+        return _vm.getNiveles();
+      }]
     }
   }, [_c("option", {
     attrs: {
@@ -3718,7 +3705,7 @@ var render = function render() {
       id: "carril"
     },
     on: {
-      change: function change($event) {
+      change: [function ($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
           return o.selected;
         }).map(function (o) {
@@ -3726,7 +3713,9 @@ var render = function render() {
           return val;
         });
         _vm.$set(_vm.matricula, "idcarril", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
+      }, function ($event) {
+        return _vm.getFrecuencias();
+      }]
     }
   }, [_c("option", {
     attrs: {
@@ -3761,7 +3750,7 @@ var render = function render() {
       id: "frecuencia"
     },
     on: {
-      change: function change($event) {
+      change: [function ($event) {
         var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
           return o.selected;
         }).map(function (o) {
@@ -3769,7 +3758,9 @@ var render = function render() {
           return val;
         });
         _vm.$set(_vm.matricula, "idfrecuencia", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
+      }, function ($event) {
+        return _vm.getHorarios();
+      }]
     }
   }, [_c("option", {
     attrs: {
@@ -3793,16 +3784,41 @@ var render = function render() {
   }, [_vm._v("Horario "), _c("span", {
     staticClass: "text-danger"
   }, [_vm._v("(*)")])]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.matricula.idhorario,
+      expression: "matricula.idhorario"
+    }],
     staticClass: "form-control",
     attrs: {
       id: "horario"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.matricula, "idhorario", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
     }
   }, [_c("option", {
     attrs: {
       value: "",
       hidden: ""
     }
-  }, [_vm._v("[---Seleccione---]")])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.horarios, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idhorario,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
     staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
@@ -3871,69 +3887,6 @@ var render = function render() {
     attrs: {
       number: 3,
       id: "step-3",
-      title: "Selección de horario",
-      currentValue: _vm.stepCurrent
-    },
-    on: {
-      next: function next($event) {
-        return _vm.savehorario();
-      }
-    }
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-12 mt-3 pl-0 pr-0"
-  }, [_c("div", {
-    staticClass: "tableSelectHorario"
-  }, [_c("div", {
-    staticClass: "tableSelecthorario-content"
-  }, [_c("table", {
-    staticClass: "table table-bordered table-striped"
-  }, [_c("thead", {
-    staticClass: "table-primary"
-  }, [_c("tr", [_c("th", [_vm._v("N°")]), _vm._v(" "), _c("th", [_vm._v("Horario")]), _vm._v(" "), _vm._l(_vm.resources.dias, function (dia, index) {
-    return _c("th", {
-      key: index,
-      domProps: {
-        textContent: _vm._s(dia.name)
-      }
-    });
-  })], 2)]), _vm._v(" "), _c("tbody", _vm._l(_vm.resources.horarios, function (horario, index) {
-    return _c("tr", {
-      key: index
-    }, [_c("td", {
-      staticClass: "table-primary",
-      domProps: {
-        textContent: _vm._s(index + 1)
-      }
-    }), _vm._v(" "), _c("td", {
-      staticClass: "table-primary",
-      domProps: {
-        textContent: _vm._s(horario.nombre)
-      }
-    }), _vm._v(" "), _vm._l(_vm.resources.dias, function (dia, index2) {
-      return _c("td", {
-        key: index2,
-        "class": {
-          active: _vm.hasHorarioDia(horario.idhorario, dia)
-        },
-        on: {
-          click: function click($event) {
-            return _vm.selectHorarioDia(horario, dia);
-          }
-        }
-      }, [_vm.hasHorarioDia(horario.idhorario, dia) ? _c("i", {
-        staticClass: "fa-solid fa-check"
-      }) : _c("span", {
-        domProps: {
-          textContent: _vm._s(dia.name)
-        }
-      })]);
-    })], 2);
-  }), 0)])])])])])]), _vm._v(" "), _c("Step", {
-    attrs: {
-      number: 4,
-      id: "step-4",
       title: "Datos de matrícula",
       currentValue: _vm.stepCurrent,
       btnNextText: "Guardar"
@@ -3981,11 +3934,11 @@ var render = function render() {
     attrs: {
       colspan: "4"
     }
-  }, [_c("b", [_vm._v("Sucursal Direción:")]), _vm._v(" " + _vm._s(_vm.temp.sucursal.nombre) + " - " + _vm._s(_vm.temp.sucursal.direccion) + " "), _c("br")])]), _vm._v(" "), _c("tr", [_c("td", [_c("b", [_vm._v("Temporada:")]), _vm._v(" " + _vm._s(_vm.temp.temporada.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", [_c("b", [_vm._v("Programa:")]), _vm._v(" " + _vm._s(_vm.temp.programa.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", [_c("b", [_vm._v("Piscina:")]), _vm._v(" " + _vm._s(_vm.temp.piscina.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", [_c("b", [_vm._v("Carril:")]), _vm._v(" " + _vm._s(_vm.temp.carril.nombre) + " "), _c("br")])]), _vm._v(" "), _c("tr", [_c("td", {
+  }, [_c("b", [_vm._v("Sucursal Direción:")]), _vm._v(" " + _vm._s(_vm.temp.sucursal.nombre) + " - " + _vm._s(_vm.temp.sucursal.direccion) + " "), _c("br")])]), _vm._v(" "), _c("tr", [_c("td", [_c("b", [_vm._v("Temporada:")]), _vm._v(" " + _vm._s(_vm.temp.temporada.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", [_c("b", [_vm._v("Programa:")]), _vm._v(" " + _vm._s(_vm.temp.programa.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", [_c("b", [_vm._v("Nivel:")]), _vm._v(" " + _vm._s(_vm.temp.nivel.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", [_c("b", [_vm._v("Carril:")]), _vm._v(" " + _vm._s(_vm.temp.carril.nombre) + " "), _c("br")])]), _vm._v(" "), _c("tr", [_c("td", {
     attrs: {
       colspan: "2"
     }
-  }, [_c("b", [_vm._v("Dias de actividad:")]), _vm._v(" " + _vm._s(_vm.temp.frecuencias.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", {
+  }, [_c("b", [_vm._v("Frecuencia:")]), _vm._v(" " + _vm._s(_vm.temp.frecuencias.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", {
     attrs: {
       colspan: "2"
     }
@@ -4006,8 +3959,8 @@ var render = function render() {
     }, [_vm._v(_vm._s(item.horario_nombre))])]);
   }), 0)])]), _vm._v(" "), _c("Step", {
     attrs: {
-      number: 5,
-      id: "step-5",
+      number: 4,
+      id: "step-4",
       title: "Final",
       currentValue: _vm.stepCurrent,
       showFooter: false,

@@ -23,10 +23,10 @@
 
                         <div class="col-12 form-group">
                             <label for="idcarrilEditar">Carril: <span class="text-danger">(*)</span></label>
-                            <select class="form-control" name="idcarrilEditar" id="idcarrilEditar" title="Carril" >
+                            <select class="form-control selectpicker" name="idcarrilEditar[]" id="idcarrilEditar" title="Carril" multiple required >
                                 <option value="" hidden selected >[---Seleccione---]</option>
                                 @foreach ($carriles as $item)
-                                    <option value="{{ $item->idcarril }}">{{ $item->nombre }}</option>
+                                    <option value="{{ $item->idcarril }}">{{ $item->nivel->programa->nombre }} => {{ $item->nivel->nombre }} => {{ $item->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>

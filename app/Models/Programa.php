@@ -19,6 +19,8 @@ class Programa extends Model
 
     public function temporada()
     {
-        return $this->hasOne(Temporada::class, 'idtemporada', 'idtemporada');
+        return $this->hasOne(Temporada::class, 'idtemporada', 'idtemporada')->withDefault([
+            'nombre' => 'Son temporada'
+        ]);
     }
 }

@@ -23,7 +23,7 @@
 
                         <div class="col-12 form-group">
                             <label for="idtemporadaEditar">Temporada: <span class="text-danger">(*)</span></label>
-                            <select class="form-control" name="idtemporadaEditar" id="idtemporadaEditar" title="Temporada" >
+                            <select class="form-control" name="idtemporadaEditar" id="idtemporadaEditar" title="Temporada" required>
                                 <option value="" hidden selected >[---Seleccione---]</option>
                                 @foreach ($temporadas as $item)
                                     <option value="{{ $item->idtemporada }}">{{ $item->nombre }}</option>

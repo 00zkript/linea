@@ -24,7 +24,7 @@
                             <select class="form-control" name="idnivel" id="idnivel" title="Nivel" >
                                 <option value="" hidden selected >[---Seleccione---]</option>
                                 @foreach ($niveles as $item)
-                                    <option value="{{ $item->idnivel }}">{{ $item->nombre }}</option>
+                                    <option value="{{ $item->idnivel }}"> {{ $item->programa->nombre }} => {{ $item->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>

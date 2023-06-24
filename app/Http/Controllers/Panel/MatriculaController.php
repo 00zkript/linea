@@ -17,6 +17,7 @@ use App\Models\Frecuencia;
 use App\Models\CantidadClases;
 use App\Http\Controllers\Controller;
 use App\Models\Carril;
+use App\Models\CarrilHasFrecuencia;
 use App\Models\Cliente;
 use App\Models\MatriculaDetalle;
 use App\Models\Programa;
@@ -67,44 +68,22 @@ class MatriculaController extends Controller
 
         $tipoDocumentoIdentidad = TipoDocumentoIdentidad::query()->where('estado',1)->get();
         $departamentos = Departamento::query()->where('estado',1)->get();
-        $conceptos = Concepto::query()->where('estado',1)->get();
-        $empleado = auth()->user()->only(['idusuario','nombres','apellidos']);
 
-        $sucursales = Sucursal::query()->where('estado',1)->get();
-        $sucursalCurrent = auth()->user()->sucursal;
+        $empleado = auth()->user()->only(['idusuario','nombres','apellidos']);
+        $sucursal = auth()->user()->sucursal;
+
+        $conceptos = Concepto::query()->where('estado',1)->get();
+        $cantidadClases = CantidadClases::query()->where('estado',1)->get();
 
         $temporadas = Temporada::query()
-            ->with([
-                'programas' => function ($query) {
-                    return $query->where('estado',1);
-                }
-            ])
             ->whereDate("fecha_desde", "<", now()->format('Y-m-d'))
             ->whereDate("fecha_hasta", ">=", now()->format('Y-m-d'))
             ->where('estado',1)
             ->orderBy('idtemporada','desc')
             ->get();
 
-        $temporadaCurrent = $temporadas[0];
-        $programas = $temporadaCurrent->programas;
-
-        $niveles = Nivel::query()
-            ->with([
-                'carriles' => function ($query) {
-                    return $query->where('estado',1);
-                }
-            ])
-            ->where('estado',1)
-            ->get();
-
-        $frecuencias = Frecuencia::query()
-            ->where('estado',1)
-            ->get();
-
-        $cantidadClases = CantidadClases::query()->where('estado',1)->get();
-        $horarios = Horario::query()->where('estado',1)->get();
-
-
+        $temporada = $temporadas[0];
+        $programas = $temporada->programas()->where('estado',1)->get();
 
 
         return response()->json([
@@ -112,18 +91,14 @@ class MatriculaController extends Controller
                 'tipoDocumentoIdentidad' => $tipoDocumentoIdentidad,
                 'departamentos' => $departamentos,
                 'conceptos' => $conceptos,
-                'sucursales' => $sucursales,
                 'temporadas' => $temporadas,
                 'programas' => $programas,
-                'niveles' => $niveles,
-                'frecuencias' => $frecuencias,
                 'cantidadClases' => $cantidadClases,
-                'horarios' => $horarios,
             ],
             "current" => [
                 'empleado' => $empleado,
-                'sucursal' => $sucursalCurrent,
-                "temporada" => $temporadaCurrent,
+                'sucursal' => $sucursal,
+                "temporada" => $temporada,
             ]
         ]);
     }
@@ -166,7 +141,6 @@ class MatriculaController extends Controller
 
         return response()->json($distritos);
     }
-
 
     public function storeAlumno(Request $request)
     {
@@ -245,6 +219,65 @@ class MatriculaController extends Controller
 
     }
 
+
+    public function programas(Request $request,$idtemporada)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $programas = Programa::query()->where('idtemporada',$idtemporada)->where('estado',1)->get();
+
+        return response()->json($programas);
+    }
+
+    public function niveles(Request $request,$idprograma)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $niveles = Nivel::query()->where('idprograma',$idprograma)->where('estado',1)->get();
+
+        return response()->json($niveles);
+    }
+
+    public function carriles(Request $request,$idnivel)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $carriles = Carril::query()->where('idnivel',$idnivel)->where('estado',1)->get();
+
+        return response()->json($carriles);
+    }
+
+    public function frecuencias(Request $request,$idcarril)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $carril = Carril::query()->find($idcarril);
+        $frecuencias = $carril->frecuencias()->where('estado',1)->get();
+
+        return response()->json($frecuencias);
+    }
+
+    public function horarios(Request $request,$idfrecuencia)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $horario = Horario::query()->where('idfrecuencia',$idfrecuencia)->where('estado',1)->get();
+
+        return response()->json($horario);
+    }
+
+
+
     public function cantidadDeAlumnosMatriculados(Request $request)
     {
         if ( !$request->ajax() ) {
@@ -255,6 +288,7 @@ class MatriculaController extends Controller
         $programaID = $request->input('idprograma');
         $piscinaID = $request->input('idnivel');
         $carrilID = $request->input('idcarril');
+        $frecuenciaID = $request->input('idfrecuencia');
 
         $carril = Carril::query()->where('idcarril',$carrilID)->first();
 
@@ -263,6 +297,7 @@ class MatriculaController extends Controller
             ->where('idprograma', $programaID)
             ->where('idnivel', $piscinaID)
             ->where('idcarril', $carrilID)
+            ->where('idfrecuencia', $frecuenciaID)
             ->count('idcliente');
 
         return response()->json([
@@ -341,6 +376,11 @@ class MatriculaController extends Controller
         ]);
 
     }
+
+
+
+
+
 
     public function show( Request $request, $id)
     {

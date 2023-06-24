@@ -211,7 +211,7 @@
 
                     $("#nombreShow").html(data.nombre);
                     $("#capacidadMaximaShow").html(data.capacidad_maxima);
-                    $("#nivelShow").html(data.nivel.nombre);
+                    $("#nivelShow").html(data.nivel.programa.nombre+" => "+data.nivel.nombre);
 
                     if (data.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');

@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Carril;
+use App\Models\CarrilHasFrecuencia;
 
 class FrecuenciaController extends Controller
 {
@@ -18,7 +19,6 @@ class FrecuenciaController extends Controller
         $carriles = Carril::query()->where('estado',1)->get();
 
         $registros = Frecuencia::query()
-            ->with(['carril'])
             ->orderBy('idfrecuencia','DESC')
             ->paginate(10,['*'],'pagina',1);
 
@@ -37,7 +37,6 @@ class FrecuenciaController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $registros = Frecuencia::query()
-            ->with(['carril'])
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query->where('nombre','LIKE','%'.$txtBuscar.'%');
             })
@@ -59,16 +58,22 @@ class FrecuenciaController extends Controller
 
         $nombre     = $request->input('nombre');
         $slug       = Str::slug($nombre);
-        $idcarril  = $request->input('idcarril');
+        $carriles  = $request->input('idcarril',[]);
         $estado     = $request->input('estado');
 
         try {
             $registro = new Frecuencia();
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
-            $registro->idcarril      = $idcarril;
             $registro->estado    = $estado;
             $registro->save();
+
+            foreach ($carriles as $idcarril) {
+                $pivot = new CarrilHasFrecuencia();
+                $pivot->idcarril = $idcarril;
+                $pivot->idfrecuencia = $registro->idfrecuencia;
+                $pivot->save();
+            }
 
 
             return response()->json([
@@ -97,7 +102,7 @@ class FrecuenciaController extends Controller
         }
 
         // $idfrecuencia = $request->input('idfrecuencia');
-        $registro = Frecuencia::query()->with(['carril'])->find($idfrecuencia);
+        $registro = Frecuencia::query()->with(['carriles.nivel.programa'])->find($idfrecuencia);
 
         if(!$registro){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -115,7 +120,7 @@ class FrecuenciaController extends Controller
         }
 
         // $idfrecuencia = $request->input('idfrecuencia');
-        $registro = Frecuencia::query()->find($idfrecuencia);
+        $registro = Frecuencia::query()->with(['carrilesPivot'])->find($idfrecuencia);
 
         if(!$registro){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -135,7 +140,7 @@ class FrecuenciaController extends Controller
         // $idfrecuencia = $request->input('idfrecuencia');
         $nombre     = $request->input('nombreEditar');
         $slug       = Str::slug($request->input('nombreEditar'));
-        $idcarril  = $request->input('idcarrilEditar');
+        $carriles  = $request->input('idcarrilEditar',[]);
         $estado     = $request->input('estadoEditar');
 
         try {
@@ -143,9 +148,16 @@ class FrecuenciaController extends Controller
 
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
-            $registro->idcarril      = $idcarril;
             $registro->estado    = $estado;
             $registro->update();
+
+            CarrilHasFrecuencia::query()->where('idfrecuencia',$registro->idfrecuencia)->delete();
+            foreach ($carriles as $idcarril) {
+                $pivot = new CarrilHasFrecuencia();
+                $pivot->idcarril = $idcarril;
+                $pivot->idfrecuencia = $registro->idfrecuencia;
+                $pivot->save();
+            }
 
             return response()->json([
                 'mensaje'=> "Registro actualizado exitosamente.",

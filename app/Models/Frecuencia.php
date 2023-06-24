@@ -17,11 +17,15 @@ class Frecuencia extends Model
     }
 
 
-    public function carril()
+
+    public function carrilesPivot()
     {
-        return $this->hasOne(Carril::class, 'idcarril', 'idcarril')->withDefault([
-            'nombre' => 'Sin carril'
-        ]);
+        return $this->hasMany(CarrilHasFrecuencia::class, 'idfrecuencia', 'idfrecuencia');
+    }
+
+    public function carriles()
+    {
+        return $this->belongsToMany(Carril::class, CarrilHasFrecuencia::class, 'idfrecuencia', 'idcarril', 'idfrecuencia', 'idcarril');
     }
 
 }

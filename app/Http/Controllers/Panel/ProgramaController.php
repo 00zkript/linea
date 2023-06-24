@@ -24,7 +24,6 @@ class ProgramaController extends Controller
 
 
 
-
         return view('panel.programa.index')->with(compact('registros', 'temporadas'));
 
 

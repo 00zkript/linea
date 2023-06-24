@@ -81,6 +81,12 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::get('matricula/listar',[\App\Http\Controllers\Panel\MatriculaController::class,'listar'])->name("matricula.listar");
     Route::put('matricula/{idmatricula}/habilitar',[\App\Http\Controllers\Panel\MatriculaController::class,'habilitar'])->name("matricula.habilitar");
     Route::put('matricula/{idmatricula}/inhabilitar',[\App\Http\Controllers\Panel\MatriculaController::class,'inhabilitar'])->name("matricula.inhabilitar");
+
+    Route::get('matricula/{idtemporada}/programas',[\App\Http\Controllers\Panel\MatriculaController::class,'programas'])->name("matricula.programas");
+    Route::get('matricula/{idprograma}/niveles',[\App\Http\Controllers\Panel\MatriculaController::class,'niveles'])->name("matricula.niveles");
+    Route::get('matricula/{idnivel}/carriles',[\App\Http\Controllers\Panel\MatriculaController::class,'carriles'])->name("matricula.carriles");
+    Route::get('matricula/{idcarril}/frecuencias',[\App\Http\Controllers\Panel\MatriculaController::class,'frecuencias'])->name("matricula.frecuencias");
+    Route::get('matricula/{idfrecuencia}/horarios',[\App\Http\Controllers\Panel\MatriculaController::class,'horarios'])->name("matricula.horarios");
     Route::get('matricula/create/{id?}',[\App\Http\Controllers\Panel\MatriculaController::class,'create'])->name("matricula.create");
 
     Route::resource( 'matricula', \App\Http\Controllers\Panel\MatriculaController::class )->names('matricula')->only(['index','show']);

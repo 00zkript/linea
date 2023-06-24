@@ -15,7 +15,7 @@
             @foreach($registros AS $item)
                 <tr>
                     <td>{{ str_pad($item->idcarril,7,'0000000',STR_PAD_LEFT) }}</td>
-                    <td>{{ $item->nivel->nombre }}</td>
+                    <td>{{ $item->nivel->programa->nombre }} => {{ $item->nivel->nombre }}</td>
                     <td>{{ $item->nombre }}</td>
                     <td>{!! $item->estado ? '<label class="badge badge-success">Habilidado</label>' : '<label class="badge badge-danger">Inhabilitado</label>' !!}</td>
                     <td class="text-center">

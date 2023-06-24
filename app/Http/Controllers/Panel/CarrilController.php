@@ -15,10 +15,10 @@ class CarrilController extends Controller
     public function index()
     {
 
-        $niveles = Nivel::query()->where('estado',1)->get();
+        $niveles = Nivel::query()->with(['programa'])->where('estado',1)->get();
 
         $registros = Carril::query()
-            ->with(['nivel'])
+            ->with(['nivel.programa'])
             ->orderBy('idcarril','DESC')
             ->paginate(10,['*'],'pagina',1);
 
@@ -37,7 +37,7 @@ class CarrilController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $registros = Carril::query()
-            ->with(['nivel'])
+            ->with(['nivel.programa'])
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query->where('nombre','LIKE','%'.$txtBuscar.'%');
             })
@@ -97,7 +97,7 @@ class CarrilController extends Controller
         }
 
         // $idcarril = $request->input('idcarril');
-        $registro = Carril::query()->with(['nivel'])->find($idcarril);
+        $registro = Carril::query()->with(['nivel.programa'])->find($idcarril);
 
         if(!$registro){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);

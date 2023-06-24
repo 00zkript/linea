@@ -182,7 +182,7 @@
 
 
                     $("#nombreEditar").val(data.nombre);
-                    $("#idcarrilEditar").val(data.idcarril);
+                    $("#idcarrilEditar").selectpicker('val',data.carriles_pivot.map( ele => ele.idcarril));
 
 
 
@@ -209,7 +209,11 @@
                     stop();
 
                     $("#nombreShow").html(data.nombre);
-                    $("#carrilShow").html(data.carril.nombre);
+
+                    $("#carrilShow").empty();
+                    for (const carril of data.carriles) {
+                        $("#carrilShow").append(carril.nivel.programa.nombre+" => "+carril.nivel.nombre+" => "+carril.nombre+"<br>");
+                    }
 
                     if (data.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');
