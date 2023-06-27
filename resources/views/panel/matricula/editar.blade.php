@@ -11,8 +11,9 @@
                     </div>
                     <div class="card-body">
                         <div id="instanceVue">
-                            <matricula-nuevo
-                            :alumno_current="{{ json_encode($alumno) }}"
+                            <matricula-form
+                                type="editar"
+                                :matricula_id="{{ $matriculaID }}"
                             />
                         </div>
                     </div>

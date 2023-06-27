@@ -156,19 +156,19 @@
 
 
                     $('#idmatriculaShow').html( data.idmatricula.toString().padStart(7,0) );
-                    $('#sucursalShow').html(data.sucursal_nombre+(data.sucursal_direccion ? ' - '+data.sucursal_direccion : ''));
+                    $('#sucursalShow').html(data.sucursal.nombre+(data.sucursal.direccion ? ' - '+data.sucursal.direccion : ''));
                     $('#clienteShow').html(data.cliente_nombres+' '+data.cliente_apellidos);
                     $('#clienteIdtipoDocumentoIdentidadShow').html( data.cliente_tipo_documento_identidad.nombre +' - '+ data.cliente_numero_documento_identidad);
                     $('#empleadoShow').html(data.empleado_nombres+' '+(data.empleado_apellidos??''));
                     $('#empleadoIdtipoDocumentoIdentidadShow').html( data.empleado_tipo_documento_identidad.nombre +(data.empleado_numero_documento_identidad ? ' - '+data.empleado_numero_documento_identidad : ''));
                     $('#periodoShow').html(data.fecha_inicio+' - '+data.fecha_fin);
                     $('#conceptoShow').html(data.concepto.nombre);
-                    $('#temporadaShow').html(data.temporada_nombre);
-                    $('#programaShow').html(data.programa_nombre);
-                    $('#actividadSemanalShow').html(data.actividad_semanal_nombre);
-                    $('#piscinaShow').html(data.piscina.nombre);
+                    $('#temporadaShow').html(data.temporada.nombre);
+                    $('#programaShow').html(data.programa.nombre);
+                    $('#nivelShow').html(data.nivel.nombre);
                     $('#carrilShow').html(data.carril.nombre);
-                    $('#cantidadClasesShow').html(data.cantidad_clases_cantidad);
+                    $('#frecuenciaShow').html(data.frecuencia.nombre);
+                    $('#cantidadClasesShow').html(data.cantidad_clases);
                     $('#montoTotalShow').html('S/. '+data.monto_total);
 
                     let detalleHtml = '';
@@ -185,6 +185,12 @@
 
 
 
+
+                    if (data.finalizado_at){
+                        $("#finalizadoShow").html('<label class="badge badge-primary">Finalizado</label>');
+                    }else{
+                        $("#finalizadoShow").html('<label class="badge badge-secondary">Sin finalizar</label>');
+                    }
 
                     if (data.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');

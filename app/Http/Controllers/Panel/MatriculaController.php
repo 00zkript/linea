@@ -29,6 +29,7 @@ class MatriculaController extends Controller
     public function index()
     {
         $registros = Matricula::query()
+            ->with(['temporada','programa'])
             ->orderBy('idmatricula','DESC')
             ->paginate(10,['*'],'pagina',1);
 
@@ -46,6 +47,7 @@ class MatriculaController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $registros = Matricula::query()
+            ->with(['temporada','programa'])
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query->where('idmatricula','LIKE','%'.$txtBuscar.'%')
                     ->orWhere('cliente_nombres','LIKE','%'.$txtBuscar.'%')
@@ -103,21 +105,59 @@ class MatriculaController extends Controller
         ]);
     }
 
-    public function create($clienteID = null)
+    public function create($clienteID = 0)
+    {
+        return view('panel.matricula.crear')->with(compact('clienteID'));
+    }
+
+    public function edit($matriculaID)
+    {
+
+
+        return view('panel.matricula.editar')->with(compact('matriculaID'));
+    }
+
+
+
+    public function alumno(Request $request, $clienteID)
     {
         $alumno = Cliente::query()
-            ->with([
-                'tipoDocumentoIdentidad',
-                'departamento',
-                'provincia',
-                'distrito',
-            ])
             ->where('idcliente',$clienteID)
             ->where('idsucursal', auth()->user()->sucursal->idsucursal)
             ->where('estado',1)
             ->first();
 
-        return view('panel.matricula.create')->with(compact('alumno'));
+        return response()->json($alumno);
+    }
+
+    public function matricula(Request $request, $matriculaID)
+    {
+
+        $matricula = Matricula::query()->with(['detalle'])->find($matriculaID);
+
+        $alumno = Cliente::query()
+            ->where('idcliente',$matricula->idcliente)
+            ->where('idsucursal', auth()->user()->sucursal->idsucursal)
+            ->where('estado',1)
+            ->first();
+
+        $programas = Programa::query()->where('idtemporada',$matricula->idtemporada)->where('estado',1)->get();
+        $niveles = Nivel::query()->where('idprograma',$matricula->idprograma)->where('estado',1)->get();
+        $carriles = Carril::query()->where('idnivel',$matricula->idnivel)->where('estado',1)->get();
+        $frecuencias = $matricula->carril->frecuencias()->where('estado',1)->get();
+        $horarios = Horario::query()->where('idfrecuencia',$matricula->idfrecuencia)->where('estado',1)->get();
+
+        return response()->json([
+            "resources" => [
+                "programas" => $programas,
+                "niveles" => $niveles,
+                "carriles" => $carriles,
+                "frecuencias" => $frecuencias,
+                "horarios" => $horarios,
+            ],
+            "matricula" => $matricula,
+            "alumno" => $alumno,
+        ]);
     }
 
     public function provincias(Request $request, $iddepartamento)
@@ -298,6 +338,7 @@ class MatriculaController extends Controller
             ->where('idnivel', $piscinaID)
             ->where('idcarril', $carrilID)
             ->where('idfrecuencia', $frecuenciaID)
+            ->whereNotNull('finalizado_at')
             ->count('idcliente');
 
         return response()->json([
@@ -378,11 +419,85 @@ class MatriculaController extends Controller
     }
 
 
+    public function updateMatricula(Request $request)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $matriculaID         = $request->input('idmatricula');
+        $fecha               = $request->input('fecha');
+        $idconcepto          = $request->input('idconcepto');
+        $idempleado          = $request->input('idempleado');
+        $idsucursal          = $request->input('idsucursal');
+        $idtemporada         = $request->input('idtemporada');
+        $idprograma          = $request->input('idprograma');
+        $idnivel             = $request->input('idnivel');
+        $idcarril            = $request->input('idcarril');
+        $idfrecuencia        = $request->input('idfrecuencia');
+        $idcantidad_clases   = $request->input('idcantidad_clases');
+        $idcliente           = $request->input('idcliente');
+        $detalle             = $request->input('detalle');
+
+
+
+        $fecha_inicio     = now()->parse($fecha[0])->format('Y-m-d');
+        $fecha_fin        = now()->parse($fecha[1])->format('Y-m-d');
+        $cliente          = Cliente::query()->find($idcliente);
+        $empleado         = auth()->user();
+        $cantidadClases   = CantidadClases::query()->find($idcantidad_clases);
+
+
+        $matricula = Matricula::query()->find($matriculaID);
+        $matricula->idsucursal                          = $idsucursal;
+        $matricula->idcliente                           = $idcliente;
+        $matricula->cliente_nombres                     = $cliente->nombres;
+        $matricula->cliente_apellidos                   = $cliente->apellidos;
+        $matricula->cliente_idtipo_documento_identidad  = $cliente->idtipo_documento_identidad;
+        $matricula->cliente_numero_documento_identidad  = $cliente->numero_documento_identidad;
+        $matricula->idempleado                          = $idempleado;
+        $matricula->empleado_nombres                    = $empleado->nombres;
+        $matricula->empleado_apellidos                  = $empleado->apellidos;
+        $matricula->empleado_idtipo_documento_identidad = $empleado->idtipo_documento_identidad;
+        $matricula->empleado_numero_documento_identidad = $empleado->numero_documento_identidad;
+        $matricula->fecha_inicio                        = $fecha_inicio;
+        $matricula->fecha_fin                           = $fecha_fin;
+        $matricula->idconcepto                          = $idconcepto;
+        $matricula->idtemporada                         = $idtemporada;
+        $matricula->idprograma                          = $idprograma;
+        $matricula->idnivel                             = $idnivel;
+        $matricula->idcarril                            = $idcarril;
+        $matricula->idfrecuencia                        = $idfrecuencia;
+        $matricula->idcantidad_clases                   = $idcantidad_clases;
+        $matricula->cantidad_clases                     = $cantidadClases->cantidad;
+        $matricula->monto_total                         = $cantidadClases->precio;
+        $matricula->estado                              = 1;
+        $matricula->update();
+
+        MatriculaDetalle::query()->where('idmatricula',$matricula->idmatricula)->delete();
+        foreach ($detalle as $item) {
+            $horario = new MatriculaDetalle();
+            $horario->idmatricula = $matricula->idmatricula;
+            $horario->fecha = $item['fecha'];
+            $horario->idhorario = $item['idhorario'];
+            $horario->dia_nombre = $item['dia_name'];
+            $horario->horario_nombre = $item['horario_nombre'];
+            $horario->save();
+        }
+
+
+        return response()->json([
+            'codigo' => str_pad($matricula->idmatricula,7,0,STR_PAD_LEFT)
+        ]);
+
+    }
 
 
 
 
-    public function show( Request $request, $id)
+
+
+    public function show( Request $request, $matriculaID)
     {
         if ( !$request->ajax() ) {
             return abort(400);
@@ -393,11 +508,15 @@ class MatriculaController extends Controller
                 'detalle',
                 'clienteTipoDocumentoIdentidad',
                 'empleadoTipoDocumentoIdentidad',
+                'sucursal',
                 'concepto',
-                'piscina',
+                'temporada',
+                'programa',
+                'nivel',
                 'carril',
+                'frecuencia',
             ])
-            ->find($id);
+            ->find($matriculaID);
 
         if(!$matricula){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);

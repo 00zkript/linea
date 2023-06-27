@@ -17,7 +17,7 @@ Vue.component('DatePicker', DatePicker);
 
 
 // Register Vue Pages
-Vue.component('matricula-nuevo', require('./views/Matricula/Nuevo.vue').default);
+Vue.component('matricula-form', require('./views/Matricula/Form.vue').default);
 Vue.component('matricula-gym-nuevo', require('./views/MatriculaGym/Nuevo.vue').default);
 
 Vue.component('venta-nuevo', require('./views/Venta/Nuevo.vue').default);

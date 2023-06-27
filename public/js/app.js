@@ -2074,10 +2074,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Nuevo.vue?vue&type=script&lang=js&":
-/*!*********************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/Nuevo.vue?vue&type=script&lang=js& ***!
-  \*********************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Form.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/Form.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -2109,13 +2109,17 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
     Step: _components_StepComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
-    alumno_current: {
-      type: Object,
-      "default": function _default() {
-        return {};
-      },
+    alumno_id: {
+      type: Number,
+      "default": null,
       required: false
-    }
+    },
+    matricula_id: {
+      type: Number,
+      "default": null,
+      required: false
+    },
+    type: String
   },
   data: function data() {
     return {
@@ -2187,6 +2191,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         imagen: null
       },
       matricula: {
+        idmatricula: '',
         fecha: [],
         idconcepto: 1,
         idempleado: '',
@@ -2208,6 +2213,57 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
   },
   methods: {
     soloNumeros: soloNumeros,
+    getAlumno: function getAlumno(clienteID) {
+      var _this = this;
+      return axios(route('matricula.alumno', clienteID)).then(function (response) {
+        var data = response.data;
+        _this.alumno = Object.assign(_this.alumno, data);
+        _this.getProvincias();
+        _this.getDistritos();
+      });
+    },
+    getMatricula: function getMatricula(matriculaID) {
+      var _this2 = this;
+      return axios(route('matricula.matricula', matriculaID)).then(function (response) {
+        var data = response.data;
+        var resources = data.resources,
+          matricula = data.matricula,
+          alumno = data.alumno;
+        _this2.alumno = Object.assign(_this2.alumno, alumno);
+        _this2.getProvincias();
+        _this2.getDistritos();
+        _this2.resources.programas = resources.programas;
+        _this2.resources.niveles = resources.niveles;
+        _this2.resources.carriles = resources.carriles;
+        _this2.resources.frecuencias = resources.frecuencias;
+        _this2.resources.horarios = resources.horarios;
+        var horarioFind = resources.horarios.find(function (ele) {
+          return ele.idhorario === matricula.detalle[0].idhorario;
+        });
+        _this2.matricula.idmatricula = matricula.idmatricula;
+        _this2.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
+        _this2.matricula.idconcepto = matricula.idconcepto;
+        _this2.matricula.idempleado = matricula.idempleado;
+        _this2.matricula.idsucursal = matricula.idsucursal;
+        _this2.matricula.idtemporada = matricula.idtemporada;
+        _this2.matricula.idprograma = matricula.idprograma;
+        _this2.matricula.idnivel = matricula.idnivel;
+        _this2.matricula.idcarril = matricula.idcarril;
+        _this2.matricula.idfrecuencia = matricula.idfrecuencia;
+        _this2.matricula.idhorario = matricula.detalle[0].idhorario;
+        _this2.matricula.idcantidad_clases = matricula.idcantidad_clases;
+        _this2.matriculaHorarioDia = matricula.detalle.map(function (ele) {
+          return {
+            fecha: ele.fecha,
+            dia_name: ele.dia_nombre,
+            idhorario: ele.idhorario,
+            horario_nombre: horarioFind.nombre
+          };
+        });
+        _this2.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
+        _this2.getCountMatriculados();
+      });
+    },
     formatDate: function formatDate(date) {
       return moment__WEBPACK_IMPORTED_MODULE_2___default()(date).format('DD/MM/YYYY');
     },
@@ -2216,60 +2272,60 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       this.getResources();
     },
     getResources: function getResources() {
-      var _this = this;
+      var _this3 = this;
       axios(route('matricula.resources')).then(function (response) {
         var data = response.data;
-        _this.resources.tipoDocumentoIdentidad = data.resources.tipoDocumentoIdentidad;
-        _this.resources.departamentos = data.resources.departamentos;
-        _this.resources.conceptos = data.resources.conceptos;
-        _this.resources.temporadas = data.resources.temporadas;
-        _this.resources.programas = data.resources.programas;
-        _this.resources.cantidadClases = data.resources.cantidadClases;
-        _this.temp.sucursal = data.current.sucursal;
-        _this.temp.temporada = data.current.temporada;
-        _this.temp.empleado = data.current.empleado;
-        _this.matricula.idsucursal = data.current.sucursal.idsucursal;
-        _this.matricula.idempleado = data.current.empleado.idusuario;
-        _this.matricula.idtemporada = data.current.temporada.idtemporada;
+        _this3.resources.tipoDocumentoIdentidad = data.resources.tipoDocumentoIdentidad;
+        _this3.resources.departamentos = data.resources.departamentos;
+        _this3.resources.conceptos = data.resources.conceptos;
+        _this3.resources.temporadas = data.resources.temporadas;
+        _this3.resources.programas = data.resources.programas;
+        _this3.resources.cantidadClases = data.resources.cantidadClases;
+        _this3.temp.sucursal = data.current.sucursal;
+        _this3.temp.temporada = data.current.temporada;
+        _this3.temp.empleado = data.current.empleado;
+        _this3.matricula.idsucursal = data.current.sucursal.idsucursal;
+        _this3.matricula.idempleado = data.current.empleado.idusuario;
+        _this3.matricula.idtemporada = data.current.temporada.idtemporada;
       })["catch"](function (error) {
         var response = error.response;
         var data = response.data;
       });
     },
     getProvincias: function getProvincias() {
-      var _this2 = this;
+      var _this4 = this;
       return axios.get(route('matricula.provincias', [this.alumno.iddepartamento])).then(function (response) {
         var data = response.data;
-        _this2.resources.provincias = data;
+        _this4.resources.provincias = data;
       });
     },
     getDistritos: function getDistritos() {
-      var _this3 = this;
+      var _this5 = this;
       return axios.get(route('matricula.distritos', [this.alumno.idprovincia])).then(function (response) {
         var data = response.data;
-        _this3.resources.distritos = data;
+        _this5.resources.distritos = data;
       });
     },
     changeAlumnoTipoDocumentoIdentidad: function changeAlumnoTipoDocumentoIdentidad() {
-      var _this4 = this;
+      var _this6 = this;
       var tipoDocumento = this.resources.tipoDocumentoIdentidad.find(function (ele) {
-        return ele.idtipo_documento_identidad === _this4.alumno.idtipo_documento_identidad;
+        return ele.idtipo_documento_identidad === _this6.alumno.idtipo_documento_identidad;
       });
       this.alumno.numero_documento_identidad = this.alumno.numero_documento_identidad.slice(0, tipoDocumento.caracteres_length);
       this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
     },
     changeAlumnoDepartamento: function changeAlumnoDepartamento() {
-      var _this5 = this;
+      var _this7 = this;
       this.getProvincias().then(function (data) {
-        _this5.alumno.idprovincia = '';
-        _this5.resources.distritos = [];
-        _this5.alumno.iddistrito = '';
+        _this7.alumno.idprovincia = '';
+        _this7.resources.distritos = [];
+        _this7.alumno.iddistrito = '';
       });
     },
     changeAlumnoProvincia: function changeAlumnoProvincia() {
-      var _this6 = this;
+      var _this8 = this;
       this.getDistritos().then(function (data) {
-        _this6.alumno.iddistrito = '';
+        _this8.alumno.iddistrito = '';
       });
     },
     validateAlumno: function validateAlumno() {
@@ -2315,7 +2371,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       return errors;
     },
     storeAlumno: function storeAlumno() {
-      var _this7 = this;
+      var _this9 = this;
       var errors = this.validateAlumno();
       if (errors.length > 0) {
         notificacion('error', 'Errores encontrados:', listErrorsForm(errors));
@@ -2324,66 +2380,78 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       var alumnoData = jsonToFormData(this.alumno);
       axios.post(route('matricula.storeAlumno'), alumnoData).then(function (response) {
         var data = response.data;
-        _this7.alumno.idcliente = data.idcliente;
-        _this7.stepCurrent = 2;
+        _this9.alumno.idcliente = data.idcliente;
+        _this9.stepCurrent = 2;
         scrollTo('#step-2', 50, 0);
       });
     },
     getProgramas: function getProgramas() {
-      var _this8 = this;
+      var _this10 = this;
+      var programaID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
       return axios(route('matricula.programas', this.matricula.idtemporada)).then(function (response) {
         var data = response.data;
-        _this8.resources.programas = data;
-        _this8.matricula.idprograma = '';
+        _this10.resources.programas = data;
+        _this10.matricula.idprograma = programaID;
       });
     },
     getNiveles: function getNiveles() {
-      var _this9 = this;
+      var _this11 = this;
+      var nivelID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
       return axios(route('matricula.niveles', this.matricula.idprograma)).then(function (response) {
         var data = response.data;
-        _this9.resources.niveles = data;
-        _this9.matricula.idnivel = '';
+        _this11.resources.niveles = data;
+        _this11.matricula.idnivel = nivelID;
       });
     },
     getCarriles: function getCarriles() {
-      var _this10 = this;
+      var _this12 = this;
+      var carrilID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
       return axios(route('matricula.carriles', this.matricula.idnivel)).then(function (response) {
         var data = response.data;
-        _this10.resources.carriles = data;
-        _this10.matricula.idcarril = '';
+        _this12.resources.carriles = data;
+        _this12.matricula.idcarril = carrilID;
       });
     },
     getFrecuencias: function getFrecuencias() {
-      var _this11 = this;
+      var _this13 = this;
+      var frecuenciaID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
       return axios(route('matricula.frecuencias', this.matricula.idcarril)).then(function (response) {
         var data = response.data;
-        _this11.resources.frecuencias = data;
-        _this11.matricula.idfrecuencia = '';
+        _this13.resources.frecuencias = data;
+        _this13.matricula.idfrecuencia = frecuenciaID;
       });
     },
     getHorarios: function getHorarios() {
-      var _this12 = this;
+      var _this14 = this;
+      var horarioID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+      this.getCountMatriculados();
       return axios(route('matricula.horarios', this.matricula.idfrecuencia)).then(function (response) {
         var data = response.data;
-        _this12.resources.horarios = data;
-        _this12.matricula.idhorario = '';
+        _this14.resources.horarios = data;
+        _this14.matricula.idhorario = horarioID;
       });
     },
     getCountMatriculados: function getCountMatriculados() {
-      var _this13 = this;
+      var _this15 = this;
+      var _this$matricula = this.matricula,
+        idtemporada = _this$matricula.idtemporada,
+        idprograma = _this$matricula.idprograma,
+        idnivel = _this$matricula.idnivel,
+        idcarril = _this$matricula.idcarril,
+        idfrecuencia = _this$matricula.idfrecuencia;
+      if (!idtemporada || !idprograma || !idnivel || !idcarril || !idfrecuencia) return;
       return axios.get(route('matricula.cantidadDeAlumnosMatriculados'), {
         params: {
-          idtemporada: this.matricula.idtemporada,
-          idprograma: this.matricula.idprograma,
-          idnivel: this.matricula.idnivel,
-          idcarril: this.matricula.idcarril,
-          idfrecuencia: this.matricula.idfrecuencia,
-          idhorario: this.matricula.idhorario
+          idtemporada: idtemporada,
+          idprograma: idprograma,
+          idnivel: idnivel,
+          idcarril: idcarril,
+          idfrecuencia: idfrecuencia
         }
       }).then(function (response) {
         var data = response.data;
-        _this13.capacidadMaxima = data.capacidad_maxima;
-        _this13.cantidadMatriculados = data.cantidad_matriculados;
+        _this15.capacidadMaxima = data.capacidad_maxima;
+        _this15.cantidadMatriculados = data.cantidad_matriculados;
       });
     },
     getDaysFromDate: function getDaysFromDate(fechaInicio, fechaFin, daysValid) {
@@ -2442,7 +2510,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       return errors;
     },
     saveMatricula: function saveMatricula() {
-      var _this14 = this;
+      var _this16 = this;
       var errors = this.validateMatricula();
       if (errors.length > 0) {
         notificacion('error', 'Errores encontrados:', listErrorsForm(errors));
@@ -2463,13 +2531,13 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         cantidadClases = _this$resources.cantidadClases,
         horarios = _this$resources.horarios;
       var frecuenciasFind = frecuencias.find(function (ele) {
-        return ele.idfrecuencia === _this14.matricula.idfrecuencia;
+        return ele.idfrecuencia === _this16.matricula.idfrecuencia;
       });
       var cantidadClasesFind = cantidadClases.find(function (ele) {
-        return ele.idcantidad_clases === _this14.matricula.idcantidad_clases;
+        return ele.idcantidad_clases === _this16.matricula.idcantidad_clases;
       });
       var horarioFind = horarios.find(function (ele) {
-        return ele.idhorario === _this14.matricula.idhorario;
+        return ele.idhorario === _this16.matricula.idhorario;
       });
       var daysValid = frecuenciasFind.dias.split('-');
       var fechaInicio = moment__WEBPACK_IMPORTED_MODULE_2___default()(matricula.fecha[0]);
@@ -2484,28 +2552,28 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         };
       });
       this.temp.alumno.tipoDocumentoIdentidad = tipoDocumentoIdentidad.find(function (ele) {
-        return ele.idtipo_documento_identidad === _this14.alumno.idtipo_documento_identidad;
+        return ele.idtipo_documento_identidad === _this16.alumno.idtipo_documento_identidad;
       });
       this.temp.alumno.departamento = departamentos.find(function (ele) {
-        return ele.iddepartamento === _this14.alumno.iddepartamento;
+        return ele.iddepartamento === _this16.alumno.iddepartamento;
       });
       this.temp.alumno.provincia = provincias.find(function (ele) {
-        return ele.idprovincia === _this14.alumno.idprovincia;
+        return ele.idprovincia === _this16.alumno.idprovincia;
       });
       this.temp.alumno.distrito = distritos.find(function (ele) {
-        return ele.iddistrito === _this14.alumno.iddistrito;
+        return ele.iddistrito === _this16.alumno.iddistrito;
       });
       this.temp.temporada = temporadas.find(function (ele) {
-        return ele.idtemporada === _this14.matricula.idtemporada;
+        return ele.idtemporada === _this16.matricula.idtemporada;
       });
       this.temp.programa = programas.find(function (ele) {
-        return ele.idprograma === _this14.matricula.idprograma;
+        return ele.idprograma === _this16.matricula.idprograma;
       });
       this.temp.nivel = niveles.find(function (ele) {
-        return ele.idnivel === _this14.matricula.idnivel;
+        return ele.idnivel === _this16.matricula.idnivel;
       });
       this.temp.carril = carriles.find(function (ele) {
-        return ele.idcarril === _this14.matricula.idcarril;
+        return ele.idcarril === _this16.matricula.idcarril;
       });
       this.temp.frecuencias = frecuenciasFind;
       this.temp.cantidadClases = cantidadClasesFind;
@@ -2516,7 +2584,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       scrollTo('#step-3', 50, 0);
     },
     storeMatriculaHorario: function storeMatriculaHorario() {
-      var _this15 = this;
+      var _this17 = this;
       var matricula = this.matricula,
         alumno = this.alumno,
         matriculaHorarioDia = this.matriculaHorarioDia;
@@ -2524,29 +2592,28 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         idcliente: alumno.idcliente,
         detalle: matriculaHorarioDia
       });
-      console.log(matriculaData);
-      axios.post(route('matricula.storeMatricula'), matriculaData).then(function (response) {
+      var URL_ACTION = route('matricula.storeMatricula');
+      if (this.type == 'editar') {
+        URL_ACTION = route('matricula.updateMatricula');
+      }
+      axios.post(URL_ACTION, matriculaData).then(function (response) {
         var data = response.data;
-        _this15.codigoMatricula = data.codigo;
-        _this15.stepCurrent = 4;
+        _this17.codigoMatricula = data.codigo;
+        _this17.stepCurrent = 4;
         scrollTo('#step-4', 50, 0);
       });
     }
   },
   mounted: function mounted() {
-    var _this16 = this;
+    var _this18 = this;
     this.getResources();
-    if (Object.keys(this.alumno_current).length > 0) {
-      this.alumno = Object.assign(this.alumno, this.alumno_current);
-      this.getProvincias().then(function (_) {
-        var _this16$alumno_curren;
-        _this16.alumno.idprovincia = (_this16$alumno_curren = _this16.alumno_current.idprovincia) !== null && _this16$alumno_curren !== void 0 ? _this16$alumno_curren : '';
+    if (this.alumno_id) {
+      this.getAlumno(this.alumno_id).then(function () {
+        _this18.stepCurrent = 2;
       });
-      this.getDistritos().then(function (_) {
-        var _this16$alumno_curren2;
-        _this16.alumno.iddistrito = (_this16$alumno_curren2 = _this16.alumno_current.iddistrito) !== null && _this16$alumno_curren2 !== void 0 ? _this16$alumno_curren2 : '';
-      });
-      this.stepCurrent = 2;
+    }
+    if (this.matricula_id) {
+      this.getMatricula(this.matricula_id);
     }
   }
 });
@@ -2865,10 +2932,10 @@ render._withStripped = true;
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Nuevo.vue?vue&type=template&id=b36bb212&":
-/*!*******************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/Nuevo.vue?vue&type=template&id=b36bb212& ***!
-  \*******************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Form.vue?vue&type=template&id=3edab998&":
+/*!******************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/Form.vue?vue&type=template&id=3edab998& ***!
+  \******************************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3883,7 +3950,11 @@ var render = function render() {
       },
       expression: "matricula.fecha"
     }
-  })], 1)])]), _vm._v(" "), _c("Step", {
+  })], 1), _vm._v(" "), _vm.capacidadMaxima ? _c("div", {
+    staticClass: "col-12"
+  }, [_c("div", {
+    staticClass: "mt-3 mb-3 pr-5 alert alert-warning"
+  }, [_c("h5", [_c("u", [_vm._v("NOTA:")])]), _vm._v(" "), _c("h5", [_vm._v("Actualmente hay " + _vm._s(_vm.cantidadMatriculados) + " matriculados y la capacidad máxima es de " + _vm._s(_vm.capacidadMaxima) + ".")])])]) : _vm._e()])]), _vm._v(" "), _c("Step", {
     attrs: {
       number: 3,
       id: "step-3",
@@ -5300,10 +5371,10 @@ exports.push([module.i, "\n.steps-container {\n    display: flex;\n    flex-dire
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css&":
-/*!****************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css& ***!
-  \****************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Form.vue?vue&type=style&index=0&id=3edab998&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/Form.vue?vue&type=style&index=0&id=3edab998&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -45574,15 +45645,15 @@ if(false) {}
 
 /***/ }),
 
-/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css&":
-/*!********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css& ***!
-  \********************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Form.vue?vue&type=style&index=0&id=3edab998&lang=css&":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/Form.vue?vue&type=style&index=0&id=3edab998&lang=css& ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
 
-var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css&");
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Form.vue?vue&type=style&index=0&id=3edab998&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Form.vue?vue&type=style&index=0&id=3edab998&lang=css&");
 
 if(typeof content === 'string') content = [[module.i, content, '']];
 
@@ -62443,7 +62514,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(ziggy__WEBPACK_IMPORTED_MODULE_1_
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('DatePicker', vue2_datepicker__WEBPACK_IMPORTED_MODULE_2__["default"]);
 
 // Register Vue Pages
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('matricula-nuevo', __webpack_require__(/*! ./views/Matricula/Nuevo.vue */ "./resources/js/views/Matricula/Nuevo.vue")["default"]);
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('matricula-form', __webpack_require__(/*! ./views/Matricula/Form.vue */ "./resources/js/views/Matricula/Form.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('matricula-gym-nuevo', __webpack_require__(/*! ./views/MatriculaGym/Nuevo.vue */ "./resources/js/views/MatriculaGym/Nuevo.vue")["default"]);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('venta-nuevo', __webpack_require__(/*! ./views/Venta/Nuevo.vue */ "./resources/js/views/Venta/Nuevo.vue")["default"]);
 
@@ -62754,18 +62825,18 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/views/Matricula/Nuevo.vue":
-/*!************************************************!*\
-  !*** ./resources/js/views/Matricula/Nuevo.vue ***!
-  \************************************************/
+/***/ "./resources/js/views/Matricula/Form.vue":
+/*!***********************************************!*\
+  !*** ./resources/js/views/Matricula/Form.vue ***!
+  \***********************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Nuevo_vue_vue_type_template_id_b36bb212___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Nuevo.vue?vue&type=template&id=b36bb212& */ "./resources/js/views/Matricula/Nuevo.vue?vue&type=template&id=b36bb212&");
-/* harmony import */ var _Nuevo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Nuevo.vue?vue&type=script&lang=js& */ "./resources/js/views/Matricula/Nuevo.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _Nuevo_vue_vue_type_style_index_0_id_b36bb212_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css& */ "./resources/js/views/Matricula/Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css&");
+/* harmony import */ var _Form_vue_vue_type_template_id_3edab998___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Form.vue?vue&type=template&id=3edab998& */ "./resources/js/views/Matricula/Form.vue?vue&type=template&id=3edab998&");
+/* harmony import */ var _Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Form.vue?vue&type=script&lang=js& */ "./resources/js/views/Matricula/Form.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _Form_vue_vue_type_style_index_0_id_3edab998_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Form.vue?vue&type=style&index=0&id=3edab998&lang=css& */ "./resources/js/views/Matricula/Form.vue?vue&type=style&index=0&id=3edab998&lang=css&");
 /* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -62776,9 +62847,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
-  _Nuevo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Nuevo_vue_vue_type_template_id_b36bb212___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Nuevo_vue_vue_type_template_id_b36bb212___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Form_vue_vue_type_template_id_3edab998___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Form_vue_vue_type_template_id_3edab998___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -62788,54 +62859,54 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/views/Matricula/Nuevo.vue"
+component.options.__file = "resources/js/views/Matricula/Form.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/views/Matricula/Nuevo.vue?vue&type=script&lang=js&":
-/*!*************************************************************************!*\
-  !*** ./resources/js/views/Matricula/Nuevo.vue?vue&type=script&lang=js& ***!
-  \*************************************************************************/
+/***/ "./resources/js/views/Matricula/Form.vue?vue&type=script&lang=js&":
+/*!************************************************************************!*\
+  !*** ./resources/js/views/Matricula/Form.vue?vue&type=script&lang=js& ***!
+  \************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Nuevo.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Nuevo.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Form.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/views/Matricula/Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css&":
-/*!*********************************************************************************************!*\
-  !*** ./resources/js/views/Matricula/Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css& ***!
-  \*********************************************************************************************/
+/***/ "./resources/js/views/Matricula/Form.vue?vue&type=style&index=0&id=3edab998&lang=css&":
+/*!********************************************************************************************!*\
+  !*** ./resources/js/views/Matricula/Form.vue?vue&type=style&index=0&id=3edab998&lang=css& ***!
+  \********************************************************************************************/
 /*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_style_index_0_id_b36bb212_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Nuevo.vue?vue&type=style&index=0&id=b36bb212&lang=css&");
-/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_style_index_0_id_b36bb212_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_style_index_0_id_b36bb212_lang_css___WEBPACK_IMPORTED_MODULE_0__);
-/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_style_index_0_id_b36bb212_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_style_index_0_id_b36bb212_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_style_index_0_id_3edab998_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Form.vue?vue&type=style&index=0&id=3edab998&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Form.vue?vue&type=style&index=0&id=3edab998&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_style_index_0_id_3edab998_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_style_index_0_id_3edab998_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_style_index_0_id_3edab998_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_style_index_0_id_3edab998_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
 
 
 /***/ }),
 
-/***/ "./resources/js/views/Matricula/Nuevo.vue?vue&type=template&id=b36bb212&":
-/*!*******************************************************************************!*\
-  !*** ./resources/js/views/Matricula/Nuevo.vue?vue&type=template&id=b36bb212& ***!
-  \*******************************************************************************/
+/***/ "./resources/js/views/Matricula/Form.vue?vue&type=template&id=3edab998&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/views/Matricula/Form.vue?vue&type=template&id=3edab998& ***!
+  \******************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_template_id_b36bb212___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../node_modules/vue-loader/lib??vue-loader-options!./Nuevo.vue?vue&type=template&id=b36bb212& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Nuevo.vue?vue&type=template&id=b36bb212&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_template_id_b36bb212___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_3edab998___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../node_modules/vue-loader/lib??vue-loader-options!./Form.vue?vue&type=template&id=3edab998& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/Form.vue?vue&type=template&id=3edab998&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_3edab998___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Nuevo_vue_vue_type_template_id_b36bb212___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_3edab998___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -184,9 +184,17 @@
                         <option v-for="(item, index) in resources.cantidadClases" :key="index" :value="item.idcantidad_clases" v-text="item.nombre"></option>
                     </select>
                 </div>
+
                 <div class="col-12 form-group">
                     <label for="fecha">Periodo desde - hasta <span class="text-danger">(*)</span></label>
                     <DatePicker input-class="form-control" value-type="format" range v-model="matricula.fecha" placeholder="Periodo desde - hasta" ></DatePicker>
+                </div>
+
+                <div class="col-12" v-if="capacidadMaxima">
+                    <div class="mt-3 mb-3 pr-5  alert alert-warning">
+                        <h5><u>NOTA:</u></h5>
+                        <h5>Actualmente hay {{ cantidadMatriculados }} matriculados y la capacidad máxima es de {{ capacidadMaxima }}.</h5>
+                    </div>
                 </div>
             </div>
         </Step>
@@ -289,13 +297,17 @@ moment.locale('es-mx');
 export default {
     components: { StepsContainer, Step },
     props: {
-        alumno_current: {
-            type: Object,
-            default() {
-                return {};
-            },
+        alumno_id: {
+            type: Number,
+            default: null,
             required: false
         },
+        matricula_id: {
+            type: Number,
+            default: null,
+            required: false
+        },
+        type: String,
     },
     data() {
         return {
@@ -364,6 +376,7 @@ export default {
                 imagen: null,
             },
             matricula: {
+                idmatricula: '',
                 fecha: [],
                 idconcepto: 1,
                 idempleado: '',
@@ -385,6 +398,65 @@ export default {
     },
     methods: {
         soloNumeros: soloNumeros,
+        getAlumno(clienteID) {
+            return axios(route('matricula.alumno',clienteID))
+                .then( (response) => {
+                    const data = response.data;
+                    this.alumno = Object.assign(this.alumno, data);
+                    this.getProvincias();
+                    this.getDistritos();
+
+                })
+        },
+        getMatricula(matriculaID) {
+            return axios(route('matricula.matricula',matriculaID))
+                .then( (response) => {
+                    const data = response.data;
+                    const { resources, matricula, alumno } = data;
+
+                    this.alumno = Object.assign(this.alumno, alumno);
+                    this.getProvincias();
+                    this.getDistritos();
+
+
+                    this.resources.programas   = resources.programas;
+                    this.resources.niveles     = resources.niveles;
+                    this.resources.carriles    = resources.carriles;
+                    this.resources.frecuencias = resources.frecuencias;
+                    this.resources.horarios    = resources.horarios;
+                    const horarioFind = resources.horarios.find(ele => ele.idhorario === matricula.detalle[0].idhorario );
+
+
+                    this.matricula.idmatricula       = matricula.idmatricula;
+                    this.matricula.fecha             = [
+                        matricula.fecha_inicio.split('/').reverse().join('-'),
+                        matricula.fecha_fin.split('/').reverse().join('-')
+                    ];
+                    this.matricula.idconcepto        = matricula.idconcepto;
+                    this.matricula.idempleado        = matricula.idempleado;
+                    this.matricula.idsucursal        = matricula.idsucursal;
+                    this.matricula.idtemporada       = matricula.idtemporada;
+                    this.matricula.idprograma        = matricula.idprograma;
+                    this.matricula.idnivel           = matricula.idnivel;
+                    this.matricula.idcarril          = matricula.idcarril;
+                    this.matricula.idfrecuencia      = matricula.idfrecuencia;
+                    this.matricula.idhorario         = matricula.detalle[0].idhorario;
+                    this.matricula.idcantidad_clases = matricula.idcantidad_clases;
+
+
+
+                    this.matriculaHorarioDia = matricula.detalle.map(ele => ({
+                        fecha: ele.fecha,
+                        dia_name: ele.dia_nombre,
+                        idhorario: ele.idhorario,
+                        horario_nombre: horarioFind.nombre,
+                    }))
+
+                    this.codigoMatricula = matricula.idmatricula.toString().padStart(7,0);
+                    this.getCountMatriculados();
+
+                })
+        },
         formatDate(date){
             return moment(date).format('DD/MM/YYYY');
         },
@@ -525,55 +597,60 @@ export default {
 
 
 
-        getProgramas() {
+        getProgramas(programaID = '') {
             return axios(route('matricula.programas',this.matricula.idtemporada))
             .then( response => {
                 const data = response.data;
                 this.resources.programas = data;
-                this.matricula.idprograma = '';
+                this.matricula.idprograma = programaID;
             });
         },
-        getNiveles() {
+        getNiveles(nivelID = '') {
             return axios(route('matricula.niveles',this.matricula.idprograma))
             .then( response => {
                 const data = response.data;
                 this.resources.niveles = data;
-                this.matricula.idnivel = '';
+                this.matricula.idnivel = nivelID;
             });
         },
-        getCarriles() {
+        getCarriles(carrilID = '') {
             return axios(route('matricula.carriles',this.matricula.idnivel))
             .then( response => {
                 const data = response.data;
                 this.resources.carriles = data;
-                this.matricula.idcarril = '';
+                this.matricula.idcarril = carrilID;
             });
         },
-        getFrecuencias() {
+        getFrecuencias(frecuenciaID = '') {
             return axios(route('matricula.frecuencias',this.matricula.idcarril))
             .then( response => {
                 const data = response.data;
                 this.resources.frecuencias = data;
-                this.matricula.idfrecuencia = '';
+                this.matricula.idfrecuencia = frecuenciaID;
             });
         },
-        getHorarios() {
+        getHorarios(horarioID = '') {
+            this.getCountMatriculados();
             return axios(route('matricula.horarios',this.matricula.idfrecuencia))
             .then( response => {
                 const data = response.data;
                 this.resources.horarios = data;
-                this.matricula.idhorario = '';
+                this.matricula.idhorario = horarioID;
             });
         },
         getCountMatriculados() {
+            const {idtemporada, idprograma, idnivel, idcarril, idfrecuencia} = this.matricula;
+
+            if (!idtemporada || !idprograma || !idnivel || !idcarril || !idfrecuencia) return;
+
+
             return axios.get(route('matricula.cantidadDeAlumnosMatriculados'),{
                 params: {
-                    idtemporada: this.matricula.idtemporada,
-                    idprograma: this.matricula.idprograma,
-                    idnivel: this.matricula.idnivel,
-                    idcarril: this.matricula.idcarril,
-                    idfrecuencia: this.matricula.idfrecuencia,
-                    idhorario: this.matricula.idhorario,
+                    idtemporada: idtemporada,
+                    idprograma: idprograma,
+                    idnivel: idnivel,
+                    idcarril: idcarril,
+                    idfrecuencia: idfrecuencia
                 }
             })
             .then( response => {
@@ -714,9 +791,12 @@ export default {
                 detalle : matriculaHorarioDia,
             };
 
-            console.log(matriculaData);
+            let URL_ACTION = route('matricula.storeMatricula');
+            if (this.type == 'editar' ) {
+                URL_ACTION = route('matricula.updateMatricula');
+            }
 
-            axios.post(route('matricula.storeMatricula'), matriculaData)
+            axios.post(URL_ACTION, matriculaData)
             .then( response => {
                 const data = response.data;
 
@@ -732,18 +812,18 @@ export default {
     mounted(){
         this.getResources();
 
-        if (Object.keys(this.alumno_current).length > 0) {
-            this.alumno = Object.assign(this.alumno, this.alumno_current);
-
-            this.getProvincias().then( _ => {
-                this.alumno.idprovincia = this.alumno_current.idprovincia ?? '';
-            });
-            this.getDistritos().then( _ => {
-                this.alumno.iddistrito = this.alumno_current.iddistrito ?? '';
-            });
-            this.stepCurrent = 2;
-
+        if ( this.alumno_id ) {
+            this.getAlumno(this.alumno_id)
+            .then(() => {
+                this.stepCurrent = 2;
+            })
         }
+
+        if ( this.matricula_id ) {
+            this.getMatricula(this.matricula_id);
+        }
+
+
 
     }
 

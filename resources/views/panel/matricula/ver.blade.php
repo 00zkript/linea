@@ -24,7 +24,8 @@
                                     <td colspan="2"><b>Sucursal: </b><span id="sucursalShow"></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="4"><b>Estado: </b><span id="estadoShow"></span></td>
+                                    <td colspan="2"><b>Estado: </b><span id="estadoShow"></span></td>
+                                    <td colspan="2"><b>Estado finalizado: </b><span id="finalizadoShow"></span></td>
                                 </tr>
 
                                 <tr>
@@ -40,13 +41,13 @@
                                 <tr>
                                     <td><b>Temporada: </b><span id="temporadaShow"></span></td>
                                     <td><b>Programa: </b><span id="programaShow"></span></td>
-                                    <td><b>Piscina: </b><span id="piscinaShow"></span></td>
+                                    <td><b>Nivel: </b><span id="nivelShow"></span></td>
                                     <td><b>Carril: </b><span id="carrilShow"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Periodo: </b><span id="periodoShow"></span></td>
-                                    <td><b>Actividad semanal: </b><span id="actividadSemanalShow"></span></td>
+                                    <td><b>Frecuencia: </b><span id="frecuenciaShow"></span></td>
                                     <td><b>Cantidad clases: </b><span id="cantidadClasesShow"></span></td>
+                                    <td><b>Periodo: </b><span id="periodoShow"></span></td>
                                     <td><b>Monto total: </b><span id="montoTotalShow"></span></td>
                                 </tr>
                             </table>
