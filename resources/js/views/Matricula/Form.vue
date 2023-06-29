@@ -187,7 +187,7 @@
 
                 <div class="col-12 form-group">
                     <label for="fecha">Periodo desde - hasta <span class="text-danger">(*)</span></label>
-                    <DatePicker input-class="form-control" value-type="format" range v-model="matricula.fecha" placeholder="Periodo desde - hasta" ></DatePicker>
+                    <DatePicker input-class="form-control" value-type="format" range v-model="matricula.fecha" placeholder="Periodo desde - hasta" :disabled-date="disabledDatesRange" ></DatePicker>
                 </div>
 
                 <div class="col-12" v-if="capacidadMaxima">
@@ -398,6 +398,12 @@ export default {
     },
     methods: {
         soloNumeros: soloNumeros,
+        disabledDatesRange(date) {
+            const currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0); // Establecer las horas, minutos, segundos y milisegundos a cero para comparación precisa
+
+            return date < currentDate;
+        },
         getAlumno(clienteID) {
             return axios(route('matricula.alumno',clienteID))
                 .then( (response) => {

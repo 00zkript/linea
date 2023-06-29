@@ -35,7 +35,7 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu-{{$item->idmatricula}}" data-idmatricula="{{$item->idmatricula}}">
                                 <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
                                 <a href="{{ route('matricula.edit',$item->idmatricula) }}" class="dropdown-item" type="button"><i class="fa fa-pencil"></i> Editar</a>
-                                <a href="{{ route('pago.create',$item->idcliente) }}" class="dropdown-item" type="button"><i class="fa fa-money-bill"></i> Pagar</a>
+                                <a href="{{ route('venta.create',$item->idcliente) }}" class="dropdown-item" type="button"><i class="fa fa-money-bill"></i> Pagar</a>
                                 {{-- <button class="dropdown-item btnModalEditar" type="button"><i class="fa fa-pencil"></i> Editar</button> --}}
                                 @if($item->estado)
                                     <button class="dropdown-item btnModalInhabilitar" type="button"><i class="fa fa-times"></i> Inhabilitar</button>

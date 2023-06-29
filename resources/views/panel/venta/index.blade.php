@@ -1,7 +1,7 @@
 @extends('panel.template.index')
 @section('cuerpo')
-    @include('panel.pago.ver')
-    @include('panel.pago.eliminar')
+    @include('panel.venta.ver')
+    @include('panel.venta.eliminar')
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -12,7 +12,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12 text-right">
-                                <a href="{{ route('pago.create') }}" class="btn btn-primary btn-lg"><i class="fa fa-plus"></i> Nuevo Pago</a>
+                                <a href="{{ route('venta.create') }}" class="btn btn-primary btn-lg"><i class="fa fa-plus"></i> Nuevo Pago</a>
                             </div>
                             <div class="col-md-6 col-md-12">
                                 <div class="form-group">
@@ -41,7 +41,7 @@
                             </div>
 
                             <div class="col-12" id="listado">
-                                @include('panel.pago.listado')
+                                @include('panel.venta.listado')
                             </div>
 
 
@@ -58,14 +58,14 @@
     <script type="module" >
 
 
-        const URL_LISTADO     = "{{ route('pago.listar') }}";
-        {{-- // const URL_GUARDAR     = "{{ route('pago.store') }}"; --}}
-        {{-- // const URL_VER         = "{{ route('pago.show',':id') }}"; --}}
-        {{-- // const URL_EDIT        = "{{ route('pago.edit',':id') }}"; --}}
-        {{-- // const URL_MODIFICAR   = "{{ route('pago.update',':id') }}"; --}}
-        {{-- // const URL_HABILITAR   = "{{ route('pago.habilitar',':id') }}"; --}}
-        {{-- // const URL_INHABILITAR = "{{ route('pago.inhabilitar',':id') }}"; --}}
-        {{-- // const URL_ELIMINAR    = "{{ route('pago.destroy',':id') }}"; --}}
+        const URL_LISTADO     = "{{ route('venta.listar') }}";
+        {{-- // const URL_GUARDAR     = "{{ route('venta.store') }}"; --}}
+        {{-- // const URL_VER         = "{{ route('venta.show',':id') }}"; --}}
+        {{-- // const URL_EDIT        = "{{ route('venta.edit',':id') }}"; --}}
+        {{-- // const URL_MODIFICAR   = "{{ route('venta.update',':id') }}"; --}}
+        {{-- // const URL_HABILITAR   = "{{ route('venta.habilitar',':id') }}"; --}}
+        {{-- // const URL_INHABILITAR = "{{ route('venta.inhabilitar',':id') }}"; --}}
+        {{-- // const URL_ELIMINAR    = "{{ route('venta.destroy',':id') }}"; --}}
 
 
 
@@ -277,8 +277,8 @@
                         $('#pagosShow tbody').append(`
                             <tr>
                                 <td>#${idx+1}</td>
-                                <td>S/. ${number_format(pago.monto,2)}</td>
-                                <td>${pago.created_at}</td>
+                                <td>S/. ${number_format(venta.monto,2)}</td>
+                                <td>${venta.created_at}</td>
                             </tr>
                         `);
 

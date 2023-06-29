@@ -6,19 +6,21 @@
             :id="id"
             :class="classInput"
             :placeholder="placeholder"
-            :value="searchTerm"
-            @input="handleInputChange"
-            @keydown.down="handleArrowDown"
-            @keydown.up="handleArrowUp"
-            @keydown.enter="handleEnter"
+
+            v-model="searchValue"
+            @input="getSuggestions"
+
             >
-        <div class="list-result" :class="classList">
+        <div class="list-result" :class="classList" v-if="suggestions.length > 0">
             <ul>
                 <li
-                    v-for="(item, index) in suggestionslist" :key="index"
-                    @click="selectSuggestion(item)"
-                    v-html="item"
+                    v-for="(item, index) in suggestions" :key="index"
+                    @click="selectSuggestion(item, 'autocomplete-item-'+index)"
+                    :ref="'autocomplete-item-'+index"
                     >
+                    <slot name="item" :item="item" >
+                        {{ item[suggestionLabel] }}
+                    </slot>
                 </li>
             </ul>
         </div>
@@ -40,10 +42,6 @@ export default {
             tyoe: String,
             default: '',
         },
-        value: {
-            tyoe: String,
-            default: '',
-        },
         id: {
             tyoe: String,
             default: '',
@@ -52,82 +50,64 @@ export default {
             tyoe: String,
             default: '',
         },
-        suggestions: {
-            tyoe: Array,
-            default: [],
+
+        url: String,
+        value: {
+            tyoe: Object,
+            default() {
+                return {};
+            },
+        },
+        valueDefault: {
+            tyoe: String,
+            default: '',
+        },
+        suggestionLabel: {
+            type: String,
+            default: 'name',
+        },
+        limit: {
+            type: Number,
+            default: 5,
+        },
+        params: {
+            tyoe: Object,
+            default() {
+                return {};
+            },
         },
     },
     data() {
         return {
-            searchTerm: this.value,
-            suggestionslist: this.suggestions,
-            activeIndex: -1
-        }
-    },
-    computed: {
-        filteredSuggestions() {
-            return this.suggestions.filter(suggestion =>
-                suggestion.toLowerCase().includes(this.searchTerm.toLowerCase())
-            );
-        },
-        showSuggestions() {
-            return this.filteredSuggestions.length > 0;
-        }
-    },
-    watch: {
-        value(newValue) {
-            this.searchTerm = newValue;
+            suggestions: [],
+            searchValue: this.valueDefault,
         }
     },
     methods: {
-        handleInputChange(event) {
-            const newTerm = event.target.value;
-            this.searchTerm = newTerm;
-            this.$emit('input', newTerm);
-            this.activeIndex = -1;
-            this.fetchSuggestions(newTerm);
+        getSuggestions() {
+            axios({
+                url: this.url,
+                params: {
+                    ...this.params,
+                    txtBuscar: this.searchValue,
+                    limit: this.limit,
+                }
+            })
+            .then( response => {
+                const data = response.data;
+                this.suggestions = data;
+            })
         },
-        handleArrowDown() {
-            if (this.activeIndex < this.filteredSuggestions.length - 1) {
-                this.activeIndex++;
-            }
-        },
-        handleArrowUp() {
-            if (this.activeIndex > 0) {
-                this.activeIndex--;
-            }
-        },
-        handleEnter() {
-            if (this.activeIndex !== -1) {
-                this.selectSuggestion(this.filteredSuggestions[this.activeIndex]);
-            }
-        },
-        selectSuggestion(suggestion) {
-            this.searchTerm = suggestion;
+
+        selectSuggestion(suggestion, ref) {
+            const li = this.$refs[ref][0];
+
+            this.searchValue = (li.innerText).trim();
             this.$emit('input', suggestion);
-            this.activeIndex = -1;
+            this.suggestions = [];
         },
-        fetchSuggestions(searchTerm) {
-            // Realizar la petición AJAX aquí utilizando la biblioteca o método de tu elección
-            // Supongamos que la petición devuelve un arreglo de sugerencias
-            // Aquí se utiliza un ejemplo simulado con un tiempo de espera de 500ms
-            setTimeout(() => {
-                const suggestions = ['Apple', 'Banana', 'Cherry', 'Date'].filter(suggestion =>
-                suggestion.toLowerCase().includes(searchTerm.toLowerCase())
-                );
-                this.suggestions = suggestions;
-            }, 500);
-        },
-
-        search() {
-            this.suggestionslist = this.suggestions.filter( (item, idx) => {
-                return item.includes(this.value);
-            });
-
-        }
     },
     mounted() {
-        console.log('Example component mounted.')
     }
 }
 </script>
@@ -146,6 +126,9 @@ export default {
     z-index: 1;
 }
 
+.list-result {
+    width: 100%;
+}
 
 .list-result ul{
     list-style: none;

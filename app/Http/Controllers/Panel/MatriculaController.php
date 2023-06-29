@@ -31,6 +31,7 @@ class MatriculaController extends Controller
         $registros = Matricula::query()
             ->with(['temporada','programa'])
             ->orderBy('idmatricula','DESC')
+            ->withSucursal()
             ->paginate(10,['*'],'pagina',1);
 
         return view('panel.matricula.index')->with(compact('registros'));
@@ -51,10 +52,9 @@ class MatriculaController extends Controller
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query->where('idmatricula','LIKE','%'.$txtBuscar.'%')
                     ->orWhere('cliente_nombres','LIKE','%'.$txtBuscar.'%')
-                    ->orWhere('cliente_apellidos','LIKE','%'.$txtBuscar.'%')
-                    ->orWhere('temporada_nombre','LIKE','%'.$txtBuscar.'%')
-                    ->orWhere('programa_nombre','LIKE','%'.$txtBuscar.'%');
+                    ->orWhere('cliente_apellidos','LIKE','%'.$txtBuscar.'%');
             })
+            ->withSucursal()
             ->orderBy('idmatricula','DESC')
             ->paginate($cantidadRegistros,['*'],'pagina',$paginaActual);
 

@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\GlobalScopesTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Cliente extends Model
 {
+    use GlobalScopesTrait;
+
     protected  $table = 'cliente';
     protected $primaryKey = 'idcliente';
     protected $guarded = [];

@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\GlobalScopesTrait;
 use Illuminate\Database\Eloquent\Model;
 
 class Matricula extends Model
 {
+    use GlobalScopesTrait;
+
  	protected $table = 'matricula';
 	protected $primaryKey = 'idmatricula';
 
@@ -14,6 +17,7 @@ class Matricula extends Model
         'fecha_inicio' => 'date:d/m/Y',
         'fecha_fin' => 'date:d/m/Y',
     ];
+
 
 
     public function clienteTipoDocumentoIdentidad()

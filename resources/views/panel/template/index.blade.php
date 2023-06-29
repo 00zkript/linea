@@ -170,8 +170,8 @@
 
                                 <li class=""><a><i class="fa fa-money-bill"></i> Caja <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a href="{{ route('pago.create') }}">Nueva venta</a></li>
-                                        <li><a href="{{ route('pago.index') }}">Pago Matricula</a></li>
+                                        <li><a href="{{ route('venta.create') }}">Nueva venta</a></li>
+                                        <li><a href="{{ route('venta.index') }}">Ventas</a></li>
                                     </ul>
                                 </li>
 

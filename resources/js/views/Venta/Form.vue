@@ -54,23 +54,19 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-12 row">
-                                <div class="col-md-11 col-12">
-                                    <div class="form-group">
-                                        <label for="">Buscar producto</label>
-                                        <input type="text" class="form-control" placeholder="Codígo/ Nombre/ Descripción">
-                                    </div>
-                                </div>
-                                <div class="col-md-1 col-12">
-                                    <button class="btn btn-primary mt-4"><i class="fa fa-search"></i></button>
+                            <div class="col-12 form-group">
+                                <label for="buscarProducto">Buscar producto</label>
+                                <div class="input-group">
+                                    <input type="text" id="buscarProducto" class="form-control" placeholder="Código/ Nombre/ Descripción" v-model="search.producto.txtBuscar" @keyup.enter="getProductos(1)">
+                                    <div class="input-group-append"><span class="btn-primary input-group-text"  @click="getProductos(1)" cursor-pointer ><i class="fa fa-search"></i></span></div>
                                 </div>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12" v-if="!productsIsEmpty">
                                 <table class="table table-sm">
                                     <thead>
                                         <tr>
                                             <th class="text-center"><button class="btn btn-primary btn-sm" disabled><i class="fa fa-plus"></i></button></th>
-                                            <th class="text-center">Codígo</th>
+                                            <th class="text-center">Código</th>
                                             <th class="text-center">Nombre</th>
                                             <th class="text-center">Cantidad</th>
                                             <th class="text-center">Stock</th>
@@ -78,165 +74,97 @@
                                             <th class="text-center">Precio total</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><button class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></button></td>
-                                            <td>000001</td>
-                                            <td>Lorem ipsum dolor sit.</td>
-                                            <td><input type="text" class="form-control form-control-sm" value="1"></th>
-                                            <td>1500</td>
+                                    <tbody >
+                                        <tr v-for="(producto, index) in resources.productos.data" :key="index" >
+                                            <td><button class="btn btn-primary btn-sm" type="button" @click="addProductoInDetalle(index)"><i class="fa fa-plus"></i></button></td>
+                                            <td>{{ (producto.idproducto).toString().padStart(7,0) }}</td>
+                                            <td>{{ producto.nombre }}</td>
+                                            <td><input type="number" class="form-control form-control-sm" step="1" v-model="producto.cantidad" @input="changePrecioTotal(index)"></th>
+                                            <td>{{ producto.stock }}</td>
                                             <td><div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                <input type="text" class="form-control" value="100">
+                                                <input type="number" class="form-control" step="0.0001" v-model="producto.precio" @input="changePrecioTotal(index)" >
                                             </div></td>
                                             <td>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                    <input type="text" class="form-control" value="100" readonly>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></button></td>
-                                            <td>000002</td>
-                                            <td>Lorem ipsum dolor sit.</td>
-                                            <td><input type="text" class="form-control form-control-sm" value="1"></th>
-                                            <td>1500</td>
-                                            <td><div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                <input type="text" class="form-control" value="100">
-                                            </div></td>
-                                            <td>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                    <input type="text" class="form-control" value="100" readonly>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></button></td>
-                                            <td>000003</td>
-                                            <td>Lorem ipsum dolor sit.</td>
-                                            <td><input type="text" class="form-control form-control-sm" value="1"></th>
-                                            <td>1500</td>
-                                            <td><div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                <input type="text" class="form-control" value="100">
-                                            </div></td>
-                                            <td>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                    <input type="text" class="form-control" value="100" readonly>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn btn-primary btn-sm"><i class="fa fa-plus"></i></button></td>
-                                            <td>000004</td>
-                                            <td>Lorem ipsum dolor sit.</td>
-                                            <td><input type="text" class="form-control form-control-sm" value="1"></th>
-                                            <td>1500</td>
-                                            <td><div class="input-group">
-                                                <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                <input type="text" class="form-control" value="100">
-                                            </div></td>
-                                            <td>
-                                                <div class="input-group">
-                                                    <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                    <input type="text" class="form-control" value="100" readonly>
+                                                    <input type="number" class="form-control" step="0.0001" v-model="producto.precio_total" readonly>
                                                 </div>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                <pagination align="center" :data="resources.productos" @pagination-change-page="getProductos"></pagination>
+                            </div>
+                            <div class="col-12" v-else>
+                                <div class="alert alert-danger">
+                                    <p class="text-center mb-0"><i class="fa fa-exclamation-circle"></i> No hay registros encontrados para mostrar.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary">Guardar</button>
-                    </div> -->
                 </div>
             </div>
         </div>
 
-        <!-- Modal center  addServiceModalCenter-->
-        <div class="modal fade" id="addServiceModalCenter" tabindex="-1" role="dialog" aria-labelledby="addServiceModalCenterTitle" aria-hidden="true">
+        <!-- Modal center  addMatriculaModalCenter-->
+        <div class="modal fade" id="addMatriculaModalCenter" tabindex="-1" role="dialog" aria-labelledby="addMatriculaModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="addServiceModalCenterTitle"><i class="fa fa-plus"></i> Agregar Servicio</h5>
+                        <h5 class="modal-title" id="addMatriculaModalCenterTitle"><i class="fa fa-plus"></i> Agregar Matrícula</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-12 row">
-                                <div class="col-md-3 col-12">
-                                    <div class="form-group">
-                                        <label for="">Fecha desde</label>
-                                        <input type="date" class="form-control" value="2023-01-01">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-md-3 col-12 form-group">
+                                        <label for="searchMatriculaFechaInicio">Fecha desde</label>
+                                        <input type="date" class="form-control" id="searchMatriculaFechaInicio" v-model="search.matricula.fechaInicio" @change="getMatriculas(1)">
                                     </div>
-                                </div>
-                                <div class="col-md-3 col-12">
-                                    <div class="form-group">
-                                        <label for="">Fecha hasta</label>
-                                        <input type="date" class="form-control" value="2023-05-01">
+                                    <div class="col-md-3 col-12 form-group">
+                                        <label for="searchMatriculaFechaFin">Fecha hasta</label>
+                                        <input type="date" class="form-control" id="searchMatriculaFechaFin" v-model="search.matricula.fechaFin" @change="getMatriculas(1)">
                                     </div>
-                                </div>
-                                <div class="col-md-5 col-12">
-                                    <div class="form-group">
-                                        <label for="">Codígo</label>
-                                        <input type="text" class="form-control" value="0000">
+                                    <div class="col-md-6 col-12 form-group">
+                                        <label for="searchMatriculaCodigo">Código</label>
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="searchMatriculaCodigo" v-model="search.matricula.txtBuscar" placeholder="Código" @keyup.enter="getMatriculas(1)">
+                                            <div class="input-group-append"><span class="btn-primary input-group-text"  @click="getMatriculas(1)" cursor-pointer ><i class="fa fa-search"></i></span></div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="col-md-1 col-12">
-                                    <button class="btn btn-primary mt-4"><i class="fa fa-search"></i></button>
                                 </div>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12" v-if="!servicesIsEmpty">
                                 <table class="table table-sm">
                                     <thead>
                                         <tr>
                                             <th><button class="btn btn-primary" disabled="disabled"><i class="fa fa-plus"></i></button></th>
-                                            <th>Codígo</th>
+                                            <th>Código</th>
                                             <th>Descripción</th>
                                             <th>Lapso</th>
                                             <th>Costo</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td><button class="btn btn-primary" ><i class="fa fa-plus"></i></button></td>
-                                            <td>0000001</td>
-                                            <td><input type="text" class="form-control" value="Nueva matrícula"></td>
-                                            <td>01/04/2023 - 01/05/2023</td>
-                                            <td>S/. 350.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn btn-primary" ><i class="fa fa-plus"></i></button></td>
-                                            <td>0000002</td>
-                                            <td><input type="text" class="form-control" value="Nueva matrícula"></td>
-                                            <td>01/03/2023 - 01/04/2023</td>
-                                            <td>S/. 350.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn btn-primary" ><i class="fa fa-plus"></i></button></td>
-                                            <td>0000003</td>
-                                            <td><input type="text" class="form-control" value="Nueva matrícula"></td>
-                                            <td>01/02/2023 - 01/03/2023</td>
-                                            <td>S/. 350.00</td>
-                                        </tr>
-                                        <tr>
-                                            <td><button class="btn btn-primary" ><i class="fa fa-plus"></i></button></td>
-                                            <td>0000004</td>
-                                            <td><input type="text" class="form-control" value="Nueva matrícula"></td>
-                                            <td>01/01/2023 - 01/02/2023</td>
-                                            <td>S/. 350.00</td>
+                                        <tr v-for="(matricula, index) in resources.matriculas.data" :key="index" >
+                                            <td><button class="btn btn-primary" type="button" @click="addMatriculaInDetalle(index)"><i class="fa fa-plus"></i></button></td>
+                                            <td>{{ (matricula.idmatricula).toString().padStart(7,0) }}</td>
+                                            <td><input type="text" class="form-control" v-model="matricula.descripcion"></td>
+                                            <td>{{ matricula.fecha_inicio }} - {{ matricula.fecha_fin }}</td>
+                                            <td>S/. {{ matricula.monto_total }}</td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                <pagination align="center" :data="resources.matriculas" @pagination-change-page="getMatriculas"></pagination>
+                            </div>
+                            <div class="col-12" v-else>
+                                <div class="alert alert-danger">
+                                    <p class="text-center mb-0"><i class="fa fa-exclamation-circle"></i> No hay registros encontrados para mostrar.</p>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -261,24 +189,27 @@
                                 <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="tipoFacturacion">Tipo Facturación</label>
-                                        <select class="form-control form-control-sm" name="tipoFacturacion" id="tipoFacturacion" title="Tipo Facturación" >
-                                            <option value="" hidden >[---Seleccione---]</option>
-                                            <option value="1" selected >Boleta</option>
-                                            <option value="2">Factura</option>
-                                            <option value="3">Nota de credito</option>
+                                        <select class="form-control form-control-sm" name="tipoFacturacion" id="tipoFacturacion" title="Tipo Facturación" v-model="cabecera.idtipo_facturacion" @change="getSerie()" >
+                                            <option value="" hidden selected >[---Seleccione---]</option>
+                                            <option
+                                                v-for="(item, index) in resources.tipoFacturacion" :key="index"
+                                                :value="item.idtipo_facturacion"
+                                                v-text="item.nombre"
+                                                >
+                                            </option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="serie">Serie</label>
-                                        <input type="text" class="form-control form-control-sm" name="serie" id="serie" placeholder="Serie" value="001" readonly>
+                                        <input type="text" class="form-control form-control-sm" name="serie" id="serie" placeholder="Serie" :value="cabecera.serie" readonly>
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="numero">Numero</label>
-                                        <input type="text" class="form-control form-control-sm" name="numero" id="numero" placeholder="Numero" value="100" readonly >
+                                        <input type="text" class="form-control form-control-sm" name="numero" id="numero" placeholder="Numero" :value="cabecera.numero" readonly >
                                     </div>
                                 </div>
                                 <div class="col-md-4 col-12">
@@ -311,30 +242,24 @@
                                 <div class="col-md-4 col-12">
                                     <div class="form-group">
                                         <label for="cliente">Cliente </span></label>
-                                        <!-- <Autocomplete
+                                        <Autocomplete
                                             name="cliente"
                                             id="cliente"
                                             classInput="form-control form-control-sm"
                                             placeholder="Cliente"
-                                            v-model="cliente.search"
-                                            :suggestions="[
-                                                '1 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, nesciunt!',
-                                                '2 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, nesciunt!',
-                                                '3 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, nesciunt!',
-                                                '4 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, nesciunt!',
-                                                '5 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, nesciunt!',
-                                                '6 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, nesciunt!',
-                                                '7 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, nesciunt!',
-                                                '8 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quisquam, nesciunt!',
-                                            ]"
-                                        /> -->
-                                        <input type="text" name="cliente" id="cliente" class="form-control form-control-sm"  placeholder="Cliente" value="(87654321) Juan Perez Mancilla" >
+                                            v-model="cliente"
+                                            :url="route('venta.resources.clientes')"
+                                            >
+                                            <template v-slot:item="{ item }">
+                                                ({{ item.numero_documento_identidad }}) {{ item.nombres }} {{ item.apellidos }}
+                                            </template>
+                                        </Autocomplete>
                                     </div>
                                 </div>
                                 <div class="col-12 mt-4 row">
                                     <div class="col-md-4 col-12">
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#addProductoModalCenter" ><i class="fa fa-plus"></i>Agregar producto</button>
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#addServiceModalCenter" ><i class="fa fa-plus"></i>Agregar servicio</button>
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#addMatriculaModalCenter" @click="openModelMatricula()" ><i class="fa fa-plus"></i>Agregar matricula</button>
                                     </div>
                                 </div>
                                 <div class="col-12 mt-4">
@@ -468,7 +393,7 @@
     </div>
 </template>
 <script>
-import Autocomplete from '../../components/AutocompleteComponent.vue';
+import Autocomplete from '../../components/AutocompleteComponent';
 
 export default {
     components: {
@@ -476,13 +401,152 @@ export default {
     },
     data() {
         return {
-            cliente: {
-                search: '',
+            resources: {
+                tipoFacturacion: [],
+                monedas: [],
+                productos: {},
+                matriculas: {},
             },
+            search: {
+                producto: {
+                    cantidadRegistros: 5,
+                    paginaActual: 1,
+                    txtBuscar: '',
+                },
+                matricula: {
+                    fechaInicio: null,
+                    fechaFin: null,
+                    cantidadRegistros: 5,
+                    paginaActual: 1,
+                    txtBuscar: '',
+                },
+                cliente: {
+                    txtBuscar: '',
+                },
+            },
+            cliente: {},
+            cabecera: {
+                idtipo_facturacion: '',
+                serie: '',
+                numero: '',
+                idmoneda: '',
+                fechaPago: '',
+                idmodoPago: '',
+                idcliente: '',
+                monto_total: '',
+            },
+            detalle: [],
         }
-    }
+    },
+    computed: {
+        productsIsEmpty() {
+            const products = this.resources.productos?.data ?? [];
+            return products.length === 0
+        },
+        servicesIsEmpty() {
+            const services = this.resources.matriculas?.data ?? [];
+            return services.length === 0
+        }
+    },
+    methods: {
+        number_format: number_format,
+        soloNumeros: soloNumeros,
+        soloNumerosPrice: soloNumerosPrice,
+        disabledDates( date ) {
+            const currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0); // Establecer las horas, minutos, segundos y milisegundos a cero para comparación precisa
+
+            return date < currentDate;
+        },
+        getResources() {
+            return axios.get(route('venta.resources'))
+            .then( response => {
+                const data = response.data;
+                this.resources.tipoFacturacion = data.tipoFacturacion;
+            })
+        },
+        getSerie() {
+            const { resources, cabecera } = this;
+
+            const tipoFacturacionID = cabecera.idtipo_facturacion;
+            const tipoFacturacion = resources.tipoFacturacion.find( ele => ele.idtipo_facturacion === tipoFacturacionID );
+
+            this.cabecera.serie = tipoFacturacion.serie;
+            this.cabecera.numero = tipoFacturacion.numero;
+
+        },
+        getProductos( page = 1 ) {
+            this.search.producto.paginaActual = page;
+            return axios(route('venta.resources.productos'),{
+                params: this.search.producto
+            })
+            .then( response => {
+                const data = response.data;
+                this.resources.productos = data;
+            })
+        },
+        changePrecioTotal( index ) {
+            const producto = this.resources.productos.data[index];
+            const cantidad =  producto.cantidad ?? 0;
+            const precio =  producto.precio ?? 0;
+
+            this.resources.productos.data[index].precio_total = number_format( cantidad * precio , 4, '.', '');
+        },
+        addProductoInDetalle( index ) {
+            const producto = this.resources.productos.data[index];
+            const productoAddedIndex = this.detalle.findIndex(ele => ele.idtipo_articulo === 1 && ele.id === producto.idproducto && ele.precio === producto.precio );
+
+            if ( productoAddedIndex !== -1 ) {
+                const productoAdded = this.detalle[productoAddedIndex];
+                this.detalle[productoAddedIndex].cantidad = parseInt(productoAdded.cantidad) + parseInt(producto.cantidad);
+            }else{
+                this.detalle.push({
+                    idtipo_articulo: 1,
+                    id: producto.idproducto,
+                    nombre: producto.nombre,
+                    cantidad: producto.cantidad,
+                    precio: producto.precio,
+                    precio_total: producto.precio_total,
+                })
+            }
+            $('#addProductoModalCenter').modal('hide');
+
+        },
+        openModelMatricula() {
+            this.getMatriculas();
+        },
+        getMatriculas( page = 1 ) {
+            this.search.matricula.paginaActual = page;
+            return axios(route('venta.resources.matriculas'),{
+                params: this.search.matricula
+            })
+            .then( response => {
+                const data = response.data;
+                this.resources.matriculas = data;
+            })
+        },
+        addMatriculaInDetalle( index ) {
+            const matricula = this.resources.matriculas.data[index];
+
+            this.detalle.push({
+                idtipo_articulo: 2,
+                id: matricula.idmatricula,
+                nombre: matricula.descripcion,
+                cantidad: 1,
+                precio: matricula.monto_total,
+                precio_total: matricula.monto_total,
+            })
+
+            $('#addMatriculaModalCenter').modal('hide');
+        },
 
 
+    },
+    mounted() {
+        this.getResources()
+        this.getProductos(1)
+
+    },
 }
 </script>
 <style>

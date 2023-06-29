@@ -3,375 +3,171 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
-use App\Mail\Panel\EstadoEnvioMail;
-use App\Mail\Web\ComprobantePagoMail;
-use App\Models\EstadoControlVenta;
-use App\Models\EstadoEnvio;
-use App\Models\EstadoPago;
+use App\Models\Cliente;
+use App\Models\Matricula;
+use App\Models\PagoCliente;
 use App\Models\Producto;
-use App\Models\Venta;
-use App\Models\VentaDetalle;
-use Exception;
+use App\Models\TipoFacturacion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
-use Throwable;
 
 class VentaController extends Controller
 {
     public function index()
     {
-
-        $ventas = Venta::query()
-            ->with(["estadoEnvio", "estadoControlVenta", "cupon", "metodoEntrega", "facturacion", "metodoPago", "estadoPago","moneda"])
-            ->orderBy('fecha_venta', 'DESC')
-            ->where('estado',1)
-            ->paginate(10, ['*'], 'pagina', 1);
-
-        $estadosEnvio = EstadoEnvio::query()
-            ->where('estado', 1)
-            ->get();
-
-        $estadosPago = EstadoPago::query()
-            ->where('estado', 1)
-            ->get();
-
-        $estadosControlVenta = EstadoControlVenta::query()
-            ->where('estado', 1)
-            ->get();
-
-
-        return view('panel.venta.index')->with(compact('ventas', 'estadosEnvio', 'estadosPago','estadosControlVenta'));
+        return view('panel.venta.index');
     }
 
     public function listar(Request $request)
     {
-        if (!$request->ajax()) {
-            return abort(404);
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+        $cantidadRegistros = $request->input('cantidadRegistros');
+        $paginaActual = $request->input('paginaActual');
+
+        $registros = PagoCliente::query()
+            ->where('estado',1)
+            ->paginate($cantidadRegistros,['*'],'pagina',$paginaActual);
+
+
+        return view('panel.venta.listado')->with(compact('registros'))->render();
+    }
+
+    public function resources(Request $request)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $tipoFacturacion = TipoFacturacion::query()->where('estado',1)->withSucursal()->get();
+
+        return response()->json([
+            'tipoFacturacion' => $tipoFacturacion,
+        ]);
+    }
+
+    public function productos(Request $request)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
         }
 
         $cantidadRegistros = $request->input('cantidadRegistros');
         $paginaActual = $request->input('paginaActual');
         $txtBuscar = $request->input('txtBuscar');
 
-        $ventas = Venta::query()
-            ->with(["estadoEnvio", "estadoControlVenta", "cupon", "metodoEntrega", "facturacion", "metodoPago", "estadoPago","moneda"])
+        $productos = Producto::query()
+            ->selectRaw('*, 1 as cantidad, precio as precio_total')
             ->where('estado',1)
-            ->when(!empty($txtBuscar), function ($query) use ($txtBuscar) {
-                return $query->whereRaw('LPAD(v.idventa,7,"0000000") LIKE ? ', ["%" . $txtBuscar . "%"]);
+            ->when($txtBuscar,function($query) use($txtBuscar){
+                return $query->where(DB::raw('LPAD(idproducto,7,0)'),'LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('nombre','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('descripcion','LIKE','%'.$txtBuscar.'%');
             })
-            ->orderBy('fecha_venta', 'DESC')
-            ->paginate($cantidadRegistros, ['*'], 'pagina', $paginaActual);
+            ->orderBy('idproducto','desc')
+            ->paginate($cantidadRegistros,['*'],'page',$paginaActual);
 
-        return response()->json(view('panel.venta.listado')->with(compact('ventas'))->render());
-
-
+        return response()->json($productos);
     }
 
-
-    public function detalleVenta(Request $request)
+    public function matriculas(Request $request)
     {
-        if (!$request->ajax()) {
-            return abort(404);
+        if ( !$request->ajax() ) {
+            return abort(400);
         }
 
-        $idventa = $request->input('idventa');
+        $cantidadRegistros = $request->input('cantidadRegistros');
+        $paginaActual = $request->input('paginaActual');
+        $txtBuscar = $request->input('txtBuscar');
+        $fechaInicio = $request->input('fechaInicio');
+        $fechaFin = $request->input('fechaFin');
 
-        $venta = Venta::query()
-            ->with([
-                "estadoEnvio",
-                "estadoControlVenta",
-                "cupon",
-                "metodoEntrega",
-                "facturacion",
-                "metodoPago",
-                "estadoPago",
-                "cliente",
-                "tipoDocumentoIdentidad",
-                "departamento",
-                "provincia",
-                "distrito",
-                "moneda",
-                "puntoVenta"
+
+        $matriculas = Matricula::query()
+            ->leftJoin('concepto','concepto.idconcepto','matricula.idconcepto')
+            ->selectRaw("
+                matricula.idmatricula,
+                matricula.monto_total,
+                matricula.fecha_inicio,
+                matricula.fecha_fin,
+                concat(concepto.nombre, ' - ', LPAD(MONTH(matricula.created_at),2,0), '/', YEAR(matricula.created_at)) as descripcion
+            ")
+            ->when($txtBuscar,function($query) use($txtBuscar){
+                return $query->where('matricula.idmatricula','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere(DB::raw("concat(concepto.nombre, ' - ', LPAD(MONTH(matricula.created_at),2,0), '/', YEAR(matricula.created_at)) like '%$txtBuscar%' "));
+            })
+            ->when($fechaInicio, function ($query) use ($fechaInicio) {
+                return $query->whereDate('matricula.created_at', '>=', $fechaInicio);
+            })
+            ->when($fechaFin, function ($query) use ($fechaFin) {
+                return $query->whereDate('matricula.created_at', '<=', $fechaFin);
+            })
+            ->whereNull('matricula.finalizado_at')
+            ->where('matricula.estado',1)
+            ->orderBy('matricula.idmatricula','desc')
+            ->paginate($cantidadRegistros,['*'],'page',$paginaActual);
+
+
+        return response()->json($matriculas);
+    }
+
+    public function clientes(Request $request)
+    {
+        $txtBuscar = $request->input('txtBuscar');
+        $limit = $request->input('limit', 5);
+
+        $clientes = Cliente::query()
+            ->select([
+                'idcliente',
+                'nombres',
+                'apellidos',
+                'numero_documento_identidad',
+                'idtipo_documento_identidad',
             ])
-            ->find($idventa);
-
-
-        if (!$venta) {
-            return response()->json(["mensaje" => "Registro no encontrado"], 400);
-        }
-
-
-        $ventaDetalle = VentaDetalle::query()
-            ->with(["producto"])
-            ->where('idventa', $idventa)
+            ->where(function ($query) use ($txtBuscar) {
+                return $query->where('idcliente','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('nombres','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('apellidos','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('numero_documento_identidad','LIKE','%'.$txtBuscar.'%');
+            })
+            ->where('idsucursal', auth()->user()->sucursal->idsucursal)
+            ->where('estado',1)
+            ->limit($limit)
             ->get();
 
-        return response()->json([
-            "venta" => $venta,
-            "ventaDetalle" => $ventaDetalle
-        ]);
-
-    }
-
-    public function detalleVoucher(Request $request)
-    {
-        if (!$request->ajax()) {
-            return abort(404);
-        }
-
-        $idventa = $request->input('idventa');
-
-        $voucherVenta = DB::table('voucher_venta AS vv')
-            ->selectRaw('vv.*,DATE_FORMAT(CONCAT(vv.fecha," ",vv.hora),"%d/%m/%Y || %h:%i %p") AS fechaHora')
-            ->where('vv.idventa', $idventa)
-            ->first();
-
-        if (!$voucherVenta){
-            return response()->json(["mensaje" => "Registro no encontrado"], 400);
-        }
-
-        return response()->json( $voucherVenta );
-
-    }
-
-    public function modificarEstadoEnvio(Request $request)
-    {
-        if (!$request->ajax()) {
-            return abort(404);
-        }
-
-
-        try {
-            $venta = Venta::query()->findOrFail($request->input('idventa'));
-
-            if ($venta->idestado_control_venta == 3){
-                return response()->json(["mensaje" => "La venta se encuentra anualda.",],400);
-            }
-
-            $venta->idestado_envio = $request->input('idestado_envio');
-            $venta->update();
-
-            Mail::send(new EstadoEnvioMail($venta->idventa));
-
-            return response()->json([
-                "mensaje" => "El estado de envió se ha modificado satisfactoriamente."
-            ]);
-
-        }catch (\Throwable $th){
-
-            return response()->json([
-                "mensaje" => "No sé a podido modificar el estado de envío.",
-                "error" => $th->getMessage(),
-                "linea" => $th->getLine()
-
-            ],400);
-        }
-
-
-    }
-
-    public function modificarEstadoPago(Request $request)
-    {
-        if (!$request->ajax()) {
-            return abort(404);
-        }
-
-        try {
-
-            $venta = Venta::query()->findOrFail($request->input('idventa'));
-
-            if ($venta->idestado_control_venta == 3){
-                return response()->json(["mensaje" => "La venta se encuentra anualda.",],400);
-            }
-
-            $venta->pago_idestado_pago = $request->input('idestado_pago');
-            $venta->update();
-
-            return response()->json(["mensaje" => "El estado de pago se ha modificado satisfactoriamente.",]);
-
-        }catch (\Throwable $th){
-
-            return response()->json([
-                "mensaje" => "No sé a podido modificar el estado de pago.",
-                "error" => $th->getMessage(),
-                "linea" => $th->getLine()
-
-            ],400);
-        }
-
-
-    }
-
-    public function modificarEstadoControlVenta(Request $request)
-    {
-        if (!$request->ajax()) {
-            return abort(404);
-        }
-
-        DB::beginTransaction();
-        try {
-
-            $venta = Venta::query()->findOrFail($request->input('idventa'));
-
-            if ($venta->idestado_control_venta == 3){
-                return response()->json(["mensaje" => "La venta se encuentra anualda.",],400);
-            }
-
-            $venta->idestado_control_venta = $request->input('idestado_control_venta');
-            $venta->update();
-
-
-            DB::commit();
-            return response()->json([
-                "mensaje" => "El estado de la venta se ha modificado satisfactoriamente.",
-            ]);
-
-        } catch (Throwable $th) {
-
-            DB::rollBack();
-            return response()->json([
-                "mensaje" => "No sé a podido modificar el estado de la venta.",
-                "error" => $th->getMessage(),
-                "linea" => $th->getLine()
-
-            ],400);
-        }
-
-
+        return response()->json($clientes);
     }
 
 
-    public function anularVenta(Request $request)
+
+    public function create(Request $request, $idmatricula = null)
     {
-        if (!$request->ajax()) {
-            return abort(404);
-        }
-
-        DB::beginTransaction();
-        try {
-
-            $venta = Venta::query()->findOrFail($request->input('idventa'));
-
-            if ($venta->idestado_control_venta == 3){
-                return response()->json(["mensaje" => "La venta se encuentra anualda.",],400);
-            }
-
-            $venta->idestado_control_venta = 3;
-            $venta->update();
-
-            $ventaDetalle = VentaDetalle::query()
-                ->where('idventa', $venta->idventa)
-                ->get();
-
-            foreach ($ventaDetalle as $vd) {
-
-                $producto = Producto::query()->find($vd->idproducto);
-
-                if (!empty($producto)) {
-                    $producto->stock = $producto->stock + $vd->cantidad;
-                    $producto->update();
-                }
-
-            }
+        $matricula = Matricula::query()->where('idmatricula',$idmatricula)->where('estado',1)->first();
 
 
-
-            DB::commit();
-            return response()->json([
-                "mensaje" => "La venta ha sido anulada satisfactoriamente."
-            ]);
-
-        } catch (Throwable $th) {
-
-            DB::rollBack();
-            return response()->json([
-                "mensaje" => "No sé a podido anular la venta.",
-                "error" => $th->getMessage(),
-                "linea" => $th->getLine()
-
-            ],400);
-        }
-
-
+        return view('panel.venta.create')->with(compact('matricula', 'idmatricula'));
     }
 
 
-    public function pdf(Request $request,$idventa)
+    public function store(Request $request)
     {
-
-        $venta = Venta::query()
-            ->with(["estadoEnvio", "estadoControlVenta", "cupon", "metodoEntrega", "facturacion", "metodoPago", "estadoPago","cliente","tipoDocumentoIdentidad","departamento", "provincia", "distrito","moneda"])
-            ->find($idventa);
-
-
-        if (!$venta) {
-            return response()->json(["mensaje" => "Registro no encontrado"], 400);
-        }
-
-
-        $ventaDetalle = VentaDetalle::query()
-            ->with(["producto"])
-            ->where('idventa', $idventa)
-            ->get();
-
-        $pdf = \PDF::loadView('panel.venta.pdf.cuerpo', compact('venta','ventaDetalle'));
-
-        $pdf->setOptions([
-            'margin-top' => 0,
-            'margin-left' => 0,
-            'margin-right' => 0,
-            // 'header-html' => view('reportePdfSection.cabecera'),
-            'footer-center' => '[page]/[toPage]',
-            // 'orientation' => 'Landscape'
-        ]);
-
-        // return $pdf->download("reporte_ventas_generado_" . now()->format('d/m/Y') . '.pdf');
-        return $pdf->inline();
+        return ;
     }
 
-    public function updateComprobante(Request $request)
+    public function edit(Request $request)
     {
-        if(! $request->ajax() ){
-            return abort(404);
-        }
+        return ;
+    }
 
-        $idventa = $request->input('idventa');
+    public function update(Request $request)
+    {
+        return ;
+    }
 
-        try{
-            $venta = Venta::query()->find($idventa);
-
-            if(!$venta){
-                throw new Exception('No hay este registro de esta venta en nuestro sistema.');
-            }
-
-            if( $request->hasFile('comprobante')){
-                $nameFile = $request->file('comprobante')->store("comprobante/$idventa",'panel');
-                $venta->imagen_comprobante_pago = basename($nameFile);
-                $venta->update();
-
-                // try{
-                //     Mail::send(new ComprobantePagoMail($idventa));
-                // }catch(Throwable $th){ }
-
-            }
-
-
-
-            return response()->json([
-                "mensaje" => "Comprobante subido correctamente",
-            ]);
-
-        }catch( Throwable $t){
-            return response()->json([
-                "mensaje" => "El Comprobante no pudo ser actualizado, intente nuevamente.",
-                "error" => $t->getMessage(),
-            ],400);
-        }
-
-
-
-
+    public function destroy(Request $request)
+    {
+        return ;
     }
 
 }

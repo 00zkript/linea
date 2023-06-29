@@ -19,6 +19,7 @@ class ClienteController extends Controller
         $clientes = Cliente::query()
             ->with(['tipoDocumentoIdentidad'])
             ->orderBy('idcliente','DESC')
+            ->withSucursal()
             ->paginate(10,['*'],'pagina',1);
 
         $tipoDocumentoIdentidad = TipoDocumentoIdentidad::query()->where('estado',1)->get();
@@ -45,6 +46,7 @@ class ClienteController extends Controller
 
         $clientes = Cliente::query()
             ->with(['tipoDocumentoIdentidad'])
+            ->withSucursal()
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query
                     ->where('nombres','LIKE','%'.$txtBuscar.'%')
