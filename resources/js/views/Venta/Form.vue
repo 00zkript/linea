@@ -427,7 +427,10 @@ export default {
             return this.detalle.length === 0;
         },
         detalleMontoTotal() {
-            return number_format( this.detalle.reduce( (acc,cur) => acc+cur.precio_total,0), 2, '.', '' );
+            const sum = this.detalle.reduce( (acc,cur) => {
+                return parseFloat(acc)+parseFloat(cur.precio_total);
+            },0);
+            return number_format( sum, 2, '.', '' );
         },
         detalleMontoTotalSinIGV() {
             return number_format( this.detalleMontoTotal * 0.82, 2, '.', '' );

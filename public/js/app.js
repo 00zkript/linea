@@ -2821,9 +2821,10 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       return this.detalle.length === 0;
     },
     detalleMontoTotal: function detalleMontoTotal() {
-      return number_format(this.detalle.reduce(function (acc, cur) {
-        return acc + cur.precio_total;
-      }, 0), 2, '.', '');
+      var sum = this.detalle.reduce(function (acc, cur) {
+        return parseFloat(acc) + parseFloat(cur.precio_total);
+      }, 0);
+      return number_format(sum, 2, '.', '');
     },
     detalleMontoTotalSinIGV: function detalleMontoTotalSinIGV() {
       return number_format(this.detalleMontoTotal * 0.82, 2, '.', '');
