@@ -183,6 +183,8 @@
 
                     $("#nombreEditar").val(data.nombre);
                     $("#idcarrilEditar").selectpicker('val',data.carriles_pivot.map( ele => ele.idcarril));
+                    $("#diasEditar").selectpicker('val',data.dias.split('-'));
+
 
 
 
@@ -205,7 +207,7 @@
                 axios.get(URL_VER.replace(':id',idfrecuencia))
                 .then(response => {
                     const data = response.data;
-
+                    const dias = [ 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo' ];
                     stop();
 
                     $("#nombreShow").html(data.nombre);
@@ -214,6 +216,15 @@
                     for (const carril of data.carriles) {
                         $("#carrilShow").append(carril.nivel.programa.nombre+" => "+carril.nivel.nombre+" => "+carril.nombre+"<br>");
                     }
+
+                    const diasArr = data.dias.split('-');
+                    if (diasArr.length > 0) {
+                        $("#diasShow").empty();
+                        for (const dia of diasArr) {
+                            $("#diasShow").append(dias[dia-1]+"<br>");
+                        }
+                    }
+
 
                     if (data.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');

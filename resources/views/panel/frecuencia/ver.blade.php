@@ -29,6 +29,12 @@
                             <hr>
                         </div>
 
+                        <div class="col-12">
+                            <p class="text-capitalize">Días:</p>
+                            <p id="diasShow"></p>
+                            <hr>
+                        </div>
+
 
 
                         <div class="col-12">

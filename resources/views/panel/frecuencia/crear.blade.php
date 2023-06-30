@@ -22,7 +22,7 @@
                         <div class="col-12 form-group">
                             <label for="idcarril">Carril: <span class="text-danger">(*)</span></label>
                             <select class="form-control selectpicker" name="idcarril[]" id="idcarril" title="Carril" multiple required >
-                                <option value="" hidden selected >[---Seleccione---]</option>
+                                {{-- <option value="" hidden selected >[---Seleccione---]</option> --}}
                                 @foreach ($carriles as $item)
                                     <option value="{{ $item->idcarril }}">{{ $item->nivel->programa->nombre }} => {{ $item->nivel->nombre }} => {{ $item->nombre }}</option>
                                 @endforeach
@@ -32,6 +32,20 @@
                         <div class="col-12 form-group">
                             <label for="nombre">Nombre: <span class="text-danger">(*)</span></label>
                             <input type="text" name="nombre" id="nombre" required class="form-control"  placeholder="Nombre">
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <label for="dias">Días:</label>
+                            <select class="form-control selectpicker" multiple name="dias[]" id="dias" title="Días" required>
+                                {{-- <option value="" hidden selected >[---Seleccione---]</option> --}}
+                                <option value="1">Lunes</option>
+                                <option value="2">Martes</option>
+                                <option value="3">Miércoles</option>
+                                <option value="4">Jueves</option>
+                                <option value="5">Viernes</option>
+                                <option value="6">Sábado</option>
+                                <option value="7">Domingo</option>
+                            </select>
                         </div>
 
 

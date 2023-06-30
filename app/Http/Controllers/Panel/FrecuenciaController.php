@@ -59,12 +59,14 @@ class FrecuenciaController extends Controller
         $nombre     = $request->input('nombre');
         $slug       = Str::slug($nombre);
         $carriles  = $request->input('idcarril',[]);
+        $dias  = $request->input('dias',[]);
         $estado     = $request->input('estado');
 
         try {
             $registro = new Frecuencia();
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
+            $registro->dias      = implode('-',$dias);
             $registro->estado    = $estado;
             $registro->save();
 
@@ -141,6 +143,7 @@ class FrecuenciaController extends Controller
         $nombre     = $request->input('nombreEditar');
         $slug       = Str::slug($request->input('nombreEditar'));
         $carriles  = $request->input('idcarrilEditar',[]);
+        $dias  = $request->input('diasEditar',[]);
         $estado     = $request->input('estadoEditar');
 
         try {
@@ -148,6 +151,7 @@ class FrecuenciaController extends Controller
 
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
+            $registro->dias      = implode('-',$dias);
             $registro->estado    = $estado;
             $registro->update();
 
