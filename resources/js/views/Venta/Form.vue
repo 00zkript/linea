@@ -79,16 +79,16 @@
                                             <td><button class="btn btn-primary btn-sm" type="button" @click="addProductoInDetalle(index)"><i class="fa fa-plus"></i></button></td>
                                             <td>{{ (producto.idproducto).toString().padStart(7,0) }}</td>
                                             <td>{{ producto.nombre }}</td>
-                                            <td><input type="number" class="form-control form-control-sm" step="1" v-model="producto.cantidad" @input="changePrecioTotal(index)"></th>
+                                            <td><input type="number" class="form-control form-control-sm" min="1" step="1" v-model="producto.cantidad" @input="changePrecioTotal(index)"></th>
                                             <td>{{ producto.stock }}</td>
                                             <td><div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                <input type="number" class="form-control" step="0.0001" v-model="producto.precio" @input="changePrecioTotal(index)" >
+                                                <input type="number" class="form-control" min="0" step="0.01" v-model="producto.precio" @input="changePrecioTotal(index)" >
                                             </div></td>
                                             <td>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                    <input type="number" class="form-control" step="0.0001" v-model="producto.precio_total" readonly>
+                                                    <input type="number" class="form-control" step="0.01" v-model="producto.precio_total" readonly>
                                                 </div>
                                             </td>
                                         </tr>
@@ -186,83 +186,84 @@
                         </div>
                         <div class="card-body pl-4 pr-4" >
                             <div class="row">
-                                <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                        <label for="tipoFacturacion">Tipo Facturación</label>
-                                        <select class="form-control form-control-sm" name="tipoFacturacion" id="tipoFacturacion" title="Tipo Facturación" v-model="cabecera.idtipo_facturacion" @change="getSerie()" >
-                                            <option value="" hidden selected >[---Seleccione---]</option>
-                                            <option
-                                                v-for="(item, index) in resources.tipoFacturacion" :key="index"
-                                                :value="item.idtipo_facturacion"
-                                                v-text="item.nombre"
-                                                >
-                                            </option>
-                                        </select>
-                                    </div>
+                                <div class="col-12 form-group">
+                                    <label for="serchCarrito">Código matrícula</label>
+                                    <input type="text" class="form-control" name="serchCarrito" id="serchCarrito" placeholder="Código matrícula" >
                                 </div>
-                                <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                        <label for="serie">Serie</label>
-                                        <input type="text" class="form-control form-control-sm" name="serie" id="serie" placeholder="Serie" :value="cabecera.serie" readonly>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                        <label for="numero">Numero</label>
-                                        <input type="text" class="form-control form-control-sm" name="numero" id="numero" placeholder="Numero" :value="cabecera.numero" readonly >
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                        <label for="moneda">Moneda</label>
-                                        <select class="form-control form-control-sm" name="moneda" id="moneda" title="Moneda" >
-                                            <option value="" hidden>[---Seleccione---]</option>
-                                            <option value="1" selected >Soles (S/.)</option>
-                                            <option value="2">Dolares ($)</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-12">
-                                    <div class="form-group">
-                                        <label for="fechaPago">Fecha pago</label>
-                                        <input type="date" class="form-control form-control-sm" name="fechaPago" id="fechaPago" placeholder="Fecha pago" value="2023-05-23" >
-                                    </div>
-                                </div>
-                                <div class="col-md-2 col-12">
-                                    <div class="form-group">
-                                        <label for="modoPago">Modo pago</label>
-                                        <select class="form-control form-control-sm" name="modoPago" id="modoPago" title="Modo pago" >
-                                            <option value="" hidden >[---Seleccione---]</option>
-                                            <option value="1" selected >Pago efectivo</option>
-                                            <option value="2">Pago tranferencia</option>
-                                            <option value="3">Ambos</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 col-12">
-                                    <div class="form-group">
-                                        <label for="cliente">Cliente </span></label>
-                                        <Autocomplete
-                                            name="cliente"
-                                            id="cliente"
-                                            classInput="form-control form-control-sm"
-                                            placeholder="Cliente"
-                                            v-model="cliente"
-                                            :url="route('venta.resources.clientes')"
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 col-12 form-group">
+                                    <label for="tipoFacturacion">Tipo Facturación</label>
+                                    <select class="form-control form-control-sm" name="tipoFacturacion" id="tipoFacturacion" title="Tipo Facturación" v-model="cabecera.idtipo_facturacion" @change="getSerie()" >
+                                        <option value="" hidden selected >[---Seleccione---]</option>
+                                        <option
+                                            v-for="(item, index) in resources.tipoFacturacion" :key="index"
+                                            :value="item.idtipo_facturacion"
+                                            v-text="item.nombre"
                                             >
-                                            <template v-slot:item="{ item }">
-                                                ({{ item.numero_documento_identidad }}) {{ item.nombres }} {{ item.apellidos }}
-                                            </template>
-                                        </Autocomplete>
-                                    </div>
+                                        </option>
+                                    </select>
                                 </div>
+                                <div class="col-md-4 col-12 form-group">
+                                    <label for="serie">Serie</label>
+                                    <input type="text" class="form-control form-control-sm" name="serie" id="serie" placeholder="Serie" :value="cabecera.serie" readonly>
+                                </div>
+                                <div class="col-md-4 col-12 form-group">
+                                    <label for="numero">Numero</label>
+                                    <input type="text" class="form-control form-control-sm" name="numero" id="numero" placeholder="Numero" :value="cabecera.numero" readonly >
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 col-12 form-group">
+                                    <label for="modoPago">Modo pago</label>
+                                    <select class="form-control form-control-sm" name="modoPago" id="modoPago" title="Modo pago" >
+                                        <option value="" hidden >[---Seleccione---]</option>
+                                        <option value="1" selected >Pago efectivo</option>
+                                        <option value="2">Pago tranferencia</option>
+                                        <option value="3">Ambos</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-12 form-group">
+                                    <label for="moneda">Moneda</label>
+                                    <select class="form-control form-control-sm" name="moneda" id="moneda" title="Moneda" >
+                                        <option value="" hidden>[---Seleccione---]</option>
+                                        <option value="1" selected >Soles (S/.)</option>
+                                        <option value="2">Dolares ($)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-12 form-group">
+                                    <label for="fechaPago">Fecha pago</label>
+                                    <input type="date" class="form-control form-control-sm" name="fechaPago" id="fechaPago" placeholder="Fecha pago" v-model="cabecera.fechaPago" readonly >
+                                </div>
+
+                                <div class="col-md-4 col-12 form-group">
+                                    <label for="cliente">Cliente </span></label>
+                                    <Autocomplete
+                                        name="cliente"
+                                        id="cliente"
+                                        classInput="form-control form-control-sm"
+                                        placeholder="Cliente"
+                                        v-model="cliente"
+                                        :url="route('venta.resources.clientes')"
+                                        @afterSelected="removeMatriculasInDetalle"
+                                        >
+                                        <template v-slot:item="{ item }">
+                                            ({{ item.numero_documento_identidad }}) {{ item.nombres }} {{ item.apellidos }}
+                                        </template>
+                                    </Autocomplete>
+                                </div>
+                            </div>
+
+                            <div class="row">
                                 <div class="col-12 mt-4 row">
                                     <div class="col-md-4 col-12">
                                         <button class="btn btn-primary" data-toggle="modal" data-target="#addProductoModalCenter" ><i class="fa fa-plus"></i>Agregar producto</button>
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#addMatriculaModalCenter" @click="openModelMatricula()" ><i class="fa fa-plus"></i>Agregar matricula</button>
+                                        <button class="btn btn-primary" data-toggle="modal" data-target="#addMatriculaModalCenter" @click="openModelMatricula()" :disabled="clienteIsEmpty" ><i class="fa fa-plus"></i>Agregar matricula</button>
                                     </div>
                                 </div>
-                                <div class="col-12 mt-4">
+                                <div class="col-12 mt-4" v-if="!detalleIsEmpty">
                                     <table class="table table-sm">
                                         <thead >
                                             <tr>
@@ -275,78 +276,42 @@
                                             </tr>
                                         </thead>
                                         <thead>
-                                            <tr>
-                                                <td>1</td>
-                                                <td><input type="text" class="form-control" value="Nueva Matricula enero-2023" ></td>
-                                                <td><input type="text" class="form-control" value="1" ></td>
+                                            <tr v-for="(item, index) in detalle" :key="index" >
+                                                <td>{{ (index+1) }}</td>
+                                                <td><input type="text" class="form-control" v-model="item.nombre" ></td>
+                                                <td><input type="number" min="1" step="1" class="form-control" v-model="item.cantidad" :readonly="item.idtipo_articulo === TIPO_ARTICULO_ID.MATRICULA" @input="changeMontoTotalDetalle(index)" ></td>
                                                 <td>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
-                                                        <input type="text" class="form-control" value="350.00" ></input>
+                                                        <input type="number" min="0" step="0.01" class="form-control" v-model="item.precio" :readonly="item.idtipo_articulo === TIPO_ARTICULO_ID.MATRICULA" @input="changeMontoTotalDetalle(index)" ></input>
                                                     </div>
                                                 </td>
                                                 <td>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
-                                                        <input type="text" class="form-control" value="350.00" readonly ></input>
+                                                        <input type="text" class="form-control" v-model="item.precio_total" readonly ></input>
                                                     </div>
                                                 </td>
-                                                <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td><input type="text" class="form-control" value="Bañador" ></td>
-                                                <td><input type="text" class="form-control" value="1" ></td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
-                                                        <input type="text" class="form-control" value="100.00" ></input>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
-                                                        <input type="text" class="form-control" value="100.00" readonly ></input>
-                                                    </div>
-                                                </td>
-                                                <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td><input type="text" class="form-control" value="Lentes de agua" ></td>
-                                                <td><input type="text" class="form-control" value="2" ></td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
-                                                        <input type="text" class="form-control" value="50.00" ></input>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
-                                                        <input type="text" class="form-control" value="100.00" readonly ></input>
-                                                    </div>
-                                                </td>
-                                                <td><button class="btn btn-danger"><i class="fa fa-trash"></i></button></td>
+                                                <td><button class="btn btn-danger" @click="removeItemDetalle(index)"><i class="fa fa-trash"></i></button></td>
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
                                                 <td colspan="3"></td>
                                                 <td class="text-right"> <b>Total (Sin IGV)</b> </td>
-                                                <td class="text-center"> <b>S/. 451.00</b> </td>
+                                                <td class="text-center"> <b>S/. {{ detalleMontoTotalSinIGV }}</b> </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="3"></td>
                                                 <td class="text-right"> <b>IGV</b> </td>
-                                                <td class="text-center"> <b>S/. 99.00</b> </td>
+                                                <td class="text-center"> <b>S/. {{ detalleMontoTotalIGV }}</b> </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
                                                 <td colspan="3"></td>
                                                 <td class="text-right"> <b>Total</b> </td>
-                                                <td class="text-center"> <b>S/. 550.00</b> </td>
+                                                <td class="text-center"> <b>S/. {{ detalleMontoTotal }}</b> </td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -381,6 +346,7 @@
                                 </div>
 
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -394,6 +360,8 @@
 </template>
 <script>
 import Autocomplete from '../../components/AutocompleteComponent';
+import moment from 'moment';
+moment.locale('es-mx');
 
 export default {
     components: {
@@ -401,6 +369,11 @@ export default {
     },
     data() {
         return {
+            MONEDA_SYMBOL : 'S/.',
+            TIPO_ARTICULO_ID : {
+                PRODUCTO: 1,
+                MATRICULA: 2,
+            },
             resources: {
                 tipoFacturacion: [],
                 monedas: [],
@@ -446,7 +419,23 @@ export default {
         servicesIsEmpty() {
             const services = this.resources.matriculas?.data ?? [];
             return services.length === 0
-        }
+        },
+        clienteIsEmpty() {
+            return Object.keys(this.cliente).length === 0;
+        },
+        detalleIsEmpty() {
+            return this.detalle.length === 0;
+        },
+        detalleMontoTotal() {
+            return number_format( this.detalle.reduce( (acc,cur) => acc+cur.precio_total,0), 2, '.', '' );
+        },
+        detalleMontoTotalSinIGV() {
+            return number_format( this.detalleMontoTotal * 0.82, 2, '.', '' );
+        },
+        detalleMontoTotalIGV() {
+            return number_format( this.detalleMontoTotal * 0.18, 2, '.', '' );
+        },
+
     },
     methods: {
         number_format: number_format,
@@ -490,18 +479,18 @@ export default {
             const cantidad =  producto.cantidad ?? 0;
             const precio =  producto.precio ?? 0;
 
-            this.resources.productos.data[index].precio_total = number_format( cantidad * precio , 4, '.', '');
+            this.resources.productos.data[index].precio_total = number_format( cantidad * precio , 2, '.', '');
         },
         addProductoInDetalle( index ) {
             const producto = this.resources.productos.data[index];
-            const productoAddedIndex = this.detalle.findIndex(ele => ele.idtipo_articulo === 1 && ele.id === producto.idproducto && ele.precio === producto.precio );
+            const productoAddedIndex = this.detalle.findIndex(ele => ele.idtipo_articulo === this.TIPO_ARTICULO_ID.PRODUCTO && ele.id === producto.idproducto && ele.precio === producto.precio );
 
             if ( productoAddedIndex !== -1 ) {
                 const productoAdded = this.detalle[productoAddedIndex];
                 this.detalle[productoAddedIndex].cantidad = parseInt(productoAdded.cantidad) + parseInt(producto.cantidad);
             }else{
                 this.detalle.push({
-                    idtipo_articulo: 1,
+                    idtipo_articulo: this.TIPO_ARTICULO_ID.PRODUCTO,
                     id: producto.idproducto,
                     nombre: producto.nombre,
                     cantidad: producto.cantidad,
@@ -518,7 +507,10 @@ export default {
         getMatriculas( page = 1 ) {
             this.search.matricula.paginaActual = page;
             return axios(route('venta.resources.matriculas'),{
-                params: this.search.matricula
+                params: {
+                    ...this.search.matricula,
+                    idcliente: this.cliente.idcliente
+                }
             })
             .then( response => {
                 const data = response.data;
@@ -529,7 +521,7 @@ export default {
             const matricula = this.resources.matriculas.data[index];
 
             this.detalle.push({
-                idtipo_articulo: 2,
+                idtipo_articulo: this.TIPO_ARTICULO_ID.MATRICULA,
                 id: matricula.idmatricula,
                 nombre: matricula.descripcion,
                 cantidad: 1,
@@ -539,12 +531,25 @@ export default {
 
             $('#addMatriculaModalCenter').modal('hide');
         },
+        removeMatriculasInDetalle() {
+            this.detalle = this.detalle.filter( ele => ele.idtipo_articulo !== this.TIPO_ARTICULO_ID.MATRICULA)
+        },
 
+        removeItemDetalle( index ) {
+            this.detalle = this.detalle.filter( (ele,idx) => idx !== index);
+        },
+        changeMontoTotalDetalle( index ) {
+            const detalleItem = this.detalle[index];
+            const { cantidad, precio } = detalleItem;
 
+            this.detalle[index].precio_total = number_format((cantidad ?? 0) * (precio ?? 0), 2, '.', '');
+        },
     },
     mounted() {
-        this.getResources()
-        this.getProductos(1)
+        this.getResources();
+        this.getProductos(1);
+
+        this.cabecera.fechaPago = moment().format('YYYY-MM-DD');
 
     },
 }

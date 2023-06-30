@@ -80,6 +80,7 @@ class VentaController extends Controller
         $cantidadRegistros = $request->input('cantidadRegistros');
         $paginaActual = $request->input('paginaActual');
         $txtBuscar = $request->input('txtBuscar');
+        $clienteID = $request->input('idcliente');
         $fechaInicio = $request->input('fechaInicio');
         $fechaFin = $request->input('fechaFin');
 
@@ -88,6 +89,7 @@ class VentaController extends Controller
             ->leftJoin('concepto','concepto.idconcepto','matricula.idconcepto')
             ->selectRaw("
                 matricula.idmatricula,
+                matricula.idcliente,
                 matricula.monto_total,
                 matricula.fecha_inicio,
                 matricula.fecha_fin,
@@ -102,6 +104,9 @@ class VentaController extends Controller
             })
             ->when($fechaFin, function ($query) use ($fechaFin) {
                 return $query->whereDate('matricula.created_at', '<=', $fechaFin);
+            })
+            ->when($clienteID, function ($query) use ($clienteID) {
+                return $query->where('idcliente', $clienteID);
             })
             ->whereNull('matricula.finalizado_at')
             ->where('matricula.estado',1)

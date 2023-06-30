@@ -96,6 +96,8 @@ export default {
             .then( response => {
                 const data = response.data;
                 this.suggestions = data;
+                this.$emit('input', {});
+                this.$emit('afterSelected');
             })
         },
 
@@ -105,6 +107,7 @@ export default {
             this.searchValue = (li.innerText).trim();
             this.$emit('input', suggestion);
             this.suggestions = [];
+            this.$emit('afterSelected');
         },
     },
     mounted() {
