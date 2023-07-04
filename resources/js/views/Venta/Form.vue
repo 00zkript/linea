@@ -15,7 +15,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary asegurarPagoModalCenterSave">Pagar</button>
+                        <button type="button" class="btn btn-primary" @click="pagarVenta()">Pagar</button>
                     </div>
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                        <button type="button" class="btn btn-primary cancelarPagoModalSave" data-dismiss="modal">Si</button>
+                        <button type="button" class="btn btn-primary cancelarPagoModalSave" data-dismiss="modal" @click="resetData()">Si</button>
                     </div>
                 </div>
             </div>
@@ -79,8 +79,8 @@
                                             <td><button class="btn btn-primary btn-sm" type="button" @click="addProductoInDetalle(index)"><i class="fa fa-plus"></i></button></td>
                                             <td>{{ (producto.idproducto).toString().padStart(7,0) }}</td>
                                             <td>{{ producto.nombre }}</td>
-                                            <td><input type="number" class="form-control form-control-sm" min="1" step="1" v-model="producto.cantidad" @input="changePrecioTotal(index)"></th>
-                                            <td>{{ producto.stock }}</td>
+                                            <td><input type="number" class="form-control form-control-sm" min="1" step="1" :max="producto.stock" v-model="producto.cantidad" @input="changePrecioTotal(index)"></th>
+                                            <td class="text-center">{{ producto.stock }}</td>
                                             <td><div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
                                                 <input type="number" class="form-control" min="0" step="0.01" v-model="producto.precio" @input="changePrecioTotal(index)" >
@@ -88,7 +88,7 @@
                                             <td>
                                                 <div class="input-group">
                                                     <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                    <input type="number" class="form-control" step="0.01" v-model="producto.precio_total" readonly>
+                                                    <input type="number" class="form-control" step="0.01" v-model="producto.monto_total" readonly>
                                                 </div>
                                             </td>
                                         </tr>
@@ -188,14 +188,18 @@
                             <div class="row">
                                 <div class="col-12 form-group">
                                     <label for="serchCarrito">Código matrícula</label>
-                                    <input type="text" class="form-control" name="serchCarrito" id="serchCarrito" placeholder="Código matrícula" >
+
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="serchCarrito" id="serchCarrito" placeholder="Código matrícula" v-model="search.carrito.idcarrito" >
+                                        <div class="input-group-append" @click="searchCarrito()" cursor-pointer ><span class="input-group-text"> <i class="fa fa-search"></i></span></div>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-4 col-12 form-group">
                                     <label for="tipoFacturacion">Tipo Facturación</label>
-                                    <select class="form-control form-control-sm" name="tipoFacturacion" id="tipoFacturacion" title="Tipo Facturación" v-model="cabecera.idtipo_facturacion" @change="getSerie()" >
+                                    <select class="form-control form-control-sm" name="tipoFacturacion" id="tipoFacturacion" title="Tipo Facturación" v-model="headVenta.idtipo_facturacion" @change="getSerie()" >
                                         <option value="" hidden selected >[---Seleccione---]</option>
                                         <option
                                             v-for="(item, index) in resources.tipoFacturacion" :key="index"
@@ -207,35 +211,33 @@
                                 </div>
                                 <div class="col-md-4 col-12 form-group">
                                     <label for="serie">Serie</label>
-                                    <input type="text" class="form-control form-control-sm" name="serie" id="serie" placeholder="Serie" :value="cabecera.serie" readonly>
+                                    <input type="text" class="form-control form-control-sm" name="serie" id="serie" placeholder="Serie" :value="headVenta.serie" readonly>
                                 </div>
                                 <div class="col-md-4 col-12 form-group">
                                     <label for="numero">Numero</label>
-                                    <input type="text" class="form-control form-control-sm" name="numero" id="numero" placeholder="Numero" :value="cabecera.numero" readonly >
+                                    <input type="text" class="form-control form-control-sm" name="numero" id="numero" placeholder="Numero" :value="headVenta.numero" readonly >
                                 </div>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-4 col-12 form-group">
-                                    <label for="modoPago">Modo pago</label>
-                                    <select class="form-control form-control-sm" name="modoPago" id="modoPago" title="Modo pago" >
+                                    <label for="tipoPago">Modo pago </label>
+                                    <select class="form-control form-control-sm" name="tipoPago" id="tipoPago" title="Modo pago" v-model="headVenta.idtipo_pago" >
                                         <option value="" hidden >[---Seleccione---]</option>
-                                        <option value="1" selected >Pago efectivo</option>
-                                        <option value="2">Pago tranferencia</option>
-                                        <option value="3">Ambos</option>
+                                        <option v-for="(item, index) in resources.tipoPago" :key="index" :value="item.idtipo_pago" v-text="item.nombre"></option>
                                     </select>
                                 </div>
                                 <div class="col-md-2 col-12 form-group">
                                     <label for="moneda">Moneda</label>
-                                    <select class="form-control form-control-sm" name="moneda" id="moneda" title="Moneda" >
+                                    <select class="form-control form-control-sm" name="moneda" id="moneda" title="Moneda" v-model="headVenta.idmoneda" >
                                         <option value="" hidden>[---Seleccione---]</option>
-                                        <option value="1" selected >Soles (S/.)</option>
-                                        <option value="2">Dolares ($)</option>
+                                        <option value="1">Soles (S/.)</option>
+                                        <!-- <option value="2">Dolares ($)</option> -->
                                     </select>
                                 </div>
                                 <div class="col-md-2 col-12 form-group">
-                                    <label for="fechaPago">Fecha pago</label>
-                                    <input type="date" class="form-control form-control-sm" name="fechaPago" id="fechaPago" placeholder="Fecha pago" v-model="cabecera.fechaPago" readonly >
+                                    <label for="fecha_pago">Fecha pago</label>
+                                    <input type="date" class="form-control form-control-sm" name="fecha_pago" id="fecha_pago" placeholder="Fecha pago" v-model="headVenta.fecha_pago" readonly >
                                 </div>
 
                                 <div class="col-md-4 col-12 form-group">
@@ -259,8 +261,8 @@
                             <div class="row">
                                 <div class="col-12 mt-4 row">
                                     <div class="col-md-4 col-12">
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#addProductoModalCenter" ><i class="fa fa-plus"></i>Agregar producto</button>
-                                        <button class="btn btn-primary" data-toggle="modal" data-target="#addMatriculaModalCenter" @click="openModelMatricula()" :disabled="clienteIsEmpty" ><i class="fa fa-plus"></i>Agregar matricula</button>
+                                        <button class="btn btn-primary" @click="openModalProductos()" ><i class="fa fa-plus"></i>Agregar producto</button>
+                                        <button class="btn btn-primary" @click="openModalMatricula()" :disabled="clienteIsEmpty" ><i class="fa fa-plus"></i>Agregar matricula</button>
                                     </div>
                                 </div>
                                 <div class="col-12 mt-4" v-if="!detalleIsEmpty">
@@ -289,7 +291,7 @@
                                                 <td>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
-                                                        <input type="text" class="form-control" v-model="item.precio_total" readonly ></input>
+                                                        <input type="text" class="form-control" v-model="item.monto_total" readonly ></input>
                                                     </div>
                                                 </td>
                                                 <td><button class="btn btn-danger" @click="removeItemDetalle(index)"><i class="fa fa-trash"></i></button></td>
@@ -314,35 +316,47 @@
                                                 <td class="text-center"> <b>S/. {{ detalleMontoTotal }}</b> </td>
                                                 <td></td>
                                             </tr>
-                                            <tr>
+                                            <tr v-if="headVenta.idtipo_pago == 1 || headVenta.idtipo_pago == 3">
                                                 <td colspan="3"></td>
                                                 <td class="text-right"> <b>Monto efectivo</b> </td>
                                                 <td class="text-center">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                        <input type="text" class="form-control" name="montoEfectivo" id="montoEfectivo" placeholder="Monto efectivo" >
+                                                        <input type="text" class="form-control" name="montoEfectivo" id="montoEfectivo" placeholder="Monto efectivo" v-model="headVenta.monto_efectivo" >
                                                     </div>
                                                 </td>
                                                 <td></td>
                                             </tr>
-                                            <tr>
+                                            <tr v-if="headVenta.idtipo_pago == 2 || headVenta.idtipo_pago == 3">
                                                 <td colspan="3"></td>
                                                 <td class="text-right"> <b>Monto tranferido</b> </td>
                                                 <td class="text-center">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                        <input type="text" class="form-control" name="monotTransferido" id="monotTransferido" placeholder="Monto efectivo" >
+                                                        <input type="text" class="form-control" name="monotTransferido" id="monotTransferido" placeholder="Monto efectivo" v-model="headVenta.monto_transferido" >
                                                     </div>
                                                 </td>
                                                 <td></td>
                                             </tr>
+                                            <!-- <tr v-if="headVenta.idtipo_pago">
+                                                <td colspan="3"></td>
+                                                <td class="text-right"> <b>Monto vuelto</b> </td>
+                                                <td class="text-center">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
+                                                        <input type="text" class="form-control" name="monotTransferido" id="monotTransferido" placeholder="Monto efectivo" v-model="headVenta.monto_vuelto" readonly >
+                                                    </div>
+                                                </td>
+                                                <td></td>
+                                            </tr> -->
                                         </tfoot>
                                     </table>
                                 </div>
 
                                 <div class="col-12 mt-5 d-flex justify-content-center">
-                                    <button class="btn btn-secondary" data-toggle="modal" data-target="#cancelarPagoModalCenter">Cancelar</button>
-                                    <button class="btn btn-primary" data-toggle="modal" data-target="#asegurarPagoModalCenter">Pagar</button>
+                                    <button class="btn btn-secondary" @click="cancelarVenta()"><i class="fa fa-times"></i> Cancelar</button>
+                                    <button class="btn btn-success" @click="imprimirVenta()"> <i class="fa fa-file-excel" ></i> Imprimir</button>
+                                    <button class="btn btn-primary" @click="aceptarVenta()"> <i class="fa fa-money-bill" ></i> Pagar</button>
                                 </div>
 
                             </div>
@@ -369,13 +383,13 @@ export default {
     },
     data() {
         return {
-            MONEDA_SYMBOL : 'S/.',
             TIPO_ARTICULO_ID : {
                 PRODUCTO: 1,
                 MATRICULA: 2,
             },
             resources: {
                 tipoFacturacion: [],
+                tipoPago: [],
                 monedas: [],
                 productos: {},
                 matriculas: {},
@@ -396,17 +410,22 @@ export default {
                 cliente: {
                     txtBuscar: '',
                 },
+                carrito: {
+                    idcarrito: '',
+                }
             },
             cliente: {},
-            cabecera: {
+            headVenta: {
                 idtipo_facturacion: '',
                 serie: '',
                 numero: '',
-                idmoneda: '',
-                fechaPago: '',
-                idmodoPago: '',
-                idcliente: '',
+                idmoneda: 1,
+                fecha_pago: '',
+                idtipo_pago: '',
                 monto_total: '',
+                monto_efectivo: '0.00',
+                monto_transferido: '0.00',
+                monto_vuelto: '0.00',
             },
             detalle: [],
         }
@@ -428,7 +447,7 @@ export default {
         },
         detalleMontoTotal() {
             const sum = this.detalle.reduce( (acc,cur) => {
-                return parseFloat(acc)+parseFloat(cur.precio_total);
+                return parseFloat(acc)+parseFloat(cur.monto_total);
             },0);
             return number_format( sum, 2, '.', '' );
         },
@@ -444,6 +463,12 @@ export default {
         number_format: number_format,
         soloNumeros: soloNumeros,
         soloNumerosPrice: soloNumerosPrice,
+        init() {
+            this.getResources();
+            this.getProductos(1);
+
+            this.headVenta.fecha_pago = moment().format('YYYY-MM-DD');
+        },
         disabledDates( date ) {
             const currentDate = new Date();
             currentDate.setHours(0, 0, 0, 0); // Establecer las horas, minutos, segundos y milisegundos a cero para comparación precisa
@@ -454,18 +479,47 @@ export default {
             return axios.get(route('venta.resources'))
             .then( response => {
                 const data = response.data;
-                this.resources.tipoFacturacion = data.tipoFacturacion;
+                this.resources.tipoFacturacion = data.tipo_facturacion;
+                this.resources.tipoPago = data.tipo_pago;
             })
         },
         getSerie() {
-            const { resources, cabecera } = this;
+            const { resources, headVenta } = this;
 
-            const tipoFacturacionID = cabecera.idtipo_facturacion;
+            const tipoFacturacionID = headVenta.idtipo_facturacion;
             const tipoFacturacion = resources.tipoFacturacion.find( ele => ele.idtipo_facturacion === tipoFacturacionID );
 
-            this.cabecera.serie = tipoFacturacion.serie;
-            this.cabecera.numero = tipoFacturacion.numero;
+            this.headVenta.serie = tipoFacturacion.serie;
+            this.headVenta.numero = tipoFacturacion.numero;
 
+        },
+
+        searchCarrito() {
+            return axios(route('venta.resources.carrito'), { params: { idcarrito: this.search.carrito.idcarrito } })
+            .then( response => {
+                const data = response.data;
+            })
+            .catch( error => {
+                if ( error.response === undefined) return console.error(error);
+                const response = error.response;
+                const data = response.data;
+
+                if (response.status == 422){
+                    alertErrorModal({ content:  listErrors(data) });
+                }
+
+                if (response.status == 400){
+                    alertErrorModal({ content:  data.mensaje });
+                }
+
+                alertErrorModal({ content:  'Error del servidor, contácte con soporte.' });
+
+            })
+        },
+
+
+        openModalProductos() {
+            $('#addProductoModalCenter').modal('show');
         },
         getProductos( page = 1 ) {
             this.search.producto.paginaActual = page;
@@ -482,30 +536,46 @@ export default {
             const cantidad =  producto.cantidad ?? 0;
             const precio =  producto.precio ?? 0;
 
-            this.resources.productos.data[index].precio_total = number_format( cantidad * precio , 2, '.', '');
+            this.resources.productos.data[index].monto_total = number_format( cantidad * precio , 2, '.', '');
         },
         addProductoInDetalle( index ) {
             const producto = this.resources.productos.data[index];
-            const productoAddedIndex = this.detalle.findIndex(ele => ele.idtipo_articulo === this.TIPO_ARTICULO_ID.PRODUCTO && ele.id === producto.idproducto && ele.precio === producto.precio );
+            const { stock, precio, cantidad } = producto;
+            const productoAddedIndex = this.detalle.findIndex(ele => ele.idtipo_articulo === this.TIPO_ARTICULO_ID.PRODUCTO && ele.idarticulo === producto.idproducto && ele.precio === producto.precio );
 
-            if ( productoAddedIndex !== -1 ) {
-                const productoAdded = this.detalle[productoAddedIndex];
-                this.detalle[productoAddedIndex].cantidad = parseInt(productoAdded.cantidad) + parseInt(producto.cantidad);
-            }else{
+            if ( productoAddedIndex === -1 ) {
+                const newCantidad = cantidad <= stock ? cantidad : stock;
+
                 this.detalle.push({
                     idtipo_articulo: this.TIPO_ARTICULO_ID.PRODUCTO,
-                    id: producto.idproducto,
+                    idarticulo: producto.idproducto,
                     nombre: producto.nombre,
-                    cantidad: producto.cantidad,
-                    precio: producto.precio,
-                    precio_total: producto.precio_total,
-                })
+                    cantidad: newCantidad,
+                    precio: precio,
+                    monto_total: producto.monto_total,
+                });
+                $('#addProductoModalCenter').modal('hide');
+
+                return;
             }
+
+            const productoAdded = this.detalle[productoAddedIndex];
+            const cantidadSum = parseInt(productoAdded.cantidad) + parseInt(producto.cantidad);
+            const newCantidad = cantidadSum <= stock ? cantidadSum : stock;
+
+
+            this.detalle[productoAddedIndex].cantidad = newCantidad;
+            this.detalle[productoAddedIndex].monto_total = newCantidad * precio;
+
+
+
             $('#addProductoModalCenter').modal('hide');
 
         },
-        openModelMatricula() {
+
+        openModalMatricula() {
             this.getMatriculas();
+            $('#addMatriculaModalCenter').modal('show');
         },
         getMatriculas( page = 1 ) {
             this.search.matricula.paginaActual = page;
@@ -522,21 +592,32 @@ export default {
         },
         addMatriculaInDetalle( index ) {
             const matricula = this.resources.matriculas.data[index];
+            const matriculaInDetalleIndex = this.detalle.findIndex( ele => ele.idtipo_articulo === this.TIPO_ARTICULO_ID.MATRICULA && ele.idarticulo === matricula.idmatricula);
+
+            if (matriculaInDetalleIndex !== -1) {
+                $('#addMatriculaModalCenter').modal('hide');
+                alertErrorModal({
+                    content: 'La matrícula que intenta agregar ya se encuentra en el detalle.'
+                });
+                return;
+            }
 
             this.detalle.push({
                 idtipo_articulo: this.TIPO_ARTICULO_ID.MATRICULA,
-                id: matricula.idmatricula,
+                idarticulo: matricula.idmatricula,
                 nombre: matricula.descripcion,
                 cantidad: 1,
                 precio: matricula.monto_total,
-                precio_total: matricula.monto_total,
-            })
+                monto_total: matricula.monto_total,
+            });
 
             $('#addMatriculaModalCenter').modal('hide');
         },
         removeMatriculasInDetalle() {
             this.detalle = this.detalle.filter( ele => ele.idtipo_articulo !== this.TIPO_ARTICULO_ID.MATRICULA)
         },
+
+
 
         removeItemDetalle( index ) {
             this.detalle = this.detalle.filter( (ele,idx) => idx !== index);
@@ -545,14 +626,104 @@ export default {
             const detalleItem = this.detalle[index];
             const { cantidad, precio } = detalleItem;
 
-            this.detalle[index].precio_total = number_format((cantidad ?? 0) * (precio ?? 0), 2, '.', '');
+            this.detalle[index].monto_total = number_format((cantidad ?? 0) * (precio ?? 0), 2, '.', '');
         },
+
+
+        resetData() {
+            Object.assign(this.$data, this.$options.data.call(this));
+            this.init();
+            document.querySelector('#cliente').value="";
+        },
+        cancelarVenta() {
+            $('#cancelarPagoModalCenter').modal('show');
+        },
+        imprimirVenta() {
+            $('#asegurarPagoModalCenter').modal('show');
+        },
+        validateVenta() {
+            const errors = [];
+            const { cliente, headVenta, detalle } = this;
+            const TIPO_PAGO_ID = {
+                EFECTIVO: 1,
+                TRANSFERIDO: 2,
+                AMBOS: 3,
+            }
+
+            if (!headVenta.idtipo_facturacion) {
+                errors.push("Por favor, seleccione un tipo de facturación");
+            }
+
+            if (!headVenta.serie) {
+                errors.push("Por favor, ingrese la serie");
+            }
+
+            if (!headVenta.numero) {
+                errors.push("Por favor, ingrese el número");
+            }
+
+            if (!headVenta.idmoneda) {
+                errors.push("Por favor, seleccione una moneda");
+            }
+
+            if (!cliente.idcliente) {
+                errors.push("Por favor, agregue un cliente");
+            }
+
+            if (!headVenta.idtipo_pago) {
+                errors.push("Por favor, seleccione un tipo de pago");
+            }else{
+
+                if ( (headVenta.idtipo_pago === TIPO_PAGO_ID.EFECTIVO || headVenta.idtipo_pago === TIPO_PAGO_ID.AMBOS) && (!headVenta.monto_efectivo || headVenta.monto_efectivo <= 0)) {
+                    errors.push("Por favor, ingrese el monto efectivo");
+                }
+
+                if ( (headVenta.idtipo_pago === TIPO_PAGO_ID.TRANSFERIDO || headVenta.idtipo_pago === TIPO_PAGO_ID.AMBOS) && (!headVenta.monto_transferido || headVenta.monto_transferido <= 0)) {
+                    errors.push("Por favor, ingrese el monto tranferido");
+                }
+
+            }
+
+
+            if (!detalle || detalle.length === 0) {
+                errors.push("Por favor, ingrese al menos un detalle de venta");
+            }
+
+            return errors;
+        },
+
+        aceptarVenta() {
+            const errors = this.validateVenta();
+            if (errors.length > 0) {
+                return alertErrorModal({ content: listErrorsForm(errors) });
+            }
+            $('#asegurarPagoModalCenter').modal('show');
+        },
+        pagarVenta() {
+            const { headVenta, cliente, detalle } = this;
+
+            const form = {
+                ...headVenta,
+                idcliente: cliente.idcliente,
+                detalle: detalle,
+            }
+
+            axios.post(route('venta.store'),form)
+            .then( response => {
+                const data = response.data;
+                notificacion('success','¡Felicidades!', 'Se guardó el pago exitosamente.', 3*1000);
+
+
+            })
+
+
+        }
+
+
+
     },
     mounted() {
-        this.getResources();
-        this.getProductos(1);
-
-        this.cabecera.fechaPago = moment().format('YYYY-MM-DD');
+        this.init();
 
     },
 }

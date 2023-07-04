@@ -9,7 +9,7 @@ class Venta extends Model
     protected  $table = 'venta';
     protected $primaryKey = 'idventa';
     public $timestamps = true;
-    protected $guarded = [];
+    // protected $guarded = [];
 
 
 }

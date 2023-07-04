@@ -11,6 +11,6 @@ class TipoFacturacion extends Model
 
     protected $table = 'tipo_facturacion';
     protected $primaryKey = 'idtipo_facturacion';
-    // public $timestamps = false;
+    public $timestamps = false;
     // protected $appends = [];
 }

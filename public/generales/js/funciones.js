@@ -8,14 +8,20 @@ try {
     // console.log("no se importo pnotify");
 }
 
-
+let timeoutId = null;
 const alertErrorModal = ({ title = '', content = '', time = 5000 }) => {
+    // Limpiar el timeout anterior si existe
+    if (timeoutId) {
+        clearTimeout(timeoutId);
+        timeoutId = null;
+    }
+
 
     $('#alertErrorModalCenter .titleAlertModal').html(title);
     $('#alertErrorModalCenter .contentAlertModal').html(content);
     $('#alertErrorModalCenter').modal('show');
 
-    setTimeout(() => {
+    timeoutId = setTimeout(() => {
         $('#alertErrorModalCenter').modal('hide');
         $('#alertErrorModalCenter .titleAlertModal').html('');
         $('#alertErrorModalCenter .contentAlertModal').html('');
