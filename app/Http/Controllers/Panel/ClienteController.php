@@ -96,6 +96,7 @@ class ClienteController extends Controller
         try {
 
             $cliente = new Cliente();
+            $cliente->idsucursal                 = auth()->user()->sucursal->idsucursal;
             $cliente->nombres                    = $nombres;
             $cliente->apellidos                  = $apellidos;
             $cliente->correo                     = $correo;

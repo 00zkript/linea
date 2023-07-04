@@ -30,18 +30,18 @@
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="correo">Correo: <span class="text-danger">(*)</span></label>
-                            <input type="email" name="correo" id="correo" required class="form-control">
+                            <label for="correo">Correo: </label>
+                            <input type="email" name="correo" id="correo" class="form-control">
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="telefono">Teléfono: <span class="text-danger">(*)</span></label>
-                            <input type="text" name="telefono" id="telefono" required class="form-control soloNumeros">
+                            <label for="telefono">Teléfono: </label>
+                            <input type="text" name="telefono" id="telefono" class="form-control soloNumeros">
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="tipoDocumentoIdentidad">Documento de identidad: <span class="text-danger">(*)</span></label>
-                            <select name="tipoDocumentoIdentidad" id="tipoDocumentoIdentidad" class="form-control" required>
+                            <label for="tipoDocumentoIdentidad">Documento de identidad: </label>
+                            <select name="tipoDocumentoIdentidad" id="tipoDocumentoIdentidad" class="form-control" >
                                 <option value="" hidden selected>[--Seleccione--]</option>
                                 @foreach($tipoDocumentoIdentidad as $item)
                                     <option value="{{ $item->idtipo_documento_identidad }}">
@@ -52,8 +52,8 @@
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="numeroDocumentoIdentidad">N° de Documento: <span class="text-danger">(*)</span></label>
-                            <input type="text" name="numeroDocumentoIdentidad" id="numeroDocumentoIdentidad" required class="form-control soloNumeros"  minlength="8" maxlength="8">
+                            <label for="numeroDocumentoIdentidad">N° de Documento: </label>
+                            <input type="text" name="numeroDocumentoIdentidad" id="numeroDocumentoIdentidad"  class="form-control soloNumeros"  minlength="8" maxlength="8">
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
@@ -114,13 +114,13 @@
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="apoderadoCorreo">Correo: <span class="text-danger">(*)</span></label>
-                            <input type="email" name="apoderadoCorreo" id="apoderadoCorreo" required class="form-control">
+                            <label for="apoderadoCorreo">Correo: </label>
+                            <input type="email" name="apoderadoCorreo" id="apoderadoCorreo" class="form-control">
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="apoderadoTelefono">Teléfono: <span class="text-danger">(*)</span></label>
-                            <input type="text" name="apoderadoTelefono" id="apoderadoTelefono" required class="form-control soloNumeros">
+                            <label for="apoderadoTelefono">Teléfono: </label>
+                            <input type="text" name="apoderadoTelefono" id="apoderadoTelefono" class="form-control soloNumeros">
                         </div>
 
 

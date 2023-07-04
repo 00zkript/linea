@@ -32,18 +32,18 @@
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="correoEditar">Correo: <span class="text-danger">(*)</span></label>
-                            <input type="email" name="correoEditar" id="correoEditar" required class="form-control"  placeholder="Correo">
+                            <label for="correoEditar">Correo: </label>
+                            <input type="email" name="correoEditar" id="correoEditar" class="form-control"  placeholder="Correo">
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="telefonoEditar">Teléfono: <span class="text-danger">(*)</span></label>
-                            <input type="text" name="telefonoEditar" id="telefonoEditar" required class="form-control soloNumeros"  placeholder="Teléfono">
+                            <label for="telefonoEditar">Teléfono: </label>
+                            <input type="text" name="telefonoEditar" id="telefonoEditar" class="form-control soloNumeros"  placeholder="Teléfono">
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="tipoDocumentoIdentidadEditar">Documento de identidad: <span class="text-danger">(*)</span></label>
-                            <select name="tipoDocumentoIdentidadEditar" id="tipoDocumentoIdentidadEditar" class="form-control" required>
+                            <label for="tipoDocumentoIdentidadEditar">Documento de identidad: </label>
+                            <select name="tipoDocumentoIdentidadEditar" id="tipoDocumentoIdentidadEditar" class="form-control" >
                                 <option value="" hidden selected>[--Seleccione--]</option>
                                 @foreach($tipoDocumentoIdentidad as $item)
                                     <option value="{{ $item->idtipo_documento_identidad }}">
@@ -54,8 +54,8 @@
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="numeroDocumentoIdentidadEditar">N° de Documento: <span class="text-danger">(*)</span></label>
-                            <input type="text" name="numeroDocumentoIdentidadEditar" id="numeroDocumentoIdentidadEditar" required class="form-control soloNumeros"  placeholder="N° de Documento" minlength="8" maxlength="8">
+                            <label for="numeroDocumentoIdentidadEditar">N° de Documento: </label>
+                            <input type="text" name="numeroDocumentoIdentidadEditar" id="numeroDocumentoIdentidadEditar" class="form-control soloNumeros"  placeholder="N° de Documento" minlength="8" maxlength="8">
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
@@ -117,13 +117,13 @@
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="apoderadoCorreoEditar">Correo: <span class="text-danger">(*)</span></label>
-                            <input type="email" name="apoderadoCorreoEditar" id="apoderadoCorreoEditar" required class="form-control">
+                            <label for="apoderadoCorreoEditar">Correo: </label>
+                            <input type="email" name="apoderadoCorreoEditar" id="apoderadoCorreoEditar" class="form-control">
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="apoderadoTelefonoEditar">Teléfono: <span class="text-danger">(*)</span></label>
-                            <input type="text" name="apoderadoTelefonoEditar" id="apoderadoTelefonoEditar" required class="form-control soloNumeros">
+                            <label for="apoderadoTelefonoEditar">Teléfono: </label>
+                            <input type="text" name="apoderadoTelefonoEditar" id="apoderadoTelefonoEditar" class="form-control soloNumeros">
                         </div>
 
 

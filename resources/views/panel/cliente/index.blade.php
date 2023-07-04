@@ -248,10 +248,10 @@
                     $('#apellidosShow').html(data.apellidos);
                     $('#correoShow').html(data.correo);
                     $('#telefonoShow').html(data.telefono);
-                    $('#tipoDocumentoIdentidadShow').html(data.tipo_documento_identidad.nombre+" - "+data.numero_documento_identidad);
+                    $('#tipoDocumentoIdentidadShow').html(data.tipo_documento_identidad?.nombre+" - "+(data.numero_documento_identidad ?? ''));
                     $('#fechaNacimientoShow').html(data.fecha_nacimiento);
                     $('#notaShow').html(data.nota);
-                    $('#direccionShow').html(data.direccion+" "+ data.distrito.nombre+" / "+data.provincia.nombre+" / "+data.departamento.nombre);
+                    $('#direccionShow').html((data.direccion ?? '')+" "+ (data.distrito?.nombre ?? '')+" / "+(data.provincia?.nombre ?? '')+" / "+(data.departamento?.nombre ?? ''));
 
                     $('#apoderadoNombreShow').html(data.nombres);
                     $('#apoderadoApellidosShow').html(data.apellidos);
