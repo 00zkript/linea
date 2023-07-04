@@ -210,12 +210,21 @@
 
         }
 
-        $('.datepicker').datepicker();
 
         $(function () {
             modales();
             filtros();
             reportes();
+
+            $('.datepicker').datepicker({
+                format: 'yyyy-mm-dd',
+                language: 'es',
+                orientation: "auto left",
+                forceParse: false,
+                autoclose: true,
+                todayHighlight: false, /*pinta la fecha de hoy*/
+                toggleActive: false,
+            });
         });
 
 
