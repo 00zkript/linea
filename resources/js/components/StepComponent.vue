@@ -11,7 +11,7 @@
             </div>
             <div class="step-footer" v-if="showFooter">
                 <button class="btn btn-primary next-step" @click="showContent = false; $emit('next')" v-text="btnNextText" ></button>
-                <button class="btn btn-secondary cancel-step">Cancelar</button>
+                <button class="btn btn-secondary cancel-step" @click="$emit('cancelar')" v-text="btnCancelText"></button>
             </div>
         </div>
 
@@ -41,6 +41,10 @@ export default {
         btnNextText: {
             type: String,
             default: 'Siguiente'
+        },
+        btnCancelText: {
+            type: String,
+            default: 'Cancelar'
         }
     },
     data() {

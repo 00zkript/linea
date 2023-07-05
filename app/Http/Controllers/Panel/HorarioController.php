@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Frecuencia;
 use App\Models\Horario;
+use App\Models\Programa;
 
 class HorarioController extends Controller
 {
@@ -15,15 +16,12 @@ class HorarioController extends Controller
     public function index()
     {
 
-        $frecuencias = Frecuencia::query()->where('estado',1)->get();
-
         $registros = Horario::query()
-            ->with(['frecuencia'])
             ->orderBy('idhorario','DESC')
             ->paginate(10,['*'],'pagina',1);
 
 
-        return view('panel.horario.index')->with(compact('registros', 'frecuencias'));
+        return view('panel.horario.index')->with(compact('registros'));
     }
 
     public function listar(Request $request)
@@ -37,7 +35,6 @@ class HorarioController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $registros = Horario::query()
-            ->with(['frecuencia'])
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query->where('nombre','LIKE','%'.$txtBuscar.'%');
             })
@@ -59,14 +56,12 @@ class HorarioController extends Controller
 
         $nombre     = $request->input('nombre');
         $slug       = Str::slug($nombre);
-        $idfrecuencia  = $request->input('idfrecuencia');
         $estado     = $request->input('estado');
 
         try {
             $registro = new Horario();
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
-            $registro->idfrecuencia      = $idfrecuencia;
             $registro->estado    = $estado;
             $registro->save();
 
@@ -97,7 +92,7 @@ class HorarioController extends Controller
         }
 
         // $idhorario = $request->input('idhorario');
-        $registro = Horario::query()->with(['frecuencia'])->find($idhorario);
+        $registro = Horario::query()->find($idhorario);
 
         if(!$registro){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -135,7 +130,6 @@ class HorarioController extends Controller
         // $idhorario = $request->input('idhorario');
         $nombre     = $request->input('nombreEditar');
         $slug       = Str::slug($request->input('nombreEditar'));
-        $idfrecuencia  = $request->input('idfrecuenciaEditar');
         $estado     = $request->input('estadoEditar');
 
         try {
@@ -143,7 +137,6 @@ class HorarioController extends Controller
 
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
-            $registro->idfrecuencia      = $idfrecuencia;
             $registro->estado    = $estado;
             $registro->update();
 

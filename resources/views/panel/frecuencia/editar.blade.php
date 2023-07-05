@@ -1,6 +1,6 @@
 
 <div class="modal fade" id="modalEditar" tabindex="-1" role="dialog"  aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><i class="fa fa-edit"></i> Modificar registro</h5>
@@ -22,11 +22,11 @@
 
 
                         <div class="col-12 form-group">
-                            <label for="idcarrilEditar">Carril: <span class="text-danger">(*)</span></label>
-                            <select class="form-control selectpicker" name="idcarrilEditar[]" id="idcarrilEditar" title="Carril" multiple required >
+                            <label for="idprogramaEditar">Programa: <span class="text-danger">(*)</span></label>
+                            <select class="form-control selectpicker" name="idprogramaEditar[]" id="idprogramaEditar" title="Carril" data-live-search="true" data-size="5" multiple required >
                                 {{-- <option value="" hidden selected >[---Seleccione---]</option> --}}
-                                @foreach ($carriles as $item)
-                                    <option value="{{ $item->idcarril }}">{{ $item->nivel->programa->nombre }} => {{ $item->nivel->nombre }} => {{ $item->nombre }}</option>
+                                @foreach ($programas as $item)
+                                    <option value="{{ $item->idprograma }}">{{ $item->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -37,7 +37,7 @@
                         </div>
                         <div class="col-12 form-group">
                             <label for="diasEditar">Días:</label>
-                            <select class="form-control selectpicker" multiple name="diasEditar[]" id="diasEditar" title="Días" required>
+                            <select class="form-control selectpicker" multiple name="diasEditar[]" id="diasEditar" title="Días" required data-size="5">
                                 {{-- <option value="" hidden selected >[---Seleccione---]</option> --}}
                                 <option value="1">Lunes</option>
                                 <option value="2">Martes</option>

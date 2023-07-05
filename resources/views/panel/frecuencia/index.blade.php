@@ -182,7 +182,7 @@
 
 
                     $("#nombreEditar").val(data.nombre);
-                    $("#idcarrilEditar").selectpicker('val',data.carriles_pivot.map( ele => ele.idcarril));
+                    $("#idprogramaEditar").selectpicker('val',data.programas_pivot.map( ele => ele.idprograma));
                     $("#diasEditar").selectpicker('val',data.dias.split('-'));
 
 
@@ -212,9 +212,9 @@
 
                     $("#nombreShow").html(data.nombre);
 
-                    $("#carrilShow").empty();
-                    for (const carril of data.carriles) {
-                        $("#carrilShow").append(carril.nivel.programa.nombre+" => "+carril.nivel.nombre+" => "+carril.nombre+"<br>");
+                    $("#programasShow").empty();
+                    for (const programa of data.programas) {
+                        $("#programasShow").append( programa.nombre+"<br>");
                     }
 
                     const diasArr = data.dias.split('-');

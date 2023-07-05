@@ -687,6 +687,17 @@ export default {
 
             if (!detalle || detalle.length === 0) {
                 errors.push("Por favor, ingrese al menos un detalle de venta");
+            }else{
+                const hasDetalleCantidadInvalida = detalle.some( ele => ele.cantidad <= 0 );
+                const hasDetallePrecioInvalida = detalle.some( ele => ele.precio < 0);
+
+                if (hasDetalleCantidadInvalida) {
+                    errors.push("Por favor, ingrese una cantidad válida para el detalle de venta");
+                }
+
+                if (hasDetallePrecioInvalida) {
+                    errors.push("Por favor, ingrese un precio válido para el detalle de venta");
+                }
             }
 
             return errors;

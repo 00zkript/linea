@@ -17,6 +17,19 @@ class Programa extends Model
     }
 
 
+    public function frecuenciasPivot()
+    {
+        return $this->hasMany(ProgramaHasFrecuencia::class, 'idprograma', 'idprograma');
+    }
+
+    public function frecuencias()
+    {
+        return $this->belongsToMany(Frecuencia::class, ProgramaHasFrecuencia::class, 'idprograma', 'idfrecuencia', 'idprograma', 'idfrecuencia');
+    }
+
+
+
+
     public function temporada()
     {
         return $this->hasOne(Temporada::class, 'idtemporada', 'idtemporada')->withDefault([

@@ -1,6 +1,6 @@
 
     <div class="modal fade" id="modalCrear" tabindex="-1" role="dialog"  aria-hidden="true" data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><i class="fa fa-plus"></i> Nuevo registro</h5>
@@ -20,11 +20,11 @@
 
 
                         <div class="col-12 form-group">
-                            <label for="idcarril">Carril: <span class="text-danger">(*)</span></label>
-                            <select class="form-control selectpicker" name="idcarril[]" id="idcarril" title="Carril" multiple required >
+                            <label for="idprograma">Programa: <span class="text-danger">(*)</span></label>
+                            <select class="form-control selectpicker" name="idprograma[]" id="idprograma" title="Carril" data-live-search="true" data-size="5" multiple required >
                                 {{-- <option value="" hidden selected >[---Seleccione---]</option> --}}
-                                @foreach ($carriles as $item)
-                                    <option value="{{ $item->idcarril }}">{{ $item->nivel->programa->nombre }} => {{ $item->nivel->nombre }} => {{ $item->nombre }}</option>
+                                @foreach ($programas as $item)
+                                    <option value="{{ $item->idprograma }}">{{ $item->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -36,7 +36,7 @@
 
                         <div class="col-12 form-group">
                             <label for="dias">Días:</label>
-                            <select class="form-control selectpicker" multiple name="dias[]" id="dias" title="Días" required>
+                            <select class="form-control selectpicker" multiple name="dias[]" id="dias" title="Días" required data-size="5">
                                 {{-- <option value="" hidden selected >[---Seleccione---]</option> --}}
                                 <option value="1">Lunes</option>
                                 <option value="2">Martes</option>

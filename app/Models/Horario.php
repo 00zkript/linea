@@ -11,11 +11,6 @@ class Horario extends Model
 	protected $primaryKey = 'idhorario';
 	public $timestamps = true;
 
-    public function frecuencia()
-    {
-        return $this->hasOne(Frecuencia::class, 'idfrecuencia', 'idfrecuencia' )->withDefault([
-            'nombre' => 'Sin frecuencia'
-        ]);
-    }
+
 
 }

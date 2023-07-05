@@ -1,6 +1,6 @@
 
     <div class="modal fade" id="modalCrear" tabindex="-1" role="dialog"  aria-hidden="true" data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title"><i class="fa fa-plus"></i> Nuevo registro</h5>
@@ -19,15 +19,6 @@
                         </div>
 
 
-                        <div class="col-12 form-group">
-                            <label for="idfrecuencia">Frecuencia: <span class="text-danger">(*)</span></label>
-                            <select class="form-control" name="idfrecuencia" id="idfrecuencia" title="Frecuencia" >
-                                <option value="" hidden selected >[---Seleccione---]</option>
-                                @foreach ($frecuencias as $item)
-                                    <option value="{{ $item->idfrecuencia }}">{{ $item->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
 
                         <div class="col-12 form-group">
                             <label for="nombre">Nombre: <span class="text-danger">(*)</span></label>

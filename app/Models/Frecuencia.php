@@ -18,14 +18,14 @@ class Frecuencia extends Model
 
 
 
-    public function carrilesPivot()
+    public function programasPivot()
     {
-        return $this->hasMany(CarrilHasFrecuencia::class, 'idfrecuencia', 'idfrecuencia');
+        return $this->hasMany(ProgramaHasFrecuencia::class, 'idfrecuencia', 'idfrecuencia');
     }
 
-    public function carriles()
+    public function programas()
     {
-        return $this->belongsToMany(Carril::class, CarrilHasFrecuencia::class, 'idfrecuencia', 'idcarril', 'idfrecuencia', 'idcarril');
+        return $this->belongsToMany(Programa::class, ProgramaHasFrecuencia::class, 'idfrecuencia', 'idprograma', 'idfrecuencia', 'idprograma');
     }
 
 }

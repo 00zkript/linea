@@ -182,7 +182,6 @@
 
 
                     $("#nombreEditar").val(data.nombre);
-                    $("#idfrecuenciaEditar").val(data.idfrecuencia);
 
 
 
@@ -209,7 +208,6 @@
                     stop();
 
                     $("#nombreShow").html(data.nombre);
-                    $("#frecuenciaShow").html(data.frecuencia.nombre);
 
                     if (data.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');

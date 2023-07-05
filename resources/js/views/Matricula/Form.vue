@@ -1,7 +1,7 @@
 <template>
     <StepsContainer>
 
-        <Step :number="1" id="step-1" title="Nuevo Alumno" :currentValue="stepCurrent" @next="storeAlumno()"  >
+        <Step :number="1" id="step-1" title="Nuevo Alumno" :currentValue="stepCurrent" @next="storeAlumno()" @cancelar="cancelarStoreAlumno()"  >
             <div class="row">
                 <div class="col-md-6 col-12 form-group">
                     <label for="nombres">Nombres <span class="text-danger">(*)</span></label>
@@ -24,15 +24,15 @@
                 </div>
 
                 <div class="col-md-6 col-12 form-group">
-                    <label for="tipoDocumentoIdentidad">Documento de identidad <span class="text-danger">(*)</span></label>
+                    <label for="tipoDocumentoIdentidad">Documento de identidad </label>
                     <select name="tipoDocumentoIdentidad" id="tipoDocumentoIdentidad" class="form-control" v-model="alumno.idtipo_documento_identidad" @change="changeAlumnoTipoDocumentoIdentidad()" >
-                        <option value="" hidden selected >[---Seleccione---]</option>
+                        <option :value="null" hidden selected >[---Seleccione---]</option>
                         <option v-for="(item, index) in resources.tipoDocumentoIdentidad" :key="index" :value="item.idtipo_documento_identidad" v-text="item.nombre" ></option>
                     </select>
                 </div>
 
                 <div class="col-md-6 col-12 form-group">
-                    <label for="numeroDocumentoIdentidad">N° de Documento <span class="text-danger">(*)</span></label>
+                    <label for="numeroDocumentoIdentidad">N° de Documento </label>
                     <input type="text" name="numeroDocumentoIdentidad" id="numeroDocumentoIdentidad" class="form-control" @keypress="soloNumeros"  :minlength="alumno.numero_documento_identidad_lemgth" :maxlength="alumno.numero_documento_identidad_lemgth" placeholder="N°" v-model="alumno.numero_documento_identidad" >
                 </div>
 
@@ -46,7 +46,7 @@
                     <select class="form-control" name="sexo" id="sexo" v-model="alumno.sexo"
                         @change=" temp.alumno.sexo = resources.sexos.find(ele => ele.idsexo === alumno.idsexo ); "
                         >
-                        <option value="" hidden selected >[---Seleccione---]</option>
+                        <option :value="null" hidden selected >[---Seleccione---]</option>
                         <option v-for="(item, index) in resources.sexos" :key="index" :value="item.idsexo" v-text="item.nombre"></option>
                     </select>
                 </div>
@@ -54,7 +54,7 @@
                 <div class="col-md-4 col-12 form-group">
                     <label for="departamento">Departamento</label>
                     <select class="form-control" name="departamento" id="departamento" title="Departamento" v-model="alumno.iddepartamento" @change="changeAlumnoDepartamento()" >
-                        <option value="" hidden >[---Seleccione---]</option>
+                        <option :value="null" hidden selected >[---Seleccione---]</option>
                         <option v-for="(item, index) in resources.departamentos" :key="index" :value="item.iddepartamento" v-text="item.nombre"></option>
                     </select>
                 </div>
@@ -62,7 +62,7 @@
                 <div class="col-md-4 col-12 form-group">
                     <label for="provincia">Provincia</label>
                     <select class="form-control" name="provincia" id="provincia" title="Provincia" v-model="alumno.idprovincia" @change="changeAlumnoProvincia()" >
-                        <option value="" hidden selected>[---Seleccione---]</option>
+                        <option :value="null" hidden selected >[---Seleccione---]</option>
                         <option v-for="(item, index) in resources.provincias" :key="index" :value="item.idprovincia" v-text="item.nombre"></option>
                     </select>
                 </div>
@@ -70,7 +70,7 @@
                 <div class="col-md-4 col-12 form-group">
                     <label for="distrito">Distrito</label>
                     <select class="form-control" name="distrito" id="distrito" title="Distrito" v-model="alumno.iddistrito">
-                        <option value="" hidden >[---Seleccione---]</option>
+                        <option :value="null" hidden selected >[---Seleccione---]</option>
                         <option v-for="(item, index) in resources.distritos" :key="index" :value="item.iddistrito" v-text="item.nombre"></option>
                     </select>
                 </div>
@@ -120,7 +120,7 @@
             </div>
         </Step>
 
-        <Step :number="2" id="step-2" title="Matrícula" :currentValue="stepCurrent" @next="saveMatricula()" >
+        <Step :number="2" id="step-2" title="Matrícula" :currentValue="stepCurrent" @next="saveMatricula()" @cancelar="cancelarSaveMatricula()" >
             <div class="row">
 
                 <div class="col-md-8 col-12 form-group">
@@ -143,7 +143,7 @@
                 </div>
                 <div class="col-md-4 col-12 form-group">
                     <label for="programa">Programa <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="programa" v-model="matricula.idprograma" @change="getNiveles()">
+                    <select class="form-control" id="programa" v-model="matricula.idprograma" @change="getNiveles(); getFrecuencias()">
                         <option value="" hidden >[---Seleccione---]</option>
                         <option v-for="(item, index) in resources.programas" :key="index" :value="item.idprograma" v-text="item.nombre"></option>
                     </select>
@@ -158,14 +158,14 @@
                 </div>
                 <div class="col-md-4 col-12 form-group">
                     <label for="carril">Carril <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="carril" v-model="matricula.idcarril" @change="getFrecuencias()">
+                    <select class="form-control" id="carril" v-model="matricula.idcarril">
                         <option value="" hidden >[---Seleccione---]</option>
                         <option v-for="(item, index) in resources.carriles" :key="index" :value="item.idcarril" v-text="item.nombre"></option>
                     </select>
                 </div>
                 <div class="col-md-4 col-12 form-group">
                     <label for="frecuencia">Frecuencia <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="frecuencia" v-model="matricula.idfrecuencia" @change="getHorarios()">
+                    <select class="form-control" id="frecuencia" v-model="matricula.idfrecuencia">
                         <option value="" hidden >[---Seleccione---]</option>
                         <option v-for="(item, index) in resources.frecuencias" :key="index" :value="item.idfrecuencia" v-text="item.nombre"></option>
                     </select>
@@ -200,7 +200,7 @@
         </Step>
 
 
-        <Step :number="3" id="step-3" title="Datos de matrícula" :currentValue="stepCurrent" @next="storeMatriculaHorario()" btnNextText="Guardar" >
+        <Step :number="3" id="step-3" title="Datos de matrícula" :currentValue="stepCurrent" @next="storeMatriculaHorario()" @cancelar="cancelarStoreMatriculaHorario()" btnNextText="Guardar" >
 
 
             <table class="table table-bordered">
@@ -363,17 +363,16 @@ export default {
                 apoderado_apellidos: '',
                 apoderado_correo: '',
                 apoderado_telefono: '',
-                idtipo_documento_identidad: '',
+                idtipo_documento_identidad: null,
                 numero_documento_identidad: '',
                 numero_documento_identidad_lemgth: 8,
                 fecha_nacimiento: null,
-                sexo: '',
-                iddepartamento: '',
-                idprovincia: '',
-                iddistrito: '',
+                sexo: null,
+                iddepartamento: null,
+                idprovincia: null,
+                iddistrito: null,
                 direccion: null,
                 nota: null,
-                imagen: null,
             },
             matricula: {
                 idmatricula: '',
@@ -396,6 +395,23 @@ export default {
             cantidadClasesMaxima: null,
         };
     },
+    watch: {
+        'matricula.idtemporada'(newValue) {
+            this.getCountMatriculados();
+        },
+        'matricula.idprograma'(newValue) {
+            this.getCountMatriculados();
+        },
+        'matricula.idnivel'(newValue) {
+            this.getCountMatriculados();
+        },
+        'matricula.idcarril'(newValue) {
+            this.getCountMatriculados();
+        },
+        'matricula.idfrecuencia'(newValue) {
+            this.getCountMatriculados();
+        },
+    },
     methods: {
         soloNumeros: soloNumeros,
         disabledDatesRange(date) {
@@ -408,9 +424,35 @@ export default {
             return axios(route('matricula.alumno',clienteID))
                 .then( (response) => {
                     const data = response.data;
-                    this.alumno = Object.assign(this.alumno, data);
-                    this.getProvincias();
-                    this.getDistritos();
+
+                    this.alumno.idcliente                  = data.idcliente;
+                    this.alumno.nombres                    = data.nombres ?? '';
+                    this.alumno.apellidos                  = data.apellidos ?? '';
+                    this.alumno.correo                     = data.correo ?? '';
+                    this.alumno.telefono                   = data.telefono ?? '';
+                    this.alumno.apoderado_nombres          = data.apoderado_nombres ?? '';
+                    this.alumno.apoderado_apellidos        = data.apoderado_apellidos ?? '';
+                    this.alumno.apoderado_correo           = data.apoderado_correo ?? '';
+                    this.alumno.apoderado_telefono         = data.apoderado_telefono ?? '';
+                    this.alumno.idtipo_documento_identidad = data.idtipo_documento_identidad;
+                    this.alumno.numero_documento_identidad = data.numero_documento_identidad ?? '';
+                    this.alumno.sexo                       = data.sexo;
+                    this.alumno.fecha_nacimiento           = data.fecha_nacimiento;
+                    this.alumno.iddepartamento             = data.iddepartamento;
+                    this.alumno.idprovincia                = data.idprovincia;
+                    this.alumno.iddistrito                 = data.iddistrito;
+                    this.alumno.direccion                  = data.direccion ?? '';
+                    this.alumno.nota                       = data.nota ?? '';
+                    // this.alumno.referencia                 = data.referencia
+
+
+                    if (data.iddepartamento) {
+                        this.getProvincias();
+                    }
+                    if (data.idprovincia) {
+                        this.getDistritos();
+                    }
+
 
                 })
         },
@@ -420,17 +462,38 @@ export default {
                     const data = response.data;
                     const { resources, matricula, alumno } = data;
 
-                    this.alumno = Object.assign(this.alumno, alumno);
-                    this.getProvincias();
-                    this.getDistritos();
+                    this.alumno.idcliente                  = alumno.idcliente;
+                    this.alumno.nombres                    = alumno.nombres ?? '';
+                    this.alumno.apellidos                  = alumno.apellidos ?? '';
+                    this.alumno.correo                     = alumno.correo ?? '';
+                    this.alumno.telefono                   = alumno.telefono ?? '';
+                    this.alumno.apoderado_nombres          = alumno.apoderado_nombres ?? '';
+                    this.alumno.apoderado_apellidos        = alumno.apoderado_apellidos ?? '';
+                    this.alumno.apoderado_correo           = alumno.apoderado_correo ?? '';
+                    this.alumno.apoderado_telefono         = alumno.apoderado_telefono ?? '';
+                    this.alumno.idtipo_documento_identidad = alumno.idtipo_documento_identidad;
+                    this.alumno.numero_documento_identidad = alumno.numero_documento_identidad ?? '';
+                    this.alumno.sexo                       = alumno.sexo;
+                    this.alumno.fecha_nacimiento           = alumno.fecha_nacimiento;
+                    this.alumno.iddepartamento             = alumno.iddepartamento;
+                    this.alumno.idprovincia                = alumno.idprovincia;
+                    this.alumno.iddistrito                 = alumno.iddistrito;
+                    this.alumno.direccion                  = alumno.direccion ?? '';
+                    this.alumno.nota                       = alumno.nota ?? '';
+
+                    if (alumno.iddepartamento) {
+                        this.getProvincias();
+                    }
+                    if (alumno.idprovincia) {
+                        this.getDistritos();
+                    }
 
 
                     this.resources.programas   = resources.programas;
                     this.resources.niveles     = resources.niveles;
                     this.resources.carriles    = resources.carriles;
                     this.resources.frecuencias = resources.frecuencias;
-                    this.resources.horarios    = resources.horarios;
-                    const horarioFind = resources.horarios.find(ele => ele.idhorario === matricula.detalle[0].idhorario );
+                    const horarioFind = this.resources.horarios.find(ele => ele.idhorario === matricula.detalle[0].idhorario );
 
 
                     this.matricula.idmatricula       = matricula.idmatricula;
@@ -470,6 +533,9 @@ export default {
             Object.assign(this.$data, this.$options.data.call(this));
             this.getResources();
         },
+
+
+
         getResources() {
             axios(route('matricula.resources'))
             .then( response => {
@@ -480,6 +546,7 @@ export default {
                 this.resources.temporadas           = data.resources.temporadas;
                 this.resources.programas            = data.resources.programas;
                 this.resources.cantidadClases     = data.resources.cantidadClases;
+                this.resources.horarios           = data.resources.horarios;
 
                 this.temp.sucursal = data.current.sucursal;
                 this.temp.temporada = data.current.temporada;
@@ -512,20 +579,20 @@ export default {
         changeAlumnoTipoDocumentoIdentidad() {
             const tipoDocumento = this.resources.tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad === this.alumno.idtipo_documento_identidad );
 
-            this.alumno.numero_documento_identidad = this.alumno.numero_documento_identidad.slice(0,tipoDocumento.caracteres_length);
+            this.alumno.numero_documento_identidad = this.alumno.numero_documento_identidad? this.alumno.numero_documento_identidad.slice(0,tipoDocumento.caracteres_length): '';
             this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
         },
         changeAlumnoDepartamento() {
             this.getProvincias().then( data => {
-                this.alumno.idprovincia = '';
+                this.alumno.idprovincia = null;
 
                 this.resources.distritos = [];
-                this.alumno.iddistrito = '';
+                this.alumno.iddistrito = null;
             });
         },
         changeAlumnoProvincia() {
             this.getDistritos().then( data => {
-                this.alumno.iddistrito = '';
+                this.alumno.iddistrito = null;
             });
         },
         validateAlumno() {
@@ -548,18 +615,23 @@ export default {
             //     errors.push('Por favor, ingrese su número de teléfono de contacto.')
             // }
 
-            if (alumno.idtipo_documento_identidad === '' || alumno.idtipo_documento_identidad === null) {
-                errors.push('Por favor, seleccione el tipo de documento de identidad válido.')
-            }
 
-            if (alumno.numero_documento_identidad.trim() === '') {
-                errors.push('Por favor, ingrese el número de documento de identidad asociado.')
-            }
+            if (alumno.idtipo_documento_identidad) {
+                if (alumno.numero_documento_identidad.trim() === '') {
+                    errors.push('Por favor, ingrese el número de documento de identidad asociado.')
+                }
 
-            if (alumno.numero_documento_identidad.length > 0 && alumno.numero_documento_identidad.length < alumno.numero_documento_identidad_lemgth) {
-                errors.push('Por favor, ingrese lo caracteres minimos del número de documento de identidad asociado.')
-            }
+                if (alumno.numero_documento_identidad.length > 0 && alumno.numero_documento_identidad.length < alumno.numero_documento_identidad_lemgth) {
+                    errors.push('Por favor, ingrese lo caracteres minimos del número de documento de identidad asociado.')
+                }
 
+            }else{
+
+                if( alumno.numero_documento_identidad.length > 0 ){
+                    errors.push('Por favor, seleccione el tipo de documento de identidad válido.')
+                }
+
+            }
 
             if (alumno.apoderado_nombres.trim() === '') {
                 errors.push('Por favor, ingrese el nombre de una persona de referencia.')
@@ -599,6 +671,49 @@ export default {
 
 
         },
+        cancelarStoreAlumno() {
+            if ( this.matricula_id ) {
+                this.getMatricula(this.matricula_id)
+                .then( _ => {
+                    this.stepCurrent = 1;
+                    scrollTo('#step-1',50,0);
+                })
+
+                return;
+            }
+
+            if(this.alumno_id){
+                this.getAlumno(this.alumno_id)
+                .then( _ => {
+                    this.stepCurrent = 1;
+                    scrollTo('#step-1',50,0);
+                })
+                return;
+            }
+
+            this.alumno = {
+                idcliente: null,
+                nombres: '',
+                apellidos: '',
+                correo: '',
+                telefono: '',
+                apoderado_nombres: '',
+                apoderado_apellidos: '',
+                apoderado_correo: '',
+                apoderado_telefono: '',
+                idtipo_documento_identidad: null,
+                numero_documento_identidad: '',
+                numero_documento_identidad_lemgth: 8,
+                fecha_nacimiento: null,
+                sexo: null,
+                iddepartamento: null,
+                idprovincia: null,
+                iddistrito: null,
+                direccion: null,
+                nota: null,
+                imagen: null,
+            };
+        },
 
 
 
@@ -628,22 +743,14 @@ export default {
             });
         },
         getFrecuencias(frecuenciaID = '') {
-            return axios(route('matricula.frecuencias',this.matricula.idcarril))
+            return axios(route('matricula.frecuencias',this.matricula.idprograma))
             .then( response => {
                 const data = response.data;
                 this.resources.frecuencias = data;
                 this.matricula.idfrecuencia = frecuenciaID;
             });
         },
-        getHorarios(horarioID = '') {
-            this.getCountMatriculados();
-            return axios(route('matricula.horarios',this.matricula.idfrecuencia))
-            .then( response => {
-                const data = response.data;
-                this.resources.horarios = data;
-                this.matricula.idhorario = horarioID;
-            });
-        },
+
         getCountMatriculados() {
             const {idtemporada, idprograma, idnivel, idcarril, idfrecuencia} = this.matricula;
 
@@ -744,20 +851,20 @@ export default {
                 return;
             }
 
-            this.getCountMatriculados();
 
             const { matricula, resources: { tipoDocumentoIdentidad, departamentos, provincias, distritos, temporadas, programas, niveles, carriles, frecuencias, cantidadClases, horarios } } = this;
 
-            const frecuenciasFind    = frecuencias.find(ele => ele.idfrecuencia === this.matricula.idfrecuencia );
-            const cantidadClasesFind = cantidadClases.find(ele => ele.idcantidad_clases === this.matricula.idcantidad_clases );
-            const horarioFind        = horarios.find(ele => ele.idhorario === this.matricula.idhorario );
+            const frecuenciasFind    = frecuencias.find(ele => ele.idfrecuencia === matricula.idfrecuencia );
+            const cantidadClasesFind = cantidadClases.find(ele => ele.idcantidad_clases === matricula.idcantidad_clases );
+            const horarioFind        = horarios.find(ele => ele.idhorario === matricula.idhorario );
             const daysValid          = frecuenciasFind.dias.split('-');
+
 
 
             const fechaInicio     = moment(matricula.fecha[0]);
             const fechaFin        = moment(matricula.fecha[1]);
             const dias            = this.getDaysFromDate( fechaInicio, fechaFin , daysValid );
-            const diasAMatricular = dias.slice(0,daysValid.length).map(ele => ({
+            const diasAMatricular = dias.slice(0,cantidadClasesFind.cantidad ).map(ele => ({
                 fecha: ele.fecha,
                 dia_name: ele.name,
                 idhorario: horarioFind.idhorario,
@@ -765,11 +872,10 @@ export default {
             }));
 
 
-
-            this.temp.alumno.tipoDocumentoIdentidad = tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad === this.alumno.idtipo_documento_identidad );
-            this.temp.alumno.departamento           = departamentos.find(ele => ele.iddepartamento === this.alumno.iddepartamento );
-            this.temp.alumno.provincia              = provincias.find(ele => ele.idprovincia === this.alumno.idprovincia );
-            this.temp.alumno.distrito               = distritos.find(ele => ele.iddistrito === this.alumno.iddistrito );
+            this.temp.alumno.tipoDocumentoIdentidad = tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad === this.alumno.idtipo_documento_identidad ) ?? { nombre : ''};
+            this.temp.alumno.departamento           = departamentos.find(ele => ele.iddepartamento === this.alumno.iddepartamento ) ?? { nombre : ''};
+            this.temp.alumno.provincia              = provincias.find(ele => ele.idprovincia === this.alumno.idprovincia ) ?? { nombre : ''};
+            this.temp.alumno.distrito               = distritos.find(ele => ele.iddistrito === this.alumno.iddistrito ) ?? { nombre : ''};
 
             this.temp.temporada      = temporadas.find(ele => ele.idtemporada === this.matricula.idtemporada );
             this.temp.programa       = programas.find(ele => ele.idprograma === this.matricula.idprograma );
@@ -786,6 +892,96 @@ export default {
             scrollTo('#step-3',50,0);
 
         },
+        cancelarSaveMatricula() {
+            if ( this.matricula_id ) {
+                axios(route('matricula.matricula',this.matricula_id))
+                .then( (response) => {
+                    const data = response.data;
+                    const { resources, matricula } = data;
+
+
+
+                    this.resources.programas   = resources.programas;
+                    this.resources.niveles     = resources.niveles;
+                    this.resources.carriles    = resources.carriles;
+                    this.resources.frecuencias = resources.frecuencias;
+                    const horarioFind = resources.horarios.find(ele => ele.idhorario === matricula.detalle[0].idhorario );
+
+
+                    this.matricula.idmatricula       = matricula.idmatricula;
+                    this.matricula.fecha             = [
+                        matricula.fecha_inicio.split('/').reverse().join('-'),
+                        matricula.fecha_fin.split('/').reverse().join('-')
+                    ];
+                    this.matricula.idconcepto        = matricula.idconcepto;
+                    this.matricula.idempleado        = matricula.idempleado;
+                    this.matricula.idsucursal        = matricula.idsucursal;
+                    this.matricula.idtemporada       = matricula.idtemporada;
+                    this.matricula.idprograma        = matricula.idprograma;
+                    this.matricula.idnivel           = matricula.idnivel;
+                    this.matricula.idcarril          = matricula.idcarril;
+                    this.matricula.idfrecuencia      = matricula.idfrecuencia;
+                    this.matricula.idhorario         = matricula.detalle[0].idhorario;
+                    this.matricula.idcantidad_clases = matricula.idcantidad_clases;
+
+
+
+                    this.matriculaHorarioDia = matricula.detalle.map(ele => ({
+                        fecha: ele.fecha,
+                        dia_name: ele.dia_nombre,
+                        idhorario: ele.idhorario,
+                        horario_nombre: horarioFind.nombre,
+                    }))
+
+                    this.codigoMatricula = matricula.idmatricula.toString().padStart(7,0);
+                    this.getCountMatriculados();
+                    this.stepCurrent          = 2;
+                    scrollTo('#step-2',50,0);
+
+                })
+
+                return;
+            }
+
+
+
+
+            const temporadaCurrent = this.resources.temporadas.find( ele => {
+                return moment(ele.fecha_inicio).isSameOrBefore(moment());
+            });
+
+            const temporadaID =  temporadaCurrent ? temporadaCurrent.idtemporada : null;
+
+
+
+            this.matricula = {
+                idmatricula: '',
+                fecha: [],
+                idconcepto: 1,
+                idempleado: '',
+                idsucursal: '',
+                idtemporada: temporadaID,
+                idprograma: '',
+                idnivel: '',
+                idcarril: '',
+                idfrecuencia: '',
+                idhorario: '',
+                idcantidad_clases: '',
+            };
+            this.matriculaHorarioDia = [];
+            this.codigoMatricula = null;
+            this.capacidadMaxima = null;
+            this.cantidadMatriculados = null;
+            this.cantidadClasesMaxima = null;
+
+            // this.resources.programas   = [];
+            this.getProgramas();
+            this.resources.niveles     = [];
+            this.resources.carriles    = [];
+            this.resources.frecuencias = [];
+        },
+
+
 
         storeMatriculaHorario(){
 
@@ -813,6 +1009,10 @@ export default {
             });
 
 
+        },
+        cancelarStoreMatriculaHorario() {
+            this.stepCurrent          = 2;
+            scrollTo('#step-2',50,0);
         },
     },
     mounted(){

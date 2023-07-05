@@ -1,6 +1,6 @@
 
 <div class="modal fade" id="modalVer" tabindex="-1" role="dialog"  aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><i class="fa fa-eye"></i> Ver registro</h5>
@@ -21,14 +21,6 @@
                                 <p id="nombreShow"></p>
                             <hr>
                         </div>
-
-
-                        <div class="col-12">
-                            <p class="text-capitalize">Frecuencia:</p>
-                            <p id="frecuenciaShow"></p>
-                            <hr>
-                        </div>
-
 
 
                         <div class="col-12">

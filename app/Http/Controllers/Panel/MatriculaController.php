@@ -78,14 +78,19 @@ class MatriculaController extends Controller
         $cantidadClases = CantidadClases::query()->where('estado',1)->get();
 
         $temporadas = Temporada::query()
-            ->whereDate("fecha_desde", "<", now()->format('Y-m-d'))
-            ->whereDate("fecha_hasta", ">=", now()->format('Y-m-d'))
             ->where('estado',1)
             ->orderBy('idtemporada','desc')
             ->get();
 
-        $temporada = $temporadas[0];
+        $temporada = Temporada::query()
+            ->whereDate("fecha_desde", "<", now()->format('Y-m-d'))
+            ->whereDate("fecha_hasta", ">=", now()->format('Y-m-d'))
+            ->where('estado',1)
+            ->orderBy('idtemporada','desc')
+            ->first();
+
         $programas = $temporada->programas()->where('estado',1)->get();
+        $horarios = Horario::query()->where('estado',1)->get();
 
 
         return response()->json([
@@ -95,6 +100,7 @@ class MatriculaController extends Controller
                 'conceptos' => $conceptos,
                 'temporadas' => $temporadas,
                 'programas' => $programas,
+                'horarios' => $horarios,
                 'cantidadClases' => $cantidadClases,
             ],
             "current" => [
@@ -144,8 +150,7 @@ class MatriculaController extends Controller
         $programas = Programa::query()->where('idtemporada',$matricula->idtemporada)->where('estado',1)->get();
         $niveles = Nivel::query()->where('idprograma',$matricula->idprograma)->where('estado',1)->get();
         $carriles = Carril::query()->where('idnivel',$matricula->idnivel)->where('estado',1)->get();
-        $frecuencias = $matricula->carril->frecuencias()->where('estado',1)->get();
-        $horarios = Horario::query()->where('idfrecuencia',$matricula->idfrecuencia)->where('estado',1)->get();
+        $frecuencias = $matricula->programa->frecuencias()->where('estado',1)->get();
 
         return response()->json([
             "resources" => [
@@ -153,7 +158,6 @@ class MatriculaController extends Controller
                 "niveles" => $niveles,
                 "carriles" => $carriles,
                 "frecuencias" => $frecuencias,
-                "horarios" => $horarios,
             ],
             "matricula" => $matricula,
             "alumno" => $alumno,
@@ -260,61 +264,51 @@ class MatriculaController extends Controller
     }
 
 
-    public function programas(Request $request,$idtemporada)
+    public function programas(Request $request,$temporadaID)
     {
         if ( !$request->ajax() ) {
             return abort(400);
         }
 
-        $programas = Programa::query()->where('idtemporada',$idtemporada)->where('estado',1)->get();
+        $programas = Programa::query()->where('idtemporada',$temporadaID)->where('estado',1)->get();
 
         return response()->json($programas);
     }
 
-    public function niveles(Request $request,$idprograma)
+    public function niveles(Request $request,$programaID)
     {
         if ( !$request->ajax() ) {
             return abort(400);
         }
 
-        $niveles = Nivel::query()->where('idprograma',$idprograma)->where('estado',1)->get();
+        $niveles = Nivel::query()->where('idprograma',$programaID)->where('estado',1)->get();
 
         return response()->json($niveles);
     }
 
-    public function carriles(Request $request,$idnivel)
+    public function carriles(Request $request,$nivelID)
     {
         if ( !$request->ajax() ) {
             return abort(400);
         }
 
-        $carriles = Carril::query()->where('idnivel',$idnivel)->where('estado',1)->get();
+        $carriles = Carril::query()->where('idnivel',$nivelID)->where('estado',1)->get();
 
         return response()->json($carriles);
     }
 
-    public function frecuencias(Request $request,$idcarril)
+    public function frecuencias(Request $request,$programaID)
     {
         if ( !$request->ajax() ) {
             return abort(400);
         }
 
-        $carril = Carril::query()->find($idcarril);
-        $frecuencias = $carril->frecuencias()->where('estado',1)->get();
+        $programa = Programa::query()->find($programaID);
+        $frecuencias = $programa->frecuencias()->where('estado',1)->get();
 
         return response()->json($frecuencias);
     }
 
-    public function horarios(Request $request,$idfrecuencia)
-    {
-        if ( !$request->ajax() ) {
-            return abort(400);
-        }
-
-        $horario = Horario::query()->where('idfrecuencia',$idfrecuencia)->where('estado',1)->get();
-
-        return response()->json($horario);
-    }
 
 
 

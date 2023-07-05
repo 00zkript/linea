@@ -1,6 +1,6 @@
 
 <div class="modal fade" id="modalVer" tabindex="-1" role="dialog"  aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+    <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title"><i class="fa fa-eye"></i> Ver registro</h5>
@@ -24,8 +24,8 @@
 
 
                         <div class="col-12">
-                            <p class="text-capitalize">Carril:</p>
-                            <p id="carrilShow"></p>
+                            <p class="text-capitalize">Programas:</p>
+                            <p id="programasShow"></p>
                             <hr>
                         </div>
 
