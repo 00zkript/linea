@@ -15,15 +15,12 @@ class NivelController extends Controller
     public function index()
     {
 
-        $programas = Programa::query()->where('estado',1)->get();
-
         $registros = Nivel::query()
-            ->with(['programa'])
             ->orderBy('idnivel','DESC')
             ->paginate(10,['*'],'pagina',1);
 
 
-        return view('panel.nivel.index')->with(compact('registros', 'programas'));
+        return view('panel.nivel.index')->with(compact('registros'));
     }
 
     public function listar(Request $request)
@@ -37,7 +34,6 @@ class NivelController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $registros = Nivel::query()
-            ->with(['programa'])
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query->where('nombre','LIKE','%'.$txtBuscar.'%');
             })
@@ -59,14 +55,12 @@ class NivelController extends Controller
 
         $nombre     = $request->input('nombre');
         $slug       = Str::slug($nombre);
-        $idprograma  = $request->input('idprograma');
         $estado     = $request->input('estado');
 
         try {
             $registro = new Nivel();
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
-            $registro->idprograma      = $idprograma;
             $registro->estado    = $estado;
             $registro->save();
 
@@ -97,7 +91,7 @@ class NivelController extends Controller
         }
 
         // $idnivel = $request->input('idnivel');
-        $registro = Nivel::query()->with(['programa'])->find($idnivel);
+        $registro = Nivel::query()->find($idnivel);
 
         if(!$registro){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -135,7 +129,6 @@ class NivelController extends Controller
         // $idnivel = $request->input('idnivel');
         $nombre     = $request->input('nombreEditar');
         $slug       = Str::slug($request->input('nombreEditar'));
-        $idprograma  = $request->input('idprogramaEditar');
         $estado     = $request->input('estadoEditar');
 
         try {
@@ -143,7 +136,6 @@ class NivelController extends Controller
 
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
-            $registro->idprograma      = $idprograma;
             $registro->estado    = $estado;
             $registro->update();
 

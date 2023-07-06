@@ -11,9 +11,14 @@ class Programa extends Model
 	protected $primaryKey = 'idprograma';
 	public $timestamps = true;
 
+    public function nivelesPivot()
+    {
+        return $this->hasMany(ProgramaHasNivel::class, 'idprograma', 'idprograma');
+    }
+
     public function niveles()
     {
-        return $this->hasMany(Nivel::class,'idprograma','idprograma');
+        return $this->belongsToMany(Nivel::class,ProgramaHasNivel::class,'idprograma', 'idnivel','idprograma', 'idnivel');
     }
 
 

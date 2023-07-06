@@ -4,7 +4,6 @@
             <thead class="thead-dark">
             <tr class="text-center">
                 <th>Código</th>
-                <th>Programa</th>
                 <th>Nombre</th>
                 <th>Estado</th>
                 <th>Opciones</th>
@@ -14,8 +13,7 @@
 
             @foreach($registros AS $item)
                 <tr>
-                    <td>{{ str_pad($item->idnivel,7,'0000000',STR_PAD_LEFT) }}</td>
-                    <td>{{ $item->programa->nombre }}</td>
+                    <td>{{ str_pad($item->idnivel,7,0,STR_PAD_LEFT) }}</td>
                     <td>{{ $item->nombre }}</td>
                     <td>{!! $item->estado ? '<label class="badge badge-success">Habilidado</label>' : '<label class="badge badge-danger">Inhabilitado</label>' !!}</td>
                     <td class="text-center">

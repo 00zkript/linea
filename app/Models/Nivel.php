@@ -18,11 +18,15 @@ class Nivel extends Model
     }
 
 
-    public function programa()
+
+    public function programasPivot()
     {
-        return $this->hasOne(Programa::class,'idprograma','idprograma')->withDefault([
-            'nombre' => 'Sin programa'
-        ]);
+        return $this->hasMany(ProgramaHasFrecuencia::class, 'idnivel', 'idnivel');
+    }
+
+    public function programas()
+    {
+        return $this->belongsToMany(Frecuencia::class, ProgramaHasFrecuencia::class, 'idnivel', 'idprograma', 'idnivel', 'idprograma');
     }
 
 }

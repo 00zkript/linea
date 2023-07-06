@@ -183,6 +183,7 @@
 
 
                     $("#nombreEditar").val(data.nombre);
+                    $("#nivelEditar").selectpicker('val',data.niveles_pivot.map( ele => ele.idnivel));
                     getPosicion({ el: '#posicionEditar', currentValue: data.posicion})
 
 
@@ -210,6 +211,17 @@
 
                     $("#nombreShow").html(data.nombre);
                     $("#posicionShow").html(data.posicion);
+
+                    $("#nivelShow").empty();
+                    if (data.niveles.length >0) {
+                        $("#nivelShow").append('<ul>')
+                        for (const nivel of data.niveles) {
+                            $("#nivelShow").append(`<li>${nivel.nombre}</li>`);
+                        }
+                        $("#nivelShow").append('</ul>')
+                    }else{
+                        $("#nivelShow").append('Sin niveles')
+                    }
 
 
                     if (data.estado){

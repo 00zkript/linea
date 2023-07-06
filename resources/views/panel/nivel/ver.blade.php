@@ -23,11 +23,6 @@
                         </div>
 
 
-                        <div class="col-12">
-                            <p class="text-capitalize">Programa:</p>
-                            <p id="programaShow"></p>
-                            <hr>
-                        </div>
 
 
 

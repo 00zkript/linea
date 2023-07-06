@@ -6,6 +6,8 @@ use App\Models\Programa;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Nivel;
+use App\Models\ProgramaHasNivel;
 use App\Models\Temporada;
 
 class ProgramaController extends Controller
@@ -14,7 +16,7 @@ class ProgramaController extends Controller
 
     public function index()
     {
-
+        $niveles = Nivel::query()->where('estado',1)->get();
 
         $registros = Programa::query()
             ->orderBy('idprograma','DESC')
@@ -22,7 +24,7 @@ class ProgramaController extends Controller
 
 
 
-        return view('panel.programa.index')->with(compact('registros'));
+        return view('panel.programa.index')->with(compact('registros','niveles'));
 
 
     }
@@ -61,6 +63,7 @@ class ProgramaController extends Controller
         $nombre     = $request->input('nombre');
         $slug       = Str::slug($nombre);
         $posicion     = $request->input('posicion');
+        $niveles     = $request->input('nivel');
         $estado     = $request->input('estado');
 
         try {
@@ -70,6 +73,13 @@ class ProgramaController extends Controller
             $registro->posicion      = $posicion;
             $registro->estado    = $estado;
             $registro->save();
+
+            foreach ($niveles as $idnivel) {
+                $pivot = new ProgramaHasNivel();
+                $pivot->idprograma = $registro->idprograma;
+                $pivot->idnivel = $idnivel;
+                $pivot->save();
+            }
 
 
             return response()->json([
@@ -98,7 +108,7 @@ class ProgramaController extends Controller
         }
 
         // $idprograma = $request->input('idprograma');
-        $registro = Programa::query()->find($idprograma);
+        $registro = Programa::query()->with([ 'niveles'])->find($idprograma);
 
         if(!$registro){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -116,7 +126,7 @@ class ProgramaController extends Controller
         }
 
         // $idprograma = $request->input('idprograma');
-        $registro = Programa::query()->find($idprograma);
+        $registro = Programa::query()->with('nivelesPivot')->find($idprograma);
 
         if(!$registro){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -137,6 +147,7 @@ class ProgramaController extends Controller
         $nombre     = $request->input('nombreEditar');
         $slug       = Str::slug($request->input('nombreEditar'));
         $posicion     = $request->input('posicionEditar');
+        $niveles     = $request->input('nivelEditar');
         $estado     = $request->input('estadoEditar');
 
         try {
@@ -147,6 +158,15 @@ class ProgramaController extends Controller
             $registro->posicion      = $posicion;
             $registro->estado    = $estado;
             $registro->update();
+
+
+            ProgramaHasNivel::query()->where('idprograma',$idprograma)->delete();
+            foreach ($niveles as $idnivel) {
+                $pivot = new ProgramaHasNivel();
+                $pivot->idprograma = $registro->idprograma;
+                $pivot->idnivel = $idnivel;
+                $pivot->save();
+            }
 
             return response()->json([
                 'mensaje'=> "Registro actualizado exitosamente.",

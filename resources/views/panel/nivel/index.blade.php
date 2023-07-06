@@ -182,7 +182,6 @@
 
 
                     $("#nombreEditar").val(data.nombre);
-                    $("#idprogramaEditar").val(data.idprograma);
 
 
 
@@ -209,7 +208,6 @@
                     stop();
 
                     $("#nombreShow").html(data.nombre);
-                    $("#programaShow").html(data.programa.nombre);
 
                     if (data.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');

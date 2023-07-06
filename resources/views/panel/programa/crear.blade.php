@@ -18,6 +18,16 @@
                             <hr>
                         </div>
 
+
+                        <div class="col-12 form-group">
+                            <label for="nivel">Niveles: <span class="text-danger">(*)</span></label>
+                            <select class="form-control selectpicker" data-size="5" name="nivel[]" id="nivel" title="Niveles" multiple required>
+                                @foreach ($niveles as $nivel)
+                                    <option value="{{ $nivel->idnivel }}">{{ $nivel->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                         <div class="col-12 form-group">
                             <label for="nombre">Nombre: <span class="text-danger">(*)</span></label>
                             <input type="text" name="nombre" id="nombre" required class="form-control"  placeholder="Nombre">
@@ -25,11 +35,12 @@
 
 
                         <div class="col-12 form-group">
-                            <label for="posicion">Posición:</label>
-                            <select class="form-control" name="posicion" id="posicion" title="Posición" >
+                            <label for="posicion">Posición: <span class="text-danger">(*)</span></label>
+                            <select class="form-control" name="posicion" id="posicion" title="Posición" required>
                                 <option value="" hidden selected >[---Seleccione---]</option>
                             </select>
                         </div>
+
 
 
 

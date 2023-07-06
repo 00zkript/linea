@@ -19,15 +19,7 @@
                         </div>
 
 
-                        <div class="col-12 form-group">
-                            <label for="idprograma">Programa: <span class="text-danger">(*)</span></label>
-                            <select class="form-control" name="idprograma" id="idprograma" title="Programa" >
-                                <option value="" hidden selected >[---Seleccione---]</option>
-                                @foreach ($programas as $item)
-                                    <option value="{{ $item->idprograma }}">{{ $item->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
+
 
                         <div class="col-12 form-group">
                             <label for="nombre">Nombre: <span class="text-danger">(*)</span></label>
