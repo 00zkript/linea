@@ -18,7 +18,13 @@ class VentaController extends Controller
 {
     public function index()
     {
-        return view('panel.venta.index');
+
+        $registros = Venta::query()
+            ->withSucursal()
+            ->where('estado',1)
+            ->paginate(15,['*'],'pagina',1);
+
+        return view('panel.venta.index')->with(compact('registros'));
     }
 
     public function listar(Request $request)
@@ -29,7 +35,8 @@ class VentaController extends Controller
         $cantidadRegistros = $request->input('cantidadRegistros');
         $paginaActual = $request->input('paginaActual');
 
-        $registros = PagoCliente::query()
+        $registros = Venta::query()
+            ->withSucursal()
             ->where('estado',1)
             ->paginate($cantidadRegistros,['*'],'pagina',$paginaActual);
 
@@ -52,34 +59,48 @@ class VentaController extends Controller
         $idcliente              = $request->input('idcliente');
         $idmoneda               = $request->input('idmoneda');
         $idtipoPago             = $request->input('idtipo_pago');
-        $montoPagadoEfectivo    = $request->input('monto_efectivo');
-        $montoPagadoTransferido = $request->input('monto_transferido');
-        $montoPagado            = $montoPagadoEfectivo + $montoPagadoTransferido;
-        $montoVuelto            = $request->input('monto_vuelto');
-        $montoDeuda             = $request->input('monto_deuda');
+        $montoEfectivoRecibido  = $request->input('monto_efectivo');
+        $montoEfectivoDevuelto  = $request->input('monto_efectivo_devuelto');
+        $montoEfectivoPagado    = $montoEfectivoRecibido - $montoEfectivoDevuelto;
+        $montoTranferidoPagado  = $request->input('monto_transferido');
+        $montoTotalPagado       = $montoEfectivoPagado + $montoTranferidoPagado;
+        $montoFaltante          = $request->input('monto_faltante');
         $montoTotal             = $request->input('monto_total');
         $fechaPago              = now()->format('Y-m-d');
         $detalle                = $request->input('detalle', []);
         $idempleado             = auth()->id();
         $sucursal               = auth()->user()->sucursal;
 
+        $cliente = Cliente::query()->find($idcliente);
+        $empleado = auth()->user();
 
 
         $venta = new Venta();
-        $venta->idsucrusal               = $sucursal->idsucrusal;
-        $venta->idempleado               = $idempleado;
+        $venta->idsucursal               = $sucursal->idsucursal;
+        $venta->idcliente                           = $idcliente;
+        $venta->cliente_nombres                     = $cliente->nombres;
+        $venta->cliente_apellidos                   = $cliente->apellidos;
+        $venta->cliente_idtipo_documento_identidad  = $cliente->idtipo_documento_identidad;
+        $venta->cliente_numero_documento_identidad  = $cliente->numero_documento_identidad;
+        $venta->idempleado                          = $idempleado;
+        $venta->empleado_nombres                    = $empleado->nombres;
+        $venta->empleado_apellidos                  = $empleado->apellidos;
+        $venta->empleado_idtipo_documento_identidad = $empleado->idtipo_documento_identidad;
+        $venta->empleado_numero_documento_identidad = $empleado->numero_documento_identidad;
+
         $venta->idtipo_facturacion       = $idtipoFacturacion;
         $venta->tipo_facturacion_serie   = $tipoFacturaconSerie;
         $venta->tipo_facturacion_numero  = $tipoFacturacionNumero;
-        $venta->idcliente                = $idcliente;
+
         $venta->idmoneda                 = $idmoneda;
         $venta->idtipo_pago              = $idtipoPago;
-        $venta->monto_pagado_efectivo    = $montoPagadoEfectivo;
-        $venta->monto_pagado_transferido = $montoPagadoTransferido;
-        $venta->monto_pagado             = $montoPagado;
-        $venta->monto_vuelto             = $montoVuelto;
-        $venta->monto_deuda              = $montoDeuda;
-        $venta->monto_total              = $montoTotal;
+        $venta->monto_efectivo_recibido    = number_format($montoEfectivoRecibido,2,'.','');
+        $venta->monto_efectivo_devuelto    = number_format($montoEfectivoDevuelto,2,'.','');
+        $venta->monto_efectivo_pagado      = number_format($montoEfectivoPagado,2,'.','');
+        $venta->monto_transferido_pagado   = number_format($montoTranferidoPagado,2,'.','');
+        $venta->monto_pagado               = number_format($montoTotalPagado,2,'.','');
+        $venta->monto_faltante             = number_format($montoFaltante,2,'.','');
+        $venta->monto_total                = number_format($montoTotal,2,'.','');
         $venta->fecha_pago               = $fechaPago;
         $venta->estado                   = 1;
         $venta->save();

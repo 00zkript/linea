@@ -119,6 +119,9 @@
                     </div>
                     <div class="modal-body">
                         <div class="row">
+                            <div class="col-12 text-center">
+                                <h4>{{ cliente.nombres }} {{ cliente.apellidos }}</h4>
+                            </div>
                             <div class="col-12">
                                 <div class="row">
                                     <div class="col-md-3 col-12 form-group">
@@ -185,16 +188,6 @@
                              <p style="font-size 20px" class="card-title text-center text-white mb-0"> Ventas</p>
                         </div>
                         <div class="card-body pl-4 pr-4" >
-                            <!-- <div class="row">
-                                <div class="col-12 form-group">
-                                    <label for="serchCarrito">Código matrícula</label>
-
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="serchCarrito" id="serchCarrito" placeholder="Código matrícula" v-model="search.carrito.idcarrito" >
-                                        <div class="input-group-append" @click="searchCarrito()" cursor-pointer ><span class="input-group-text"> <i class="fa fa-search"></i></span></div>
-                                    </div>
-                                </div>
-                            </div> -->
 
                             <div class="row">
                                 <div class="col-md-4 col-12 form-group">
@@ -344,7 +337,7 @@
                                                 <td class="text-center">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                        <input type="text" class="form-control" placeholder="Monto efectivo" v-model="headVenta.monto_vuelto" readonly >
+                                                        <input type="text" class="form-control" placeholder="Monto efectivo" v-model="headVenta.monto_efectivo_devuelto" readonly >
                                                     </div>
                                                 </td>
                                                 <td></td>
@@ -355,7 +348,7 @@
                                                 <td class="text-center">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                        <input type="text" class="form-control" placeholder="Monto efectivo" v-model="headVenta.monto_deuda" readonly >
+                                                        <input type="text" class="form-control" placeholder="Monto efectivo" v-model="headVenta.monto_faltante" readonly >
                                                     </div>
                                                 </td>
                                                 <td></td>
@@ -419,9 +412,6 @@ export default {
                 },
                 cliente: {
                     txtBuscar: '',
-                },
-                carrito: {
-                    idcarrito: '',
                 }
             },
             cliente: {},
@@ -435,8 +425,8 @@ export default {
                 monto_total: '',
                 monto_efectivo: '0.00',
                 monto_transferido: '0.00',
-                monto_deuda: '0.00',
-                monto_vuelto: '0.00',
+                monto_faltante: '0.00',
+                monto_efectivo_devuelto: '0.00',
             },
             detalle: [],
         }
@@ -518,30 +508,6 @@ export default {
             })
 
         },
-
-        searchCarrito() {
-            return axios(route('venta.resources.carrito'), { params: { idcarrito: this.search.carrito.idcarrito } })
-            .then( response => {
-                const data = response.data;
-            })
-            .catch( error => {
-                if ( error.response === undefined) return console.error(error);
-                const response = error.response;
-                const data = response.data;
-
-                if (response.status == 422){
-                    alertModal({ type: 'error', content:  listErrors(data) });
-                }
-
-                if (response.status == 400){
-                    alertModal({ type: 'error', content:  data.mensaje });
-                }
-
-                alertModal({ type: 'error', content:  'Error del servidor, contácte con soporte.' });
-
-            })
-        },
-
 
         openModalProductos() {
             $('#addProductoModalCenter').modal('show');
@@ -652,21 +618,21 @@ export default {
             const montoPagado =  parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
             const vuelto =  montoPagado - montoTotal;
             if (vuelto < 0) {
-                this.headVenta.monto_vuelto = number_format('0.00',2,'.','');
+                this.headVenta.monto_efectivo_devuelto = number_format('0.00',2,'.','');
                 return
             }
-            this.headVenta.monto_vuelto = number_format(vuelto,2,'.','');
+            this.headVenta.monto_efectivo_devuelto = number_format(vuelto,2,'.','');
         },
         getMontoDeuda() {
             const montoTotal = parseFloat(this.headVenta.monto_total);
             const montoPagado =  parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
             const deuda =  montoPagado - montoTotal;
             if (deuda < 0) {
-                this.headVenta.monto_deuda = number_format(deuda,2,'.','');
+                this.headVenta.monto_faltante = number_format(Math.abs(deuda),2,'.','');
                 return
             }
 
-            this.headVenta.monto_deuda = number_format('0.00',2,'.','');
+            this.headVenta.monto_faltante = number_format('0.00',2,'.','');
         },
         removeItemDetalle( index ) {
             this.detalle = this.detalle.filter( (ele,idx) => idx !== index);
@@ -757,6 +723,8 @@ export default {
             $('#asegurarPagoModalCenter').modal('show');
         },
         pagarVenta() {
+            $('#asegurarPagoModalCenter').modal('hide');
+
             const { headVenta, cliente, detalle } = this;
 
             const form = {
@@ -768,10 +736,28 @@ export default {
             axios.post(route('venta.store'),form)
             .then( response => {
                 const data = response.data;
-                notificacion('success','¡Felicidades!', 'Se guardó el pago exitosamente.', 3*1000);
-
+                alertModal({ type: 'success',title: '¡Felicidades!', content: 'Se guardó el pago exitosamente.', time: 3*1000});
+                this.resetData();
 
             })
+            .catch( error => {
+                if ( error.response === undefined) return console.error(error);
+
+                const response = error.response;
+                const data = response.data;
+
+                if (response.status == 422){
+                    alertModal({ type: 'error',content: listErrors(data) });
+                }
+
+                if (response.status == 400){
+                    alertModal({ type: 'error',content: data.mensaje });
+                }
+
+                alertModal({ type: 'error',content: 'Error del servidor, contácte con soporte.' });
+
+
+            });
 
 
         }

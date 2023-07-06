@@ -66,8 +66,8 @@ class ArqueoCajaController extends Controller
             ->get();
 
         //*Sol
-        $EVentasSolEfectivo    = $ventasHoy->sum('monto_sol_efectivo');
-        $EVentasSolTransferido = $ventasHoy->sum('monto_sol_transferido');
+        $EVentasSolEfectivo    = $ventasHoy->sum('monto_pagado_efectivo');
+        $EVentasSolTransferido = $ventasHoy->sum('monto_pagado_transferido');
         $EVentasSolTotal       = $EVentasSolEfectivo + $EVentasSolTransferido;
 
         $EOperacionesIngresosSolEfectivo    = $operacionesIngreso->sum('monto_sol_efectivo');

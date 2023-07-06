@@ -2968,9 +2968,6 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         },
         cliente: {
           txtBuscar: ''
-        },
-        carrito: {
-          idcarrito: ''
         }
       },
       cliente: {},
@@ -2984,8 +2981,8 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         monto_total: '',
         monto_efectivo: '0.00',
         monto_transferido: '0.00',
-        monto_deuda: '0.00',
-        monto_vuelto: '0.00'
+        monto_faltante: '0.00',
+        monto_efectivo_devuelto: '0.00'
       },
       detalle: []
     };
@@ -3061,35 +3058,6 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         var data = response.data;
         _this2.headVenta.serie = data.serie;
         _this2.headVenta.numero = data.numero;
-      });
-    },
-    searchCarrito: function searchCarrito() {
-      return axios(route('venta.resources.carrito'), {
-        params: {
-          idcarrito: this.search.carrito.idcarrito
-        }
-      }).then(function (response) {
-        var data = response.data;
-      })["catch"](function (error) {
-        if (error.response === undefined) return console.error(error);
-        var response = error.response;
-        var data = response.data;
-        if (response.status == 422) {
-          alertModal({
-            type: 'error',
-            content: listErrors(data)
-          });
-        }
-        if (response.status == 400) {
-          alertModal({
-            type: 'error',
-            content: data.mensaje
-          });
-        }
-        alertModal({
-          type: 'error',
-          content: 'Error del servidor, contácte con soporte.'
-        });
       });
     },
     openModalProductos: function openModalProductos() {
@@ -3201,20 +3169,20 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       var montoPagado = parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
       var vuelto = montoPagado - montoTotal;
       if (vuelto < 0) {
-        this.headVenta.monto_vuelto = number_format('0.00', 2, '.', '');
+        this.headVenta.monto_efectivo_devuelto = number_format('0.00', 2, '.', '');
         return;
       }
-      this.headVenta.monto_vuelto = number_format(vuelto, 2, '.', '');
+      this.headVenta.monto_efectivo_devuelto = number_format(vuelto, 2, '.', '');
     },
     getMontoDeuda: function getMontoDeuda() {
       var montoTotal = parseFloat(this.headVenta.monto_total);
       var montoPagado = parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
       var deuda = montoPagado - montoTotal;
       if (deuda < 0) {
-        this.headVenta.monto_deuda = number_format(deuda, 2, '.', '');
+        this.headVenta.monto_faltante = number_format(Math.abs(deuda), 2, '.', '');
         return;
       }
-      this.headVenta.monto_deuda = number_format('0.00', 2, '.', '');
+      this.headVenta.monto_faltante = number_format('0.00', 2, '.', '');
     },
     removeItemDetalle: function removeItemDetalle(index) {
       this.detalle = this.detalle.filter(function (ele, idx) {
@@ -3299,6 +3267,8 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       $('#asegurarPagoModalCenter').modal('show');
     },
     pagarVenta: function pagarVenta() {
+      var _this8 = this;
+      $('#asegurarPagoModalCenter').modal('hide');
       var headVenta = this.headVenta,
         cliente = this.cliente,
         detalle = this.detalle;
@@ -3308,7 +3278,33 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       });
       axios.post(route('venta.store'), form).then(function (response) {
         var data = response.data;
-        notificacion('success', '¡Felicidades!', 'Se guardó el pago exitosamente.', 3 * 1000);
+        alertModal({
+          type: 'success',
+          title: '¡Felicidades!',
+          content: 'Se guardó el pago exitosamente.',
+          time: 3 * 1000
+        });
+        _this8.resetData();
+      })["catch"](function (error) {
+        if (error.response === undefined) return console.error(error);
+        var response = error.response;
+        var data = response.data;
+        if (response.status == 422) {
+          alertModal({
+            type: 'error',
+            content: listErrors(data)
+          });
+        }
+        if (response.status == 400) {
+          alertModal({
+            type: 'error',
+            content: data.mensaje
+          });
+        }
+        alertModal({
+          type: 'error',
+          content: 'Error del servidor, contácte con soporte.'
+        });
       });
     }
   },
@@ -5230,6 +5226,8 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "row"
   }, [_c("div", {
+    staticClass: "col-12 text-center"
+  }, [_c("h4", [_vm._v(_vm._s(_vm.cliente.nombres) + " " + _vm._s(_vm.cliente.apellidos))])]), _vm._v(" "), _c("div", {
     staticClass: "col-12"
   }, [_c("div", {
     staticClass: "row"
@@ -5861,8 +5859,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.headVenta.monto_vuelto,
-      expression: "headVenta.monto_vuelto"
+      value: _vm.headVenta.monto_efectivo_devuelto,
+      expression: "headVenta.monto_efectivo_devuelto"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5871,12 +5869,12 @@ var render = function render() {
       readonly: ""
     },
     domProps: {
-      value: _vm.headVenta.monto_vuelto
+      value: _vm.headVenta.monto_efectivo_devuelto
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.headVenta, "monto_vuelto", $event.target.value);
+        _vm.$set(_vm.headVenta, "monto_efectivo_devuelto", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("td")]) : _vm._e(), _vm._v(" "), _vm.headVenta.idtipo_pago ? _c("tr", [_c("td", {
@@ -5891,8 +5889,8 @@ var render = function render() {
     directives: [{
       name: "model",
       rawName: "v-model",
-      value: _vm.headVenta.monto_deuda,
-      expression: "headVenta.monto_deuda"
+      value: _vm.headVenta.monto_faltante,
+      expression: "headVenta.monto_faltante"
     }],
     staticClass: "form-control",
     attrs: {
@@ -5901,12 +5899,12 @@ var render = function render() {
       readonly: ""
     },
     domProps: {
-      value: _vm.headVenta.monto_deuda
+      value: _vm.headVenta.monto_faltante
     },
     on: {
       input: function input($event) {
         if ($event.target.composing) return;
-        _vm.$set(_vm.headVenta, "monto_deuda", $event.target.value);
+        _vm.$set(_vm.headVenta, "monto_faltante", $event.target.value);
       }
     }
   })])]), _vm._v(" "), _c("td")]) : _vm._e()])])]) : _vm._e(), _vm._v(" "), _c("div", {

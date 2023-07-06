@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers\Panel;
 
-use App\Models\Dia;
 use App\Models\Horario;
 use App\Models\Nivel;
 use App\Models\Concepto;
 use App\Models\Distrito;
-use App\Models\Sucursal;
 use App\Models\Matricula;
 use App\Models\Provincia;
 use App\Models\Temporada;
 use App\Models\Departamento;
 use Illuminate\Http\Request;
-use App\Models\Frecuencia;
 use App\Models\CantidadClases;
 use App\Http\Controllers\Controller;
 use App\Models\Carril;
-use App\Models\CarrilHasFrecuencia;
 use App\Models\Cliente;
 use App\Models\MatriculaDetalle;
 use App\Models\Programa;
