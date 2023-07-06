@@ -176,13 +176,13 @@
                                 </li>
 
 
-                                <li class=""><a><i class="fa fa-cash-register"></i> Arqueo de caja y cambio <span class="fa fa-chevron-down"></span></a>
+                                <li class=""><a><i class="fa fa-cash-register"></i> Arqueo de caja  <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a href="javascript:void(0);" data-toggle="modal" data-target="#abrirArqueoCajaModalCenter" >Abrir Caja</a></li>
                                         <li><a href="{{ route('arqueoCaja.cerrar') }}">Cerrar caja</a></li>
                                         <li><a href="{{ route('arqueoCaja.index') }}">Arqueos de caja</a></li>
-                                        <li><a href="{{ route('arqueoCaja.reportePdf') }}">Reporte Arqueo</a></li>
-                                        <li><a href="{{ route('historialCambio.index') }}" >Historial de camnio de moneda</a></li>
+                                        {{-- <li><a href="{{ route('arqueoCaja.reportePdf') }}">Reporte Arqueo</a></li> --}}
+                                        {{-- <li><a href="{{ route('historialCambio.index') }}" >Historial de camnio de moneda</a></li> --}}
                                         <li><a href="{{ route('arqueoCajaOperacion.create') }}">Crear operaciones</a></li>
                                         <li><a href="{{ route('arqueoCajaOperacion.index') }}">Operaciones lista</a></li>
                                     </ul>

@@ -47,10 +47,10 @@ class AppServiceProvider extends ServiceProvider
             $currentDate = now()->format('Y-m-d');
             $usuario = auth()->user()->usuario;
 
-            $arqueoCajaAnterior = ArqueoCaja::query()->where( 'fecha', now()->subDays(1)->format('Y-m-d') )->first();
+            // $arqueoCajaAnterior = ArqueoCaja::query()->where( 'fecha', now()->subDays(1)->format('Y-m-d') )->first();
             $arqueoCajaCurrent = ArqueoCaja::query()->where( 'fecha', $currentDate )->first();
 
-            $view->with(compact( 'currentDate', 'usuario', 'arqueoCajaAnterior', 'arqueoCajaCurrent' ));
+            $view->with(compact( 'currentDate', 'usuario', 'arqueoCajaCurrent' ));
         });
 
 

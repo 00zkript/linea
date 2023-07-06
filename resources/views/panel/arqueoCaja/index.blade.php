@@ -161,18 +161,18 @@
                     stop();
 
                     $('#fecha').html(data.fecha);
-                    $('#montoCambio').html(data.monto_cambio_moneda);
+                    // $('#montoCambio').html(data.monto_cambio_moneda);
                     $('#supervisor').html(data.supervisor.nombres+" "+data.supervisor.apellidos);
                     $('#montoInicialSol').html(data.monto_inicial_sol);
-                    $('#montoInicialDolar').html(data.monto_inicial_dolar);
+                    // $('#montoInicialDolar').html(data.monto_inicial_dolar);
                     $('#montoFinalSolEfectivo').html(data.monto_final_sol_efectivo);
                     $('#montoFinalSolTransferido').html(data.monto_final_sol_transferido);
                     $('#montoFinalSolFaltante').html(data.monto_final_sol_faltante);
                     $('#montoFinalSolSobrante').html(data.monto_final_sol_sobrante);
-                    $('#montoFinalDolarEfectivo').html(data.monto_final_dolar_efectivo);
-                    $('#montoFinalDolarTransferido').html(data.monto_final_dolar_transferido);
-                    $('#montoFinalDolarFaltante').html(data.monto_final_dolar_faltante);
-                    $('#montoFinalDolarSobrante').html(data.monto_final_dolar_sobrante);
+                    // $('#montoFinalDolarEfectivo').html(data.monto_final_dolar_efectivo);
+                    // $('#montoFinalDolarTransferido').html(data.monto_final_dolar_transferido);
+                    // $('#montoFinalDolarFaltante').html(data.monto_final_dolar_faltante);
+                    // $('#montoFinalDolarSobrante').html(data.monto_final_dolar_sobrante);
 
                     $("#modalVer").modal("show");
 

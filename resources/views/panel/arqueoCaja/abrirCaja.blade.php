@@ -41,7 +41,7 @@
                                 <input type="text" class="form-control" name="caja" id="caja" placeholder="Caja" value="{{ $usuario }}" readonly>
                             </div>
 
-                            <div class="col-12 form-group">
+                            {{-- <div class="col-12 form-group">
                                 <label>Cierre de caja anterior:</label>
                                 <div class="row">
                                     <div class="col-md-6 col-12 input-group">
@@ -53,26 +53,26 @@
                                         <input type="text" class="form-control format-number-price" name="cierreCajaAnteriorDolar" id="cierreCajaAnteriorDolar" placeholder="Cierre anterior dolares" value="{{ number_format($arqueoCajaAnterior->monto_i_finalolar ?? '0.00',2,'.','') }}" readonly >
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-12 form-group">
+                            </div> --}}
+                            {{-- <div class="col-12 form-group">
                                 <label for="montoCambio">Monto de cambio: </label>
                                 <div class="input-group">
                                     <div class="input-group-prepend"> <span class="input-group-text">S/. </span> </div>
                                     <input type="text" class="form-control format-number-price" name="montoCambio" id="montoCambio" placeholder="Monto de cambio ({{ now()->format('d/m/Y') }})" required >
                                     <div class="input-group-end"> <span class="input-group-text"> = $ 1.00 </span> </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-12 form-group">
                                 <label for="montoInicial">Monto inicial: </label>
                                 <div class="row">
                                     <div class="col-md-12 col-12 input-group">
                                         <div class="input-group-prepend"> <span class="input-group-text">S/. </span> </div>
-                                        <input type="text" class="form-control format-number-price" name="montoInicialSoles" id="montoInicialSoles" placeholder="Monto inicial soles" required >
+                                        <input type="text" class="form-control format-number-price" name="montoInicialSoles" id="montoInicialSoles" placeholder="Monto inicial soles" required value="0.00" >
 
-                                        <span class="input-group-text"> && </span>
+                                        {{-- <span class="input-group-text"> && </span>
 
                                         <div class="input-group-prepend"> <span class="input-group-text">$ </span> </div>
-                                        <input type="text" class="form-control format-number-price" name="montoInicialDolares" id="montoInicialDolares" placeholder="Monto inicial dolares" required >
+                                        <input type="text" class="form-control format-number-price" name="montoInicialDolares" id="montoInicialDolares" placeholder="Monto inicial dolares" required > --}}
                                     </div>
                                 </div>
                             </div>
@@ -105,15 +105,15 @@
             const validateArqueoCaja = () => {
                 const errors = [];
 
-                if (!$('#montoCambio').val()) {
-                    errors.push("Por favor, ingresa un monto de cambio.");
-                }
+                // if (!$('#montoCambio').val()) {
+                //     errors.push("Por favor, ingresa un monto de cambio.");
+                // }
                 if (!$('#montoInicialSoles').val()) {
                     errors.push("Por favor, ingresa un monto inicial en soles.");
                 }
-                if (!$('#montoInicialDolares').val()) {
-                    errors.push("Por favor, ingresa un monto inicial en dólares.");
-                }
+                // if (!$('#montoInicialDolares').val()) {
+                //     errors.push("Por favor, ingresa un monto inicial en dólares.");
+                // }
 
                 return errors;
             }
@@ -144,8 +144,12 @@
                     $('#frmAbrirCaja')[0].reset();
                 });
 
+
+                let clickDisabledSave = false;
                 $(document).on( 'click', '#storeAbrirArqueoCaja', function (e) {
                     e.preventDefault();
+                    if (clickDisabledSave) return;
+                    clickDisabledSave = true;
 
                     const form = new FormData(document.querySelector('#frmAbrirCaja'));
 
@@ -157,6 +161,7 @@
                         $('#advertenciaAbrirArqueoCajaModalCenter').modal('hide');
                     })
                     .catch( error => {
+                        clickDisabledSave = false;
                         if ( error.response === undefined) {
                             console.error(error);
                             return;

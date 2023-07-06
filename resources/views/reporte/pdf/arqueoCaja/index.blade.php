@@ -213,14 +213,14 @@
                 </tr>
                 <tr class="table-dark">
                     <th>Soles</th>
-                    <th>Dolares</th>
+                    {{-- <th>Dolares</th> --}}
                 </tr>
             </thead>
             <tbody>
                 @foreach ($registros as $item)
                     <tr>
                         <td class="text-center">S/. {{ number_format($item->monto_inicial_sol,2) }}</td>
-                        <td class="text-center">$ {{ number_format($item->monto_inicial_dolar,2) }}</td>
+                        {{-- <td class="text-center">$ {{ number_format($item->monto_inicial_dolar,2) }}</td> --}}
                     </tr>
                 @endforeach
             </tbody>
@@ -237,8 +237,8 @@
                     <th>Concepto</th>
                     <th>Efectivo (S/.)</th>
                     <th>Tarjeta (S/.)</th>
-                    <th>Efectivo ($)</th>
-                    <th>Tarjeta ($)</th>
+                    {{-- <th>Efectivo ($)</th>
+                    <th>Tarjeta ($)</th> --}}
                 </tr>
             </thead>
             <tbody>
@@ -248,8 +248,8 @@
                     <td>Concepto</td>
                     <td>Efectivo (S/.)</td>
                     <td>Tarjeta (S/.)</td>
-                    <td>Efectivo ($)</td>
-                    <td>Tarjeta ($)</td>
+                    {{-- <td>Efectivo ($)</td>
+                    <td>Tarjeta ($)</td> --}}
                 </tr>
             </tbody>
             <tfoot>
@@ -257,8 +257,8 @@
                     <td colspan="3"> Total:</td>
                     <td>0.00</td>
                     <td>0.00</td>
-                    <td>0.00</td>
-                    <td>0.00</td>
+                    {{-- <td>0.00</td>
+                    <td>0.00</td> --}}
                 </tr>
             </tfoot>
         </table>
@@ -272,7 +272,7 @@
                     <th>Codígo</th>
                     <th>Descripción</th>
                     <th>Efectivo(S/.)</th>
-                    <th>Efectivo($)</th>
+                    {{-- <th>Efectivo($)</th> --}}
                     <th>Autorizado</th>
                 </tr>
             </thead>
@@ -286,7 +286,7 @@
                                 <td>{{ str_pad($operacion->idarqueo_caja_operaciones,7,0,STR_PAD_LEFT) }}</td>
                                 <td>{{ $operacion->descripcion }}</td>
                                 <td>S/. {{ number_format($operacion->monto_sol,2) }}</td>
-                                <td>$ {{ number_format($operacion->monto_dolar,2) }}</td>
+                                {{-- <td>$ {{ number_format($operacion->monto_dolar,2) }}</td> --}}
                                 <td>{{ $operacion->supervisor->nombres }} {{ $operacion->supervisor->apellidos }}</td>
                             </tr>
                             @php($sumIngresosSol += $operacion->monto_sol)
@@ -299,7 +299,7 @@
                 <tr>
                     <td colspan="2"> Total:</td>
                     <td>S/. {{ number_format($sumIngresosSol,2) }}</td>
-                    <td>$ {{ number_format($sumIngresosDolar,2) }}</td>
+                    {{-- <td>$ {{ number_format($sumIngresosDolar,2) }}</td> --}}
                     <td></td>
                 </tr>
             </tfoot>
@@ -314,7 +314,7 @@
                     <th>Codígo</th>
                     <th>Descripción</th>
                     <th>Efectivo(S/.)</th>
-                    <th>Efectivo($)</th>
+                    {{-- <th>Efectivo($)</th> --}}
                     <th>Autorizado</th>
                 </tr>
             </thead>
@@ -328,7 +328,7 @@
                                 <td>{{ str_pad($operacion->idarqueo_caja_operaciones,7,0,STR_PAD_LEFT) }}</td>
                                 <td>{{ $operacion->descripcion }}</td>
                                 <td>S/. {{ number_format($operacion->monto_sol,2) }}</td>
-                                <td>$ {{ number_format($operacion->monto_dolar,2) }}</td>
+                                {{-- <td>$ {{ number_format($operacion->monto_dolar,2) }}</td> --}}
                                 <td>{{ $operacion->supervisor->nombres }} {{ $operacion->supervisor->apellidos }}</td>
                             </tr>
                             @php($sumEgresosSol += $operacion->monto_sol)
@@ -341,8 +341,8 @@
                 <tr>
                     <td colspan="2"> Total:</td>
                     <td>S/. {{ number_format($sumEgresosSol,2) }}</td>
-                    <td>$ {{ number_format($sumEgresosDolar,2) }}</td>
-                    <td></td>
+                    {{-- <td>$ {{ number_format($sumEgresosDolar,2) }}</td> --}}
+                    <td colspan="2"></td>
                 </tr>
             </tfoot>
         </table>
@@ -350,11 +350,11 @@
         <table class="table border-botttom-1 mt-3">
             <tr>
                 <td>EXCEDENTES SOLES: S/. {{ number_format($registros->sum('monto_final_sol_excedente'),2) }}</td>
-                <td>EXCEDENTES DOLARES: $ {{ number_format($registros->sum('monto_final_dolar_excedente'),2) }}</td>
+                {{-- <td>EXCEDENTES DOLARES: $ {{ number_format($registros->sum('monto_final_dolar_excedente'),2) }}</td> --}}
             </tr>
             <tr>
                 <td>FALTA SOLES: S/. {{ number_format($registros->sum('monto_final_sol_faltante'),2) }}</td>
-                <td>FALTA DOLARES: $ {{ number_format($registros->sum('monto_final_dolar_faltante'),2) }}</td>
+                {{-- <td>FALTA DOLARES: $ {{ number_format($registros->sum('monto_final_dolar_faltante'),2) }}</td> --}}
             </tr>
         </table>
     </section>
@@ -413,8 +413,8 @@
             <tr>
                 <td>TOTAL DINERO CAJA SOLES: </td>
                 <td>S/. {{ number_format($totalCajaSoles,2) }} </td>
-                <td>TOTAL DINERO CAJA DOLARES: </td>
-                <td>$ {{ number_format($totalCajaDolares,2) }} </td>
+                {{-- <td>TOTAL DINERO CAJA DOLARES: </td> --}}
+                {{-- <td>$ {{ number_format($totalCajaDolares,2) }} </td> --}}
             </tr>
         </table>
     </section>

@@ -48,8 +48,8 @@
 
 
                         <div class="row ml-0 mr-0 pl-0 pr-0">
-                            <div class="col-md-6 col-12 row ml-0 mr-0 pl-0 pr-0">
-                                <div class="col-12"> <hr> <h3>Soles (S/.)</h3> <hr> </div>
+                            <div class="col-12 row ml-0 mr-0 pl-0 pr-0">
+                                {{-- <div class="col-12"> <hr> <h3>Soles (S/.)</h3> <hr> </div> --}}
                                 <div class="col-12 row ml-0 mr-0 pl-0 pr-0">
                                     <div class="col-12 form-group">
                                         <label for="ingresosSol">Ingresos</label>
@@ -96,7 +96,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-12 row ml-0 mr-0 pl-0 pr-0">
+                            {{-- <div class="col-md-6 col-12 row ml-0 mr-0 pl-0 pr-0">
                                 <div class="col-12"> <hr> <h3>Dolares ($)</h3> <hr> </div>
                                 <div class="col-12 row ml-0 mr-0 pl-0 pr-0">
                                     <div class="col-12 form-group">
@@ -143,7 +143,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="col-12 text-center">
                                 <button type="reset" class="btn btn-secondary"><i class="fa fa-refresh"></i> Limpiar</button>
                                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardaar</button>

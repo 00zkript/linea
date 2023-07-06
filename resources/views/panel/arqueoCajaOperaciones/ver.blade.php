@@ -42,14 +42,14 @@
                                 <td><b>Monto Transferido (S/.)</b></td>
                                 <td id="montoSolTransferido"></td>
                             </tr>
-                            <tr>
+                            {{-- <tr>
                                 <td><b>Monto Efectivo ($)</b></td>
                                 <td id="montoDolarEfectivo"></td>
                             </tr>
                             <tr>
                                 <td><b>Monto Transferido ($)</b></td>
                                 <td id="montoDolarTransferido"></td>
-                            </tr>
+                            </tr> --}}
                             <tr>
                                 <td><b>Descripcion</b></td>
                                 <td id="descripcion"></td>

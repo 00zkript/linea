@@ -21,10 +21,10 @@
                             <p id="fecha"></p>
                         </div>
 
-                        <div class="col-12 form-group">
+                        {{-- <div class="col-12 form-group">
                             <p>Monto de cambio</p>
                             <p id="montoCambio"></p>
-                        </div>
+                        </div> --}}
 
                         <div class="col-12 form-group">
                             <p>Revisado por</p>
@@ -35,10 +35,10 @@
                             <p>Monto inicial (S/.)</p>
                             <p id="montoInicialSol"></p>
                         </div>
-                        <div class="col-12 form-group">
+                        {{-- <div class="col-12 form-group">
                             <p>Monto inicial ($)</p>
                             <p id="montoInicialDolar"></p>
-                        </div>
+                        </div> --}}
                         <div class="col-12 form-group">
                             <p>Monto final efectivo (S/.)</p>
                             <p id="montoFinalSolEfectivo"></p>
@@ -55,7 +55,7 @@
                             <p>Monto final sobrante (S/.)</p>
                             <p id="montoFinalSolSobrante"></p>
                         </div>
-                        <div class="col-12 form-group">
+                        {{-- <div class="col-12 form-group">
                             <p>Monto final efectivo ($)</p>
                             <p id="montoFinalDolarEfectivo"></p>
                         </div>
@@ -70,7 +70,7 @@
                         <div class="col-12 form-group">
                             <p>Monto final sobrante ($)</p>
                             <p id="montoFinalDolarSobrante"></p>
-                        </div>
+                        </div> --}}
 
                     </div>
 

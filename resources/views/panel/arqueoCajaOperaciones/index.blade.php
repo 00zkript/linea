@@ -155,8 +155,8 @@
                     $('#supervisor').html(data.supervisor.nombres+' '+data.supervisor.apellidos)
                     $('#montoSolEfectivo').html('S/. '+parseFloat(data.monto_sol_efectivo).toFixed(2))
                     $('#montoSolTransferido').html('S/. '+parseFloat(data.monto_sol_transferido).toFixed(2))
-                    $('#montoDolarEfectivo').html('$ '+parseFloat(data.monto_dolar_efectivo).toFixed(2))
-                    $('#montoDolarTransferido').html('$ '+parseFloat(data.monto_dolar_transferido).toFixed(2))
+                    // $('#montoDolarEfectivo').html('$ '+parseFloat(data.monto_dolar_efectivo).toFixed(2))
+                    // $('#montoDolarTransferido').html('$ '+parseFloat(data.monto_dolar_transferido).toFixed(2))
                     $('#descripcion').html(data.descripcion)
 
                     $("#modalVer").modal("show");

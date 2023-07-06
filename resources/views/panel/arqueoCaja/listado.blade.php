@@ -4,11 +4,11 @@
             <thead class="table-dark">
                 <tr>
                     <th>Código</th>
-                    <th>fecha</th>
+                    <th>Fecha</th>
                     <th>Monto inicial (S/.)</th>
-                    <th>Monto inicial ($)</th>
+                    {{-- <th>Monto inicial ($)</th> --}}
                     <th>Monto final (S/.)</th>
-                    <th>Monto final ($)</th>
+                    {{-- <th>Monto final ($)</th> --}}
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -18,9 +18,9 @@
                         <td>{{ str_pad($item->idarqueo_caja,7,0,STR_PAD_LEFT) }}</th>
                         <td>{{ now()->parse($item->fecha)->format('d/m/Y') }}</th>
                         <td> S/. {{ number_format($item->monto_inicial_sol,2,'.','') }}</th>
-                        <td> $ {{ number_format($item->monto_inicial_dolar,2,'.','') }}</th>
+                        {{-- <td> $ {{ number_format($item->monto_inicial_dolar,2,'.','') }}</th> --}}
                         <td> S/. {{ number_format($item->monto_final_sol,2,'.','') }}</th>
-                        <td> $ {{ number_format($item->monto_final_dolar,2,'.','') }}</th>
+                        {{-- <td> $ {{ number_format($item->monto_final_dolar,2,'.','') }}</th> --}}
                         <td class="text-center">
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-{{$item->idarqueo_caja}}" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">

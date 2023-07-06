@@ -21,10 +21,10 @@ class ArqueoCajaController extends Controller
         }
 
         $montoInicialSol   = $request->input('montoInicialSoles');
-        $montoInicialDolar = $request->input('montoInicialDolares');
-        $cambioMoneda      = $request->input('montoCambio');
+        // $montoInicialDolar = $request->input('montoInicialDolares');
+        // $cambioMoneda      = $request->input('montoCambio');
         $fecha             = now()->format('Y-m-d');
-        $montoInicial      = $montoInicialSol + ($montoInicialDolar*$cambioMoneda);
+        // $montoInicial      = $montoInicialSol + ($montoInicialDolar*$cambioMoneda);
 
         $sucursal = auth()->user()->sucursal;
 
@@ -34,11 +34,9 @@ class ArqueoCajaController extends Controller
         $arqueoCaja->idusuario                 = auth()->id();
         $arqueoCaja->idsucursal                = $sucursal->idsucursal;
         $arqueoCaja->fecha                     = $fecha;
-        $arqueoCaja->monto_cambio_moneda       = number_format($cambioMoneda,4,'.','');
-
         $arqueoCaja->monto_inicial_sol         = number_format($montoInicialSol,4,'.','');
-        $arqueoCaja->monto_inicial_dolar       = number_format($montoInicialDolar,4,'.','');
-
+        // $arqueoCaja->monto_inicial_dolar       = number_format($montoInicialDolar,4,'.','');
+        // $arqueoCaja->monto_cambio_moneda       = number_format($cambioMoneda,4,'.','');
         $arqueoCaja->save();
 
         return response()->json([
@@ -53,7 +51,7 @@ class ArqueoCajaController extends Controller
         $fecha = now()->format('Y-m-d');
         $arqueoCaja = ArqueoCaja::query()->where('fecha', $fecha )->first();
 
-        $ventasHoy = Venta::query()->where('fecha',$fecha)->where('estado',1)->get();
+        $ventasHoy = Venta::query()->whereDate('created_at',$fecha)->where('estado',1)->get();
         $operacionesIngreso = $arqueoCaja->operaciones()->where('idtipo_operacion', $INGRESO_ID)->get();
         $operacionesEgreso = $arqueoCaja->operaciones()->where('idtipo_operacion', $EGRESO_ID)->get();
 
@@ -86,25 +84,6 @@ class ArqueoCajaController extends Controller
         $montoFinalSolEfectivo      = ($arqueoCaja->monto_inicial_sol + $EVentasSolEfectivo + $EOperacionesIngresosSolEfectivo) - $EOperacionesEgresosSolEfectivo;
         $montoFinalSolTransferido   = ($EVentasSolTransferido + $EOperacionesIngresosSolTransferido) - $EOperacionesEgresosSolTransferido;
 
-        //*Dolar
-        $EVentasDolarEfectivo    = $ventasHoy->sum('monto_dolar_efectivo');
-        $EVentasDolarTransferido = $ventasHoy->sum('monto_dolar_transferido');
-        $EVentasDolarTotal       = $EVentasDolarEfectivo + $EVentasDolarTransferido;
-
-        $EOperacionesIngresosDolarEfectivo    = $operacionesIngreso->sum('monto_dolar_efectivo');
-        $EOperacionesIngresosDolarTransferido = $operacionesIngreso->sum('monto_dolar_tranferido');
-        $EOperacionesIngresosDolarTotal       = $EOperacionesIngresosDolarEfectivo + $EOperacionesIngresosDolarTransferido;
-
-        $EOperacionesEgresosDolarEfectivo     = $operacionesEgreso->sum('monto_dolar_efectivo');
-        $EOperacionesEgresosDolarTransferido  = $operacionesEgreso->sum('monto_dolar_tranferido');
-        $EOperacionesEgresosDolarTotal        = $EOperacionesEgresosDolarEfectivo + $EOperacionesEgresosDolarTransferido;
-
-        $ingresosDolar = $arqueoCaja->monto_inicial_dolar + $EVentasDolarTotal + $EOperacionesIngresosDolarTotal;
-        $egresosDolar =  $EOperacionesEgresosDolarTotal;
-
-        $montoFinalDolarEfectivo      = ($arqueoCaja->monto_inicial_dolar + $EVentasDolarEfectivo + $EOperacionesIngresosDolarEfectivo) - $EOperacionesEgresosDolarEfectivo;
-        $montoFinalDolarTransferido   = ($EVentasDolarTransferido + $EOperacionesIngresosDolarTransferido) - $EOperacionesEgresosDolarTransferido;
-
 
         return view('panel.arqueoCaja.cerrarCaja')->with(compact(
             'fecha',
@@ -114,10 +93,6 @@ class ArqueoCajaController extends Controller
             'egresosSol',
             'montoFinalSolEfectivo',
             'montoFinalSolTransferido',
-            'ingresosDolar',
-            'egresosDolar',
-            'montoFinalDolarEfectivo',
-            'montoFinalDolarTransferido',
         ));
     }
 
@@ -131,14 +106,14 @@ class ArqueoCajaController extends Controller
         $montoFinalSolTransferido   = $request->input('montoFinalSolTransferido',0);
         $montoFinalSolFaltante      = $request->input('montoFinalSolFaltante',0);
         $montoFinalSolSobrante      = $request->input('montoFinalSolSobrante',0);
-        $montoFinalDolarEfectivo    = $request->input('montoFinalDolarEfectivo',0);
-        $montoFinalDolarTransferido = $request->input('montoFinalDolarTransferido',0);
-        $montoFinalDolarFaltante    = $request->input('montoFinalDolarFaltante',0);
-        $montoFinalDolarSobrante    = $request->input('montoFinalDolarSobrante',0);
+        // $montoFinalDolarEfectivo    = $request->input('montoFinalDolarEfectivo',0);
+        // $montoFinalDolarTransferido = $request->input('montoFinalDolarTransferido',0);
+        // $montoFinalDolarFaltante    = $request->input('montoFinalDolarFaltante',0);
+        // $montoFinalDolarSobrante    = $request->input('montoFinalDolarSobrante',0);
         $idsupervisor    = $request->input('idsupervisor',0);
 
         $montoFinalSol              = $montoFinalSolEfectivo + $montoFinalSolTransferido;
-        $montoFinalDolar            = $montoFinalDolarEfectivo + $montoFinalDolarTransferido;
+        // $montoFinalDolar            = $montoFinalDolarEfectivo + $montoFinalDolarTransferido;
         $fecha                      = now()->format('Y-m-d');
 
         $arqueoCaja = ArqueoCaja::query()->where('fecha', $fecha )->first();
@@ -147,11 +122,11 @@ class ArqueoCajaController extends Controller
         $arqueoCaja->monto_final_sol               = $montoFinalSol;
         $arqueoCaja->monto_final_sol_faltante      = $montoFinalSolFaltante;
         $arqueoCaja->monto_final_sol_sobrante      = $montoFinalSolSobrante;
-        $arqueoCaja->monto_final_dolar_efectivo    = $montoFinalDolarEfectivo;
-        $arqueoCaja->monto_final_dolar_transferido = $montoFinalDolarTransferido;
-        $arqueoCaja->monto_final_dolar             = $montoFinalDolar;
-        $arqueoCaja->monto_final_dolar_faltante    = $montoFinalDolarFaltante;
-        $arqueoCaja->monto_final_dolar_sobrante    = $montoFinalDolarSobrante;
+        // $arqueoCaja->monto_final_dolar_efectivo    = $montoFinalDolarEfectivo;
+        // $arqueoCaja->monto_final_dolar_transferido = $montoFinalDolarTransferido;
+        // $arqueoCaja->monto_final_dolar             = $montoFinalDolar;
+        // $arqueoCaja->monto_final_dolar_faltante    = $montoFinalDolarFaltante;
+        // $arqueoCaja->monto_final_dolar_sobrante    = $montoFinalDolarSobrante;
         $arqueoCaja->idsupervisor                  = $idsupervisor;
         $arqueoCaja->fecha_cierre                  = now()->format('Y-m-d H:i:s');
         $arqueoCaja->update();
@@ -261,8 +236,8 @@ class ArqueoCajaController extends Controller
             ->get();
 
         $ventas = Venta::query()
-            ->whereDate('fecha', '>=', now()->parse($fechaDesde)->format('Y-m-d'))
-            ->whereDate('fecha','<=', now()->parse($fechaHasta)->format('Y-m-d'))
+            ->whereDate('created_at', '>=', now()->parse($fechaDesde)->format('Y-m-d'))
+            ->whereDate('created_at','<=', now()->parse($fechaHasta)->format('Y-m-d'))
             ->where('estado',1)
             ->get();
 
@@ -283,7 +258,7 @@ class ArqueoCajaController extends Controller
             ->get();
 
         $totalCajaSoles = ($registros->sum('monto_final_sol') + $operacionesIngresos->sum('monto_sol') + $ventas->sum('monto_total_sol') ) - $operacionesEgresos->sum('monto_sol');
-        $totalCajaDolares = ($registros->sum('monto_final_dolar') + $operacionesIngresos->sum('monto_dolar') + $ventas->sum('monto_total_dolar') ) - $operacionesEgresos->sum('monto_dolar');
+        // $totalCajaDolares = ($registros->sum('monto_final_dolar') + $operacionesIngresos->sum('monto_dolar') + $ventas->sum('monto_total_dolar') ) - $operacionesEgresos->sum('monto_dolar');
 
         $pdf = SnappyPdf::loadView('reporte.pdf.arqueoCaja.index', compact(
             'empresa',
@@ -293,7 +268,7 @@ class ArqueoCajaController extends Controller
             'operacionesIngresos',
             'operacionesEgresos',
             'totalCajaSoles',
-            'totalCajaDolares'
+            // 'totalCajaDolares'
         ));
 
 

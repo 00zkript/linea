@@ -7,7 +7,7 @@
                     <th>Tipo operación</th>
                     <th>fecha</th>
                     <th>Monto (S/.)</th>
-                    <th>Monto ($)</th>
+                    {{-- <th>Monto ($)</th> --}}
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -18,7 +18,7 @@
                         <td>{{ $item->tipoOperacion->nombre }}</th>
                         <td>{{ now()->parse($item->fecha)->format('d/m/Y') }}</th>
                         <td> S/. {{ number_format($item->monto_sol,2,'.','') }}</th>
-                        <td>$ {{ number_format($item->monto_dolar,2,'.','') }}</th>
+                        {{-- <td>$ {{ number_format($item->monto_dolar,2,'.','') }}</th> --}}
                         <td class="text-center">
                             <div class="dropdown">
                                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-{{$item->idarqueo_caja_operaciones}}" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">

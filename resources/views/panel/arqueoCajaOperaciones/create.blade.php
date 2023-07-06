@@ -32,26 +32,26 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-12 col-md-6 pl-0 pr-0">
-                            <div class="col-12 text-center pt-3">
+                        <div class="col-12 pl-0 pr-0">
+                            {{-- <div class="col-12 text-center pt-3">
                                 <h4>Soles</h4>
-                            </div>
+                            </div> --}}
                             <div class="col-12 form-group">
                                 <label for="montoSolEfectivo">Monto efectivo</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend"><span class="input-group-text">S/. </span></div>
-                                    <input type="text" class="form-control format-number-price" name="montoSolEfectivo" id="montoSolEfectivo" placeholder="Monto efectivo" >
+                                    <input type="text" class="form-control format-number-price" name="montoSolEfectivo" id="montoSolEfectivo" placeholder="Monto efectivo"  value="0.00">
                                 </div>
                             </div>
                             <div class="col-12 form-group">
                                 <label for="montoSolTransferido">Monto transferido</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend"><span class="input-group-text">S/. </span></div>
-                                    <input type="text" class="form-control format-number-price" name="montoSolTransferido" id="montoSolTransferido" placeholder="Monto transferido" >
+                                    <input type="text" class="form-control format-number-price" name="montoSolTransferido" id="montoSolTransferido" placeholder="Monto transferido" value="0.00">
                                 </div>
                             </div>
                         </div>
-                        <div class="col-12 col-md-6 pl-0 pr-0">
+                        {{-- <div class="col-12 col-md-6 pl-0 pr-0">
                             <div class="col-12 text-center pt-3">
                                 <h4>Dolares</h4>
                             </div>
@@ -69,7 +69,7 @@
                                     <input type="text" class="form-control format-number-price" name="montoDolarTransferido" id="montoDolarTransferido" placeholder="Monto transferido" >
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
                     <div class="row ">
