@@ -24,6 +24,14 @@
                         </div>
 
 
+                        <div class="col-12 form-group">
+                            <label for="posicion">Posición:</label>
+                            <select class="form-control" name="posicion" id="posicion" title="Posición" >
+                                <option value="" hidden selected >[---Seleccione---]</option>
+                            </select>
+                        </div>
+
+
 
 
 

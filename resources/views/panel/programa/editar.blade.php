@@ -24,6 +24,12 @@
                             <label for="nombreEditar">Nombre: <span class="text-danger">(*)</span></label>
                             <input type="text" name="nombreEditar" id="nombreEditar" required class="form-control"  placeholder="Nombre">
                         </div>
+                        <div class="col-12 form-group">
+                            <label for="posicionEditar">Posición:</label>
+                            <select class="form-control" name="posicionEditar" id="posicionEditar" title="Posición" >
+                                <option value="" hidden selected >[---Seleccione---]</option>
+                            </select>
+                        </div>
 
 
                         <div class="col-12 form-group">

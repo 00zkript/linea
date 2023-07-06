@@ -145,6 +145,7 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::put('programa/{programa}/habilitar',[\App\Http\Controllers\Panel\ProgramaController::class,'habilitar'])->name("programa.habilitar");
     Route::put('programa/{programa}/inhabilitar',[\App\Http\Controllers\Panel\ProgramaController::class,'inhabilitar'])->name("programa.inhabilitar");
     Route::get('programa/listar',[\App\Http\Controllers\Panel\ProgramaController::class,'listar'])->name("programa.listar");
+    Route::get('programa/posicion-maxima',[\App\Http\Controllers\Panel\ProgramaController::class,'posicionMaxima'])->name("programa.posicionMaxima");
     Route::resource('programa',\App\Http\Controllers\Panel\ProgramaController::class);
 
     Route::put('nivel/{nivel}/habilitar',[\App\Http\Controllers\Panel\NivelController::class,'habilitar'])->name("nivel.habilitar");

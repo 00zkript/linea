@@ -17,8 +17,14 @@
                         </div>
 
                         <div class="col-12">
-                                <p class="text-capitalize">nombre:</p>
+                                <p class="text-capitalize">Nombre:</p>
                                 <p id="nombreShow"></p>
+                            <hr>
+                        </div>
+
+                        <div class="col-12">
+                                <p class="text-capitalize">Posición:</p>
+                                <p id="posicionShow"></p>
                             <hr>
                         </div>
 

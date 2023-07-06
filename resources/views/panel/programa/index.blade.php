@@ -139,6 +139,7 @@
                 e.preventDefault();
                 $("#frmCrear span.error").remove();
                 $("#frmCrear")[0].reset();
+                getPosicion({ el: '#posicion'})
 
                 $("#frmCrear .selectpicker").selectpicker("refresh");
                 $("#modalCrear").modal("show");
@@ -182,6 +183,7 @@
 
 
                     $("#nombreEditar").val(data.nombre);
+                    getPosicion({ el: '#posicionEditar', currentValue: data.posicion})
 
 
                     $("#frmEditar .selectpicker").selectpicker("render");
@@ -207,6 +209,7 @@
                     stop();
 
                     $("#nombreShow").html(data.nombre);
+                    $("#posicionShow").html(data.posicion);
 
 
                     if (data.estado){
@@ -240,7 +243,7 @@
                     // $("#manual").fileinput("upload");
 
                     $("#modalCrear").modal("hide");
-                    notificacion("success","Registro exitoso",data.mensaje);
+                    notificacion("success","Registro exitoso",data.mensaje, 2*1000);
                     listado();
 
                 })
@@ -268,7 +271,7 @@
 
                     stop();
                     $("#modalEditar").modal("hide");
-                    notificacion("success","Modificación exitosa",data.mensaje);
+                    notificacion("success","Modificación exitosa",data.mensaje, 2*1000);
                     listado($("#cantidadRegistros").val(),$("#paginaActual").val());
 
                 })
@@ -292,7 +295,7 @@
 
                     $("#modalHabilitar").modal("hide");
 
-                    notificacion("success","Habilitado",data.mensaje);
+                    notificacion("success","Habilitado",data.mensaje, 2*1000);
 
                     listado($("#cantidadRegistros").val(),$("#paginaActual").val());
 
@@ -318,7 +321,7 @@
                     stop();
                     $("#modalInhabilitar").modal("hide");
 
-                    notificacion("success","Inhabilitado",data.mensaje);
+                    notificacion("success","Inhabilitado",data.mensaje, 2*1000);
 
                     listado($("#cantidadRegistros").val(),$("#paginaActual").val());
 
@@ -342,7 +345,7 @@
                     stop();
                     $("#modalEliminar").modal("hide");
 
-                    notificacion("success","Eliminado",data.mensaje);
+                    notificacion("success","Eliminado",data.mensaje, 2*1000);
 
                     listado($("#cantidadRegistros").val(),$("#paginaActual").val());
 
@@ -351,6 +354,28 @@
 
             } )
         }
+
+        const getPosicion = ({ currentValue = null, el = '#posicion' }) => {
+            return axios.get("{{ route('programa.posicionMaxima') }}")
+            .then( response => {
+                const data = response.data;
+                const posicionMaxima = data.posicion_maxima;
+
+                $(el).empty();
+                for (let i = 1; i <= posicionMaxima; i++) {
+                    $(el).append(`<option value="${i}">${i}</option>`);
+                }
+
+                if (currentValue) {
+                    $(el).val(currentValue);
+                }else{
+                    $(el).val(posicionMaxima);
+                }
+            })
+            .catch(errorCatch)
+        }
+
+
 
 
         $(function () {

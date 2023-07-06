@@ -60,12 +60,14 @@ class ProgramaController extends Controller
 
         $nombre     = $request->input('nombre');
         $slug       = Str::slug($nombre);
+        $posicion     = $request->input('posicion');
         $estado     = $request->input('estado');
 
         try {
             $registro = new Programa();
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
+            $registro->posicion      = $posicion;
             $registro->estado    = $estado;
             $registro->save();
 
@@ -134,6 +136,7 @@ class ProgramaController extends Controller
         // $idprograma = $request->input('idprograma');
         $nombre     = $request->input('nombreEditar');
         $slug       = Str::slug($request->input('nombreEditar'));
+        $posicion     = $request->input('posicionEditar');
         $estado     = $request->input('estadoEditar');
 
         try {
@@ -141,6 +144,7 @@ class ProgramaController extends Controller
 
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
+            $registro->posicion      = $posicion;
             $registro->estado    = $estado;
             $registro->update();
 
@@ -243,6 +247,18 @@ class ProgramaController extends Controller
         }
     }
 
+    public function posicionMaxima(Request $request)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $posicionMaxima = Programa::query()->count('idprograma');
+
+        return response()->json([
+            "posicion_maxima" => $posicionMaxima +1
+        ]);
+    }
 
 
 
