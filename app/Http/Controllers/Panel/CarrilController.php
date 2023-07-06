@@ -56,6 +56,10 @@ class CarrilController extends Controller
             return abort(404);
         }
 
+        $validator = $request->validate([
+            'nombre' => 'required|unique:carril,nombre',
+        ]);
+
 
         $nombre     = $request->input('nombre');
         $slug       = Str::slug($nombre);
@@ -131,6 +135,12 @@ class CarrilController extends Controller
         if (!$request->ajax()){
             return abort(404);
         }
+
+        $validator = $request->validate(
+            [ 'nombreEditar' => 'required|unique:carril,nombre,'.$idcarril.',idcarril', ],
+            [],
+            [ 'nombreEditar' => 'nombre' ]
+        );
 
         // $idcarril = $request->input('idcarril');
         $nombre     = $request->input('nombreEditar');

@@ -185,7 +185,7 @@
                              <p style="font-size 20px" class="card-title text-center text-white mb-0"> Ventas</p>
                         </div>
                         <div class="card-body pl-4 pr-4" >
-                            <div class="row">
+                            <!-- <div class="row">
                                 <div class="col-12 form-group">
                                     <label for="serchCarrito">Código matrícula</label>
 
@@ -194,7 +194,7 @@
                                         <div class="input-group-append" @click="searchCarrito()" cursor-pointer ><span class="input-group-text"> <i class="fa fa-search"></i></span></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
 
                             <div class="row">
                                 <div class="col-md-4 col-12 form-group">
@@ -260,7 +260,7 @@
 
                             <div class="row">
                                 <div class="col-12 mt-4 row">
-                                    <div class="col-md-4 col-12">
+                                    <div class="col-md-6 col-12">
                                         <button class="btn btn-primary" @click="openModalProductos()" ><i class="fa fa-plus"></i>Agregar producto</button>
                                         <button class="btn btn-primary" @click="openModalMatricula()" :disabled="clienteIsEmpty" ><i class="fa fa-plus"></i>Agregar matricula</button>
                                     </div>
@@ -313,7 +313,7 @@
                                             <tr>
                                                 <td colspan="3"></td>
                                                 <td class="text-right"> <b>Total</b> </td>
-                                                <td class="text-center"> <b>S/. {{ detalleMontoTotal }}</b> </td>
+                                                <td class="text-center"> <b>S/. {{ headVenta.monto_total }}</b> </td>
                                                 <td></td>
                                             </tr>
                                             <tr v-if="headVenta.idtipo_pago == 1 || headVenta.idtipo_pago == 3">
@@ -338,24 +338,34 @@
                                                 </td>
                                                 <td></td>
                                             </tr>
-                                            <!-- <tr v-if="headVenta.idtipo_pago">
+                                            <tr v-if="headVenta.idtipo_pago">
                                                 <td colspan="3"></td>
                                                 <td class="text-right"> <b>Monto vuelto</b> </td>
                                                 <td class="text-center">
                                                     <div class="input-group">
                                                         <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                        <input type="text" class="form-control" name="monotTransferido" id="monotTransferido" placeholder="Monto efectivo" v-model="headVenta.monto_vuelto" readonly >
+                                                        <input type="text" class="form-control" placeholder="Monto efectivo" v-model="headVenta.monto_vuelto" readonly >
                                                     </div>
                                                 </td>
                                                 <td></td>
-                                            </tr> -->
+                                            </tr>
+                                            <tr v-if="headVenta.idtipo_pago">
+                                                <td colspan="3"></td>
+                                                <td class="text-right"> <b>Monto deuda</b> </td>
+                                                <td class="text-center">
+                                                    <div class="input-group">
+                                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
+                                                        <input type="text" class="form-control" placeholder="Monto efectivo" v-model="headVenta.monto_deuda" readonly >
+                                                    </div>
+                                                </td>
+                                                <td></td>
+                                            </tr>
                                         </tfoot>
                                     </table>
                                 </div>
 
                                 <div class="col-12 mt-5 d-flex justify-content-center">
                                     <button class="btn btn-secondary" @click="cancelarVenta()"><i class="fa fa-times"></i> Cancelar</button>
-                                    <button class="btn btn-success" @click="imprimirVenta()"> <i class="fa fa-file-excel" ></i> Imprimir</button>
                                     <button class="btn btn-primary" @click="aceptarVenta()"> <i class="fa fa-money-bill" ></i> Pagar</button>
                                 </div>
 
@@ -425,6 +435,7 @@ export default {
                 monto_total: '',
                 monto_efectivo: '0.00',
                 monto_transferido: '0.00',
+                monto_deuda: '0.00',
                 monto_vuelto: '0.00',
             },
             detalle: [],
@@ -445,19 +456,30 @@ export default {
         detalleIsEmpty() {
             return this.detalle.length === 0;
         },
-        detalleMontoTotal() {
-            const sum = this.detalle.reduce( (acc,cur) => {
-                return parseFloat(acc)+parseFloat(cur.monto_total);
-            },0);
-            return number_format( sum, 2, '.', '' );
-        },
         detalleMontoTotalSinIGV() {
-            return number_format( this.detalleMontoTotal * 0.82, 2, '.', '' );
+            return number_format( this.headVenta.monto_total * 0.82, 2, '.', '' );
         },
         detalleMontoTotalIGV() {
-            return number_format( this.detalleMontoTotal * 0.18, 2, '.', '' );
+            return number_format( this.headVenta.monto_total * 0.18, 2, '.', '' );
         },
 
+    },
+    watch: {
+        detalle(newValue) {
+            this.getMontoTotal();
+        },
+        'headVenta.monto_total'(newValue) {
+            this.getMontoVuelto();
+            this.getMontoDeuda();
+        },
+        'headVenta.monto_efectivo'(newValue) {
+            this.getMontoVuelto();
+            this.getMontoDeuda();
+        },
+        'headVenta.monto_transferido'(newValue) {
+            this.getMontoVuelto();
+            this.getMontoDeuda();
+        }
     },
     methods: {
         number_format: number_format,
@@ -484,13 +506,16 @@ export default {
             })
         },
         getSerie() {
-            const { resources, headVenta } = this;
+            const { headVenta } = this;
 
-            const tipoFacturacionID = headVenta.idtipo_facturacion;
-            const tipoFacturacion = resources.tipoFacturacion.find( ele => ele.idtipo_facturacion === tipoFacturacionID );
+            axios.get(route('venta.resources.facturaSerie',headVenta.idtipo_facturacion))
+            .then( response => {
+                const data = response.data;
 
-            this.headVenta.serie = tipoFacturacion.serie;
-            this.headVenta.numero = tipoFacturacion.numero;
+                this.headVenta.serie = data.serie;
+                this.headVenta.numero = data.numero;
+
+            })
 
         },
 
@@ -505,14 +530,14 @@ export default {
                 const data = response.data;
 
                 if (response.status == 422){
-                    alertErrorModal({ content:  listErrors(data) });
+                    alertModal({ type: 'error', content:  listErrors(data) });
                 }
 
                 if (response.status == 400){
-                    alertErrorModal({ content:  data.mensaje });
+                    alertModal({ type: 'error', content:  data.mensaje });
                 }
 
-                alertErrorModal({ content:  'Error del servidor, contácte con soporte.' });
+                alertModal({ type: 'error', content:  'Error del servidor, contácte con soporte.' });
 
             })
         },
@@ -596,9 +621,7 @@ export default {
 
             if (matriculaInDetalleIndex !== -1) {
                 $('#addMatriculaModalCenter').modal('hide');
-                alertErrorModal({
-                    content: 'La matrícula que intenta agregar ya se encuentra en el detalle.'
-                });
+                alertModal({ type: 'error', content: 'La matrícula que intenta agregar ya se encuentra en el detalle.' });
                 return;
             }
 
@@ -617,8 +640,34 @@ export default {
             this.detalle = this.detalle.filter( ele => ele.idtipo_articulo !== this.TIPO_ARTICULO_ID.MATRICULA)
         },
 
+        getMontoTotal() {
+            const sum = this.detalle.reduce( (acc,cur) => {
+                return parseFloat(acc)+parseFloat(cur.monto_total);
+            },0);
+            const montoTotal =  number_format( sum, 2, '.', '' );
+            this.headVenta.monto_total = montoTotal;
+        },
+        getMontoVuelto() {
+            const montoTotal = parseFloat(this.headVenta.monto_total);
+            const montoPagado =  parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
+            const vuelto =  montoPagado - montoTotal;
+            if (vuelto < 0) {
+                this.headVenta.monto_vuelto = number_format('0.00',2,'.','');
+                return
+            }
+            this.headVenta.monto_vuelto = number_format(vuelto,2,'.','');
+        },
+        getMontoDeuda() {
+            const montoTotal = parseFloat(this.headVenta.monto_total);
+            const montoPagado =  parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
+            const deuda =  montoPagado - montoTotal;
+            if (deuda < 0) {
+                this.headVenta.monto_deuda = number_format(deuda,2,'.','');
+                return
+            }
 
-
+            this.headVenta.monto_deuda = number_format('0.00',2,'.','');
+        },
         removeItemDetalle( index ) {
             this.detalle = this.detalle.filter( (ele,idx) => idx !== index);
         },
@@ -637,9 +686,6 @@ export default {
         },
         cancelarVenta() {
             $('#cancelarPagoModalCenter').modal('show');
-        },
-        imprimirVenta() {
-            $('#asegurarPagoModalCenter').modal('show');
         },
         validateVenta() {
             const errors = [];
@@ -706,7 +752,7 @@ export default {
         aceptarVenta() {
             const errors = this.validateVenta();
             if (errors.length > 0) {
-                return alertErrorModal({ content: listErrorsForm(errors) });
+                return alertModal({ type: 'error', content: listErrorsForm(errors) });
             }
             $('#asegurarPagoModalCenter').modal('show');
         },

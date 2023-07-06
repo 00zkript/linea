@@ -27,13 +27,4 @@ class Programa extends Model
         return $this->belongsToMany(Frecuencia::class, ProgramaHasFrecuencia::class, 'idprograma', 'idfrecuencia', 'idprograma', 'idfrecuencia');
     }
 
-
-
-
-    public function temporada()
-    {
-        return $this->hasOne(Temporada::class, 'idtemporada', 'idtemporada')->withDefault([
-            'nombre' => 'Son temporada'
-        ]);
-    }
 }

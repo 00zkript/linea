@@ -15,16 +15,14 @@ class ProgramaController extends Controller
     public function index()
     {
 
-        $temporadas = Temporada::query()->where('estado',1)->get();
 
         $registros = Programa::query()
-            ->with(['temporada'])
             ->orderBy('idprograma','DESC')
             ->paginate(10,['*'],'pagina',1);
 
 
 
-        return view('panel.programa.index')->with(compact('registros', 'temporadas'));
+        return view('panel.programa.index')->with(compact('registros'));
 
 
     }
@@ -41,7 +39,6 @@ class ProgramaController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $registros = Programa::query()
-            ->with(['temporada'])
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query->where('nombre','LIKE','%'.$txtBuscar.'%');
             })
@@ -63,14 +60,12 @@ class ProgramaController extends Controller
 
         $nombre     = $request->input('nombre');
         $slug       = Str::slug($nombre);
-        $idtemporada  = $request->input('idtemporada');
         $estado     = $request->input('estado');
 
         try {
             $registro = new Programa();
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
-            $registro->idtemporada      = $idtemporada;
             $registro->estado    = $estado;
             $registro->save();
 
@@ -101,7 +96,7 @@ class ProgramaController extends Controller
         }
 
         // $idprograma = $request->input('idprograma');
-        $registro = Programa::query()->with(['temporada'])->find($idprograma);
+        $registro = Programa::query()->find($idprograma);
 
         if(!$registro){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -139,7 +134,6 @@ class ProgramaController extends Controller
         // $idprograma = $request->input('idprograma');
         $nombre     = $request->input('nombreEditar');
         $slug       = Str::slug($request->input('nombreEditar'));
-        $idtemporada  = $request->input('idtemporadaEditar');
         $estado     = $request->input('estadoEditar');
 
         try {
@@ -147,7 +141,6 @@ class ProgramaController extends Controller
 
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
-            $registro->idtemporada      = $idtemporada;
             $registro->estado    = $estado;
             $registro->update();
 

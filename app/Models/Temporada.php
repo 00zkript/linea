@@ -12,9 +12,4 @@ class Temporada extends Model
 	// public $timestamps = false;
 
 
-    public function programas()
-    {
-        return $this->hasMany(Programa::class,'idtemporada','idtemporada');
-    }
-
 }

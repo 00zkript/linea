@@ -136,7 +136,7 @@
                 </div>
                 <div class="col-md-4 col-12 form-group">
                     <label for="temporada">Temporada <span class="text-danger">(*)</span></label>
-                    <select class="form-control" id="temporada" v-model="matricula.idtemporada" @change="getProgramas()">
+                    <select class="form-control" id="temporada" v-model="matricula.idtemporada">
                         <option value="" hidden >[---Seleccione---]</option>
                         <option v-for="(item, index) in resources.temporadas" :key="index" :value="item.idtemporada" v-text="item.nombre"></option>
                     </select>
@@ -488,8 +488,6 @@ export default {
                         this.getDistritos();
                     }
 
-
-                    this.resources.programas   = resources.programas;
                     this.resources.niveles     = resources.niveles;
                     this.resources.carriles    = resources.carriles;
                     this.resources.frecuencias = resources.frecuencias;
@@ -654,7 +652,7 @@ export default {
         storeAlumno() {
             const errors = this.validateAlumno();
             if (errors.length > 0) {
-                notificacion('error','Errores encontrados:', listErrorsForm(errors));
+                alertModal({ type: 'error', title: 'Errores encontrados:', content: listErrorsForm(errors)});
                 return;
             }
 
@@ -719,12 +717,7 @@ export default {
 
 
         getProgramas(programaID = '') {
-            return axios(route('matricula.programas',this.matricula.idtemporada))
-            .then( response => {
-                const data = response.data;
-                this.resources.programas = data;
-                this.matricula.idprograma = programaID;
-            });
+
         },
         getNiveles(nivelID = '') {
             return axios(route('matricula.niveles',this.matricula.idprograma))
@@ -847,7 +840,7 @@ export default {
             const errors = this.validateMatricula();
 
             if (errors.length > 0) {
-                notificacion('error','Errores encontrados:', listErrorsForm(errors));
+                alertModal({ type: 'error', title: 'Errores encontrados:', content: listErrorsForm(errors)});
                 return;
             }
 
@@ -900,8 +893,6 @@ export default {
                     const { resources, matricula } = data;
 
 
-
-                    this.resources.programas   = resources.programas;
                     this.resources.niveles     = resources.niveles;
                     this.resources.carriles    = resources.carriles;
                     this.resources.frecuencias = resources.frecuencias;
@@ -974,8 +965,6 @@ export default {
             this.cantidadMatriculados = null;
             this.cantidadClasesMaxima = null;
 
-            // this.resources.programas   = [];
-            this.getProgramas();
             this.resources.niveles     = [];
             this.resources.carriles    = [];
             this.resources.frecuencias = [];

@@ -181,7 +181,6 @@
                     $("#frmEditar input[name=idprograma]").val(data.idprograma);
 
 
-                    $("#idtemporadaEditar").val(data.idtemporada);
                     $("#nombreEditar").val(data.nombre);
 
 
@@ -208,7 +207,6 @@
                     stop();
 
                     $("#nombreShow").html(data.nombre);
-                    $("#temporadaShow").html(data.temporada.nombre);
 
 
                     if (data.estado){

@@ -24,12 +24,6 @@
 
 
                         <div class="col-12">
-                            <p class="text-capitalize">Temporada:</p>
-                            <p id="temporadaShow"></p>
-                            <hr>
-                        </div>
-
-                        <div class="col-12">
                             <p class="text-capitalize">Estado:</p>
                             <p id="estadoShow"></p>
                         </div>

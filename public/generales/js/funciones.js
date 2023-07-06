@@ -8,23 +8,33 @@ try {
     // console.log("no se importo pnotify");
 }
 
-let timeoutId = null;
-const alertErrorModal = ({ title = '', content = '', time = 5000 }) => {
+let timeoutAlerModalId = null;
+const alertModal = ({ title = '', content = '', time = 5000, type = 'error' }) => {
     // Limpiar el timeout anterior si existe
-    if (timeoutId) {
-        clearTimeout(timeoutId);
-        timeoutId = null;
+    if (timeoutAlerModalId) {
+        clearTimeout(timeoutAlerModalId);
+        timeoutAlerModalId = null;
     }
 
+    const classArr = {
+        error: 'bg-danger',
+        success: 'bg-success',
+        warning: 'bg-warning',
+    }
+    const classValue = classArr[type] ?? classArr['error'];
 
-    $('#alertErrorModalCenter .titleAlertModal').html(title);
-    $('#alertErrorModalCenter .contentAlertModal').html(content);
-    $('#alertErrorModalCenter').modal('show');
 
-    timeoutId = setTimeout(() => {
-        $('#alertErrorModalCenter').modal('hide');
-        $('#alertErrorModalCenter .titleAlertModal').html('');
-        $('#alertErrorModalCenter .contentAlertModal').html('');
+    $('#alertModalCenter .titleAlertModal').html(title);
+    $('#alertModalCenter .contentAlertModal').html(content);
+    $('#alertModalCenter .modal-content').addClass( classValue );
+    $('#alertModalCenter').modal('show');
+
+
+    timeoutAlerModalId = setTimeout(() => {
+        $('#alertModalCenter').modal('hide');
+        $('#alertModalCenter .titleAlertModal').html('');
+        $('#alertModalCenter .contentAlertModal').html('');
+        $('#alertModalCenter .modal-content').removeClass( classValue );
     }, time);
 
 }
@@ -32,11 +42,12 @@ const alertErrorModal = ({ title = '', content = '', time = 5000 }) => {
 
 
 let notificacion = function (tipo,titulo,mensaje,tiempo = 5*1000, options = null) {
-    if (tipo === 'error') {
-        alertErrorModal({
+    if (tipo === 'error' || tipo === 'success') {
+        alertModal({
+            type: tipo,
             title: titulo,
             content: mensaje,
-            time: tiempo
+            time: tiempo,
         });
         return ;
     }

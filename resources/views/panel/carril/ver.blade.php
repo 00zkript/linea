@@ -24,13 +24,13 @@
 
 
                         <div class="col-12">
-                            <p class="text-capitalize">Nivel:</p>
+                            <p class="text-capitalize">Programa nivel:</p>
                             <p id="nivelShow"></p>
                             <hr>
                         </div>
 
                         <div class="col-12">
-                            <p class="text-capitalize">Capacidad maxima:</p>
+                            <p class="text-capitalize">Aforo maximo:</p>
                             <p id="capacidadMaximaShow"></p>
                             <hr>
                         </div>

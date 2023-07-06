@@ -77,7 +77,6 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::get('matricula/resources/{idcliente}/alumno',[\App\Http\Controllers\Panel\MatriculaController::class,'alumno'])->name("matricula.alumno");
     Route::get('matricula/resources/{iddepartamento}/provincias',[\App\Http\Controllers\Panel\MatriculaController::class,'provincias'])->name("matricula.provincias");
     Route::get('matricula/resources/{idprovincia}/distritos',[\App\Http\Controllers\Panel\MatriculaController::class,'distritos'])->name("matricula.distritos");
-    Route::get('matricula/resources/{idtemporada}/programas',[\App\Http\Controllers\Panel\MatriculaController::class,'programas'])->name("matricula.programas");
     Route::get('matricula/resources/{idprograma}/niveles',[\App\Http\Controllers\Panel\MatriculaController::class,'niveles'])->name("matricula.niveles");
     Route::get('matricula/resources/{idnivel}/carriles',[\App\Http\Controllers\Panel\MatriculaController::class,'carriles'])->name("matricula.carriles");
     Route::get('matricula/resources/{idprograma}/frecuencias',[\App\Http\Controllers\Panel\MatriculaController::class,'frecuencias'])->name("matricula.frecuencias");
@@ -104,6 +103,7 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
 
 
     Route::get('venta/resources', [\App\Http\Controllers\Panel\VentaController::class, 'resources'] )->name('venta.resources');
+    Route::get('venta/resources/{idtipo_facturacion}/factura-serie', [\App\Http\Controllers\Panel\VentaController::class, 'facturaSerie'] )->name('venta.resources.facturaSerie');
     Route::get('venta/resources/productos', [\App\Http\Controllers\Panel\VentaController::class, 'productos'] )->name('venta.resources.productos');
     Route::get('venta/resources/matriculas', [\App\Http\Controllers\Panel\VentaController::class, 'matriculas'] )->name('venta.resources.matriculas');
     Route::get('venta/resources/clientes', [\App\Http\Controllers\Panel\VentaController::class, 'clientes'] )->name('venta.resources.clientes');

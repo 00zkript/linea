@@ -22,7 +22,7 @@
 
 
                         <div class="col-12 form-group">
-                            <label for="idnivelEditar">Nivel: <span class="text-danger">(*)</span></label>
+                            <label for="idnivelEditar">Programa nivel: <span class="text-danger">(*)</span></label>
                             <select class="form-control" name="idnivelEditar" id="idnivelEditar" title="Nivel" >
                                 <option value="" hidden selected >[---Seleccione---]</option>
                                 @foreach ($niveles as $item)
@@ -37,8 +37,8 @@
                         </div>
 
                         <div class="col-12 form-group">
-                            <label for="capacidadMaximaEditar">Capacidad maxima</label>
-                            <input type="number" class="form-control" name="capacidadMaximaEditar" id="capacidadMaximaEditar" placeholder="Capacidad maxima"  required>
+                            <label for="capacidadMaximaEditar">Aforo maximo <span class="text-danger">(*)</span></label>
+                            <input type="number" min="1" class="form-control" name="capacidadMaximaEditar" id="capacidadMaximaEditar" placeholder="Aforo maximo"  required>
                         </div>
 
 

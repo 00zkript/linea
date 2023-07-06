@@ -37,6 +37,93 @@ class VentaController extends Controller
         return view('panel.venta.listado')->with(compact('registros'))->render();
     }
 
+    public function create(Request $request)
+    {
+        return view('panel.venta.create');
+    }
+
+    public function store(Request $request)
+    {
+
+
+        $idtipoFacturacion      = $request->input('idtipo_facturacion');
+        $tipoFacturaconSerie    = $request->input('serie');
+        $tipoFacturacionNumero  = $request->input('numero');
+        $idcliente              = $request->input('idcliente');
+        $idmoneda               = $request->input('idmoneda');
+        $idtipoPago             = $request->input('idtipo_pago');
+        $montoPagadoEfectivo    = $request->input('monto_efectivo');
+        $montoPagadoTransferido = $request->input('monto_transferido');
+        $montoPagado            = $montoPagadoEfectivo + $montoPagadoTransferido;
+        $montoVuelto            = $request->input('monto_vuelto');
+        $montoDeuda             = $request->input('monto_deuda');
+        $montoTotal             = $request->input('monto_total');
+        $fechaPago              = now()->format('Y-m-d');
+        $detalle                = $request->input('detalle', []);
+        $idempleado             = auth()->id();
+        $sucursal               = auth()->user()->sucursal;
+
+
+
+        $venta = new Venta();
+        $venta->idsucrusal               = $sucursal->idsucrusal;
+        $venta->idempleado               = $idempleado;
+        $venta->idtipo_facturacion       = $idtipoFacturacion;
+        $venta->tipo_facturacion_serie   = $tipoFacturaconSerie;
+        $venta->tipo_facturacion_numero  = $tipoFacturacionNumero;
+        $venta->idcliente                = $idcliente;
+        $venta->idmoneda                 = $idmoneda;
+        $venta->idtipo_pago              = $idtipoPago;
+        $venta->monto_pagado_efectivo    = $montoPagadoEfectivo;
+        $venta->monto_pagado_transferido = $montoPagadoTransferido;
+        $venta->monto_pagado             = $montoPagado;
+        $venta->monto_vuelto             = $montoVuelto;
+        $venta->monto_deuda              = $montoDeuda;
+        $venta->monto_total              = $montoTotal;
+        $venta->fecha_pago               = $fechaPago;
+        $venta->estado                   = 1;
+        $venta->save();
+
+        $tipoFacturacion = TipoFacturacion::query()->find($idtipoFacturacion);
+        $tipoFacturacion->numero = str_pad( (int)$tipoFacturacion->numero + 1, 7,0,STR_PAD_LEFT);
+        $tipoFacturacion->update();
+
+
+        foreach ($detalle as $itemDetalle) {
+            $ventaDetalle = new VentaDetalle();
+            $ventaDetalle->idventa         = $venta->idventa;
+            $ventaDetalle->idtipo_articulo = $itemDetalle['idtipo_articulo'];
+            $ventaDetalle->idarticulo      = $itemDetalle['idarticulo'];
+            $ventaDetalle->nombre          = $itemDetalle['nombre'];
+            $ventaDetalle->cantidad        = $itemDetalle['cantidad'];
+            $ventaDetalle->precio          = $itemDetalle['precio'];
+            $ventaDetalle->monto_total     = $itemDetalle['monto_total'];
+            $ventaDetalle->save();
+        }
+
+        return response()->json([
+            "mensaje" => "La venta se guardó con éxito."
+        ]);
+    }
+
+    public function edit(Request $request)
+    {
+        return ;
+    }
+
+    public function update(Request $request)
+    {
+        return ;
+    }
+
+    public function destroy(Request $request)
+    {
+        return ;
+    }
+
+
+
+
     public function resources(Request $request)
     {
         if ( !$request->ajax() ) {
@@ -50,6 +137,17 @@ class VentaController extends Controller
             'tipo_facturacion' => $tipoFacturacion,
             'tipo_pago' => $tipoPago,
         ]);
+    }
+
+    public function facturaSerie(Request $request, $tipoFacturacionID)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $tipoFacturacion = TipoFacturacion::query()->where('idtipo_facturacion',$tipoFacturacionID)->where('estado',1)->withSucursal()->first();
+
+        return response()->json($tipoFacturacion);
     }
 
     public function carrito(Request $request)
@@ -171,85 +269,6 @@ class VentaController extends Controller
 
 
 
-    public function create(Request $request)
-    {
-        return view('panel.venta.create');
-    }
 
-
-    public function store(Request $request)
-    {
-
-
-        $idtipoFacturacion      = $request->input('idtipo_facturacion');
-        $tipoFacturaconSerie    = $request->input('serie');
-        $tipoFacturacionNumero  = $request->input('numero');
-        $idcliente              = $request->input('idcliente');
-        $idmoneda               = $request->input('idmoneda');
-        $idtipoPago             = $request->input('idtipo_pago');
-        $montoPagadoEfectivo    = $request->input('monto_efectivo');
-        $montoPagadoTransferido = $request->input('monto_transferido');
-        $montoPagado            = $montoPagadoEfectivo + $montoPagadoTransferido;
-        $montoTotal             = $request->input('monto_total');
-        $fechaPago              = now()->format('Y-m-d');
-        $detalle                = $request->input('detalle', []);
-        $idempleado             = auth()->id();
-        $sucursal               = auth()->user()->sucursal;
-
-
-
-        $venta = new Venta();
-        $venta->idsucrusal               = $sucursal->idsucrusal;
-        $venta->idempleado               = $idempleado;
-        $venta->idtipo_facturacion       = $idtipoFacturacion;
-        $venta->tipo_facturacion_serie   = $tipoFacturaconSerie;
-        $venta->tipo_facturacion_numero  = $tipoFacturacionNumero;
-        $venta->idcliente                = $idcliente;
-        $venta->idmoneda                 = $idmoneda;
-        $venta->idtipo_pago              = $idtipoPago;
-        $venta->monto_pagado_efectivo    = $montoPagadoEfectivo;
-        $venta->monto_pagado_transferido = $montoPagadoTransferido;
-        $venta->monto_pagado             = $montoPagado;
-        $venta->monto_total              = $montoTotal;
-        $venta->fecha_pago               = $fechaPago;
-        $venta->estado                   = 1;
-        $venta->save();
-
-        $tipoFacturacion = TipoFacturacion::query()->find($idtipoFacturacion);
-        $tipoFacturacion->numero = str_pad( (int)$tipoFacturacionNumero + 1, 7,0,STR_PAD_LEFT);
-        $tipoFacturacion->update();
-
-
-        foreach ($detalle as $itemDetalle) {
-            $ventaDetalle = new VentaDetalle();
-            $ventaDetalle->idventa         = $venta->idventa;
-            $ventaDetalle->idtipo_articulo = $itemDetalle['idtipo_articulo'];
-            $ventaDetalle->idarticulo      = $itemDetalle['idarticulo'];
-            $ventaDetalle->nombre          = $itemDetalle['nombre'];
-            $ventaDetalle->cantidad        = $itemDetalle['cantidad'];
-            $ventaDetalle->precio          = $itemDetalle['precio'];
-            $ventaDetalle->monto_total     = $itemDetalle['monto_total'];
-            $ventaDetalle->save();
-        }
-
-        return response()->json([
-            "mensaje" => "La venta se guardó con éxito."
-        ]);
-    }
-
-    public function edit(Request $request)
-    {
-        return ;
-    }
-
-    public function update(Request $request)
-    {
-        return ;
-    }
-
-    public function destroy(Request $request)
-    {
-        return ;
-    }
 
 }
