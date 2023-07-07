@@ -221,14 +221,22 @@ class MatriculaController extends Controller
             ->where('estado',1)
             ->first();
 
-        $programas = Programa::query()->where('idtemporada',$matricula->idtemporada)->where('estado',1)->get();
-        $niveles = Nivel::query()->where('idprograma',$matricula->idprograma)->where('estado',1)->get();
-        $carriles = Carril::query()->where('idnivel',$matricula->idnivel)->where('estado',1)->get();
+        $niveles = Nivel::query()
+            ->leftJoin('programa_has_nivel','programa_has_nivel.idnivel', '=', 'nivel.idnivel')
+            ->where('programa_has_nivel.idprograma' , $matricula->idprograma)
+            ->where('nivel.estado' , 1)
+            ->get();
+
+        $carriles = Carril::query()
+            ->leftJoin('nivel_has_carril','nivel_has_carril.idcarril', '=', 'carril.idcarril')
+            ->where('nivel_has_carril.idnivel' , $matricula->idnivel)
+            ->where('carril.estado' , 1)
+            ->get();
+
         $frecuencias = $matricula->programa->frecuencias()->where('estado',1)->get();
 
         return response()->json([
             "resources" => [
-                "programas" => $programas,
                 "niveles" => $niveles,
                 "carriles" => $carriles,
                 "frecuencias" => $frecuencias,
@@ -360,7 +368,11 @@ class MatriculaController extends Controller
             return abort(400);
         }
 
-        $carriles = Carril::query()->where('idnivel',$nivelID)->where('estado',1)->get();
+        $carriles = Carril::query()
+            ->leftJoin('nivel_has_carril','nivel_has_carril.idcarril', '=', 'carril.idcarril')
+            ->where('nivel_has_carril.idnivel' , $nivelID)
+            ->where('carril.estado' , 1)
+            ->get();
 
         return response()->json($carriles);
     }
