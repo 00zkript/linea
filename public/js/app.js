@@ -2070,8 +2070,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_StepsContainerComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/StepsContainerComponent.vue */ "./resources/js/components/StepsContainerComponent.vue");
 /* harmony import */ var _components_StepComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/StepComponent.vue */ "./resources/js/components/StepComponent.vue");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _FormAlumno_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FormAlumno.vue */ "./resources/js/views/Matricula/FormAlumno.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -2087,11 +2088,13 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
+
+moment__WEBPACK_IMPORTED_MODULE_3___default.a.locale('es-mx');
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     StepsContainer: _components_StepsContainerComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    Step: _components_StepComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    Step: _components_StepComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    FormAlumno: _FormAlumno_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: {
     alumno_id: {
@@ -2220,90 +2223,121 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
 
       return date < currentDate;
     },
-    getAlumno: function getAlumno(clienteID) {
+    formatDate: function formatDate(date) {
+      return moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('DD/MM/YYYY');
+    },
+    resetData: function resetData() {
+      Object.assign(this.$data, this.$options.data.call(this));
+      this.getResources();
+    },
+    getResources: function getResources() {
       var _this = this;
+      axios(route('matricula.resources')).then(function (response) {
+        var data = response.data;
+        _this.resources.tipoDocumentoIdentidad = data.resources.tipoDocumentoIdentidad;
+        _this.resources.departamentos = data.resources.departamentos;
+        _this.resources.conceptos = data.resources.conceptos;
+        _this.resources.temporadas = data.resources.temporadas;
+        _this.resources.programas = data.resources.programas.sort(function (a, b) {
+          return a.posicion - b.posicion;
+        });
+        _this.resources.cantidadClases = data.resources.cantidadClases;
+        _this.resources.horarios = data.resources.horarios;
+        _this.temp.sucursal = data.current.sucursal;
+        _this.temp.temporada = data.current.temporada;
+        _this.temp.empleado = data.current.empleado;
+        _this.matricula.idsucursal = data.current.sucursal.idsucursal;
+        _this.matricula.idempleado = data.current.empleado.idusuario;
+        _this.matricula.idtemporada = data.current.temporada.idtemporada;
+      })["catch"](function (error) {
+        var response = error.response;
+        var data = response.data;
+      });
+    },
+    getAlumno: function getAlumno(clienteID) {
+      var _this2 = this;
       return axios(route('matricula.alumno', clienteID)).then(function (response) {
         var _data$nombres, _data$apellidos, _data$correo, _data$telefono, _data$apoderado_nombr, _data$apoderado_apell, _data$apoderado_corre, _data$apoderado_telef, _data$numero_document, _data$direccion, _data$nota;
         var data = response.data;
-        _this.alumno.idcliente = data.idcliente;
-        _this.alumno.nombres = (_data$nombres = data.nombres) !== null && _data$nombres !== void 0 ? _data$nombres : '';
-        _this.alumno.apellidos = (_data$apellidos = data.apellidos) !== null && _data$apellidos !== void 0 ? _data$apellidos : '';
-        _this.alumno.correo = (_data$correo = data.correo) !== null && _data$correo !== void 0 ? _data$correo : '';
-        _this.alumno.telefono = (_data$telefono = data.telefono) !== null && _data$telefono !== void 0 ? _data$telefono : '';
-        _this.alumno.apoderado_nombres = (_data$apoderado_nombr = data.apoderado_nombres) !== null && _data$apoderado_nombr !== void 0 ? _data$apoderado_nombr : '';
-        _this.alumno.apoderado_apellidos = (_data$apoderado_apell = data.apoderado_apellidos) !== null && _data$apoderado_apell !== void 0 ? _data$apoderado_apell : '';
-        _this.alumno.apoderado_correo = (_data$apoderado_corre = data.apoderado_correo) !== null && _data$apoderado_corre !== void 0 ? _data$apoderado_corre : '';
-        _this.alumno.apoderado_telefono = (_data$apoderado_telef = data.apoderado_telefono) !== null && _data$apoderado_telef !== void 0 ? _data$apoderado_telef : '';
-        _this.alumno.idtipo_documento_identidad = data.idtipo_documento_identidad;
-        _this.alumno.numero_documento_identidad = (_data$numero_document = data.numero_documento_identidad) !== null && _data$numero_document !== void 0 ? _data$numero_document : '';
-        _this.alumno.sexo = data.sexo;
-        _this.alumno.fecha_nacimiento = data.fecha_nacimiento;
-        _this.alumno.iddepartamento = data.iddepartamento;
-        _this.alumno.idprovincia = data.idprovincia;
-        _this.alumno.iddistrito = data.iddistrito;
-        _this.alumno.direccion = (_data$direccion = data.direccion) !== null && _data$direccion !== void 0 ? _data$direccion : '';
-        _this.alumno.nota = (_data$nota = data.nota) !== null && _data$nota !== void 0 ? _data$nota : '';
+        _this2.alumno.idcliente = data.idcliente;
+        _this2.alumno.nombres = (_data$nombres = data.nombres) !== null && _data$nombres !== void 0 ? _data$nombres : '';
+        _this2.alumno.apellidos = (_data$apellidos = data.apellidos) !== null && _data$apellidos !== void 0 ? _data$apellidos : '';
+        _this2.alumno.correo = (_data$correo = data.correo) !== null && _data$correo !== void 0 ? _data$correo : '';
+        _this2.alumno.telefono = (_data$telefono = data.telefono) !== null && _data$telefono !== void 0 ? _data$telefono : '';
+        _this2.alumno.apoderado_nombres = (_data$apoderado_nombr = data.apoderado_nombres) !== null && _data$apoderado_nombr !== void 0 ? _data$apoderado_nombr : '';
+        _this2.alumno.apoderado_apellidos = (_data$apoderado_apell = data.apoderado_apellidos) !== null && _data$apoderado_apell !== void 0 ? _data$apoderado_apell : '';
+        _this2.alumno.apoderado_correo = (_data$apoderado_corre = data.apoderado_correo) !== null && _data$apoderado_corre !== void 0 ? _data$apoderado_corre : '';
+        _this2.alumno.apoderado_telefono = (_data$apoderado_telef = data.apoderado_telefono) !== null && _data$apoderado_telef !== void 0 ? _data$apoderado_telef : '';
+        _this2.alumno.idtipo_documento_identidad = data.idtipo_documento_identidad;
+        _this2.alumno.numero_documento_identidad = (_data$numero_document = data.numero_documento_identidad) !== null && _data$numero_document !== void 0 ? _data$numero_document : '';
+        _this2.alumno.sexo = data.sexo;
+        _this2.alumno.fecha_nacimiento = data.fecha_nacimiento;
+        _this2.alumno.iddepartamento = data.iddepartamento;
+        _this2.alumno.idprovincia = data.idprovincia;
+        _this2.alumno.iddistrito = data.iddistrito;
+        _this2.alumno.direccion = (_data$direccion = data.direccion) !== null && _data$direccion !== void 0 ? _data$direccion : '';
+        _this2.alumno.nota = (_data$nota = data.nota) !== null && _data$nota !== void 0 ? _data$nota : '';
         // this.alumno.referencia                 = data.referencia
 
         if (data.iddepartamento) {
-          _this.getProvincias();
+          _this2.getProvincias();
         }
         if (data.idprovincia) {
-          _this.getDistritos();
+          _this2.getDistritos();
         }
       });
     },
     getMatricula: function getMatricula(matriculaID) {
-      var _this2 = this;
+      var _this3 = this;
       return axios(route('matricula.matricula', matriculaID)).then(function (response) {
         var _alumno$nombres, _alumno$apellidos, _alumno$correo, _alumno$telefono, _alumno$apoderado_nom, _alumno$apoderado_ape, _alumno$apoderado_cor, _alumno$apoderado_tel, _alumno$numero_docume, _alumno$direccion, _alumno$nota;
         var data = response.data;
         var resources = data.resources,
           matricula = data.matricula,
           alumno = data.alumno;
-        _this2.alumno.idcliente = alumno.idcliente;
-        _this2.alumno.nombres = (_alumno$nombres = alumno.nombres) !== null && _alumno$nombres !== void 0 ? _alumno$nombres : '';
-        _this2.alumno.apellidos = (_alumno$apellidos = alumno.apellidos) !== null && _alumno$apellidos !== void 0 ? _alumno$apellidos : '';
-        _this2.alumno.correo = (_alumno$correo = alumno.correo) !== null && _alumno$correo !== void 0 ? _alumno$correo : '';
-        _this2.alumno.telefono = (_alumno$telefono = alumno.telefono) !== null && _alumno$telefono !== void 0 ? _alumno$telefono : '';
-        _this2.alumno.apoderado_nombres = (_alumno$apoderado_nom = alumno.apoderado_nombres) !== null && _alumno$apoderado_nom !== void 0 ? _alumno$apoderado_nom : '';
-        _this2.alumno.apoderado_apellidos = (_alumno$apoderado_ape = alumno.apoderado_apellidos) !== null && _alumno$apoderado_ape !== void 0 ? _alumno$apoderado_ape : '';
-        _this2.alumno.apoderado_correo = (_alumno$apoderado_cor = alumno.apoderado_correo) !== null && _alumno$apoderado_cor !== void 0 ? _alumno$apoderado_cor : '';
-        _this2.alumno.apoderado_telefono = (_alumno$apoderado_tel = alumno.apoderado_telefono) !== null && _alumno$apoderado_tel !== void 0 ? _alumno$apoderado_tel : '';
-        _this2.alumno.idtipo_documento_identidad = alumno.idtipo_documento_identidad;
-        _this2.alumno.numero_documento_identidad = (_alumno$numero_docume = alumno.numero_documento_identidad) !== null && _alumno$numero_docume !== void 0 ? _alumno$numero_docume : '';
-        _this2.alumno.sexo = alumno.sexo;
-        _this2.alumno.fecha_nacimiento = alumno.fecha_nacimiento;
-        _this2.alumno.iddepartamento = alumno.iddepartamento;
-        _this2.alumno.idprovincia = alumno.idprovincia;
-        _this2.alumno.iddistrito = alumno.iddistrito;
-        _this2.alumno.direccion = (_alumno$direccion = alumno.direccion) !== null && _alumno$direccion !== void 0 ? _alumno$direccion : '';
-        _this2.alumno.nota = (_alumno$nota = alumno.nota) !== null && _alumno$nota !== void 0 ? _alumno$nota : '';
+        _this3.alumno.idcliente = alumno.idcliente;
+        _this3.alumno.nombres = (_alumno$nombres = alumno.nombres) !== null && _alumno$nombres !== void 0 ? _alumno$nombres : '';
+        _this3.alumno.apellidos = (_alumno$apellidos = alumno.apellidos) !== null && _alumno$apellidos !== void 0 ? _alumno$apellidos : '';
+        _this3.alumno.correo = (_alumno$correo = alumno.correo) !== null && _alumno$correo !== void 0 ? _alumno$correo : '';
+        _this3.alumno.telefono = (_alumno$telefono = alumno.telefono) !== null && _alumno$telefono !== void 0 ? _alumno$telefono : '';
+        _this3.alumno.apoderado_nombres = (_alumno$apoderado_nom = alumno.apoderado_nombres) !== null && _alumno$apoderado_nom !== void 0 ? _alumno$apoderado_nom : '';
+        _this3.alumno.apoderado_apellidos = (_alumno$apoderado_ape = alumno.apoderado_apellidos) !== null && _alumno$apoderado_ape !== void 0 ? _alumno$apoderado_ape : '';
+        _this3.alumno.apoderado_correo = (_alumno$apoderado_cor = alumno.apoderado_correo) !== null && _alumno$apoderado_cor !== void 0 ? _alumno$apoderado_cor : '';
+        _this3.alumno.apoderado_telefono = (_alumno$apoderado_tel = alumno.apoderado_telefono) !== null && _alumno$apoderado_tel !== void 0 ? _alumno$apoderado_tel : '';
+        _this3.alumno.idtipo_documento_identidad = alumno.idtipo_documento_identidad;
+        _this3.alumno.numero_documento_identidad = (_alumno$numero_docume = alumno.numero_documento_identidad) !== null && _alumno$numero_docume !== void 0 ? _alumno$numero_docume : '';
+        _this3.alumno.sexo = alumno.sexo;
+        _this3.alumno.fecha_nacimiento = alumno.fecha_nacimiento;
+        _this3.alumno.iddepartamento = alumno.iddepartamento;
+        _this3.alumno.idprovincia = alumno.idprovincia;
+        _this3.alumno.iddistrito = alumno.iddistrito;
+        _this3.alumno.direccion = (_alumno$direccion = alumno.direccion) !== null && _alumno$direccion !== void 0 ? _alumno$direccion : '';
+        _this3.alumno.nota = (_alumno$nota = alumno.nota) !== null && _alumno$nota !== void 0 ? _alumno$nota : '';
         if (alumno.iddepartamento) {
-          _this2.getProvincias();
+          _this3.getProvincias();
         }
         if (alumno.idprovincia) {
-          _this2.getDistritos();
+          _this3.getDistritos();
         }
-        _this2.resources.niveles = resources.niveles;
-        _this2.resources.carriles = resources.carriles;
-        _this2.resources.frecuencias = resources.frecuencias;
-        var horarioFind = _this2.resources.horarios.find(function (ele) {
+        _this3.resources.niveles = resources.niveles;
+        _this3.resources.carriles = resources.carriles;
+        _this3.resources.frecuencias = resources.frecuencias;
+        var horarioFind = _this3.resources.horarios.find(function (ele) {
           return ele.idhorario === matricula.detalle[0].idhorario;
         });
-        _this2.matricula.idmatricula = matricula.idmatricula;
-        _this2.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
-        _this2.matricula.idconcepto = matricula.idconcepto;
-        _this2.matricula.idempleado = matricula.idempleado;
-        _this2.matricula.idsucursal = matricula.idsucursal;
-        _this2.matricula.idtemporada = matricula.idtemporada;
-        _this2.matricula.idprograma = matricula.idprograma;
-        _this2.matricula.idnivel = matricula.idnivel;
-        _this2.matricula.idcarril = matricula.idcarril;
-        _this2.matricula.idfrecuencia = matricula.idfrecuencia;
-        _this2.matricula.idhorario = matricula.detalle[0].idhorario;
-        _this2.matricula.idcantidad_clases = matricula.idcantidad_clases;
-        _this2.matriculaHorarioDia = matricula.detalle.map(function (ele) {
+        _this3.matricula.idmatricula = matricula.idmatricula;
+        _this3.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
+        _this3.matricula.idconcepto = matricula.idconcepto;
+        _this3.matricula.idempleado = matricula.idempleado;
+        _this3.matricula.idsucursal = matricula.idsucursal;
+        _this3.matricula.idtemporada = matricula.idtemporada;
+        _this3.matricula.idprograma = matricula.idprograma;
+        _this3.matricula.idnivel = matricula.idnivel;
+        _this3.matricula.idcarril = matricula.idcarril;
+        _this3.matricula.idfrecuencia = matricula.idfrecuencia;
+        _this3.matricula.idhorario = matricula.detalle[0].idhorario;
+        _this3.matricula.idcantidad_clases = matricula.idcantidad_clases;
+        _this3.matriculaHorarioDia = matricula.detalle.map(function (ele) {
           return {
             fecha: ele.fecha,
             dia_name: ele.dia_nombre,
@@ -2311,75 +2345,8 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
             horario_nombre: horarioFind.nombre
           };
         });
-        _this2.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
-        _this2.getCountMatriculados();
-      });
-    },
-    formatDate: function formatDate(date) {
-      return moment__WEBPACK_IMPORTED_MODULE_2___default()(date).format('DD/MM/YYYY');
-    },
-    resetData: function resetData() {
-      Object.assign(this.$data, this.$options.data.call(this));
-      this.getResources();
-    },
-    getResources: function getResources() {
-      var _this3 = this;
-      axios(route('matricula.resources')).then(function (response) {
-        var data = response.data;
-        _this3.resources.tipoDocumentoIdentidad = data.resources.tipoDocumentoIdentidad;
-        _this3.resources.departamentos = data.resources.departamentos;
-        _this3.resources.conceptos = data.resources.conceptos;
-        _this3.resources.temporadas = data.resources.temporadas;
-        _this3.resources.programas = data.resources.programas.sort(function (a, b) {
-          return a.posicion - b.posicion;
-        });
-        _this3.resources.cantidadClases = data.resources.cantidadClases;
-        _this3.resources.horarios = data.resources.horarios;
-        _this3.temp.sucursal = data.current.sucursal;
-        _this3.temp.temporada = data.current.temporada;
-        _this3.temp.empleado = data.current.empleado;
-        _this3.matricula.idsucursal = data.current.sucursal.idsucursal;
-        _this3.matricula.idempleado = data.current.empleado.idusuario;
-        _this3.matricula.idtemporada = data.current.temporada.idtemporada;
-      })["catch"](function (error) {
-        var response = error.response;
-        var data = response.data;
-      });
-    },
-    getProvincias: function getProvincias() {
-      var _this4 = this;
-      return axios.get(route('matricula.provincias', [this.alumno.iddepartamento])).then(function (response) {
-        var data = response.data;
-        _this4.resources.provincias = data;
-      });
-    },
-    getDistritos: function getDistritos() {
-      var _this5 = this;
-      return axios.get(route('matricula.distritos', [this.alumno.idprovincia])).then(function (response) {
-        var data = response.data;
-        _this5.resources.distritos = data;
-      });
-    },
-    changeAlumnoTipoDocumentoIdentidad: function changeAlumnoTipoDocumentoIdentidad() {
-      var _this6 = this;
-      var tipoDocumento = this.resources.tipoDocumentoIdentidad.find(function (ele) {
-        return ele.idtipo_documento_identidad === _this6.alumno.idtipo_documento_identidad;
-      });
-      this.alumno.numero_documento_identidad = this.alumno.numero_documento_identidad ? this.alumno.numero_documento_identidad.slice(0, tipoDocumento.caracteres_length) : '';
-      this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
-    },
-    changeAlumnoDepartamento: function changeAlumnoDepartamento() {
-      var _this7 = this;
-      this.getProvincias().then(function (data) {
-        _this7.alumno.idprovincia = null;
-        _this7.resources.distritos = [];
-        _this7.alumno.iddistrito = null;
-      });
-    },
-    changeAlumnoProvincia: function changeAlumnoProvincia() {
-      var _this8 = this;
-      this.getDistritos().then(function (data) {
-        _this8.alumno.iddistrito = null;
+        _this3.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
+        _this3.getCountMatriculados();
       });
     },
     validateAlumno: function validateAlumno() {
@@ -2428,7 +2395,8 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       return errors;
     },
     storeAlumno: function storeAlumno() {
-      var _this9 = this;
+      var _this4 = this;
+      debugger;
       var errors = this.validateAlumno();
       if (errors.length > 0) {
         alertModal({
@@ -2441,23 +2409,23 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       var alumnoData = jsonToFormData(this.alumno);
       axios.post(route('matricula.storeAlumno'), alumnoData).then(function (response) {
         var data = response.data;
-        _this9.alumno.idcliente = data.idcliente;
-        _this9.stepCurrent = 2;
+        _this4.alumno.idcliente = data.idcliente;
+        _this4.stepCurrent = 2;
         scrollTo('#step-2', 50, 0);
       });
     },
     cancelarStoreAlumno: function cancelarStoreAlumno() {
-      var _this10 = this;
+      var _this5 = this;
       if (this.matricula_id) {
         this.getMatricula(this.matricula_id).then(function (_) {
-          _this10.stepCurrent = 1;
+          _this5.stepCurrent = 1;
           scrollTo('#step-1', 50, 0);
         });
         return;
       }
       if (this.alumno_id) {
         this.getAlumno(this.alumno_id).then(function (_) {
-          _this10.stepCurrent = 1;
+          _this5.stepCurrent = 1;
           scrollTo('#step-1', 50, 0);
         });
         return;
@@ -2481,44 +2449,40 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         idprovincia: null,
         iddistrito: null,
         direccion: null,
-        nota: null,
-        imagen: null
+        nota: null
       };
     },
-    getProgramas: function getProgramas() {
-      var programaID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-    },
     getNiveles: function getNiveles() {
-      var _this11 = this;
+      var _this6 = this;
       var nivelID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
       return axios(route('matricula.niveles', this.matricula.idprograma)).then(function (response) {
         var data = response.data;
-        _this11.resources.niveles = data.sort(function (a, b) {
+        _this6.resources.niveles = data.sort(function (a, b) {
           return a.posicion - b.posicion;
         });
-        _this11.matricula.idnivel = nivelID;
+        _this6.matricula.idnivel = nivelID;
       });
     },
     getCarriles: function getCarriles() {
-      var _this12 = this;
+      var _this7 = this;
       var carrilID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
       return axios(route('matricula.carriles', this.matricula.idnivel)).then(function (response) {
         var data = response.data;
-        _this12.resources.carriles = data;
-        _this12.matricula.idcarril = carrilID;
+        _this7.resources.carriles = data;
+        _this7.matricula.idcarril = carrilID;
       });
     },
     getFrecuencias: function getFrecuencias() {
-      var _this13 = this;
+      var _this8 = this;
       var frecuenciaID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
       return axios(route('matricula.frecuencias', this.matricula.idprograma)).then(function (response) {
         var data = response.data;
-        _this13.resources.frecuencias = data;
-        _this13.matricula.idfrecuencia = frecuenciaID;
+        _this8.resources.frecuencias = data;
+        _this8.matricula.idfrecuencia = frecuenciaID;
       });
     },
     getCountMatriculados: function getCountMatriculados() {
-      var _this14 = this;
+      var _this9 = this;
       var _this$matricula = this.matricula,
         idtemporada = _this$matricula.idtemporada,
         idprograma = _this$matricula.idprograma,
@@ -2536,8 +2500,8 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         }
       }).then(function (response) {
         var data = response.data;
-        _this14.capacidadMaxima = data.capacidad_maxima;
-        _this14.cantidadMatriculados = data.cantidad_matriculados;
+        _this9.capacidadMaxima = data.capacidad_maxima;
+        _this9.cantidadMatriculados = data.cantidad_matriculados;
       });
     },
     getDaysFromDate: function getDaysFromDate(fechaInicio, fechaFin, daysValid) {
@@ -2597,7 +2561,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
     },
     saveMatricula: function saveMatricula() {
       var _tipoDocumentoIdentid,
-        _this15 = this,
+        _this10 = this,
         _departamentos$find,
         _provincias$find,
         _distritos$find;
@@ -2633,8 +2597,8 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         return ele.idhorario === matricula.idhorario;
       });
       var daysValid = frecuenciasFind.dias.split('-');
-      var fechaInicio = moment__WEBPACK_IMPORTED_MODULE_2___default()(matricula.fecha[0]);
-      var fechaFin = moment__WEBPACK_IMPORTED_MODULE_2___default()(matricula.fecha[1]);
+      var fechaInicio = moment__WEBPACK_IMPORTED_MODULE_3___default()(matricula.fecha[0]);
+      var fechaFin = moment__WEBPACK_IMPORTED_MODULE_3___default()(matricula.fecha[1]);
       var dias = this.getDaysFromDate(fechaInicio, fechaFin, daysValid);
       var diasAMatricular = dias.slice(0, cantidadClasesFind.cantidad).map(function (ele) {
         return {
@@ -2645,36 +2609,36 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         };
       });
       this.temp.alumno.tipoDocumentoIdentidad = (_tipoDocumentoIdentid = tipoDocumentoIdentidad.find(function (ele) {
-        return ele.idtipo_documento_identidad === _this15.alumno.idtipo_documento_identidad;
+        return ele.idtipo_documento_identidad === _this10.alumno.idtipo_documento_identidad;
       })) !== null && _tipoDocumentoIdentid !== void 0 ? _tipoDocumentoIdentid : {
         nombre: ''
       };
       this.temp.alumno.departamento = (_departamentos$find = departamentos.find(function (ele) {
-        return ele.iddepartamento === _this15.alumno.iddepartamento;
+        return ele.iddepartamento === _this10.alumno.iddepartamento;
       })) !== null && _departamentos$find !== void 0 ? _departamentos$find : {
         nombre: ''
       };
       this.temp.alumno.provincia = (_provincias$find = provincias.find(function (ele) {
-        return ele.idprovincia === _this15.alumno.idprovincia;
+        return ele.idprovincia === _this10.alumno.idprovincia;
       })) !== null && _provincias$find !== void 0 ? _provincias$find : {
         nombre: ''
       };
       this.temp.alumno.distrito = (_distritos$find = distritos.find(function (ele) {
-        return ele.iddistrito === _this15.alumno.iddistrito;
+        return ele.iddistrito === _this10.alumno.iddistrito;
       })) !== null && _distritos$find !== void 0 ? _distritos$find : {
         nombre: ''
       };
       this.temp.temporada = temporadas.find(function (ele) {
-        return ele.idtemporada === _this15.matricula.idtemporada;
+        return ele.idtemporada === _this10.matricula.idtemporada;
       });
       this.temp.programa = programas.find(function (ele) {
-        return ele.idprograma === _this15.matricula.idprograma;
+        return ele.idprograma === _this10.matricula.idprograma;
       });
       this.temp.nivel = niveles.find(function (ele) {
-        return ele.idnivel === _this15.matricula.idnivel;
+        return ele.idnivel === _this10.matricula.idnivel;
       });
       this.temp.carril = carriles.find(function (ele) {
-        return ele.idcarril === _this15.matricula.idcarril;
+        return ele.idcarril === _this10.matricula.idcarril;
       });
       this.temp.frecuencias = frecuenciasFind;
       this.temp.cantidadClases = cantidadClasesFind;
@@ -2685,31 +2649,31 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       scrollTo('#step-3', 50, 0);
     },
     cancelarSaveMatricula: function cancelarSaveMatricula() {
-      var _this16 = this;
+      var _this11 = this;
       if (this.matricula_id) {
         axios(route('matricula.matricula', this.matricula_id)).then(function (response) {
           var data = response.data;
           var resources = data.resources,
             matricula = data.matricula;
-          _this16.resources.niveles = resources.niveles;
-          _this16.resources.carriles = resources.carriles;
-          _this16.resources.frecuencias = resources.frecuencias;
+          _this11.resources.niveles = resources.niveles;
+          _this11.resources.carriles = resources.carriles;
+          _this11.resources.frecuencias = resources.frecuencias;
           var horarioFind = resources.horarios.find(function (ele) {
             return ele.idhorario === matricula.detalle[0].idhorario;
           });
-          _this16.matricula.idmatricula = matricula.idmatricula;
-          _this16.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
-          _this16.matricula.idconcepto = matricula.idconcepto;
-          _this16.matricula.idempleado = matricula.idempleado;
-          _this16.matricula.idsucursal = matricula.idsucursal;
-          _this16.matricula.idtemporada = matricula.idtemporada;
-          _this16.matricula.idprograma = matricula.idprograma;
-          _this16.matricula.idnivel = matricula.idnivel;
-          _this16.matricula.idcarril = matricula.idcarril;
-          _this16.matricula.idfrecuencia = matricula.idfrecuencia;
-          _this16.matricula.idhorario = matricula.detalle[0].idhorario;
-          _this16.matricula.idcantidad_clases = matricula.idcantidad_clases;
-          _this16.matriculaHorarioDia = matricula.detalle.map(function (ele) {
+          _this11.matricula.idmatricula = matricula.idmatricula;
+          _this11.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
+          _this11.matricula.idconcepto = matricula.idconcepto;
+          _this11.matricula.idempleado = matricula.idempleado;
+          _this11.matricula.idsucursal = matricula.idsucursal;
+          _this11.matricula.idtemporada = matricula.idtemporada;
+          _this11.matricula.idprograma = matricula.idprograma;
+          _this11.matricula.idnivel = matricula.idnivel;
+          _this11.matricula.idcarril = matricula.idcarril;
+          _this11.matricula.idfrecuencia = matricula.idfrecuencia;
+          _this11.matricula.idhorario = matricula.detalle[0].idhorario;
+          _this11.matricula.idcantidad_clases = matricula.idcantidad_clases;
+          _this11.matriculaHorarioDia = matricula.detalle.map(function (ele) {
             return {
               fecha: ele.fecha,
               dia_name: ele.dia_nombre,
@@ -2717,15 +2681,15 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
               horario_nombre: horarioFind.nombre
             };
           });
-          _this16.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
-          _this16.getCountMatriculados();
-          _this16.stepCurrent = 2;
+          _this11.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
+          _this11.getCountMatriculados();
+          _this11.stepCurrent = 2;
           scrollTo('#step-2', 50, 0);
         });
         return;
       }
       var temporadaCurrent = this.resources.temporadas.find(function (ele) {
-        return moment__WEBPACK_IMPORTED_MODULE_2___default()(ele.fecha_inicio).isSameOrBefore(moment__WEBPACK_IMPORTED_MODULE_2___default()());
+        return moment__WEBPACK_IMPORTED_MODULE_3___default()(ele.fecha_inicio).isSameOrBefore(moment__WEBPACK_IMPORTED_MODULE_3___default()());
       });
       var temporadaID = temporadaCurrent ? temporadaCurrent.idtemporada : null;
       this.matricula = {
@@ -2752,7 +2716,7 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       this.resources.frecuencias = [];
     },
     storeMatriculaHorario: function storeMatriculaHorario() {
-      var _this17 = this;
+      var _this12 = this;
       var matricula = this.matricula,
         alumno = this.alumno,
         matriculaHorarioDia = this.matriculaHorarioDia;
@@ -2766,8 +2730,8 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       }
       axios.post(URL_ACTION, matriculaData).then(function (response) {
         var data = response.data;
-        _this17.codigoMatricula = data.codigo;
-        _this17.stepCurrent = 4;
+        _this12.codigoMatricula = data.codigo;
+        _this12.stepCurrent = 4;
         scrollTo('#step-4', 50, 0);
       });
     },
@@ -2777,17 +2741,100 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
     }
   },
   mounted: function mounted() {
-    var _this18 = this;
+    var _this13 = this;
     this.getResources();
     if (this.alumno_id) {
       this.getAlumno(this.alumno_id).then(function () {
-        _this18.stepCurrent = 2;
+        _this13.stepCurrent = 2;
       });
     }
     if (this.matricula_id) {
       this.getMatricula(this.matricula_id);
     }
   }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/FormAlumno.vue?vue&type=script&lang=js&":
+/*!**************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/FormAlumno.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    alumno: {
+      type: Object,
+      "default": function _default() {
+        return {};
+      }
+    },
+    resources: {
+      type: Object,
+      "default": function _default() {
+        return {
+          tipoDocumentoIdentidad: [],
+          sexos: [{
+            idsexo: 'hombre',
+            nombre: 'Hombre'
+          }, {
+            idsexo: 'mujer',
+            nombre: 'Mujer'
+          }, {
+            idsexo: 'otro',
+            nombre: 'Otro'
+          }],
+          departamentos: [],
+          provincias: [],
+          distritos: []
+        };
+      }
+    }
+  },
+  methods: {
+    soloNumeros: soloNumeros,
+    getProvincias: function getProvincias() {
+      var _this = this;
+      return axios.get(route('matricula.provincias', [this.alumno.iddepartamento])).then(function (response) {
+        var data = response.data;
+        _this.resources.provincias = data;
+      });
+    },
+    getDistritos: function getDistritos() {
+      var _this2 = this;
+      return axios.get(route('matricula.distritos', [this.alumno.idprovincia])).then(function (response) {
+        var data = response.data;
+        _this2.resources.distritos = data;
+      });
+    },
+    changeAlumnoTipoDocumentoIdentidad: function changeAlumnoTipoDocumentoIdentidad() {
+      var _this3 = this;
+      var tipoDocumento = this.resources.tipoDocumentoIdentidad.find(function (ele) {
+        return ele.idtipo_documento_identidad === _this3.alumno.idtipo_documento_identidad;
+      });
+      this.alumno.numero_documento_identidad = this.alumno.numero_documento_identidad ? this.alumno.numero_documento_identidad.slice(0, tipoDocumento.caracteres_length) : '';
+      this.alumno.numero_documento_identidad_lemgth = tipoDocumento.caracteres_length;
+    },
+    changeAlumnoDepartamento: function changeAlumnoDepartamento() {
+      var _this4 = this;
+      this.getProvincias().then(function (data) {
+        _this4.alumno.idprovincia = null;
+        _this4.resources.distritos = [];
+        _this4.alumno.iddistrito = null;
+      });
+    },
+    changeAlumnoProvincia: function changeAlumnoProvincia() {
+      var _this5 = this;
+      this.getDistritos().then(function (data) {
+        _this5.alumno.iddistrito = null;
+      });
+    }
+  },
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -3437,26 +3484,24 @@ var render = function render() {
     staticClass: "step-footer"
   }, [_c("button", {
     staticClass: "btn btn-primary next-step",
-    domProps: {
-      textContent: _vm._s(_vm.btnNextText)
-    },
     on: {
       click: function click($event) {
         _vm.showContent = false;
         _vm.$emit("next");
       }
     }
-  }), _vm._v(" "), _c("button", {
+  }, [_vm._t("btnNext", function () {
+    return [_vm._v("\n                    " + _vm._s(_vm.btnNextText) + "\n                ")];
+  })], 2), _vm._v(" "), _c("button", {
     staticClass: "btn btn-secondary cancel-step",
-    domProps: {
-      textContent: _vm._s(_vm.btnCancelText)
-    },
     on: {
       click: function click($event) {
         return _vm.$emit("cancelar");
       }
     }
-  })]) : _vm._e()]) : _vm._e()]);
+  }, [_vm._t("btnCancel", function () {
+    return [_vm._v("\n                    " + _vm._s(_vm.btnCancelText) + "\n                ")];
+  })], 2)]) : _vm._e()]) : _vm._e()]);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -3506,7 +3551,7 @@ var render = function render() {
     attrs: {
       number: 1,
       id: "step-1",
-      title: "Nuevo Alumno",
+      title: _vm.type != "editar" ? "Nuevo Alumno" : "Editar Alumno",
       currentValue: _vm.stepCurrent
     },
     on: {
@@ -3517,599 +3562,19 @@ var render = function render() {
         return _vm.cancelarStoreAlumno();
       }
     }
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
+  }, [_c("FormAlumno", {
     attrs: {
-      "for": "nombres"
+      alumno: _vm.alumno
     }
-  }, [_vm._v("Nombres "), _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.nombres,
-      expression: "alumno.nombres"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      name: "nombres",
-      id: "nombres",
-      placeholder: "Nombres"
-    },
-    domProps: {
-      value: _vm.alumno.nombres
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "nombres", $event.target.value);
-      }
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "apellidos"
-    }
-  }, [_vm._v("Apellidos "), _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.apellidos,
-      expression: "alumno.apellidos"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      name: "apellidos",
-      id: "apellidos",
-      placeholder: "Apellidos"
-    },
-    domProps: {
-      value: _vm.alumno.apellidos
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "apellidos", $event.target.value);
-      }
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "correo"
-    }
-  }, [_vm._v("Correo ")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.correo,
-      expression: "alumno.correo"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "email",
-      name: "correo",
-      id: "correo",
-      placeholder: "Correo"
-    },
-    domProps: {
-      value: _vm.alumno.correo
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "correo", $event.target.value);
-      }
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "telefono"
-    }
-  }, [_vm._v("Teléfono ")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.telefono,
-      expression: "alumno.telefono"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      name: "telefono",
-      id: "telefono",
-      placeholder: "Teléfono"
-    },
-    domProps: {
-      value: _vm.alumno.telefono
-    },
-    on: {
-      keypress: _vm.soloNumeros,
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "telefono", $event.target.value);
-      }
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "tipoDocumentoIdentidad"
-    }
-  }, [_vm._v("Documento de identidad ")]), _vm._v(" "), _c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.idtipo_documento_identidad,
-      expression: "alumno.idtipo_documento_identidad"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      name: "tipoDocumentoIdentidad",
-      id: "tipoDocumentoIdentidad"
-    },
-    on: {
-      change: [function ($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.alumno, "idtipo_documento_identidad", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }, function ($event) {
-        return _vm.changeAlumnoTipoDocumentoIdentidad();
-      }]
-    }
-  }, [_c("option", {
-    attrs: {
-      hidden: "",
-      selected: ""
-    },
-    domProps: {
-      value: null
-    }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.tipoDocumentoIdentidad, function (item, index) {
-    return _c("option", {
-      key: index,
-      domProps: {
-        value: item.idtipo_documento_identidad,
-        textContent: _vm._s(item.nombre)
-      }
-    });
-  })], 2)]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "numeroDocumentoIdentidad"
-    }
-  }, [_vm._v("N° de Documento ")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.numero_documento_identidad,
-      expression: "alumno.numero_documento_identidad"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      name: "numeroDocumentoIdentidad",
-      id: "numeroDocumentoIdentidad",
-      minlength: _vm.alumno.numero_documento_identidad_lemgth,
-      maxlength: _vm.alumno.numero_documento_identidad_lemgth,
-      placeholder: "N°"
-    },
-    domProps: {
-      value: _vm.alumno.numero_documento_identidad
-    },
-    on: {
-      keypress: _vm.soloNumeros,
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "numero_documento_identidad", $event.target.value);
-      }
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "fechaNacimiento"
-    }
-  }, [_vm._v("Fecha de nacimiento ")]), _vm._v(" "), _c("DatePicker", {
-    attrs: {
-      "input-class": "form-control",
-      "value-type": "format"
-    },
-    model: {
-      value: _vm.alumno.fecha_nacimiento,
-      callback: function callback($$v) {
-        _vm.$set(_vm.alumno, "fecha_nacimiento", $$v);
-      },
-      expression: "alumno.fecha_nacimiento"
-    }
-  })], 1), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "sexo"
-    }
-  }, [_vm._v("Sexo")]), _vm._v(" "), _c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.sexo,
-      expression: "alumno.sexo"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      name: "sexo",
-      id: "sexo"
-    },
-    on: {
-      change: [function ($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.alumno, "sexo", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }, function ($event) {
-        _vm.temp.alumno.sexo = _vm.resources.sexos.find(function (ele) {
-          return ele.idsexo === _vm.alumno.idsexo;
-        });
-      }]
-    }
-  }, [_c("option", {
-    attrs: {
-      hidden: "",
-      selected: ""
-    },
-    domProps: {
-      value: null
-    }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.sexos, function (item, index) {
-    return _c("option", {
-      key: index,
-      domProps: {
-        value: item.idsexo,
-        textContent: _vm._s(item.nombre)
-      }
-    });
-  })], 2)]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "departamento"
-    }
-  }, [_vm._v("Departamento")]), _vm._v(" "), _c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.iddepartamento,
-      expression: "alumno.iddepartamento"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      name: "departamento",
-      id: "departamento",
-      title: "Departamento"
-    },
-    on: {
-      change: [function ($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.alumno, "iddepartamento", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }, function ($event) {
-        return _vm.changeAlumnoDepartamento();
-      }]
-    }
-  }, [_c("option", {
-    attrs: {
-      hidden: "",
-      selected: ""
-    },
-    domProps: {
-      value: null
-    }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.departamentos, function (item, index) {
-    return _c("option", {
-      key: index,
-      domProps: {
-        value: item.iddepartamento,
-        textContent: _vm._s(item.nombre)
-      }
-    });
-  })], 2)]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "provincia"
-    }
-  }, [_vm._v("Provincia")]), _vm._v(" "), _c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.idprovincia,
-      expression: "alumno.idprovincia"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      name: "provincia",
-      id: "provincia",
-      title: "Provincia"
-    },
-    on: {
-      change: [function ($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.alumno, "idprovincia", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }, function ($event) {
-        return _vm.changeAlumnoProvincia();
-      }]
-    }
-  }, [_c("option", {
-    attrs: {
-      hidden: "",
-      selected: ""
-    },
-    domProps: {
-      value: null
-    }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.provincias, function (item, index) {
-    return _c("option", {
-      key: index,
-      domProps: {
-        value: item.idprovincia,
-        textContent: _vm._s(item.nombre)
-      }
-    });
-  })], 2)]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-4 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "distrito"
-    }
-  }, [_vm._v("Distrito")]), _vm._v(" "), _c("select", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.iddistrito,
-      expression: "alumno.iddistrito"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      name: "distrito",
-      id: "distrito",
-      title: "Distrito"
-    },
-    on: {
-      change: function change($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
-          return o.selected;
-        }).map(function (o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val;
-        });
-        _vm.$set(_vm.alumno, "iddistrito", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
-      }
-    }
-  }, [_c("option", {
-    attrs: {
-      hidden: "",
-      selected: ""
-    },
-    domProps: {
-      value: null
-    }
-  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.distritos, function (item, index) {
-    return _c("option", {
-      key: index,
-      domProps: {
-        value: item.iddistrito,
-        textContent: _vm._s(item.nombre)
-      }
-    });
-  })], 2)]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-12 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "direccion"
-    }
-  }, [_vm._v("Direción")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.direccion,
-      expression: "alumno.direccion"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      name: "direccion",
-      id: "direccion",
-      placeholder: "Direción"
-    },
-    domProps: {
-      value: _vm.alumno.direccion
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "direccion", $event.target.value);
-      }
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "col-12 mb-3 mt-3"
-  }, [_c("h4", [_vm._v("Apoderado o persona de referencia")])]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "personaReferenciaNombres"
-    }
-  }, [_vm._v("Nombres "), _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.apoderado_nombres,
-      expression: "alumno.apoderado_nombres"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      name: "personaReferenciaNombres",
-      id: "personaReferenciaNombres",
-      placeholder: "Nombres"
-    },
-    domProps: {
-      value: _vm.alumno.apoderado_nombres
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "apoderado_nombres", $event.target.value);
-      }
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "personaReferenciaApellidos"
-    }
-  }, [_vm._v("Apellidos "), _c("span", {
-    staticClass: "text-danger"
-  }, [_vm._v("(*)")])]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.apoderado_apellidos,
-      expression: "alumno.apoderado_apellidos"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      name: "personaReferenciaApellidos",
-      id: "personaReferenciaApellidos",
-      placeholder: "Apellidos"
-    },
-    domProps: {
-      value: _vm.alumno.apoderado_apellidos
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "apoderado_apellidos", $event.target.value);
-      }
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "personaReferenciaCorreo"
-    }
-  }, [_vm._v("Correo ")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.apoderado_correo,
-      expression: "alumno.apoderado_correo"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "email",
-      name: "personaReferenciaCorreo",
-      id: "personaReferenciaCorreo",
-      placeholder: "Correo"
-    },
-    domProps: {
-      value: _vm.alumno.apoderado_correo
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "apoderado_correo", $event.target.value);
-      }
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "col-md-6 col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "personaReferenciaTelefono"
-    }
-  }, [_vm._v("Teléfono ")]), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.apoderado_telefono,
-      expression: "alumno.apoderado_telefono"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      type: "text",
-      name: "personaReferenciaTelefono",
-      id: "personaReferenciaTelefono",
-      placeholder: "Teléfono"
-    },
-    domProps: {
-      value: _vm.alumno.apoderado_telefono
-    },
-    on: {
-      keypress: _vm.soloNumeros,
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "apoderado_telefono", $event.target.value);
-      }
-    }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "col-12 form-group"
-  }, [_c("label", {
-    attrs: {
-      "for": "nota"
-    }
-  }, [_vm._v("Nota")]), _vm._v(" "), _c("textarea", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.alumno.nota,
-      expression: "alumno.nota"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      name: "nota",
-      id: "nota",
-      placeholder: "Nota",
-      rows: "3"
-    },
-    domProps: {
-      value: _vm.alumno.nota
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.alumno, "nota", $event.target.value);
-      }
-    }
-  })])])]), _vm._v(" "), _c("Step", {
+  }), _vm._v(" "), _c("template", {
+    slot: "btnNext"
+  }, [_c("i", {
+    staticClass: "fa fa-save"
+  }), _vm._v(" Guardar  ")]), _vm._v(" "), _c("template", {
+    slot: "btnCancel"
+  }, [_c("i", {
+    staticClass: "fa fa-times"
+  }), _vm._v(" Cancelar ")])], 2), _vm._v(" "), _c("Step", {
     attrs: {
       number: 2,
       id: "step-2",
@@ -4520,7 +3985,15 @@ var render = function render() {
     staticClass: "col-12"
   }, [_c("div", {
     staticClass: "mt-3 mb-3 pr-5 alert alert-warning"
-  }, [_c("h5", [_c("u", [_vm._v("NOTA:")])]), _vm._v(" "), _c("h5", [_vm._v("Actualmente hay " + _vm._s(_vm.cantidadMatriculados) + " matriculados y la capacidad máxima es de " + _vm._s(_vm.capacidadMaxima) + ".")])])]) : _vm._e()])]), _vm._v(" "), _c("Step", {
+  }, [_c("h5", [_c("u", [_vm._v("NOTA:")])]), _vm._v(" "), _c("h5", [_vm._v("Actualmente hay " + _vm._s(_vm.cantidadMatriculados) + " matriculados y la capacidad máxima es de " + _vm._s(_vm.capacidadMaxima) + ".")])])]) : _vm._e()]), _vm._v(" "), _c("template", {
+    slot: "btnNext"
+  }, [_vm._v(" Siguiente "), _c("i", {
+    staticClass: "fa fa-arrow-right"
+  })]), _vm._v(" "), _c("template", {
+    slot: "btnCancel"
+  }, [_c("i", {
+    staticClass: "fa fa-times"
+  }), _vm._v(" Cancelar ")])], 2), _vm._v(" "), _c("Step", {
     attrs: {
       number: 3,
       id: "step-3",
@@ -4597,7 +4070,15 @@ var render = function render() {
     }, [_vm._v(_vm._s(item.dia_name))]), _vm._v(" "), _c("td", {
       staticClass: "text-center"
     }, [_vm._v(_vm._s(item.horario_nombre))])]);
-  }), 0)])]), _vm._v(" "), _c("Step", {
+  }), 0)]), _vm._v(" "), _c("template", {
+    slot: "btnNext"
+  }, [_c("i", {
+    staticClass: "fa fa-save"
+  }), _vm._v(" Guardar ")]), _vm._v(" "), _c("template", {
+    slot: "btnCancel"
+  }, [_c("i", {
+    staticClass: "fa fa-times"
+  }), _vm._v(" Cancelar ")])], 2), _vm._v(" "), _c("Step", {
     attrs: {
       number: 4,
       id: "step-4",
@@ -4608,16 +4089,652 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "alert alert-success text-center"
-  }, [_c("h2", [_vm._v("¡Felicidades, la matrícula se realizó con éxito!")]), _vm._v(" "), _c("h4", [_vm._v("Codígo :  " + _vm._s(_vm.codigoMatricula))])]), _vm._v(" "), _c("div", {
+  }, [_vm.type === "editar" ? _c("h2", [_vm._v("¡Felicidades, la matrícula se modificó con éxito!")]) : _c("h2", [_vm._v("¡Felicidades, la matrícula se realizó con éxito!")]), _vm._v(" "), _c("h4", [_vm._v("Codígo :  " + _vm._s(_vm.codigoMatricula))])]), _vm._v(" "), _c("div", {
     staticClass: "div-btn-reset"
   }, [_c("a", {
     staticClass: "btn btn-primary",
     attrs: {
       href: _vm.route("matricula.create")
     }
-  }, [_vm._v("Nueva matrícula")])])])], 1);
+  }, [_vm._v("\n                Nueva matrícula "), _c("i", {
+    staticClass: "fa-solid fa-arrow-up-right-from-square"
+  })])])])], 1);
 };
 var staticRenderFns = [];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/FormAlumno.vue?vue&type=template&id=7d1d6550&lang=true&":
+/*!**********************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/FormAlumno.vue?vue&type=template&id=7d1d6550&lang=true& ***!
+  \**********************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_vm._m(0), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.nombres,
+      expression: "alumno.nombres"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "nombres",
+      id: "nombres",
+      placeholder: "Nombres"
+    },
+    domProps: {
+      value: _vm.alumno.nombres
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "nombres", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_vm._m(1), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.apellidos,
+      expression: "alumno.apellidos"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "apellidos",
+      id: "apellidos",
+      placeholder: "Apellidos"
+    },
+    domProps: {
+      value: _vm.alumno.apellidos
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "apellidos", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "correo"
+    }
+  }, [_vm._v("Correo ")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.correo,
+      expression: "alumno.correo"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "email",
+      name: "correo",
+      id: "correo",
+      placeholder: "Correo"
+    },
+    domProps: {
+      value: _vm.alumno.correo
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "correo", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "telefono"
+    }
+  }, [_vm._v("Teléfono ")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.telefono,
+      expression: "alumno.telefono"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "telefono",
+      id: "telefono",
+      placeholder: "Teléfono"
+    },
+    domProps: {
+      value: _vm.alumno.telefono
+    },
+    on: {
+      keypress: _vm.soloNumeros,
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "telefono", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "tipoDocumentoIdentidad"
+    }
+  }, [_vm._v("Documento de identidad ")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.idtipo_documento_identidad,
+      expression: "alumno.idtipo_documento_identidad"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "tipoDocumentoIdentidad",
+      id: "tipoDocumentoIdentidad"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.alumno, "idtipo_documento_identidad", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.changeAlumnoTipoDocumentoIdentidad();
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      hidden: "",
+      selected: ""
+    },
+    domProps: {
+      value: null
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.tipoDocumentoIdentidad, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idtipo_documento_identidad,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "numeroDocumentoIdentidad"
+    }
+  }, [_vm._v("N° de Documento ")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.numero_documento_identidad,
+      expression: "alumno.numero_documento_identidad"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "numeroDocumentoIdentidad",
+      id: "numeroDocumentoIdentidad",
+      minlength: _vm.alumno.numero_documento_identidad_lemgth,
+      maxlength: _vm.alumno.numero_documento_identidad_lemgth,
+      placeholder: "N°"
+    },
+    domProps: {
+      value: _vm.alumno.numero_documento_identidad
+    },
+    on: {
+      keypress: _vm.soloNumeros,
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "numero_documento_identidad", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "fechaNacimiento"
+    }
+  }, [_vm._v("Fecha de nacimiento ")]), _vm._v(" "), _c("DatePicker", {
+    attrs: {
+      "input-class": "form-control",
+      "value-type": "format"
+    },
+    model: {
+      value: _vm.alumno.fecha_nacimiento,
+      callback: function callback($$v) {
+        _vm.$set(_vm.alumno, "fecha_nacimiento", $$v);
+      },
+      expression: "alumno.fecha_nacimiento"
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "sexo"
+    }
+  }, [_vm._v("Sexo")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.sexo,
+      expression: "alumno.sexo"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "sexo",
+      id: "sexo"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.alumno, "sexo", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        _vm.temp.alumno.sexo = _vm.resources.sexos.find(function (ele) {
+          return ele.idsexo === _vm.alumno.idsexo;
+        });
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      hidden: "",
+      selected: ""
+    },
+    domProps: {
+      value: null
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.sexos, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idsexo,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "departamento"
+    }
+  }, [_vm._v("Departamento")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.iddepartamento,
+      expression: "alumno.iddepartamento"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "departamento",
+      id: "departamento",
+      title: "Departamento"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.alumno, "iddepartamento", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.changeAlumnoDepartamento();
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      hidden: "",
+      selected: ""
+    },
+    domProps: {
+      value: null
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.departamentos, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.iddepartamento,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "provincia"
+    }
+  }, [_vm._v("Provincia")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.idprovincia,
+      expression: "alumno.idprovincia"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "provincia",
+      id: "provincia",
+      title: "Provincia"
+    },
+    on: {
+      change: [function ($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.alumno, "idprovincia", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }, function ($event) {
+        return _vm.changeAlumnoProvincia();
+      }]
+    }
+  }, [_c("option", {
+    attrs: {
+      hidden: "",
+      selected: ""
+    },
+    domProps: {
+      value: null
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.provincias, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.idprovincia,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-4 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "distrito"
+    }
+  }, [_vm._v("Distrito")]), _vm._v(" "), _c("select", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.iddistrito,
+      expression: "alumno.iddistrito"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "distrito",
+      id: "distrito",
+      title: "Distrito"
+    },
+    on: {
+      change: function change($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function (o) {
+          return o.selected;
+        }).map(function (o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val;
+        });
+        _vm.$set(_vm.alumno, "iddistrito", $event.target.multiple ? $$selectedVal : $$selectedVal[0]);
+      }
+    }
+  }, [_c("option", {
+    attrs: {
+      hidden: "",
+      selected: ""
+    },
+    domProps: {
+      value: null
+    }
+  }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.distritos, function (item, index) {
+    return _c("option", {
+      key: index,
+      domProps: {
+        value: item.iddistrito,
+        textContent: _vm._s(item.nombre)
+      }
+    });
+  })], 2)]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-12 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "direccion"
+    }
+  }, [_vm._v("Direción")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.direccion,
+      expression: "alumno.direccion"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "direccion",
+      id: "direccion",
+      placeholder: "Direción"
+    },
+    domProps: {
+      value: _vm.alumno.direccion
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "direccion", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_vm._m(3), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.apoderado_nombres,
+      expression: "alumno.apoderado_nombres"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "personaReferenciaNombres",
+      id: "personaReferenciaNombres",
+      placeholder: "Nombres"
+    },
+    domProps: {
+      value: _vm.alumno.apoderado_nombres
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "apoderado_nombres", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_vm._m(4), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.apoderado_apellidos,
+      expression: "alumno.apoderado_apellidos"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "personaReferenciaApellidos",
+      id: "personaReferenciaApellidos",
+      placeholder: "Apellidos"
+    },
+    domProps: {
+      value: _vm.alumno.apoderado_apellidos
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "apoderado_apellidos", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "personaReferenciaCorreo"
+    }
+  }, [_vm._v("Correo ")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.apoderado_correo,
+      expression: "alumno.apoderado_correo"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "email",
+      name: "personaReferenciaCorreo",
+      id: "personaReferenciaCorreo",
+      placeholder: "Correo"
+    },
+    domProps: {
+      value: _vm.alumno.apoderado_correo
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "apoderado_correo", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6 col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "personaReferenciaTelefono"
+    }
+  }, [_vm._v("Teléfono ")]), _vm._v(" "), _c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.apoderado_telefono,
+      expression: "alumno.apoderado_telefono"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "personaReferenciaTelefono",
+      id: "personaReferenciaTelefono",
+      placeholder: "Teléfono"
+    },
+    domProps: {
+      value: _vm.alumno.apoderado_telefono
+    },
+    on: {
+      keypress: _vm.soloNumeros,
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "apoderado_telefono", $event.target.value);
+      }
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "nota"
+    }
+  }, [_vm._v("Nota")]), _vm._v(" "), _c("textarea", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.alumno.nota,
+      expression: "alumno.nota"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      name: "nota",
+      id: "nota",
+      placeholder: "Nota",
+      rows: "3"
+    },
+    domProps: {
+      value: _vm.alumno.nota
+    },
+    on: {
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.alumno, "nota", $event.target.value);
+      }
+    }
+  })])]);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    attrs: {
+      "for": "nombres"
+    }
+  }, [_vm._v("Nombres "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    attrs: {
+      "for": "apellidos"
+    }
+  }, [_vm._v("Apellidos "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "col-12 mb-3 mt-3"
+  }, [_c("h4", [_vm._v("Apoderado o persona de referencia")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    attrs: {
+      "for": "personaReferenciaNombres"
+    }
+  }, [_vm._v("Nombres "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("label", {
+    attrs: {
+      "for": "personaReferenciaApellidos"
+    }
+  }, [_vm._v("Apellidos "), _c("span", {
+    staticClass: "text-danger"
+  }, [_vm._v("(*)")])]);
+}];
 render._withStripped = true;
 
 
@@ -64428,6 +64545,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_3edab998___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_3edab998___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/Matricula/FormAlumno.vue":
+/*!*****************************************************!*\
+  !*** ./resources/js/views/Matricula/FormAlumno.vue ***!
+  \*****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FormAlumno_vue_vue_type_template_id_7d1d6550_lang_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormAlumno.vue?vue&type=template&id=7d1d6550&lang=true& */ "./resources/js/views/Matricula/FormAlumno.vue?vue&type=template&id=7d1d6550&lang=true&");
+/* harmony import */ var _FormAlumno_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormAlumno.vue?vue&type=script&lang=js& */ "./resources/js/views/Matricula/FormAlumno.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FormAlumno_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FormAlumno_vue_vue_type_template_id_7d1d6550_lang_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FormAlumno_vue_vue_type_template_id_7d1d6550_lang_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/Matricula/FormAlumno.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/Matricula/FormAlumno.vue?vue&type=script&lang=js&":
+/*!******************************************************************************!*\
+  !*** ./resources/js/views/Matricula/FormAlumno.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormAlumno_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./FormAlumno.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/FormAlumno.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormAlumno_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/Matricula/FormAlumno.vue?vue&type=template&id=7d1d6550&lang=true&":
+/*!**********************************************************************************************!*\
+  !*** ./resources/js/views/Matricula/FormAlumno.vue?vue&type=template&id=7d1d6550&lang=true& ***!
+  \**********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_FormAlumno_vue_vue_type_template_id_7d1d6550_lang_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../node_modules/vue-loader/lib??vue-loader-options!./FormAlumno.vue?vue&type=template&id=7d1d6550&lang=true& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/FormAlumno.vue?vue&type=template&id=7d1d6550&lang=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_FormAlumno_vue_vue_type_template_id_7d1d6550_lang_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_FormAlumno_vue_vue_type_template_id_7d1d6550_lang_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

@@ -7,7 +7,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header" style="background-color: #2a3f54">
-                        <p style="font-size: 20px" class="card-title text-center text-white mb-0">Nueva matrícula</p>
+                        <p style="font-size: 20px" class="card-title text-center text-white mb-0">Editar matrícula</p>
                     </div>
                     <div class="card-body">
                         <div id="instanceVue">
