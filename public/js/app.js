@@ -2199,9 +2199,6 @@ moment__WEBPACK_IMPORTED_MODULE_3___default.a.locale('es-mx');
     };
   },
   watch: {
-    'matricula.idtemporada': function matriculaIdtemporada(newValue) {
-      this.getCountMatriculados();
-    },
     'matricula.idprograma': function matriculaIdprograma(newValue) {
       this.getCountMatriculados();
     },

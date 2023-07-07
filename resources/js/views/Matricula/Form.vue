@@ -291,9 +291,6 @@ export default {
         };
     },
     watch: {
-        'matricula.idtemporada'(newValue) {
-            this.getCountMatriculados();
-        },
         'matricula.idprograma'(newValue) {
             this.getCountMatriculados();
         },
