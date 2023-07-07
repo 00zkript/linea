@@ -55,12 +55,14 @@ class NivelController extends Controller
 
         $nombre     = $request->input('nombre');
         $slug       = Str::slug($nombre);
+        $posicion     = $request->input('posicion');
         $estado     = $request->input('estado');
 
         try {
             $registro = new Nivel();
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
+            $registro->posicion      = $posicion;
             $registro->estado    = $estado;
             $registro->save();
 
@@ -129,6 +131,7 @@ class NivelController extends Controller
         // $idnivel = $request->input('idnivel');
         $nombre     = $request->input('nombreEditar');
         $slug       = Str::slug($request->input('nombreEditar'));
+        $posicion     = $request->input('posicionEditar');
         $estado     = $request->input('estadoEditar');
 
         try {
@@ -136,6 +139,7 @@ class NivelController extends Controller
 
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
+            $registro->posicion      = $posicion;
             $registro->estado    = $estado;
             $registro->update();
 
@@ -237,6 +241,21 @@ class NivelController extends Controller
             ],400);
         }
     }
+
+
+    public function posicionMaxima(Request $request)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $posicionMaxima = Nivel::query()->count('idnivel');
+
+        return response()->json([
+            "posicion_maxima" => $posicionMaxima +1
+        ]);
+    }
+
 
 
 }

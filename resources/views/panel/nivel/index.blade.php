@@ -139,7 +139,7 @@
                 e.preventDefault();
                 $("#frmCrear span.error").remove();
                 $("#frmCrear")[0].reset();
-
+                getPosicion({ el: '#posicion'})
                 $("#frmCrear .selectpicker").selectpicker("refresh");
                 $("#modalCrear").modal("show");
 
@@ -182,6 +182,7 @@
 
 
                     $("#nombreEditar").val(data.nombre);
+                    getPosicion({ el: '#posicionEditar', currentValue: data.posicion})
 
 
 
@@ -208,6 +209,7 @@
                     stop();
 
                     $("#nombreShow").html(data.nombre);
+                    $("#posicionShow").html(data.posicion);
 
                     if (data.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');
@@ -350,6 +352,26 @@
                 .catch( errorCatch )
 
             } )
+        }
+
+        const getPosicion = ({ currentValue = null, el = '#posicion' }) => {
+            return axios.get("{{ route('nivel.posicionMaxima') }}")
+            .then( response => {
+                const data = response.data;
+                const posicionMaxima = data.posicion_maxima;
+
+                $(el).empty();
+                for (let i = 1; i <= posicionMaxima; i++) {
+                    $(el).append(`<option value="${i}">${i}</option>`);
+                }
+
+                if (currentValue) {
+                    $(el).val(currentValue);
+                }else{
+                    $(el).val(posicionMaxima);
+                }
+            })
+            .catch(errorCatch)
         }
 
 

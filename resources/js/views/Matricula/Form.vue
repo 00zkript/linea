@@ -542,7 +542,7 @@ export default {
                 this.resources.departamentos        = data.resources.departamentos;
                 this.resources.conceptos            = data.resources.conceptos;
                 this.resources.temporadas           = data.resources.temporadas;
-                this.resources.programas            = data.resources.programas;
+                this.resources.programas            = data.resources.programas.sort((a, b) => a.posicion - b.posicion);
                 this.resources.cantidadClases     = data.resources.cantidadClases;
                 this.resources.horarios           = data.resources.horarios;
 
@@ -723,7 +723,7 @@ export default {
             return axios(route('matricula.niveles',this.matricula.idprograma))
             .then( response => {
                 const data = response.data;
-                this.resources.niveles = data;
+                this.resources.niveles = data.sort((a, b) => a.posicion - b.posicion);
                 this.matricula.idnivel = nivelID;
             });
         },

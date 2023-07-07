@@ -151,6 +151,7 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::put('nivel/{nivel}/habilitar',[\App\Http\Controllers\Panel\NivelController::class,'habilitar'])->name("nivel.habilitar");
     Route::put('nivel/{nivel}/inhabilitar',[\App\Http\Controllers\Panel\NivelController::class,'inhabilitar'])->name("nivel.inhabilitar");
     Route::get('nivel/listar',[\App\Http\Controllers\Panel\NivelController::class,'listar'])->name("nivel.listar");
+    Route::get('nivel/posicion-maxima',[\App\Http\Controllers\Panel\NivelController::class,'posicionMaxima'])->name("nivel.posicionMaxima");
     Route::resource('nivel',\App\Http\Controllers\Panel\NivelController::class);
 
     Route::put('carril/{carril}/habilitar',[\App\Http\Controllers\Panel\CarrilController::class,'habilitar'])->name("carril.habilitar");

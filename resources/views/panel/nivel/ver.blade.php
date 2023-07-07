@@ -22,6 +22,12 @@
                             <hr>
                         </div>
 
+                        <div class="col-12">
+                                <p class="text-capitalize">Posición:</p>
+                                <p id="posicionShow"></p>
+                            <hr>
+                        </div>
+
 
 
 

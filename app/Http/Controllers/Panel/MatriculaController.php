@@ -177,7 +177,7 @@ class MatriculaController extends Controller
             ->orderBy('idtemporada','desc')
             ->first();
 
-        $programas = Programa::query()->where('estado',1)->get();
+        $programas = Programa::query()->where('estado',1)->orderBy('posicion','asc')->get();
         $horarios = Horario::query()->where('estado',1)->get();
 
 
@@ -344,7 +344,12 @@ class MatriculaController extends Controller
             return abort(400);
         }
 
-        $niveles = Nivel::query()->where('idprograma',$programaID)->where('estado',1)->get();
+        $niveles = Nivel::query()
+            ->leftJoin('programa_has_nivel','programa_has_nivel.idnivel', '=', 'nivel.idnivel')
+            ->where('programa_has_nivel.idprograma' , $programaID)
+            ->where('nivel.estado' , 1)
+            ->get();
+
 
         return response()->json($niveles);
     }

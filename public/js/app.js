@@ -2330,7 +2330,9 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
         _this3.resources.departamentos = data.resources.departamentos;
         _this3.resources.conceptos = data.resources.conceptos;
         _this3.resources.temporadas = data.resources.temporadas;
-        _this3.resources.programas = data.resources.programas;
+        _this3.resources.programas = data.resources.programas.sort(function (a, b) {
+          return a.posicion - b.posicion;
+        });
         _this3.resources.cantidadClases = data.resources.cantidadClases;
         _this3.resources.horarios = data.resources.horarios;
         _this3.temp.sucursal = data.current.sucursal;
@@ -2491,7 +2493,9 @@ moment__WEBPACK_IMPORTED_MODULE_2___default.a.locale('es-mx');
       var nivelID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
       return axios(route('matricula.niveles', this.matricula.idprograma)).then(function (response) {
         var data = response.data;
-        _this11.resources.niveles = data;
+        _this11.resources.niveles = data.sort(function (a, b) {
+          return a.posicion - b.posicion;
+        });
         _this11.matricula.idnivel = nivelID;
       });
     },

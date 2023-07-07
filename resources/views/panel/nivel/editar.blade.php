@@ -27,6 +27,13 @@
                             <input type="text" name="nombreEditar" id="nombreEditar" required class="form-control"  placeholder="Nombre">
                         </div>
 
+                        <div class="col-12 form-group">
+                            <label for="posicionEditar">Posición: <span class="text-danger">(*)</span></label>
+                            <select class="form-control" name="posicionEditar" id="posicionEditar" title="Posición" required>
+                                <option value="" hidden selected >[---Seleccione---]</option>
+                            </select>
+                        </div>
+
 
 
 

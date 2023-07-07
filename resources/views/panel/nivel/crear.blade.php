@@ -26,6 +26,13 @@
                             <input type="text" name="nombre" id="nombre" required class="form-control"  placeholder="Nombre">
                         </div>
 
+                        <div class="col-12 form-group">
+                            <label for="posicion">Posición: <span class="text-danger">(*)</span></label>
+                            <select class="form-control" name="posicion" id="posicion" title="Posición" required>
+                                <option value="" hidden selected >[---Seleccione---]</option>
+                            </select>
+                        </div>
+
 
                         <div class="col-12 form-group">
                             <label for="estado">Estado: <span class="text-danger">(*)</span></label>
