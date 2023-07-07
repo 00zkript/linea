@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Carril;
 use App\Models\Nivel;
+use App\Models\NivelhasCarril;
 
 class CarrilController extends Controller
 {
@@ -15,10 +16,9 @@ class CarrilController extends Controller
     public function index()
     {
 
-        $niveles = Nivel::query()->with(['programa'])->where('estado',1)->get();
+        $niveles = Nivel::query()->where('estado',1)->get();
 
         $registros = Carril::query()
-            ->with(['nivel.programa'])
             ->orderBy('idcarril','DESC')
             ->paginate(10,['*'],'pagina',1);
 
@@ -37,7 +37,6 @@ class CarrilController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $registros = Carril::query()
-            ->with(['nivel.programa'])
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query->where('nombre','LIKE','%'.$txtBuscar.'%');
             })
@@ -63,16 +62,24 @@ class CarrilController extends Controller
 
         $nombre     = $request->input('nombre');
         $slug       = Str::slug($nombre);
-        $idnivel  = $request->input('idnivel');
+        $niveles  = $request->input('idnivel');
+        $capacidadMaxima  = $request->input('capacidadMaxima');
         $estado     = $request->input('estado');
 
         try {
             $registro = new Carril();
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
-            $registro->idnivel      = $idnivel;
+            $registro->capacidad_maxima      = $capacidadMaxima;
             $registro->estado    = $estado;
             $registro->save();
+
+            foreach ($niveles as $idnivel) {
+                $pivot = new NivelhasCarril();
+                $pivot->idcarril = $registro->idcarril;
+                $pivot->idnivel = $idnivel;
+                $pivot->save();
+            }
 
 
             return response()->json([
@@ -101,7 +108,7 @@ class CarrilController extends Controller
         }
 
         // $idcarril = $request->input('idcarril');
-        $registro = Carril::query()->with(['nivel.programa'])->find($idcarril);
+        $registro = Carril::query()->with(['niveles'])->find($idcarril);
 
         if(!$registro){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -119,7 +126,7 @@ class CarrilController extends Controller
         }
 
         // $idcarril = $request->input('idcarril');
-        $registro = Carril::query()->find($idcarril);
+        $registro = Carril::query()->with(['nivelesPivot'])->find($idcarril);
 
         if(!$registro){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -145,7 +152,8 @@ class CarrilController extends Controller
         // $idcarril = $request->input('idcarril');
         $nombre     = $request->input('nombreEditar');
         $slug       = Str::slug($request->input('nombreEditar'));
-        $idnivel  = $request->input('idnivelEditar');
+        $niveles  = $request->input('idnivelEditar');
+        $capacidadMaxima     = $request->input('capacidadMaximaEditar');
         $estado     = $request->input('estadoEditar');
 
         try {
@@ -153,9 +161,17 @@ class CarrilController extends Controller
 
             $registro->nombre    = $nombre;
             $registro->slug      = $slug;
-            $registro->idnivel      = $idnivel;
+            $registro->capacidad_maxima      = $capacidadMaxima;
             $registro->estado    = $estado;
             $registro->update();
+
+            NivelhasCarril::query()->where('idcarril',$idcarril)->delete();
+            foreach ($niveles as $idnivel) {
+                $pivot = new NivelhasCarril();
+                $pivot->idcarril = $registro->idcarril;
+                $pivot->idnivel = $idnivel;
+                $pivot->save();
+            }
 
             return response()->json([
                 'mensaje'=> "Registro actualizado exitosamente.",

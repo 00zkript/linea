@@ -20,11 +20,10 @@
 
 
                         <div class="col-12 form-group">
-                            <label for="idnivel">Prograna nivel: <span class="text-danger">(*)</span></label>
-                            <select class="form-control" name="idnivel" id="idnivel" title="Nivel" >
-                                <option value="" hidden selected >[---Seleccione---]</option>
+                            <label for="idnivel">Nivel: <span class="text-danger">(*)</span></label>
+                            <select class="form-control selectpicker" data-size=="5" name="idnivel[]" id="idnivel" title="Nivel" multiple required>
                                 @foreach ($niveles as $item)
-                                    <option value="{{ $item->idnivel }}"> {{ $item->programa->nombre }} => {{ $item->nombre }}</option>
+                                    <option value="{{ $item->idnivel }}"> {{ $item->nombre }}</option>
                                 @endforeach
                             </select>
                         </div>

@@ -15,6 +15,9 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Mail;
 use App\Models\TipoDocumentoIdentidad;
 use App\Mail\Web\VentaConfirmacionMail;
+use App\Models\Carril;
+use App\Models\Nivel;
+use App\Models\NivelhasCarril;
 use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
@@ -183,6 +186,23 @@ class TestController extends Controller
 
         dd('done...');
 
+    }
+
+
+    public function rellenoNivelHasCarril()
+    {
+
+        NivelhasCarril::query()->truncate();
+        foreach (Nivel::all() as $nivel) {
+            foreach (Carril::all() as $carril) {
+                $pivot = new NivelhasCarril();
+                $pivot->idnivel = $nivel->idnivel;
+                $pivot->idcarril = $carril->idcarril;
+                $pivot->save();
+            }
+        }
+
+        return ;
     }
 
 

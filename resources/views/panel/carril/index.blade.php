@@ -182,7 +182,7 @@
 
 
                     $("#nombreEditar").val(data.nombre);
-                    $("#idnivelEditar").val(data.idnivel);
+                    $("#idnivelEditar").selectpicker('val',data.niveles_pivot.map(ele => ele.idnivel));
                     $("#capacidadMaximaEditar").val(data.capacidad_maxima);
 
 
@@ -211,7 +211,16 @@
 
                     $("#nombreShow").html(data.nombre);
                     $("#capacidadMaximaShow").html(data.capacidad_maxima);
-                    $("#nivelShow").html(data.nivel.programa.nombre+" => "+data.nivel.nombre);
+                    $("#nivelShow").empty();
+                    if (data.niveles.length >0) {
+                        $("#nivelShow").append('<ul>')
+                        for (const nivel of data.niveles) {
+                            $("#nivelShow").append(`<li>${nivel.nombre}</li>`);
+                        }
+                        $("#nivelShow").append('</ul>')
+                    }else{
+                        $("#nivelShow").append('Sin niveles')
+                    }
 
                     if (data.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');

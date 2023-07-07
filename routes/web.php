@@ -11,7 +11,8 @@ use Illuminate\Support\Facades\Route;
 // Route::get('/test/ver-estado-venta/{idventa}',[\App\Http\Controllers\TestController::class,'viewMailStateSales']);
 // Route::get('/test/ver-comprobante-pago/{idventa}',[\App\Http\Controllers\TestController::class,'viewMailComprobantepago']);
 // Route::get('/test/prueba-envio',[\App\Http\Controllers\TestController::class,'testSend']);
-Route::get('/test/permissions',[\App\Http\Controllers\TestController::class,'testPermission']);
+// Route::get('/test/permissions',[\App\Http\Controllers\TestController::class,'testPermission']);
+// Route::get('/test/relleno-pivot-carril',[\App\Http\Controllers\TestController::class,'rellenoNivelHasCarril']);
 
 
 /* Route::get('/lang/{lang}', [\App\Http\Controllers\LanguageController::class, 'changeLanguage'])->name('lang');

@@ -11,10 +11,14 @@ class Carril extends Model
 	protected $primaryKey = 'idcarril';
 	public $timestamps = true;
 
-    public function nivel()
+    public function nivelesPivot()
     {
-        return $this->hasOne(Nivel::class, 'idnivel', 'idnivel')->withDefault([
-            'nombre' => 'Sin nivel'
-        ]);
+        return $this->hasMany(NivelhasCarril::class, 'idcarril', 'idcarril');
     }
+
+    public function niveles()
+    {
+        return $this->belongsToMany(Nivel::class,NivelhasCarril::class,'idcarril', 'idnivel','idcarril', 'idnivel');
+    }
+
 }
