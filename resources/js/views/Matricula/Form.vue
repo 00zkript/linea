@@ -202,7 +202,7 @@
             <div class="alert alert-success text-center">
                 <h2 v-if="type === 'editar'">¡Felicidades, la matrícula se modificó con éxito!</h2>
                 <h2 v-else>¡Felicidades, la matrícula se realizó con éxito!</h2>
-                <h4>Codígo :  {{ codigoMatricula }}</h4>
+                <h4>Código :  {{ codigoMatricula }}</h4>
             </div>
             <div class="div-btn-reset">
                 <a :href="route('matricula.create')" class="btn btn-primary">
@@ -363,14 +363,14 @@ export default {
             const data = response.data;
 
             if (response.status == 422){
-                alertModal({ type:'error', content: listErrors(data) });
+                return alertModal({ type:'error', content: listErrors(data) });
             }
 
             if (response.status == 400){
-                alertModal({ type:'error', content: data.mensaje });
+                return alertModal({ type:'error', content: data.mensaje });
             }
 
-            alertModal({ type:'error', content: 'Error del servidor, contácte con soporte.' });
+            return alertModal({ type:'error', content: 'Error del servidor, contácte con soporte.' });
 
 
         },

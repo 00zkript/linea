@@ -158,6 +158,24 @@ export default {
         }
     },
     methods: {
+        catch(error) {
+            if ( error.response === undefined) return console.error(error);
+
+            const response = error.response;
+            const data = response.data;
+
+            if (response.status == 422){
+                return alertModal({ type:'error', content: listErrors(data) });
+            }
+
+            if (response.status == 400){
+                return alertModal({ type:'error', content: data.mensaje });
+            }
+
+            return alertModal({ type:'error', content: 'Error del servidor, contácte con soporte.' });
+
+
+        },
         openModalProductos() {
             $('#addProductoModalCenter').modal('show');
         },

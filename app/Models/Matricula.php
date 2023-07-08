@@ -86,6 +86,20 @@ class Matricula extends Model
         ]);
     }
 
+    public function horario()
+    {
+        return $this->hasOne(Horario::class, 'idhorario', 'idhorario')->withDefault([
+            'nombre' => 'Sin horario',
+        ]);
+    }
+
+    public function cantidadClases()
+    {
+        return $this->hasOne(CantidadClases::class, 'idcantidadClases', 'idcantidadClases')->withDefault([
+            'nombre' => 'Sin cantidad de clases',
+        ]);
+    }
+
     public function detalle()
     {
         return $this->hasMany(MatriculaDetalle::class, 'idmatricula', 'idmatricula')->orderBy('fecha','asc');

@@ -18,7 +18,7 @@
 
 
                         <div class="col-12">
-                            <p class="text-capitalize">codígo</p>
+                            <p class="text-capitalize">Código</p>
                             <p id="idclienteShow"></p>
                             <hr>
                         </div>

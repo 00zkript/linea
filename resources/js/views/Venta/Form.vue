@@ -188,6 +188,16 @@
                              <p style="font-size 20px" class="card-title text-center text-white mb-0"> Ventas</p>
                         </div>
                         <div class="card-body pl-4 pr-4" >
+                            <div class="row">
+                                <div class="col-12 mb-4 pt-2 codigoInput">
+                                    <label for="codigoCarrito">Código</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" name="codigoCarrito" id="codigoCarrito" placeholder="Código" @keypress="soloNumeros" v-model="search.carrito.idcarrito" @keyup.enter="getCarrito()" >
+                                        <div class="input-group-append" @click="getCarrito()" cursor-pointer><span class="input-group-text"><i class="fa fa-search"></i></span></div>
+                                    </div>
+                                </div>
+
+                            </div>
 
                             <div class="row">
                                 <div class="col-md-4 col-12 form-group">
@@ -276,7 +286,7 @@
                                                 <td>#{{ (index+1) }}</td>
                                                 <td><input type="text" class="form-control" v-model="item.nombre" ></td>
                                                 <td><input type="number" min="1" step="1" :max="item.stock" class="form-control" v-model="item.cantidad" :readonly="item.idtipo_articulo === TIPO_ARTICULO_ID.MATRICULA" @input="getMontoSubtotalDetalle(index)" ></td>
-                                                <td>{{ item.stock }}</td>
+                                                <td class="text-center">{{ item.stock }}</td>
                                                 <td>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
@@ -311,7 +321,7 @@
                                                 <td class="text-center"> <b>S/. {{ detalleTotal }}</b> </td>
                                                 <td></td>
                                             </tr>
-                                            <tr v-if="headVenta.idtipo_pago == 1 || headVenta.idtipo_pago == 3">
+                                            <tr v-if="headVenta.idtipo_pago == TIPO_PAGO_ID.EFECTIVO || headVenta.idtipo_pago == TIPO_PAGO_ID.AMBOS">
                                                 <td colspan="4"></td>
                                                 <td class="text-right"> <b>Monto efectivo</b> </td>
                                                 <td class="text-center">
@@ -322,7 +332,7 @@
                                                 </td>
                                                 <td></td>
                                             </tr>
-                                            <tr v-if="headVenta.idtipo_pago == 2 || headVenta.idtipo_pago == 3">
+                                            <tr v-if="headVenta.idtipo_pago == TIPO_PAGO_ID.TRANSFERENCIA || headVenta.idtipo_pago == TIPO_PAGO_ID.AMBOS">
                                                 <td colspan="4"></td>
                                                 <td class="text-right"> <b>Monto tranferido</b> </td>
                                                 <td class="text-center">
@@ -392,6 +402,11 @@ export default {
                 PRODUCTO: 1,
                 MATRICULA: 2,
             },
+            TIPO_PAGO_ID: {
+                EFECTIVO: 1,
+                TRANSFERENCIA: 2,
+                AMBOS: 3,
+            },
             resources: {
                 tipoFacturacion: [],
                 tipoPago: [],
@@ -414,6 +429,9 @@ export default {
                 },
                 cliente: {
                     txtBuscar: '',
+                },
+                carrito: {
+                    idcarrito: null,
                 }
             },
             cliente: {},
@@ -493,14 +511,14 @@ export default {
             const data = response.data;
 
             if (response.status == 422){
-                alertModal({ type:'error', content: listErrors(data) });
+                return alertModal({ type:'error', content: listErrors(data) });
             }
 
             if (response.status == 400){
-                alertModal({ type:'error', content: data.mensaje });
+                return alertModal({ type:'error', content: data.mensaje });
             }
 
-            alertModal({ type:'error', content: 'Error del servidor, contácte con soporte.' });
+            return alertModal({ type:'error', content: 'Error del servidor, contácte con soporte.' });
 
 
         },
@@ -510,12 +528,42 @@ export default {
 
             this.headVenta.fecha_pago = moment().format('YYYY-MM-DD');
         },
+        resetData() {
+            Object.assign(this.$data, this.$options.data.call(this));
+            this.init();
+            document.querySelector('#cliente').value="";
+        },
         disabledDates( date ) {
             const currentDate = new Date();
             currentDate.setHours(0, 0, 0, 0); // Establecer las horas, minutos, segundos y milisegundos a cero para comparación precisa
 
             return date < currentDate;
         },
+
+        getCarrito() {
+            const idcarrito = this.search.carrito.idcarrito;
+
+            return axios(route('venta.resources.carrito',idcarrito))
+            .then( response => {
+                const data = response.data;
+                const { carrito, cliente, detalle} = data;
+
+                this.cliente = cliente;
+                this.detalle = detalle.map( ele => {
+                    if (ele.idtipo_articulo == this.TIPO_ARTICULO_ID.MATRICULA) {
+                        ele.stock = 1;
+                    }
+                    return ele;
+                });
+                this.search.cliente.txtBuscar = `(${cliente.idtipo_documento_identidad}) ${cliente.nombres} ${cliente.apellidos}`;
+                document.querySelector('#cliente').value = `(${cliente.idtipo_documento_identidad ?? ''}) ${cliente.nombres} ${cliente.apellidos}`;
+
+
+            })
+            .catch(this.catch);
+        },
+
+
         getResources() {
             return axios.get(route('venta.resources'))
             .then( response => {
@@ -649,11 +697,7 @@ export default {
         },
 
 
-        resetData() {
-            Object.assign(this.$data, this.$options.data.call(this));
-            this.init();
-            document.querySelector('#cliente').value="";
-        },
+
         cancelarVenta() {
             $('#cancelarPagoModalCenter').modal('show');
         },
@@ -771,7 +815,10 @@ export default {
 }
 </script>
 <style>
-
+.codigoInput{
+    background: rgb(0,0,0,0.2);
+    border-radius: 1rem;
+}
 
 
 </style>

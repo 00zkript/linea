@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\Carrito;
 use App\Models\CarritoDetalle;
 use App\Models\Cliente;
 use App\Models\Matricula;
@@ -17,12 +18,17 @@ use Illuminate\Support\Facades\DB;
 
 class VentaController extends Controller
 {
+    public $TIPO_ARTICULO_PRODUCTO_ID = 1;
+    public $TIPO_ARTICULO_MATRICULA_ID = 2;
+
+
     public function index()
     {
 
         $registros = Venta::query()
             ->withSucursal()
             ->where('estado',1)
+            ->orderBy('idventa','desc')
             ->paginate(15,['*'],'pagina',1);
 
         return view('panel.venta.index')->with(compact('registros'));
@@ -39,6 +45,7 @@ class VentaController extends Controller
         $registros = Venta::query()
             ->withSucursal()
             ->where('estado',1)
+            ->orderBy('idventa','desc')
             ->paginate($cantidadRegistros,['*'],'pagina',$paginaActual);
 
 
@@ -128,6 +135,21 @@ class VentaController extends Controller
         ]);
     }
 
+    public function show(Request $request,$ventaID)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $venta = Venta::query()->with([ 'sucursal', 'tipoFacturacion', 'tipoPago'])->find($ventaID);
+
+        if (!$venta) {
+            return response()->json( ['mensaje' => "Registro no encontrado"],400);
+        }
+
+        return response()->json($venta);
+    }
+
     public function edit(Request $request)
     {
         return ;
@@ -172,20 +194,49 @@ class VentaController extends Controller
         return response()->json($tipoFacturacion);
     }
 
-    public function carrito(Request $request)
+    public function carrito(Request $request, $carritoID)
     {
         if ( !$request->ajax() ) {
             return abort(400);
         }
 
-        $carritoID = $request->input('idcarrito');
+        $TIPO_ARTICULO_PRODUCTO_ID = $this->TIPO_ARTICULO_PRODUCTO_ID;
+        $TIPO_ARTICULO_MATRICULA_ID = $this->TIPO_ARTICULO_MATRICULA_ID;
 
-        $carrito = Matricula::query()
-            ->where(DB::raw('LPAD(idmatricula,7,0)'),$carritoID)
-            ->where('estado',1)
+
+        $carrito = Carrito::query()->where('idcarrito',(int)$carritoID)->first();
+
+        if (!$carrito) {
+            return response()->json( ['mensaje' => "Registro no encontrado"],400);
+        }
+
+        $cliente = Cliente:: query()
+            ->select([
+                'idcliente',
+                'nombres',
+                'apellidos',
+                'numero_documento_identidad',
+                'idtipo_documento_identidad',
+            ])
+            ->where('idcliente',$carrito->idcliente)
             ->first();
 
-        return response()->json($carrito);
+        $detalle = CarritoDetalle::query()
+            ->selectRaw("
+                *,
+                (
+                    select producto.stock
+                    from producto
+                    where producto.idproducto = carrito_detalle.idarticulo
+                    and carrito_detalle.idtipo_articulo = $TIPO_ARTICULO_PRODUCTO_ID
+                    limit 1
+                ) as stock
+            ")
+            ->where('idcarrito',$carrito->idcarrito)
+            ->get();
+
+
+        return response()->json(compact('carrito','cliente','detalle'));
     }
 
     public function productos(Request $request)

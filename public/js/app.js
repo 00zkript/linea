@@ -2239,18 +2239,18 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
     var response = error.response;
     var data = response.data;
     if (response.status == 422) {
-      alertModal({
+      return alertModal({
         type: 'error',
         content: listErrors(data)
       });
     }
     if (response.status == 400) {
-      alertModal({
+      return alertModal({
         type: 'error',
         content: data.mensaje
       });
     }
-    alertModal({
+    return alertModal({
       type: 'error',
       content: 'Error del servidor, contácte con soporte.'
     });
@@ -2850,18 +2850,18 @@ __webpack_require__.r(__webpack_exports__);
       var response = error.response;
       var data = response.data;
       if (response.status == 422) {
-        alertModal({
+        return alertModal({
           type: 'error',
           content: listErrors(data)
         });
       }
       if (response.status == 400) {
-        alertModal({
+        return alertModal({
           type: 'error',
           content: data.mensaje
         });
       }
-      alertModal({
+      return alertModal({
         type: 'error',
         content: 'Error del servidor, contácte con soporte.'
       });
@@ -2962,6 +2962,27 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
+    "catch": function _catch(error) {
+      if (error.response === undefined) return console.error(error);
+      var response = error.response;
+      var data = response.data;
+      if (response.status == 422) {
+        return alertModal({
+          type: 'error',
+          content: listErrors(data)
+        });
+      }
+      if (response.status == 400) {
+        return alertModal({
+          type: 'error',
+          content: data.mensaje
+        });
+      }
+      return alertModal({
+        type: 'error',
+        content: 'Error del servidor, contácte con soporte.'
+      });
+    },
     openModalProductos: function openModalProductos() {
       $('#addProductoModalCenter').modal('show');
     },
@@ -3190,6 +3211,11 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         PRODUCTO: 1,
         MATRICULA: 2
       },
+      TIPO_PAGO_ID: {
+        EFECTIVO: 1,
+        TRANSFERENCIA: 2,
+        AMBOS: 3
+      },
       resources: {
         tipoFacturacion: [],
         tipoPago: [],
@@ -3212,6 +3238,9 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         },
         cliente: {
           txtBuscar: ''
+        },
+        carrito: {
+          idcarrito: null
         }
       },
       cliente: {},
@@ -3289,18 +3318,18 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       var response = error.response;
       var data = response.data;
       if (response.status == 422) {
-        alertModal({
+        return alertModal({
           type: 'error',
           content: listErrors(data)
         });
       }
       if (response.status == 400) {
-        alertModal({
+        return alertModal({
           type: 'error',
           content: data.mensaje
         });
       }
-      alertModal({
+      return alertModal({
         type: 'error',
         content: 'Error del servidor, contácte con soporte.'
       });
@@ -3310,41 +3339,66 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       this.getProductos(1);
       this.headVenta.fecha_pago = moment__WEBPACK_IMPORTED_MODULE_1___default()().format('YYYY-MM-DD');
     },
+    resetData: function resetData() {
+      Object.assign(this.$data, this.$options.data.call(this));
+      this.init();
+      document.querySelector('#cliente').value = "";
+    },
     disabledDates: function disabledDates(date) {
       var currentDate = new Date();
       currentDate.setHours(0, 0, 0, 0); // Establecer las horas, minutos, segundos y milisegundos a cero para comparación precisa
 
       return date < currentDate;
     },
-    getResources: function getResources() {
+    getCarrito: function getCarrito() {
       var _this = this;
+      var idcarrito = this.search.carrito.idcarrito;
+      return axios(route('venta.resources.carrito', idcarrito)).then(function (response) {
+        var _cliente$idtipo_docum;
+        var data = response.data;
+        var carrito = data.carrito,
+          cliente = data.cliente,
+          detalle = data.detalle;
+        _this.cliente = cliente;
+        _this.detalle = detalle.map(function (ele) {
+          if (ele.idtipo_articulo == _this.TIPO_ARTICULO_ID.MATRICULA) {
+            ele.stock = 1;
+          }
+          return ele;
+        });
+        _this.search.cliente.txtBuscar = "(".concat(cliente.idtipo_documento_identidad, ") ").concat(cliente.nombres, " ").concat(cliente.apellidos);
+        document.querySelector('#cliente').value = "(".concat((_cliente$idtipo_docum = cliente.idtipo_documento_identidad) !== null && _cliente$idtipo_docum !== void 0 ? _cliente$idtipo_docum : '', ") ").concat(cliente.nombres, " ").concat(cliente.apellidos);
+      })["catch"](this["catch"]);
+    },
+    getResources: function getResources() {
+      var _this2 = this;
       return axios.get(route('venta.resources')).then(function (response) {
         var data = response.data;
-        _this.resources.tipoFacturacion = data.tipo_facturacion;
-        _this.resources.tipoPago = data.tipo_pago;
+        _this2.resources.tipoFacturacion = data.tipo_facturacion;
+        _this2.resources.tipoPago = data.tipo_pago;
       })["catch"](this["catch"]);
     },
     getSerie: function getSerie() {
-      var _this2 = this;
+      var _this3 = this;
       var headVenta = this.headVenta;
       axios.get(route('venta.resources.facturaSerie', headVenta.idtipo_facturacion)).then(function (response) {
         var data = response.data;
-        _this2.headVenta.serie = data.serie;
-        _this2.headVenta.numero = data.numero;
+        _this3.headVenta.serie = data.serie;
+        _this3.headVenta.numero = data.numero;
       })["catch"](this["catch"]);
     },
     openModalProductos: function openModalProductos() {
       $('#addProductoModalCenter').modal('show');
     },
     getProductos: function getProductos() {
-      var _this3 = this;
+      var _this4 = this;
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.search.producto.paginaActual = page;
       return axios(route('venta.resources.productos'), {
         params: this.search.producto
       }).then(function (response) {
         var data = response.data;
-        _this3.resources.productos = data;
+        _this4.resources.productos = data;
       })["catch"](this["catch"]);
     },
     getMontoSubtotalModalProducto: function getMontoSubtotalModalProducto(index) {
@@ -3355,13 +3409,13 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       this.resources.productos.data[index].subtotal = number_format(cantidad * precio, 2, '.', '');
     },
     addProductoInDetalle: function addProductoInDetalle(index) {
-      var _this4 = this;
+      var _this5 = this;
       var producto = this.resources.productos.data[index];
       var stock = producto.stock,
         precio = producto.precio,
         cantidad = producto.cantidad;
       var productoAddedIndex = this.detalle.findIndex(function (ele) {
-        return ele.idtipo_articulo === _this4.TIPO_ARTICULO_ID.PRODUCTO && ele.idarticulo === producto.idproducto && ele.precio === producto.precio;
+        return ele.idtipo_articulo === _this5.TIPO_ARTICULO_ID.PRODUCTO && ele.idarticulo === producto.idproducto && ele.precio === producto.precio;
       });
       if (productoAddedIndex === -1) {
         var _newCantidad = cantidad <= stock ? cantidad : stock;
@@ -3389,7 +3443,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       $('#addMatriculaModalCenter').modal('show');
     },
     getMatriculas: function getMatriculas() {
-      var _this5 = this;
+      var _this6 = this;
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.search.matricula.paginaActual = page;
       return axios(route('venta.resources.matriculas'), {
@@ -3398,14 +3452,14 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         })
       }).then(function (response) {
         var data = response.data;
-        _this5.resources.matriculas = data;
+        _this6.resources.matriculas = data;
       })["catch"](this["catch"]);
     },
     addMatriculaInDetalle: function addMatriculaInDetalle(index) {
-      var _this6 = this;
+      var _this7 = this;
       var matricula = this.resources.matriculas.data[index];
       var matriculaInDetalleIndex = this.detalle.findIndex(function (ele) {
-        return ele.idtipo_articulo === _this6.TIPO_ARTICULO_ID.MATRICULA && ele.idarticulo === matricula.idmatricula;
+        return ele.idtipo_articulo === _this7.TIPO_ARTICULO_ID.MATRICULA && ele.idarticulo === matricula.idmatricula;
       });
       if (matriculaInDetalleIndex !== -1) {
         $('#addMatriculaModalCenter').modal('hide');
@@ -3427,9 +3481,9 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       $('#addMatriculaModalCenter').modal('hide');
     },
     removeMatriculasInDetalle: function removeMatriculasInDetalle() {
-      var _this7 = this;
+      var _this8 = this;
       this.detalle = this.detalle.filter(function (ele) {
-        return ele.idtipo_articulo !== _this7.TIPO_ARTICULO_ID.MATRICULA;
+        return ele.idtipo_articulo !== _this8.TIPO_ARTICULO_ID.MATRICULA;
       });
     },
     removeItemDetalle: function removeItemDetalle(index) {
@@ -3442,11 +3496,6 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       var cantidad = detalleItem.cantidad,
         precio = detalleItem.precio;
       this.detalle[index].subtotal = number_format((cantidad !== null && cantidad !== void 0 ? cantidad : 0) * (precio !== null && precio !== void 0 ? precio : 0), 2, '.', '');
-    },
-    resetData: function resetData() {
-      Object.assign(this.$data, this.$options.data.call(this));
-      this.init();
-      document.querySelector('#cliente').value = "";
     },
     cancelarVenta: function cancelarVenta() {
       $('#cancelarPagoModalCenter').modal('show');
@@ -3523,7 +3572,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       $('#asegurarPagoModalCenter').modal('show');
     },
     pagarVenta: function pagarVenta() {
-      var _this8 = this;
+      var _this9 = this;
       $('#asegurarPagoModalCenter').modal('hide');
       var headVenta = this.headVenta,
         cliente = this.cliente,
@@ -3543,7 +3592,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
           content: 'Se guardó el pago exitosamente.',
           time: 3 * 1000
         });
-        _this8.resetData();
+        _this9.resetData();
       })["catch"](this["catch"]);
     }
   },
@@ -4309,7 +4358,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "alert alert-success text-center"
-  }, [_vm.type === "editar" ? _c("h2", [_vm._v("¡Felicidades, la matrícula se modificó con éxito!")]) : _c("h2", [_vm._v("¡Felicidades, la matrícula se realizó con éxito!")]), _vm._v(" "), _c("h4", [_vm._v("Codígo :  " + _vm._s(_vm.codigoMatricula))])]), _vm._v(" "), _c("div", {
+  }, [_vm.type === "editar" ? _c("h2", [_vm._v("¡Felicidades, la matrícula se modificó con éxito!")]) : _c("h2", [_vm._v("¡Felicidades, la matrícula se realizó con éxito!")]), _vm._v(" "), _c("h4", [_vm._v("Código :  " + _vm._s(_vm.codigoMatricula))])]), _vm._v(" "), _c("div", {
     staticClass: "div-btn-reset"
   }, [_c("a", {
     staticClass: "btn btn-primary",
@@ -5701,7 +5750,7 @@ var render = function render() {
     staticClass: "fs-12"
   }, [_c("b", [_vm._v("Nombre completo:")]), _vm._v(" Juan Manual Perez Aguila "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Correo:")]), _vm._v(" juanpa@gmail.com "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Teléfono:")]), _vm._v(" 987654321 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Documento de identidad:")]), _vm._v(" DNI - 87654321 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Direción:")]), _vm._v(" Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima\n        ")]), _vm._v(" "), _c("h3", [_vm._v("Matricula")]), _vm._v(" "), _c("p", {
     staticClass: "fs-12"
-  }, [_c("b", [_vm._v("Codígo:")]), _vm._v(" 0000007"), _c("br"), _vm._v(" "), _c("b", [_vm._v("Concepto:")]), _vm._v(" Nueva Matricula "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Empleado:")]), _vm._v(" Roberto raymundo espinoza "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Sucursal Direción:")]), _vm._v(" sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Fecha:")]), _vm._v(" 01/01/2023 - 01/02/2023 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Programa:")]), _vm._v(" Para adultos "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Dias de actividad:")]), _vm._v(" L-M-V "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Cantidad de sessiones:")]), _vm._v(" 4 sessiones X 350 soles "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Horario: ")]), _vm._v(" "), _c("ul", [_c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Martes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Miercoles : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")])])])]), _vm._v(" "), _c("Step", {
+  }, [_c("b", [_vm._v("Código:")]), _vm._v(" 0000007"), _c("br"), _vm._v(" "), _c("b", [_vm._v("Concepto:")]), _vm._v(" Nueva Matricula "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Empleado:")]), _vm._v(" Roberto raymundo espinoza "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Sucursal Direción:")]), _vm._v(" sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Fecha:")]), _vm._v(" 01/01/2023 - 01/02/2023 "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Programa:")]), _vm._v(" Para adultos "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Dias de actividad:")]), _vm._v(" L-M-V "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Cantidad de sessiones:")]), _vm._v(" 4 sessiones X 350 soles "), _c("br"), _vm._v(" "), _c("b", [_vm._v("Horario: ")]), _vm._v(" "), _c("ul", [_c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Martes : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Miercoles : 08:00 AM - 09:00 AM")]), _vm._v(" "), _c("li", [_vm._v("Lunes : 08:00 AM - 09:00 AM")])])])]), _vm._v(" "), _c("Step", {
     attrs: {
       number: 3,
       title: "Final",
@@ -5711,7 +5760,7 @@ var render = function render() {
     }
   }, [_c("div", {
     staticClass: "alert alert-success text-center"
-  }, [_c("h2", [_vm._v("¡Felicidades, la inscripción se realizó con éxito!")]), _vm._v(" "), _c("h4", [_vm._v("Codígo : 0000007")])]), _vm._v(" "), _c("div", {
+  }, [_c("h2", [_vm._v("¡Felicidades, la inscripción se realizó con éxito!")]), _vm._v(" "), _c("h4", [_vm._v("Código : 0000007")])]), _vm._v(" "), _c("div", {
     staticClass: "div-btn-reset"
   }, [_c("button", {
     staticClass: "btn btn-primary",
@@ -6188,6 +6237,54 @@ var render = function render() {
   }, [_c("div", {
     staticClass: "row"
   }, [_c("div", {
+    staticClass: "col-12 mb-4 pt-2 codigoInput"
+  }, [_c("label", {
+    attrs: {
+      "for": "codigoCarrito"
+    }
+  }, [_vm._v("Código")]), _vm._v(" "), _c("div", {
+    staticClass: "input-group"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search.carrito.idcarrito,
+      expression: "search.carrito.idcarrito"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      name: "codigoCarrito",
+      id: "codigoCarrito",
+      placeholder: "Código"
+    },
+    domProps: {
+      value: _vm.search.carrito.idcarrito
+    },
+    on: {
+      keypress: _vm.soloNumeros,
+      keyup: function keyup($event) {
+        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
+        return _vm.getCarrito();
+      },
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.search.carrito, "idcarrito", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "input-group-append",
+    attrs: {
+      "cursor-pointer": ""
+    },
+    on: {
+      click: function click($event) {
+        return _vm.getCarrito();
+      }
+    }
+  }, [_vm._m(11)])])])]), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
     staticClass: "col-md-4 col-12 form-group"
   }, [_c("label", {
     attrs: {
@@ -6445,7 +6542,7 @@ var render = function render() {
     staticClass: "col-12 mt-4"
   }, [_c("table", {
     staticClass: "table table-sm"
-  }, [_vm._m(11), _vm._v(" "), _c("thead", _vm._l(_vm.detalle, function (item, index) {
+  }, [_vm._m(12), _vm._v(" "), _c("thead", _vm._l(_vm.detalle, function (item, index) {
     return _c("tr", {
       key: index
     }, [_c("td", [_vm._v("#" + _vm._s(index + 1))]), _vm._v(" "), _c("td", [_c("input", {
@@ -6494,9 +6591,11 @@ var render = function render() {
           return _vm.getMontoSubtotalDetalle(index);
         }]
       }
-    })]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.stock))]), _vm._v(" "), _c("td", [_c("div", {
+    })]), _vm._v(" "), _c("td", {
+      staticClass: "text-center"
+    }, [_vm._v(_vm._s(item.stock))]), _vm._v(" "), _c("td", [_c("div", {
       staticClass: "input-group"
-    }, [_vm._m(12, true), _vm._v(" "), _c("input", {
+    }, [_vm._m(13, true), _vm._v(" "), _c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -6523,7 +6622,7 @@ var render = function render() {
       }
     })])]), _vm._v(" "), _c("td", [_c("div", {
       staticClass: "input-group"
-    }, [_vm._m(13, true), _vm._v(" "), _c("input", {
+    }, [_vm._m(14, true), _vm._v(" "), _c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -6558,29 +6657,29 @@ var render = function render() {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(14), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(15), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.detalleMontoTotalSinIGV))])]), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(15), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(16), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.detalleMontoTotalIGV))])]), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(16), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(17), _vm._v(" "), _c("td", {
     staticClass: "text-center"
-  }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.detalleTotal))])]), _vm._v(" "), _c("td")]), _vm._v(" "), _vm.headVenta.idtipo_pago == 1 || _vm.headVenta.idtipo_pago == 3 ? _c("tr", [_c("td", {
+  }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.detalleTotal))])]), _vm._v(" "), _c("td")]), _vm._v(" "), _vm.headVenta.idtipo_pago == _vm.TIPO_PAGO_ID.EFECTIVO || _vm.headVenta.idtipo_pago == _vm.TIPO_PAGO_ID.AMBOS ? _c("tr", [_c("td", {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(17), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(18), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("div", {
     staticClass: "input-group"
-  }, [_vm._m(18), _vm._v(" "), _c("input", {
+  }, [_vm._m(19), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6603,15 +6702,15 @@ var render = function render() {
         _vm.$set(_vm.headVenta, "monto_efectivo", $event.target.value);
       }
     }
-  })])]), _vm._v(" "), _c("td")]) : _vm._e(), _vm._v(" "), _vm.headVenta.idtipo_pago == 2 || _vm.headVenta.idtipo_pago == 3 ? _c("tr", [_c("td", {
+  })])]), _vm._v(" "), _c("td")]) : _vm._e(), _vm._v(" "), _vm.headVenta.idtipo_pago == _vm.TIPO_PAGO_ID.TRANSFERENCIA || _vm.headVenta.idtipo_pago == _vm.TIPO_PAGO_ID.AMBOS ? _c("tr", [_c("td", {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(19), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(20), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("div", {
     staticClass: "input-group"
-  }, [_vm._m(20), _vm._v(" "), _c("input", {
+  }, [_vm._m(21), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6638,11 +6737,11 @@ var render = function render() {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(21), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(22), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("div", {
     staticClass: "input-group"
-  }, [_vm._m(22), _vm._v(" "), _c("input", {
+  }, [_vm._m(23), _vm._v(" "), _c("input", {
     staticClass: "form-control",
     attrs: {
       type: "text",
@@ -6656,11 +6755,11 @@ var render = function render() {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(23), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(24), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("div", {
     staticClass: "input-group"
-  }, [_vm._m(24), _vm._v(" "), _c("input", {
+  }, [_vm._m(25), _vm._v(" "), _c("input", {
     staticClass: "form-control",
     attrs: {
       type: "text",
@@ -6866,6 +6965,14 @@ var staticRenderFns = [function () {
     staticClass: "card-title text-center text-white mb-0",
     staticStyle: {}
   }, [_vm._v(" Ventas")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("span", {
+    staticClass: "input-group-text"
+  }, [_c("i", {
+    staticClass: "fa fa-search"
+  })]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -7088,6 +7195,25 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 // module
 exports.push([module.i, "\ntable tbody tr td.active{\n    background-color: darkgreen;\n    color: #fff;\n    text-align: center;\n}\n.fs-12{\n    font-size: 12pt;\n}\n.step-final{\n    width: 80%;\n    justify-content: center;\n    display: flex;\n}\n.div-btn-reset{\n    position: relative;\n    display: flex;\n    justify-content: center;\n}\n\n", ""]);
+
+// exports
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Venta/Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css&":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Venta/Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css& ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-loader/lib/css-base.js */ "./node_modules/css-loader/lib/css-base.js")(false);
+// imports
+
+
+// module
+exports.push([module.i, "\n.codigoInput{\n    background: rgb(0,0,0,0.2);\n    border-radius: 1rem;\n}\n\n\n", ""]);
 
 // exports
 
@@ -47983,6 +48109,36 @@ if(false) {}
 
 /***/ }),
 
+/***/ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Venta/Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css&":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/style-loader!./node_modules/css-loader??ref--6-1!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src??ref--6-2!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Venta/Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css& ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+var content = __webpack_require__(/*! !../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css& */ "./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Venta/Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css&");
+
+if(typeof content === 'string') content = [[module.i, content, '']];
+
+var transform;
+var insertInto;
+
+
+
+var options = {"hmr":true}
+
+options.transform = transform
+options.insertInto = undefined;
+
+var update = __webpack_require__(/*! ../../../../node_modules/style-loader/lib/addStyles.js */ "./node_modules/style-loader/lib/addStyles.js")(content, options);
+
+if(content.locals) module.exports = content.locals;
+
+if(false) {}
+
+/***/ }),
+
 /***/ "./node_modules/style-loader/lib/addStyles.js":
 /*!****************************************************!*\
   !*** ./node_modules/style-loader/lib/addStyles.js ***!
@@ -65430,7 +65586,9 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Form_vue_vue_type_template_id_0a66f9a6_lang_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Form.vue?vue&type=template&id=0a66f9a6&lang=true& */ "./resources/js/views/Venta/Form.vue?vue&type=template&id=0a66f9a6&lang=true&");
 /* harmony import */ var _Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Form.vue?vue&type=script&lang=js& */ "./resources/js/views/Venta/Form.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _Form_vue_vue_type_style_index_0_id_0a66f9a6_lang_css___WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css& */ "./resources/js/views/Venta/Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css&");
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
 
 
 
@@ -65438,7 +65596,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* normalize component */
 
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_3__["default"])(
   _Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
   _Form_vue_vue_type_template_id_0a66f9a6_lang_true___WEBPACK_IMPORTED_MODULE_0__["render"],
   _Form_vue_vue_type_template_id_0a66f9a6_lang_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
@@ -65467,6 +65625,22 @@ component.options.__file = "resources/js/views/Venta/Form.vue"
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Form.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Venta/Form.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/Venta/Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/views/Venta/Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css& ***!
+  \****************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_style_index_0_id_0a66f9a6_lang_css___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/style-loader!../../../../node_modules/css-loader??ref--6-1!../../../../node_modules/vue-loader/lib/loaders/stylePostLoader.js!../../../../node_modules/postcss-loader/src??ref--6-2!../../../../node_modules/vue-loader/lib??vue-loader-options!./Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css& */ "./node_modules/style-loader/index.js!./node_modules/css-loader/index.js?!./node_modules/vue-loader/lib/loaders/stylePostLoader.js!./node_modules/postcss-loader/src/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Venta/Form.vue?vue&type=style&index=0&id=0a66f9a6&lang=css&");
+/* harmony import */ var _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_style_index_0_id_0a66f9a6_lang_css___WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_style_index_0_id_0a66f9a6_lang_css___WEBPACK_IMPORTED_MODULE_0__);
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_style_index_0_id_0a66f9a6_lang_css___WEBPACK_IMPORTED_MODULE_0__) if(["default"].indexOf(__WEBPACK_IMPORT_KEY__) < 0) (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _node_modules_style_loader_index_js_node_modules_css_loader_index_js_ref_6_1_node_modules_vue_loader_lib_loaders_stylePostLoader_js_node_modules_postcss_loader_src_index_js_ref_6_2_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_style_index_0_id_0a66f9a6_lang_css___WEBPACK_IMPORTED_MODULE_0__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+
 
 /***/ }),
 

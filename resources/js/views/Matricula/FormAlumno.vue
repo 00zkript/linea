@@ -151,14 +151,14 @@ export default {
             const data = response.data;
 
             if (response.status == 422){
-                alertModal({ type:'error', content: listErrors(data) });
+                return alertModal({ type:'error', content: listErrors(data) });
             }
 
             if (response.status == 400){
-                alertModal({ type:'error', content: data.mensaje });
+                return alertModal({ type:'error', content: data.mensaje });
             }
 
-            alertModal({ type:'error', content: 'Error del servidor, contácte con soporte.' });
+            return alertModal({ type:'error', content: 'Error del servidor, contácte con soporte.' });
 
 
         },

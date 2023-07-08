@@ -232,7 +232,7 @@
                     <th colspan="7">INGRESOS EFECTIVO EN CAJA</th>
                 </tr>
                 <tr class="table-dark">
-                    <th>Codígo</th>
+                    <th>Código</th>
                     <th>Apellidos y nombres</th>
                     <th>Concepto</th>
                     <th>Efectivo (S/.)</th>
@@ -243,7 +243,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Codígo</td>
+                    <td>Código</td>
                     <td>Apellidos y nombres</td>
                     <td>Concepto</td>
                     <td>Efectivo (S/.)</td>
@@ -269,7 +269,7 @@
                     <th colspan="5">INGRESOS - MOVIMIENTOS CAJA</th>
                 </tr>
                 <tr class="table-dark">
-                    <th>Codígo</th>
+                    <th>Código</th>
                     <th>Descripción</th>
                     <th>Efectivo(S/.)</th>
                     {{-- <th>Efectivo($)</th> --}}
@@ -311,7 +311,7 @@
                     <th colspan="5">EGRESOS - MOVIMIENTOS CAJA</th>
                 </tr>
                 <tr class="table-dark">
-                    <th>Codígo</th>
+                    <th>Código</th>
                     <th>Descripción</th>
                     <th>Efectivo(S/.)</th>
                     {{-- <th>Efectivo($)</th> --}}

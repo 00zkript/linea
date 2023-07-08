@@ -188,7 +188,7 @@
 
             <h3>Matricula</h3>
             <p class="fs-12">
-                <b>Codígo:</b> 0000007<br>
+                <b>Código:</b> 0000007<br>
                 <b>Concepto:</b> Nueva Matricula <br>
                 <b>Empleado:</b> Roberto raymundo espinoza <br>
                 <b>Sucursal Direción:</b> sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  <br>
@@ -210,7 +210,7 @@
         <Step :number="3" title="Final" :currentValue="stepCurrent" :showFooter="false" classContent="step-final" >
             <div class="alert alert-success text-center">
                 <h2>¡Felicidades, la inscripción se realizó con éxito!</h2>
-                <h4>Codígo : 0000007</h4>
+                <h4>Código : 0000007</h4>
             </div>
             <div class="div-btn-reset">
                 <button class="btn btn-primary" @click.prevent="resetData()">Nueva inscripción</button>

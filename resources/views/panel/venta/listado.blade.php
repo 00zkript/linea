@@ -5,9 +5,11 @@
             <tr class="text-center">
                 <th>Código</th>
                 <th>Cliente</th>
+                <th>Facturación serie</th>
                 <th>Monto Pagado (S/.)</th>
                 <th>Monto Deuda (S/.)</th>
                 <th>Monto Total (S/.)</th>
+                <th>Fecha</th>
                 {{-- <th>Estado</th> --}}
                 <th>Opciones</th>
             </tr>
@@ -18,9 +20,11 @@
                 <tr>
                     <td>{{ str_pad($item->idventa,7,0,STR_PAD_LEFT)}}</td>
                     <td>{{ $item->cliente_nombres }} {{ $item->cliente_apellidos }}</td>
-                    <td class="text-right">S/. {{ $item->monto_pagado }}</td>
-                    <td class="text-right">S/. {{ $item->monto_faltante }}</td>
-                    <td class="text-right">S/. {{ $item->monto_total }}</td>
+                    <td>{{ $item->tipo_facturacion_serie }} - {{ $item->tipo_facturacion_numero }}</td>
+                    <td class="text-right text-primary">S/. {{ $item->monto_pagado }}</td>
+                    <td class="text-right text-danger">S/. {{ $item->monto_faltante }}</td>
+                    <td class="text-right text-primary">S/. {{ $item->monto_total }}</td>
+                    <td>{{ now()->parse($item->created_at)->format('d/m/Y') }}</td>
                     {{-- <td>{!! $item->estado ? '<label class="badge badge-success">Habilidado</label>' : '<label class="badge badge-danger">Inhabilitado</label>' !!}</td> --}}
                     <td class="text-center">
                         <div class="dropdown">
@@ -29,14 +33,6 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu-{{$item->idventa}}" data-idventa="{{$item->idventa}}">
                                 <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
-                                {{-- <button class="dropdown-item btnModalEditar" type="button"><i class="fa fa-pencil"></i> Editar</button> --}}
-                                {{-- @if($item->estado)
-                                    <button class="dropdown-item btnModalInhabilitar" type="button"><i class="fa fa-times"> Inhabilitar</i></button>
-                                @else
-                                    <button class="dropdown-item btnModalHabilitar" type="button"><i class="fa fa-check"> Habilitar</i></button>
-                                @endif --}}
-                                {{-- <button class="dropdown-item btnModalEliminar" type="button"><i class="fa fa-trash"> Eliminar</i></button> --}}
-
                             </div>
                         </div>
                     </td>

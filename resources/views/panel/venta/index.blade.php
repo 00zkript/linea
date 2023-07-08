@@ -56,18 +56,8 @@
 @endsection
 @push('js')
     <script type="module" >
-
-
         const URL_LISTADO     = "{{ route('venta.listar') }}";
-        {{-- // const URL_GUARDAR     = "{{ route('venta.store') }}"; --}}
-        {{-- // const URL_VER         = "{{ route('venta.show',':id') }}"; --}}
-        {{-- // const URL_EDIT        = "{{ route('venta.edit',':id') }}"; --}}
-        {{-- // const URL_MODIFICAR   = "{{ route('venta.update',':id') }}"; --}}
-        {{-- // const URL_HABILITAR   = "{{ route('venta.habilitar',':id') }}"; --}}
-        {{-- // const URL_INHABILITAR = "{{ route('venta.inhabilitar',':id') }}"; --}}
-        {{-- // const URL_ELIMINAR    = "{{ route('venta.destroy',':id') }}"; --}}
-
-
+        const URL_VER         = "{{ route('venta.show',':id') }}";
 
 
         const filtros = () => {
@@ -145,318 +135,41 @@
 
             });
 
-            /* $(document).on("click",".btnModalHabilitar",function(e){
-                e.preventDefault();
-                const idregistro = $(this).closest('div.dropdown-menu').data('idregistro');
-                $("#frmHabilitar input[name=idregistro]").val(idregistro);
-                $("#modalHabilitar").modal("show");
-            });
-
-            $(document).on("click",".btnModalInhabilitar",function(e){
-                e.preventDefault();
-                const idregistro = $(this).closest('div.dropdown-menu').data('idregistro');
-                $("#frmInhabilitar input[name=idregistro]").val(idregistro);
-                $("#modalInhabilitar").modal("show");
-            });
-
-            $(document).on("click",".btnModalEliminar",function(e){
-                e.preventDefault();
-                const idregistro = $(this).closest('div.dropdown-menu').data('idregistro');
-                $("#frmEliminar input[name=idregistro]").val(idregistro);
-                $("#modalEliminar").modal("show");
-            });
-
-            $(document).on("click",".btnModalEditar",function(e){
-                e.preventDefault();
-                const idregistro = $(this).closest('div.dropdown-menu').data('idregistro');
-
-                cargando('Procesando...');
-                axios.get(URL_EDIT.replace(':id',idregistro))
-                .then(response => {
-                    const data = response.data;
-
-                    stop();
-                    $("#frmEditar")[0].reset();
-                    $("#frmEditar input[name=idregistro]").val(data.idregistro);
-
-
-                    $("#nombreEditar").val(data.nombre);
-
-
-                    $("#imagenEditar").fileinput('destroy').fileinput({
-                        dropZoneTitle : 'Arrastre la imagen aquí',
-                        initialPreview : [ URL_CARPETA+data.imagen ],
-                        initialPreviewConfig : { caption : data.imagen , width: "120px", height : "120px" },
-                        // fileActionSettings : { showRemove : false, showUpload : false, showZoom : true, showDrag : false},
-                        // uploadUrl : URL_FILE_UPDATE,
-                        // uploadExtraData : _ => {
-                        // },
-                        // deleteUrl : URL_FILE_DESTROY,
-                        // deleteExtraData : _ => {
-                        // },
-                    });
-
-
-
-
-
-                    $("#frmEditar .selectpicker").selectpicker("render");
-                    $("#modalEditar").modal("show");
-
-                })
-                .catch(errorCatch)
-
-
-
-            }); */
-
             $(document).on("click",".btnModalVer",function(e){
                 e.preventDefault();
-                const idregistro = $(this).closest('div.dropdown-menu').data('idregistro');
+                const idventa = $(this).closest('div.dropdown-menu').data('idventa');
 
-                // cargando('Procesando...');
-                // axios.get(URL_VER.replace(':id',idregistro))
-                // .then(response => {
-                //     const data = response.data;
-                //     stop();
+                cargando('Procesando...');
+                axios.get(URL_VER.replace(':id',idventa))
+                .then(response => {
+                    const data = response.data;
+                    stop();
 
-                    const data = {
-                        idmatricula : 7,
-                        sucursal: {
-                            nombre: 'sucrusal 1',
-                            direccion: 'Lorem ipsum dolor sit amet.',
-                            departamento: {
-                                nombre: 'Lima'
-                            },
-                            provincia: {
-                                nombre: 'Lima'
-                            },
-                            distrito: {
-                                nombre: 'Lima'
-                            },
-                        },
-                        caja: {
-                            nombre: 'caja1'
-                        },
-                        empleado: {
-                            nombres: 'lorenzo',
-                            apellidos: 'Perez Mancilla',
-                            tipo_documento_identidad: {
-                                nombre: 'DNI'
-                            },
-                            numero_documento_identidad: 87654321,
-                        },
-                        cliente: {
-                            nombres: 'Juan',
-                            apellidos: 'Perez Mancilla',
-                            tipo_documento_identidad: {
-                                nombre: 'DNI'
-                            },
-                            numero_documento_identidad: 87654321,
-                        },
-                        pagos: [
-                            { monto: 150, created_at : '01/01/2023'  } ,
-                            { monto: 100, created_at : '02/01/2023'  } ,
-                        ],
-                        monto_total: 350,
-                        monto_pagado: 250,
-                        monto_deuda: 100,
-                    }
-
-                    $('#alumnoShow').html( data.cliente.nombres+" "+data.cliente.apellidos );
-                    $('#idmatriculaShow').html( data.idmatricula.toString().padStart(7,0) );
-                    $('#sucursalShow').html( `${data.sucursal.nombre} - ${data.sucursal.direccion} ${data.sucursal.distrito.nombre} / ${data.sucursal.provincia.nombre} / ${data.sucursal.departamento.nombre} ` );
-                    $('#cajaShow').html( data.caja.nombre );
-                    $('#empleadoShow').html( data.empleado.nombres+" "+data.empleado.apellidos );
-                    $('#montoTotalShow').html( "S/. "+number_format(data.monto_total,2) );
-                    $('#montoPagadoShow').html( "S/. "+number_format(data.monto_pagado,2) );
-                    $('#montoDeudaShow').html( "S/. "+number_format(data.monto_deuda,2) );
-
-                    $('#pagosShow tbody').empty()
-                    data.pagos.forEach((pago,idx) => {
-                        $('#pagosShow tbody').append(`
-                            <tr>
-                                <td>#${idx+1}</td>
-                                <td>S/. ${number_format(venta.monto,2)}</td>
-                                <td>${venta.created_at}</td>
-                            </tr>
-                        `);
-
-                    })
+                    $('#idventaShow').html( (data.idventa).toString().padStart(7,0) );
+                    $('#sucursalShow').html( data.sucursal.nombre );
+                    $('#clienteShow').html( data.cliente_nombres+" "+data.cliente_apellidos );
+                    $('#empleadoShow').html( data.empleado_nombres+" "+data.empleado_apellidos );
+                    $('#tipoFacturacionShow').html( data.tipo_facturacion.nombre+" "+data.tipo_facturacion_serie+" - "+data.tipo_facturacion_numero );
+                    $('#tipoPagoShow').html( data.tipo_pago.nombre );
+                    $('#montoPagadoShow').html( "S/. "+data.monto_pagado );
+                    $('#montoFaltanteShow').html( "S/. "+data.monto_faltante );
+                    $('#montoTotalShow').html( "S/. "+data.monto_total );
+                    $('#fechaPagoShow').html( data.fecha_pago.split('-').reverse().join('/') );
 
                     $("#modalVer").modal("show");
 
-                // })
-                // .catch(errorCatch)
-
-
-
-            });
-
-        }
-
-        /* const guardar = () => {
-            $(document).on("submit","#frmCrear",function(e){
-                e.preventDefault();
-                const form = new FormData($(this)[0]);
-
-                cargando('Procesando...');
-                axios.post(URL_GUARDAR,form)
-                .then(response => {
-                    const data = response.data;
-                    stop();
-                    // $("#imagen").fileinput("upload");
-                    // $("#manual").fileinput("upload");
-
-                    $("#modalCrear").modal("hide");
-                    notificacion("success","Registro exitoso",data.mensaje);
-                    listado();
-
                 })
                 .catch(errorCatch)
 
 
 
-
-            });
-        }
-
-        const modificar = () => {
-            $(document).on("submit","#frmEditar",function(e){
-                e.preventDefault();
-
-                const idregistro = $("#frmEditar input[name=idregistro]").val();
-                const form = new FormData($(this)[0]);
-
-                cargando('Procesando...');
-                axios.post(URL_MODIFICAR.replace(':id',idregistro),form)
-                .then(response => {
-                    const data = response.data;
-                    // $("#imagenEditar").fileinput("upload");
-                    // $("#manualEditar").fileinput("upload");
-
-                    stop();
-                    $("#modalEditar").modal("hide");
-                    notificacion("success","Modificación exitosa",data.mensaje);
-                    listado($("#cantidadRegistros").val(),$("#paginaActual").val());
-
-                })
-                .catch(errorCatch)
-
-
-            });
-        }
-
-        const habilitar = () => {
-            $(document).on( "submit" ,"#frmHabilitar", function(e){
-                e.preventDefault();
-                // const form = new FormData($(this)[0]);
-                const idregistro = $("#frmHabilitar input[name=idregistro]").val();
-                cargando('Procesando...');
-
-                axios.put(URL_HABILITAR.replace(':id',idregistro))
-                .then( response => {
-                    const data = response.data;
-                    stop();
-
-                    $("#modalHabilitar").modal("hide");
-
-                    notificacion("success","Habilitado",data.mensaje);
-
-                    listado($("#cantidadRegistros").val(),$("#paginaActual").val());
-
-                })
-                .catch( errorCatch )
-
-
-            } )
-
-        }
-
-        const inhabilitar = () => {
-            $(document).on( "submit","#frmInhabilitar" , function(e){
-                e.preventDefault();
-
-                // const form = new FormData($(this)[0]);
-                const idregistro = $("#frmInhabilitar input[name=idregistro]").val();
-                cargando('Procesando...');
-
-                axios.put(URL_INHABILITAR.replace(':id',idregistro))
-                .then( response => {
-                    const data = response.data;
-                    stop();
-                    $("#modalInhabilitar").modal("hide");
-
-                    notificacion("success","Inhabilitado",data.mensaje);
-
-                    listado($("#cantidadRegistros").val(),$("#paginaActual").val());
-
-                } )
-                .catch( errorCatch )
-
-            } )
-        }
-
-        const eliminar = () => {
-            $(document).on( "submit","#frmEliminar" , function(e){
-                e.preventDefault();
-
-                // const form = new FormData($(this)[0]);
-                const idregistro = $("#frmEliminar input[name=idregistro]").val();
-                cargando('Procesando...');
-
-                axios.delete(URL_ELIMINAR.replace(':id',idregistro))
-                .then( response => {
-                    const data = response.data;
-                    stop();
-                    $("#modalEliminar").modal("hide");
-
-                    notificacion("success","Eliminado",data.mensaje);
-
-                    listado($("#cantidadRegistros").val(),$("#paginaActual").val());
-
-                } )
-                .catch( errorCatch )
-
-            } )
-        }
-
-        const sortFile = () => {
-
-            $("#fileEditar").on('filesorted', function(e, params) {
-                e.preventDefault();
-                const idregistro = $("#frmEditar input[name=idregistro]").val();
-                const stack = params.stack;
-
-                axios.post(URL_FILE_SORT, {
-                    stack : JSON.stringify(stack)
-                })
-                .then( response => {
-                    const data = response.data;
-                    console.log(data.mensaje);
-                })
-                .catch( error => {
-                    const response = error.response;
-                    const data = response.data;
-
-                    console.log(data);
-                })
-
-
             });
 
-        } */
-
-
-
+        }
 
         $(function () {
             modales();
             filtros();
-            // guardar();
-            // modificar();
-            // habilitar();
-            // inhabilitar();
 
 
         });

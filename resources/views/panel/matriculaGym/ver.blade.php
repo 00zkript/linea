@@ -29,7 +29,7 @@
 
                             <h3>Inscripciones</h3>
                             <p class="fs-12">
-                                <b>Codígo:</b> 0000007<br>
+                                <b>Código:</b> 0000007<br>
                                 <b>Concepto:</b> Nueva Inscripciones <br>
                                 <b>Empleado:</b> Roberto raymundo espinoza <br>
                                 <b>Sucursal Direción:</b> sucursal #1 - Lorem ipsum dolor sit amet consectetur. Lima / Lima / Lima  <br>

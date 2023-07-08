@@ -17,53 +17,16 @@
                         </div>
 
                         <div class="col-12">
-                            <p>
-                                <b>Alumno:</b>
-                                <span id="alumnoShow"></span>
-                            </p>
-                            <p>
-                                <b>Matrícula código:</b>
-                                <span id="idmatriculaShow"></span>
-                            </p>
-                            <p>
-                                <b>Sucursal:</b>
-                                <span id="sucursalShow"></span>
-                            </p>
-                            <p>
-                                <b>Caja:</b>
-                                <span id="cajaShow"></span>
-                            </p>
-                            <p>
-                                <b>Empleado:</b>
-                                <span id="empleadoShow"></span>
-                            </p>
-                            <p>
-                                <b>Total:</b>
-                                <span id="montoTotalShow"></span>
-                            </p>
-                            <p>
-                                <b>Total pagado:</b>
-                                <span id="montoPagadoShow"></span>
-                            </p>
-                            <p>
-                                <b>Total Deuda:</b>
-                                <span id="montoDeudaShow"></span>
-                            </p>
-                        </div>
-
-                        <div class="col-12 col-md-6 offset-md-3">
-                            <table class="table table-striped text-center" id="pagosShow">
-                                <thead>
-                                    <tr>
-                                        <th>#N°</th>
-                                        <th>Monto pagado</th>
-                                        <th>Fecha de pago</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                </tbody>
-                            </table>
-
+                            <p><b>Código: </b><span id="idventaShow"></span></p>
+                            <p><b>Sucursal: </b><span id="sucursalShow"></span></p>
+                            <p><b>Cliente: </b><span id="clienteShow"></span></p>
+                            <p><b>Empleado: </b><span id="empleadoShow"></span></p>
+                            <p><b>Tipo Facturacion: </b><span id="tipoFacturacionShow"></span></p>
+                            <p><b>Tipo Pago: </b><span id="tipoPagoShow"></span></p>
+                            <p class="text-primary"><b>Monto Pagado: </b><span id="montoPagadoShow"></span></p>
+                            <p class="text-danger"><b>Monto Faltante: </b><span id="montoFaltanteShow"></span></p>
+                            <p class="text-primary"><b>Monto Total: </b><span id="montoTotalShow"></span></p>
+                            <p><b>Fecha Pago: </b><span id="fechaPagoShow"></span></p>
                         </div>
 
 
