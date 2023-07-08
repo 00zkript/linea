@@ -2287,40 +2287,52 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
       var response = error.response;
       var data = response.data;
     });
-  }), _defineProperty(_methods, "getAlumno", function getAlumno(clienteID) {
+  }), _defineProperty(_methods, "getProvincias", function getProvincias() {
     var _this2 = this;
+    return axios.get(route('matricula.resources.provincias', [this.alumno.iddepartamento])).then(function (response) {
+      var data = response.data;
+      _this2.resources.provincias = data;
+    })["catch"](this["catch"]);
+  }), _defineProperty(_methods, "getDistritos", function getDistritos() {
+    var _this3 = this;
+    return axios.get(route('matricula.resources.distritos', [this.alumno.idprovincia])).then(function (response) {
+      var data = response.data;
+      _this3.resources.distritos = data;
+    })["catch"](this["catch"]);
+  }), _defineProperty(_methods, "getAlumno", function getAlumno(clienteID) {
+    var _this4 = this;
     return axios(route('matricula.resources.alumno', clienteID)).then(function (response) {
       var _data$nombres, _data$apellidos, _data$correo, _data$telefono, _data$apoderado_nombr, _data$apoderado_apell, _data$apoderado_corre, _data$apoderado_telef, _data$numero_document, _data$direccion, _data$nota;
       var data = response.data;
-      _this2.alumno.idcliente = data.idcliente;
-      _this2.alumno.nombres = (_data$nombres = data.nombres) !== null && _data$nombres !== void 0 ? _data$nombres : '';
-      _this2.alumno.apellidos = (_data$apellidos = data.apellidos) !== null && _data$apellidos !== void 0 ? _data$apellidos : '';
-      _this2.alumno.correo = (_data$correo = data.correo) !== null && _data$correo !== void 0 ? _data$correo : '';
-      _this2.alumno.telefono = (_data$telefono = data.telefono) !== null && _data$telefono !== void 0 ? _data$telefono : '';
-      _this2.alumno.apoderado_nombres = (_data$apoderado_nombr = data.apoderado_nombres) !== null && _data$apoderado_nombr !== void 0 ? _data$apoderado_nombr : '';
-      _this2.alumno.apoderado_apellidos = (_data$apoderado_apell = data.apoderado_apellidos) !== null && _data$apoderado_apell !== void 0 ? _data$apoderado_apell : '';
-      _this2.alumno.apoderado_correo = (_data$apoderado_corre = data.apoderado_correo) !== null && _data$apoderado_corre !== void 0 ? _data$apoderado_corre : '';
-      _this2.alumno.apoderado_telefono = (_data$apoderado_telef = data.apoderado_telefono) !== null && _data$apoderado_telef !== void 0 ? _data$apoderado_telef : '';
-      _this2.alumno.idtipo_documento_identidad = data.idtipo_documento_identidad;
-      _this2.alumno.numero_documento_identidad = (_data$numero_document = data.numero_documento_identidad) !== null && _data$numero_document !== void 0 ? _data$numero_document : '';
-      _this2.alumno.sexo = data.sexo;
-      _this2.alumno.fecha_nacimiento = data.fecha_nacimiento;
-      _this2.alumno.iddepartamento = data.iddepartamento;
-      _this2.alumno.idprovincia = data.idprovincia;
-      _this2.alumno.iddistrito = data.iddistrito;
-      _this2.alumno.direccion = (_data$direccion = data.direccion) !== null && _data$direccion !== void 0 ? _data$direccion : '';
-      _this2.alumno.nota = (_data$nota = data.nota) !== null && _data$nota !== void 0 ? _data$nota : '';
+      _this4.alumno.idcliente = data.idcliente;
+      _this4.alumno.nombres = (_data$nombres = data.nombres) !== null && _data$nombres !== void 0 ? _data$nombres : '';
+      _this4.alumno.apellidos = (_data$apellidos = data.apellidos) !== null && _data$apellidos !== void 0 ? _data$apellidos : '';
+      _this4.alumno.correo = (_data$correo = data.correo) !== null && _data$correo !== void 0 ? _data$correo : '';
+      _this4.alumno.telefono = (_data$telefono = data.telefono) !== null && _data$telefono !== void 0 ? _data$telefono : '';
+      _this4.alumno.apoderado_nombres = (_data$apoderado_nombr = data.apoderado_nombres) !== null && _data$apoderado_nombr !== void 0 ? _data$apoderado_nombr : '';
+      _this4.alumno.apoderado_apellidos = (_data$apoderado_apell = data.apoderado_apellidos) !== null && _data$apoderado_apell !== void 0 ? _data$apoderado_apell : '';
+      _this4.alumno.apoderado_correo = (_data$apoderado_corre = data.apoderado_correo) !== null && _data$apoderado_corre !== void 0 ? _data$apoderado_corre : '';
+      _this4.alumno.apoderado_telefono = (_data$apoderado_telef = data.apoderado_telefono) !== null && _data$apoderado_telef !== void 0 ? _data$apoderado_telef : '';
+      _this4.alumno.idtipo_documento_identidad = data.idtipo_documento_identidad;
+      _this4.alumno.numero_documento_identidad = (_data$numero_document = data.numero_documento_identidad) !== null && _data$numero_document !== void 0 ? _data$numero_document : '';
+      _this4.alumno.sexo = data.sexo;
+      _this4.alumno.fecha_nacimiento = data.fecha_nacimiento;
+      _this4.alumno.iddepartamento = data.iddepartamento;
+      _this4.alumno.idprovincia = data.idprovincia;
+      _this4.alumno.iddistrito = data.iddistrito;
+      _this4.alumno.direccion = (_data$direccion = data.direccion) !== null && _data$direccion !== void 0 ? _data$direccion : '';
+      _this4.alumno.nota = (_data$nota = data.nota) !== null && _data$nota !== void 0 ? _data$nota : '';
       // this.alumno.referencia                 = data.referencia
 
       if (data.iddepartamento) {
-        _this2.getProvincias();
+        _this4.getProvincias();
       }
       if (data.idprovincia) {
-        _this2.getDistritos();
+        _this4.getDistritos();
       }
     });
   }), _defineProperty(_methods, "getMatricula", function getMatricula(matriculaID) {
-    var _this3 = this;
+    var _this5 = this;
     return axios(route('matricula.resources.matricula', matriculaID)).then(function (response) {
       var _alumno$nombres, _alumno$apellidos, _alumno$correo, _alumno$telefono, _alumno$apoderado_nom, _alumno$apoderado_ape, _alumno$apoderado_cor, _alumno$apoderado_tel, _alumno$numero_docume, _alumno$direccion, _alumno$nota;
       var data = response.data;
@@ -2328,47 +2340,47 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
         matricula = data.matricula,
         alumno = data.alumno,
         productos_adicionales = data.productos_adicionales;
-      _this3.alumno.idcliente = alumno.idcliente;
-      _this3.alumno.nombres = (_alumno$nombres = alumno.nombres) !== null && _alumno$nombres !== void 0 ? _alumno$nombres : '';
-      _this3.alumno.apellidos = (_alumno$apellidos = alumno.apellidos) !== null && _alumno$apellidos !== void 0 ? _alumno$apellidos : '';
-      _this3.alumno.correo = (_alumno$correo = alumno.correo) !== null && _alumno$correo !== void 0 ? _alumno$correo : '';
-      _this3.alumno.telefono = (_alumno$telefono = alumno.telefono) !== null && _alumno$telefono !== void 0 ? _alumno$telefono : '';
-      _this3.alumno.apoderado_nombres = (_alumno$apoderado_nom = alumno.apoderado_nombres) !== null && _alumno$apoderado_nom !== void 0 ? _alumno$apoderado_nom : '';
-      _this3.alumno.apoderado_apellidos = (_alumno$apoderado_ape = alumno.apoderado_apellidos) !== null && _alumno$apoderado_ape !== void 0 ? _alumno$apoderado_ape : '';
-      _this3.alumno.apoderado_correo = (_alumno$apoderado_cor = alumno.apoderado_correo) !== null && _alumno$apoderado_cor !== void 0 ? _alumno$apoderado_cor : '';
-      _this3.alumno.apoderado_telefono = (_alumno$apoderado_tel = alumno.apoderado_telefono) !== null && _alumno$apoderado_tel !== void 0 ? _alumno$apoderado_tel : '';
-      _this3.alumno.idtipo_documento_identidad = alumno.idtipo_documento_identidad;
-      _this3.alumno.numero_documento_identidad = (_alumno$numero_docume = alumno.numero_documento_identidad) !== null && _alumno$numero_docume !== void 0 ? _alumno$numero_docume : '';
-      _this3.alumno.sexo = alumno.sexo;
-      _this3.alumno.fecha_nacimiento = alumno.fecha_nacimiento;
-      _this3.alumno.iddepartamento = alumno.iddepartamento;
-      _this3.alumno.idprovincia = alumno.idprovincia;
-      _this3.alumno.iddistrito = alumno.iddistrito;
-      _this3.alumno.direccion = (_alumno$direccion = alumno.direccion) !== null && _alumno$direccion !== void 0 ? _alumno$direccion : '';
-      _this3.alumno.nota = (_alumno$nota = alumno.nota) !== null && _alumno$nota !== void 0 ? _alumno$nota : '';
+      _this5.alumno.idcliente = alumno.idcliente;
+      _this5.alumno.nombres = (_alumno$nombres = alumno.nombres) !== null && _alumno$nombres !== void 0 ? _alumno$nombres : '';
+      _this5.alumno.apellidos = (_alumno$apellidos = alumno.apellidos) !== null && _alumno$apellidos !== void 0 ? _alumno$apellidos : '';
+      _this5.alumno.correo = (_alumno$correo = alumno.correo) !== null && _alumno$correo !== void 0 ? _alumno$correo : '';
+      _this5.alumno.telefono = (_alumno$telefono = alumno.telefono) !== null && _alumno$telefono !== void 0 ? _alumno$telefono : '';
+      _this5.alumno.apoderado_nombres = (_alumno$apoderado_nom = alumno.apoderado_nombres) !== null && _alumno$apoderado_nom !== void 0 ? _alumno$apoderado_nom : '';
+      _this5.alumno.apoderado_apellidos = (_alumno$apoderado_ape = alumno.apoderado_apellidos) !== null && _alumno$apoderado_ape !== void 0 ? _alumno$apoderado_ape : '';
+      _this5.alumno.apoderado_correo = (_alumno$apoderado_cor = alumno.apoderado_correo) !== null && _alumno$apoderado_cor !== void 0 ? _alumno$apoderado_cor : '';
+      _this5.alumno.apoderado_telefono = (_alumno$apoderado_tel = alumno.apoderado_telefono) !== null && _alumno$apoderado_tel !== void 0 ? _alumno$apoderado_tel : '';
+      _this5.alumno.idtipo_documento_identidad = alumno.idtipo_documento_identidad;
+      _this5.alumno.numero_documento_identidad = (_alumno$numero_docume = alumno.numero_documento_identidad) !== null && _alumno$numero_docume !== void 0 ? _alumno$numero_docume : '';
+      _this5.alumno.sexo = alumno.sexo;
+      _this5.alumno.fecha_nacimiento = alumno.fecha_nacimiento;
+      _this5.alumno.iddepartamento = alumno.iddepartamento;
+      _this5.alumno.idprovincia = alumno.idprovincia;
+      _this5.alumno.iddistrito = alumno.iddistrito;
+      _this5.alumno.direccion = (_alumno$direccion = alumno.direccion) !== null && _alumno$direccion !== void 0 ? _alumno$direccion : '';
+      _this5.alumno.nota = (_alumno$nota = alumno.nota) !== null && _alumno$nota !== void 0 ? _alumno$nota : '';
       if (alumno.iddepartamento) {
-        _this3.getProvincias();
+        _this5.getProvincias();
       }
       if (alumno.idprovincia) {
-        _this3.getDistritos();
+        _this5.getDistritos();
       }
-      _this3.resources.niveles = resources.niveles;
-      _this3.resources.carriles = resources.carriles;
-      _this3.resources.frecuencias = resources.frecuencias;
-      _this3.matricula.idmatricula = matricula.idmatricula;
-      _this3.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
-      _this3.matricula.idconcepto = matricula.idconcepto;
-      _this3.matricula.idempleado = matricula.idempleado;
-      _this3.matricula.idsucursal = matricula.idsucursal;
-      _this3.matricula.idtemporada = matricula.idtemporada;
-      _this3.matricula.idprograma = matricula.idprograma;
-      _this3.matricula.idnivel = matricula.idnivel;
-      _this3.matricula.idcarril = matricula.idcarril;
-      _this3.matricula.idfrecuencia = matricula.idfrecuencia;
-      _this3.matricula.idhorario = matricula.idhorario;
-      _this3.matricula.idcantidad_clases = matricula.idcantidad_clases;
-      _this3.matricula.idcarrito = matricula.idcarrito;
-      _this3.matriculaHorarioDia = matricula.detalle.map(function (ele) {
+      _this5.resources.niveles = resources.niveles;
+      _this5.resources.carriles = resources.carriles;
+      _this5.resources.frecuencias = resources.frecuencias;
+      _this5.matricula.idmatricula = matricula.idmatricula;
+      _this5.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
+      _this5.matricula.idconcepto = matricula.idconcepto;
+      _this5.matricula.idempleado = matricula.idempleado;
+      _this5.matricula.idsucursal = matricula.idsucursal;
+      _this5.matricula.idtemporada = matricula.idtemporada;
+      _this5.matricula.idprograma = matricula.idprograma;
+      _this5.matricula.idnivel = matricula.idnivel;
+      _this5.matricula.idcarril = matricula.idcarril;
+      _this5.matricula.idfrecuencia = matricula.idfrecuencia;
+      _this5.matricula.idhorario = matricula.idhorario;
+      _this5.matricula.idcantidad_clases = matricula.idcantidad_clases;
+      _this5.matricula.idcarrito = matricula.idcarrito;
+      _this5.matriculaHorarioDia = matricula.detalle.map(function (ele) {
         return {
           fecha: ele.fecha,
           dia_name: ele.dia_nombre,
@@ -2376,7 +2388,7 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
           horario_nombre: ele.horario_nombre
         };
       });
-      _this3.productosAdicionales = productos_adicionales.map(function (ele) {
+      _this5.productosAdicionales = productos_adicionales.map(function (ele) {
         return {
           idtipo_articulo: ele.idtipo_articulo,
           idarticulo: ele.idarticulo,
@@ -2387,8 +2399,8 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
           subtotal: ele.subtotal
         };
       });
-      _this3.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
-      _this3.getCountMatriculados();
+      _this5.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
+      _this5.getCountMatriculados();
     });
   }), _defineProperty(_methods, "validateAlumno", function validateAlumno() {
     var errors = [];
@@ -2435,7 +2447,7 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
 
     return errors;
   }), _defineProperty(_methods, "storeAlumno", function storeAlumno() {
-    var _this4 = this;
+    var _this6 = this;
     var errors = this.validateAlumno();
     if (errors.length > 0) {
       alertModal({
@@ -2448,22 +2460,22 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
     var alumnoData = jsonToFormData(this.alumno);
     axios.post(route('matricula.storeAlumno'), alumnoData).then(function (response) {
       var data = response.data;
-      _this4.alumno.idcliente = data.idcliente;
-      _this4.stepCurrent = 2;
+      _this6.alumno.idcliente = data.idcliente;
+      _this6.stepCurrent = 2;
       scrollTo('#step-2', 50, 0);
     });
   }), _defineProperty(_methods, "cancelarStoreAlumno", function cancelarStoreAlumno() {
-    var _this5 = this;
+    var _this7 = this;
     if (this.matricula_id) {
       this.getMatricula(this.matricula_id).then(function (_) {
-        _this5.stepCurrent = 1;
+        _this7.stepCurrent = 1;
         scrollTo('#step-1', 50, 0);
       });
       return;
     }
     if (this.alumno_id) {
       this.getAlumno(this.alumno_id).then(function (_) {
-        _this5.stepCurrent = 1;
+        _this7.stepCurrent = 1;
         scrollTo('#step-1', 50, 0);
       });
       return;
@@ -2490,33 +2502,33 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
       nota: null
     };
   }), _defineProperty(_methods, "getNiveles", function getNiveles() {
-    var _this6 = this;
+    var _this8 = this;
     var nivelID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
     return axios(route('matricula.resources.niveles', this.matricula.idprograma)).then(function (response) {
       var data = response.data;
-      _this6.resources.niveles = data.sort(function (a, b) {
+      _this8.resources.niveles = data.sort(function (a, b) {
         return a.posicion - b.posicion;
       });
-      _this6.matricula.idnivel = nivelID;
+      _this8.matricula.idnivel = nivelID;
     });
   }), _defineProperty(_methods, "getCarriles", function getCarriles() {
-    var _this7 = this;
+    var _this9 = this;
     var carrilID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
     return axios(route('matricula.resources.carriles', this.matricula.idnivel)).then(function (response) {
       var data = response.data;
-      _this7.resources.carriles = data;
-      _this7.matricula.idcarril = carrilID;
+      _this9.resources.carriles = data;
+      _this9.matricula.idcarril = carrilID;
     });
   }), _defineProperty(_methods, "getFrecuencias", function getFrecuencias() {
-    var _this8 = this;
+    var _this10 = this;
     var frecuenciaID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
     return axios(route('matricula.resources.frecuencias', this.matricula.idprograma)).then(function (response) {
       var data = response.data;
-      _this8.resources.frecuencias = data;
-      _this8.matricula.idfrecuencia = frecuenciaID;
+      _this10.resources.frecuencias = data;
+      _this10.matricula.idfrecuencia = frecuenciaID;
     });
   }), _defineProperty(_methods, "getCountMatriculados", function getCountMatriculados() {
-    var _this9 = this;
+    var _this11 = this;
     var _this$matricula = this.matricula,
       idtemporada = _this$matricula.idtemporada,
       idprograma = _this$matricula.idprograma,
@@ -2536,11 +2548,11 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
       }
     }).then(function (response) {
       var data = response.data;
-      _this9.sendMatricualCount = false;
-      _this9.capacidadMaxima = data.capacidad_maxima;
-      _this9.cantidadMatriculados = data.cantidad_matriculados;
+      _this11.sendMatricualCount = false;
+      _this11.capacidadMaxima = data.capacidad_maxima;
+      _this11.cantidadMatriculados = data.cantidad_matriculados;
     })["catch"](function (error) {
-      _this9.sendMatricualCount = false;
+      _this11.sendMatricualCount = false;
       if (error.response === undefined) return console.error(error);
       var response = error.response;
       var data = response.data;
@@ -2610,7 +2622,7 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
     return errors;
   }), _defineProperty(_methods, "saveMatricula", function saveMatricula() {
     var _tipoDocumentoIdentid,
-      _this10 = this,
+      _this12 = this,
       _departamentos$find,
       _provincias$find,
       _distritos$find;
@@ -2658,36 +2670,36 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
       };
     });
     this.temp.alumno.tipoDocumentoIdentidad = (_tipoDocumentoIdentid = tipoDocumentoIdentidad.find(function (ele) {
-      return ele.idtipo_documento_identidad === _this10.alumno.idtipo_documento_identidad;
+      return ele.idtipo_documento_identidad === _this12.alumno.idtipo_documento_identidad;
     })) !== null && _tipoDocumentoIdentid !== void 0 ? _tipoDocumentoIdentid : {
       nombre: ''
     };
     this.temp.alumno.departamento = (_departamentos$find = departamentos.find(function (ele) {
-      return ele.iddepartamento === _this10.alumno.iddepartamento;
+      return ele.iddepartamento === _this12.alumno.iddepartamento;
     })) !== null && _departamentos$find !== void 0 ? _departamentos$find : {
       nombre: ''
     };
     this.temp.alumno.provincia = (_provincias$find = provincias.find(function (ele) {
-      return ele.idprovincia === _this10.alumno.idprovincia;
+      return ele.idprovincia === _this12.alumno.idprovincia;
     })) !== null && _provincias$find !== void 0 ? _provincias$find : {
       nombre: ''
     };
     this.temp.alumno.distrito = (_distritos$find = distritos.find(function (ele) {
-      return ele.iddistrito === _this10.alumno.iddistrito;
+      return ele.iddistrito === _this12.alumno.iddistrito;
     })) !== null && _distritos$find !== void 0 ? _distritos$find : {
       nombre: ''
     };
     this.temp.temporada = temporadas.find(function (ele) {
-      return ele.idtemporada === _this10.matricula.idtemporada;
+      return ele.idtemporada === _this12.matricula.idtemporada;
     });
     this.temp.programa = programas.find(function (ele) {
-      return ele.idprograma === _this10.matricula.idprograma;
+      return ele.idprograma === _this12.matricula.idprograma;
     });
     this.temp.nivel = niveles.find(function (ele) {
-      return ele.idnivel === _this10.matricula.idnivel;
+      return ele.idnivel === _this12.matricula.idnivel;
     });
     this.temp.carril = carriles.find(function (ele) {
-      return ele.idcarril === _this10.matricula.idcarril;
+      return ele.idcarril === _this12.matricula.idcarril;
     });
     this.temp.frecuencias = frecuenciasFind;
     this.temp.cantidadClases = cantidadClasesFind;
@@ -2697,31 +2709,31 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
     this.stepCurrent = 3;
     scrollTo('#step-3', 50, 0);
   }), _defineProperty(_methods, "cancelarSaveMatricula", function cancelarSaveMatricula() {
-    var _this11 = this;
+    var _this13 = this;
     if (this.matricula_id) {
       axios(route('matricula.resources.matricula', this.matricula_id)).then(function (response) {
         var data = response.data;
         var resources = data.resources,
           matricula = data.matricula;
-        _this11.resources.niveles = resources.niveles;
-        _this11.resources.carriles = resources.carriles;
-        _this11.resources.frecuencias = resources.frecuencias;
+        _this13.resources.niveles = resources.niveles;
+        _this13.resources.carriles = resources.carriles;
+        _this13.resources.frecuencias = resources.frecuencias;
         var horarioFind = resources.horarios.find(function (ele) {
           return ele.idhorario === matricula.detalle[0].idhorario;
         });
-        _this11.matricula.idmatricula = matricula.idmatricula;
-        _this11.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
-        _this11.matricula.idconcepto = matricula.idconcepto;
-        _this11.matricula.idempleado = matricula.idempleado;
-        _this11.matricula.idsucursal = matricula.idsucursal;
-        _this11.matricula.idtemporada = matricula.idtemporada;
-        _this11.matricula.idprograma = matricula.idprograma;
-        _this11.matricula.idnivel = matricula.idnivel;
-        _this11.matricula.idcarril = matricula.idcarril;
-        _this11.matricula.idfrecuencia = matricula.idfrecuencia;
-        _this11.matricula.idhorario = matricula.detalle[0].idhorario;
-        _this11.matricula.idcantidad_clases = matricula.idcantidad_clases;
-        _this11.matriculaHorarioDia = matricula.detalle.map(function (ele) {
+        _this13.matricula.idmatricula = matricula.idmatricula;
+        _this13.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
+        _this13.matricula.idconcepto = matricula.idconcepto;
+        _this13.matricula.idempleado = matricula.idempleado;
+        _this13.matricula.idsucursal = matricula.idsucursal;
+        _this13.matricula.idtemporada = matricula.idtemporada;
+        _this13.matricula.idprograma = matricula.idprograma;
+        _this13.matricula.idnivel = matricula.idnivel;
+        _this13.matricula.idcarril = matricula.idcarril;
+        _this13.matricula.idfrecuencia = matricula.idfrecuencia;
+        _this13.matricula.idhorario = matricula.detalle[0].idhorario;
+        _this13.matricula.idcantidad_clases = matricula.idcantidad_clases;
+        _this13.matriculaHorarioDia = matricula.detalle.map(function (ele) {
           return {
             fecha: ele.fecha,
             dia_name: ele.dia_nombre,
@@ -2729,9 +2741,9 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
             horario_nombre: horarioFind.nombre
           };
         });
-        _this11.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
-        _this11.getCountMatriculados();
-        _this11.stepCurrent = 2;
+        _this13.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
+        _this13.getCountMatriculados();
+        _this13.stepCurrent = 2;
         scrollTo('#step-2', 50, 0);
       });
       return;
@@ -2763,7 +2775,7 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
     this.resources.carriles = [];
     this.resources.frecuencias = [];
   }), _defineProperty(_methods, "storeMatriculaHorario", function storeMatriculaHorario() {
-    var _this12 = this;
+    var _this14 = this;
     var matricula = this.matricula,
       alumno = this.alumno,
       matriculaHorarioDia = this.matriculaHorarioDia,
@@ -2780,8 +2792,8 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
     }
     axios.post(URL_ACTION, matriculaData).then(function (response) {
       var data = response.data;
-      _this12.codigoMatricula = data.codigo;
-      _this12.stepCurrent = 4;
+      _this14.codigoMatricula = data.codigo;
+      _this14.stepCurrent = 4;
       scrollTo('#step-4', 50, 0);
     });
   }), _defineProperty(_methods, "cancelarStoreMatriculaHorario", function cancelarStoreMatriculaHorario() {
@@ -2789,11 +2801,11 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
     scrollTo('#step-2', 50, 0);
   }), _methods),
   mounted: function mounted() {
-    var _this13 = this;
+    var _this15 = this;
     this.getResources();
     if (this.alumno_id) {
       this.getAlumno(this.alumno_id).then(function () {
-        _this13.stepCurrent = 2;
+        _this15.stepCurrent = 2;
       });
     }
     if (this.matricula_id) {
@@ -2868,14 +2880,14 @@ __webpack_require__.r(__webpack_exports__);
     },
     getProvincias: function getProvincias() {
       var _this = this;
-      return axios.get(route('matricula.provincias', [this.alumno.iddepartamento])).then(function (response) {
+      return axios.get(route('matricula.resources.provincias', [this.alumno.iddepartamento])).then(function (response) {
         var data = response.data;
         _this.resources.provincias = data;
       })["catch"](this["catch"]);
     },
     getDistritos: function getDistritos() {
       var _this2 = this;
-      return axios.get(route('matricula.distritos', [this.alumno.idprovincia])).then(function (response) {
+      return axios.get(route('matricula.resources.distritos', [this.alumno.idprovincia])).then(function (response) {
         var data = response.data;
         _this2.resources.distritos = data;
       })["catch"](this["catch"]);

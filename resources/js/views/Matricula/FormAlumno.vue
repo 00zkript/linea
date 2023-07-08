@@ -163,14 +163,14 @@ export default {
 
         },
         getProvincias() {
-            return axios.get(route('matricula.provincias',[ this.alumno.iddepartamento ]))
+            return axios.get(route('matricula.resources.provincias',[ this.alumno.iddepartamento ]))
             .then( response => {
                 const data = response.data;
                 this.resources.provincias = data;
             }).catch(this.catch);
         },
         getDistritos() {
-            return axios.get(route('matricula.distritos',[ this.alumno.idprovincia ]))
+            return axios.get(route('matricula.resources.distritos',[ this.alumno.idprovincia ]))
             .then( response => {
                 const data = response.data;
                 this.resources.distritos = data;

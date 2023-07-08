@@ -27,6 +27,7 @@
 
 </head>
 <body>
+@include('panel.template.alertModal')
 
 <div class="container-fluid login-container">
     <div class="row justify-content-around" >

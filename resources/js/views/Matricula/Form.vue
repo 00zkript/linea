@@ -416,6 +416,20 @@ export default {
                 const data = response.data;
             })
         },
+          getProvincias() {
+            return axios.get(route('matricula.resources.provincias',[ this.alumno.iddepartamento ]))
+            .then( response => {
+                const data = response.data;
+                this.resources.provincias = data;
+            }).catch(this.catch);
+        },
+        getDistritos() {
+            return axios.get(route('matricula.resources.distritos',[ this.alumno.idprovincia ]))
+            .then( response => {
+                const data = response.data;
+                this.resources.distritos = data;
+            }).catch(this.catch);
+        },
         getAlumno(clienteID) {
             return axios(route('matricula.resources.alumno',clienteID))
                 .then( (response) => {
