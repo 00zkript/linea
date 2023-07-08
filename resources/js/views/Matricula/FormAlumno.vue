@@ -144,19 +144,37 @@ export default {
     },
     methods: {
         soloNumeros: soloNumeros,
+        catch(error) {
+            if ( error.response === undefined) return console.error(error);
+
+            const response = error.response;
+            const data = response.data;
+
+            if (response.status == 422){
+                alertModal({ type:'error', content: listErrors(data) });
+            }
+
+            if (response.status == 400){
+                alertModal({ type:'error', content: data.mensaje });
+            }
+
+            alertModal({ type:'error', content: 'Error del servidor, contácte con soporte.' });
+
+
+        },
         getProvincias() {
             return axios.get(route('matricula.provincias',[ this.alumno.iddepartamento ]))
             .then( response => {
                 const data = response.data;
                 this.resources.provincias = data;
-            })
+            }).catch(this.catch);
         },
         getDistritos() {
             return axios.get(route('matricula.distritos',[ this.alumno.idprovincia ]))
             .then( response => {
                 const data = response.data;
                 this.resources.distritos = data;
-            })
+            }).catch(this.catch);
         },
         changeAlumnoTipoDocumentoIdentidad() {
             const tipoDocumento = this.resources.tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad === this.alumno.idtipo_documento_identidad );

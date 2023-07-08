@@ -2234,7 +2234,27 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
   methods: (_methods = {
     soloNumeros: soloNumeros,
     number_format: number_format
-  }, _defineProperty(_methods, "number_format", number_format), _defineProperty(_methods, "disabledDatesRange", function disabledDatesRange(date) {
+  }, _defineProperty(_methods, "number_format", number_format), _defineProperty(_methods, "catch", function _catch(error) {
+    if (error.response === undefined) return console.error(error);
+    var response = error.response;
+    var data = response.data;
+    if (response.status == 422) {
+      alertModal({
+        type: 'error',
+        content: listErrors(data)
+      });
+    }
+    if (response.status == 400) {
+      alertModal({
+        type: 'error',
+        content: data.mensaje
+      });
+    }
+    alertModal({
+      type: 'error',
+      content: 'Error del servidor, contácte con soporte.'
+    });
+  }), _defineProperty(_methods, "disabledDatesRange", function disabledDatesRange(date) {
     var currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0); // Establecer las horas, minutos, segundos y milisegundos a cero para comparación precisa
 
@@ -2543,7 +2563,8 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
     return fechasDeseadas;
   }), _defineProperty(_methods, "validateMatricula", function validateMatricula() {
     var errors = [];
-    var matricula = this.matricula;
+    var matricula = this.matricula,
+      productosAdicionales = this.productosAdicionales;
     if (!matricula.fecha || matricula.fecha.length !== 2) {
       errors.push('Por favor, ingrese un rango de fechas válido para la matrícula.');
     } else {
@@ -2577,6 +2598,14 @@ moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
     }
     if (!matricula.idcantidad_clases) {
       errors.push('Por favor, seleccione una cantidad de sesiones válida.');
+    }
+    if (productosAdicionales.length > 0) {
+      var excedeStock = productosAdicionales.some(function (ele) {
+        return ele.cantidad > ele.stock;
+      });
+      if (excedeStock) {
+        errors.push('Uno de los productos agregados excede su stock, verifique antes de continuar.');
+      }
     }
     return errors;
   }), _defineProperty(_methods, "saveMatricula", function saveMatricula() {
@@ -2816,19 +2845,40 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     soloNumeros: soloNumeros,
+    "catch": function _catch(error) {
+      if (error.response === undefined) return console.error(error);
+      var response = error.response;
+      var data = response.data;
+      if (response.status == 422) {
+        alertModal({
+          type: 'error',
+          content: listErrors(data)
+        });
+      }
+      if (response.status == 400) {
+        alertModal({
+          type: 'error',
+          content: data.mensaje
+        });
+      }
+      alertModal({
+        type: 'error',
+        content: 'Error del servidor, contácte con soporte.'
+      });
+    },
     getProvincias: function getProvincias() {
       var _this = this;
       return axios.get(route('matricula.provincias', [this.alumno.iddepartamento])).then(function (response) {
         var data = response.data;
         _this.resources.provincias = data;
-      });
+      })["catch"](this["catch"]);
     },
     getDistritos: function getDistritos() {
       var _this2 = this;
       return axios.get(route('matricula.distritos', [this.alumno.idprovincia])).then(function (response) {
         var data = response.data;
         _this2.resources.distritos = data;
-      });
+      })["catch"](this["catch"]);
     },
     changeAlumnoTipoDocumentoIdentidad: function changeAlumnoTipoDocumentoIdentidad() {
       var _this3 = this;
@@ -2924,7 +2974,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         var data = response.data;
         _this.resources.productos = data;
-      });
+      })["catch"](this["catch"]);
     },
     getMontoSubtotalModalProducto: function getMontoSubtotalModalProducto(index) {
       var _producto$cantidad, _producto$precio;
@@ -3172,9 +3222,9 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         idmoneda: 1,
         fecha_pago: '',
         idtipo_pago: '',
-        monto_total: '',
         monto_efectivo: '0.00',
         monto_transferido: '0.00',
+        monto_total: '',
         monto_faltante: '0.00',
         monto_efectivo_devuelto: '0.00'
       },
@@ -3198,34 +3248,63 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
     detalleIsEmpty: function detalleIsEmpty() {
       return this.detalle.length === 0;
     },
+    detalleTotal: function detalleTotal() {
+      var sum = this.detalle.reduce(function (acc, cur) {
+        return parseFloat(acc) + parseFloat(cur.subtotal);
+      }, 0);
+      return number_format(sum, 2, '.', '');
+    },
     detalleMontoTotalSinIGV: function detalleMontoTotalSinIGV() {
-      return number_format(this.headVenta.monto_total * 0.82, 2, '.', '');
+      return number_format(this.detalleTotal * 0.82, 2, '.', '');
     },
     detalleMontoTotalIGV: function detalleMontoTotalIGV() {
-      return number_format(this.headVenta.monto_total * 0.18, 2, '.', '');
+      return number_format(this.detalleTotal * 0.18, 2, '.', '');
+    },
+    detalleMontoDevelto: function detalleMontoDevelto() {
+      var montoTotal = parseFloat(this.detalleTotal);
+      var montoPagado = parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
+      var vuelto = montoPagado - montoTotal;
+      if (vuelto < 0) {
+        return '0.00';
+      }
+      return number_format(vuelto, 2, '.', '');
+    },
+    detalleMontoFaltante: function detalleMontoFaltante() {
+      var montoTotal = parseFloat(this.detalleTotal);
+      var montoPagado = parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
+      var deuda = montoPagado - montoTotal;
+      if (deuda < 0) {
+        return number_format(Math.abs(deuda), 2, '.', '');
+      }
+      return '0.00';
     }
   },
-  watch: {
-    detalle: function detalle(newValue) {
-      this.getMontoTotal();
-    },
-    'headVenta.monto_total': function headVentaMonto_total(newValue) {
-      this.getMontoDevelto();
-      this.getMontoFaltante();
-    },
-    'headVenta.monto_efectivo': function headVentaMonto_efectivo(newValue) {
-      this.getMontoDevelto();
-      this.getMontoFaltante();
-    },
-    'headVenta.monto_transferido': function headVentaMonto_transferido(newValue) {
-      this.getMontoDevelto();
-      this.getMontoFaltante();
-    }
-  },
+  watch: {},
   methods: {
     number_format: number_format,
     soloNumeros: soloNumeros,
     soloNumerosPrice: soloNumerosPrice,
+    "catch": function _catch(error) {
+      if (error.response === undefined) return console.error(error);
+      var response = error.response;
+      var data = response.data;
+      if (response.status == 422) {
+        alertModal({
+          type: 'error',
+          content: listErrors(data)
+        });
+      }
+      if (response.status == 400) {
+        alertModal({
+          type: 'error',
+          content: data.mensaje
+        });
+      }
+      alertModal({
+        type: 'error',
+        content: 'Error del servidor, contácte con soporte.'
+      });
+    },
     init: function init() {
       this.getResources();
       this.getProductos(1);
@@ -3243,7 +3322,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         var data = response.data;
         _this.resources.tipoFacturacion = data.tipo_facturacion;
         _this.resources.tipoPago = data.tipo_pago;
-      });
+      })["catch"](this["catch"]);
     },
     getSerie: function getSerie() {
       var _this2 = this;
@@ -3252,7 +3331,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         var data = response.data;
         _this2.headVenta.serie = data.serie;
         _this2.headVenta.numero = data.numero;
-      });
+      })["catch"](this["catch"]);
     },
     openModalProductos: function openModalProductos() {
       $('#addProductoModalCenter').modal('show');
@@ -3266,14 +3345,14 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       }).then(function (response) {
         var data = response.data;
         _this3.resources.productos = data;
-      });
+      })["catch"](this["catch"]);
     },
     getMontoSubtotalModalProducto: function getMontoSubtotalModalProducto(index) {
       var _producto$cantidad, _producto$precio;
       var producto = this.resources.productos.data[index];
       var cantidad = (_producto$cantidad = producto.cantidad) !== null && _producto$cantidad !== void 0 ? _producto$cantidad : 0;
       var precio = (_producto$precio = producto.precio) !== null && _producto$precio !== void 0 ? _producto$precio : 0;
-      this.resources.productos.data[index].monto_total = number_format(cantidad * precio, 2, '.', '');
+      this.resources.productos.data[index].subtotal = number_format(cantidad * precio, 2, '.', '');
     },
     addProductoInDetalle: function addProductoInDetalle(index) {
       var _this4 = this;
@@ -3293,7 +3372,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
           cantidad: _newCantidad,
           stock: stock,
           precio: precio,
-          monto_total: producto.monto_total
+          subtotal: producto.subtotal
         });
         $('#addProductoModalCenter').modal('hide');
         return;
@@ -3302,7 +3381,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       var cantidadSum = parseInt(productoAdded.cantidad) + parseInt(producto.cantidad);
       var newCantidad = cantidadSum <= stock ? cantidadSum : stock;
       this.detalle[productoAddedIndex].cantidad = newCantidad;
-      this.detalle[productoAddedIndex].monto_total = newCantidad * precio;
+      this.detalle[productoAddedIndex].subtotal = newCantidad * precio;
       $('#addProductoModalCenter').modal('hide');
     },
     openModalMatricula: function openModalMatricula() {
@@ -3320,7 +3399,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       }).then(function (response) {
         var data = response.data;
         _this5.resources.matriculas = data;
-      });
+      })["catch"](this["catch"]);
     },
     addMatriculaInDetalle: function addMatriculaInDetalle(index) {
       var _this6 = this;
@@ -3343,7 +3422,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         cantidad: 1,
         stock: 1,
         precio: matricula.monto_total,
-        monto_total: matricula.monto_total
+        subtotal: matricula.monto_total
       });
       $('#addMatriculaModalCenter').modal('hide');
     },
@@ -3352,33 +3431,6 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       this.detalle = this.detalle.filter(function (ele) {
         return ele.idtipo_articulo !== _this7.TIPO_ARTICULO_ID.MATRICULA;
       });
-    },
-    getMontoTotal: function getMontoTotal() {
-      var sum = this.detalle.reduce(function (acc, cur) {
-        return parseFloat(acc) + parseFloat(cur.monto_total);
-      }, 0);
-      var montoTotal = number_format(sum, 2, '.', '');
-      this.headVenta.monto_total = montoTotal;
-    },
-    getMontoDevelto: function getMontoDevelto() {
-      var montoTotal = parseFloat(this.headVenta.monto_total);
-      var montoPagado = parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
-      var vuelto = montoPagado - montoTotal;
-      if (vuelto < 0) {
-        this.headVenta.monto_efectivo_devuelto = number_format('0.00', 2, '.', '');
-        return;
-      }
-      this.headVenta.monto_efectivo_devuelto = number_format(vuelto, 2, '.', '');
-    },
-    getMontoFaltante: function getMontoFaltante() {
-      var montoTotal = parseFloat(this.headVenta.monto_total);
-      var montoPagado = parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
-      var deuda = montoPagado - montoTotal;
-      if (deuda < 0) {
-        this.headVenta.monto_faltante = number_format(Math.abs(deuda), 2, '.', '');
-        return;
-      }
-      this.headVenta.monto_faltante = number_format('0.00', 2, '.', '');
     },
     removeItemDetalle: function removeItemDetalle(index) {
       this.detalle = this.detalle.filter(function (ele, idx) {
@@ -3389,7 +3441,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       var detalleItem = this.detalle[index];
       var cantidad = detalleItem.cantidad,
         precio = detalleItem.precio;
-      this.detalle[index].monto_total = number_format((cantidad !== null && cantidad !== void 0 ? cantidad : 0) * (precio !== null && precio !== void 0 ? precio : 0), 2, '.', '');
+      this.detalle[index].subtotal = number_format((cantidad !== null && cantidad !== void 0 ? cantidad : 0) * (precio !== null && precio !== void 0 ? precio : 0), 2, '.', '');
     },
     resetData: function resetData() {
       Object.assign(this.$data, this.$options.data.call(this));
@@ -3450,6 +3502,14 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
           errors.push("Por favor, ingrese un precio válido para el detalle de venta");
         }
       }
+      if (detalle.length > 0) {
+        var excedeStock = detalle.some(function (ele) {
+          return ele.cantidad > ele.stock;
+        });
+        if (excedeStock) {
+          errors.push('Uno de los productos o servicios agregados excede su stock, verifique antes de continuar.');
+        }
+      }
       return errors;
     },
     aceptarVenta: function aceptarVenta() {
@@ -3468,6 +3528,9 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       var headVenta = this.headVenta,
         cliente = this.cliente,
         detalle = this.detalle;
+      headVenta.monto_total = this.detalleTotal;
+      headVenta.monto_efectivo_devuelto = this.detalleMontoDevelto;
+      headVenta.monto_faltante = this.detalleMontoFaltante;
       var form = _objectSpread(_objectSpread({}, headVenta), {}, {
         idcliente: cliente.idcliente,
         detalle: detalle
@@ -3481,27 +3544,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
           time: 3 * 1000
         });
         _this8.resetData();
-      })["catch"](function (error) {
-        if (error.response === undefined) return console.error(error);
-        var response = error.response;
-        var data = response.data;
-        if (response.status == 422) {
-          alertModal({
-            type: 'error',
-            content: listErrors(data)
-          });
-        }
-        if (response.status == 400) {
-          alertModal({
-            type: 'error',
-            content: data.mensaje
-          });
-        }
-        alertModal({
-          type: 'error',
-          content: 'Error del servidor, contácte con soporte.'
-        });
-      });
+      })["catch"](this["catch"]);
     }
   },
   mounted: function mounted() {
@@ -4996,7 +5039,7 @@ var render = function render() {
           return _vm.getMontoSubtotalDetalle(index);
         }]
       }
-    })]), _vm._v(" "), _c("td", [_c("div", {
+    })]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.stock))]), _vm._v(" "), _c("td", [_c("div", {
       staticClass: "input-group"
     }, [_vm._m(1, true), _vm._v(" "), _c("input", {
       directives: [{
@@ -5057,11 +5100,14 @@ var render = function render() {
     })])])]);
   }), 0), _vm._v(" "), _c("tfoot", [_c("tr", [_c("td", {
     attrs: {
-      colspan: "3"
+      colspan: "4"
     }
   }), _vm._v(" "), _vm._m(3), _vm._v(" "), _c("td", {
-    staticClass: "text-center"
-  }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.total))])]), _vm._v(" "), _c("td")])])])]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "text-right",
+    attrs: {
+      colspan: "2"
+    }
+  }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.total))])])])])])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "modal fade",
     attrs: {
       id: "addProductoModalCenter",
@@ -5248,6 +5294,8 @@ var staticRenderFns = [function () {
   }, [_vm._v("Productos adicionales")]), _vm._v(" "), _c("th", {
     staticClass: "text-center"
   }, [_vm._v("Cantidad")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Stock")]), _vm._v(" "), _c("th", {
     staticClass: "text-center"
   }, [_vm._v("Precio unitario (S/)")]), _vm._v(" "), _c("th", {
     staticClass: "text-center"
@@ -5914,8 +5962,8 @@ var render = function render() {
       directives: [{
         name: "model",
         rawName: "v-model",
-        value: producto.monto_total,
-        expression: "producto.monto_total"
+        value: producto.subtotal,
+        expression: "producto.subtotal"
       }],
       staticClass: "form-control",
       attrs: {
@@ -5924,12 +5972,12 @@ var render = function render() {
         readonly: ""
       },
       domProps: {
-        value: producto.monto_total
+        value: producto.subtotal
       },
       on: {
         input: function input($event) {
           if ($event.target.composing) return;
-          _vm.$set(producto, "monto_total", $event.target.value);
+          _vm.$set(producto, "subtotal", $event.target.value);
         }
       }
     })])])]);
@@ -6400,7 +6448,7 @@ var render = function render() {
   }, [_vm._m(11), _vm._v(" "), _c("thead", _vm._l(_vm.detalle, function (item, index) {
     return _c("tr", {
       key: index
-    }, [_c("td", [_vm._v(_vm._s(index + 1))]), _vm._v(" "), _c("td", [_c("input", {
+    }, [_c("td", [_vm._v("#" + _vm._s(index + 1))]), _vm._v(" "), _c("td", [_c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -6446,7 +6494,7 @@ var render = function render() {
           return _vm.getMontoSubtotalDetalle(index);
         }]
       }
-    })]), _vm._v(" "), _c("td", [_c("div", {
+    })]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.stock))]), _vm._v(" "), _c("td", [_c("div", {
       staticClass: "input-group"
     }, [_vm._m(12, true), _vm._v(" "), _c("input", {
       directives: [{
@@ -6479,8 +6527,8 @@ var render = function render() {
       directives: [{
         name: "model",
         rawName: "v-model",
-        value: item.monto_total,
-        expression: "item.monto_total"
+        value: item.subtotal,
+        expression: "item.subtotal"
       }],
       staticClass: "form-control",
       attrs: {
@@ -6488,12 +6536,12 @@ var render = function render() {
         readonly: ""
       },
       domProps: {
-        value: item.monto_total
+        value: item.subtotal
       },
       on: {
         input: function input($event) {
           if ($event.target.composing) return;
-          _vm.$set(item, "monto_total", $event.target.value);
+          _vm.$set(item, "subtotal", $event.target.value);
         }
       }
     })])]), _vm._v(" "), _c("td", [_c("button", {
@@ -6508,25 +6556,25 @@ var render = function render() {
     })])])]);
   }), 0), _vm._v(" "), _c("tfoot", [_c("tr", [_c("td", {
     attrs: {
-      colspan: "3"
+      colspan: "4"
     }
   }), _vm._v(" "), _vm._m(14), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.detalleMontoTotalSinIGV))])]), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
     attrs: {
-      colspan: "3"
+      colspan: "4"
     }
   }), _vm._v(" "), _vm._m(15), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.detalleMontoTotalIGV))])]), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
     attrs: {
-      colspan: "3"
+      colspan: "4"
     }
   }), _vm._v(" "), _vm._m(16), _vm._v(" "), _c("td", {
     staticClass: "text-center"
-  }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.headVenta.monto_total))])]), _vm._v(" "), _c("td")]), _vm._v(" "), _vm.headVenta.idtipo_pago == 1 || _vm.headVenta.idtipo_pago == 3 ? _c("tr", [_c("td", {
+  }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.detalleTotal))])]), _vm._v(" "), _c("td")]), _vm._v(" "), _vm.headVenta.idtipo_pago == 1 || _vm.headVenta.idtipo_pago == 3 ? _c("tr", [_c("td", {
     attrs: {
-      colspan: "3"
+      colspan: "4"
     }
   }), _vm._v(" "), _vm._m(17), _vm._v(" "), _c("td", {
     staticClass: "text-center"
@@ -6557,7 +6605,7 @@ var render = function render() {
     }
   })])]), _vm._v(" "), _c("td")]) : _vm._e(), _vm._v(" "), _vm.headVenta.idtipo_pago == 2 || _vm.headVenta.idtipo_pago == 3 ? _c("tr", [_c("td", {
     attrs: {
-      colspan: "3"
+      colspan: "4"
     }
   }), _vm._v(" "), _vm._m(19), _vm._v(" "), _c("td", {
     staticClass: "text-center"
@@ -6588,63 +6636,39 @@ var render = function render() {
     }
   })])]), _vm._v(" "), _c("td")]) : _vm._e(), _vm._v(" "), _vm.headVenta.idtipo_pago ? _c("tr", [_c("td", {
     attrs: {
-      colspan: "3"
+      colspan: "4"
     }
   }), _vm._v(" "), _vm._m(21), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("div", {
     staticClass: "input-group"
   }, [_vm._m(22), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.headVenta.monto_efectivo_devuelto,
-      expression: "headVenta.monto_efectivo_devuelto"
-    }],
     staticClass: "form-control",
     attrs: {
       type: "text",
-      placeholder: "Monto efectivo",
+      placeholder: "Monto Devuelto",
       readonly: ""
     },
     domProps: {
-      value: _vm.headVenta.monto_efectivo_devuelto
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.headVenta, "monto_efectivo_devuelto", $event.target.value);
-      }
+      value: _vm.detalleMontoDevelto
     }
   })])]), _vm._v(" "), _c("td")]) : _vm._e(), _vm._v(" "), _vm.headVenta.idtipo_pago ? _c("tr", [_c("td", {
     attrs: {
-      colspan: "3"
+      colspan: "4"
     }
   }), _vm._v(" "), _vm._m(23), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("div", {
     staticClass: "input-group"
   }, [_vm._m(24), _vm._v(" "), _c("input", {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: _vm.headVenta.monto_faltante,
-      expression: "headVenta.monto_faltante"
-    }],
     staticClass: "form-control",
     attrs: {
       type: "text",
-      placeholder: "Monto efectivo",
+      placeholder: "Monto faltante",
       readonly: ""
     },
     domProps: {
-      value: _vm.headVenta.monto_faltante
-    },
-    on: {
-      input: function input($event) {
-        if ($event.target.composing) return;
-        _vm.$set(_vm.headVenta, "monto_faltante", $event.target.value);
-      }
+      value: _vm.detalleMontoFaltante
     }
   })])]), _vm._v(" "), _c("td")]) : _vm._e()])])]) : _vm._e(), _vm._v(" "), _c("div", {
     staticClass: "col-12 mt-5 d-flex justify-content-center"
@@ -6760,7 +6784,7 @@ var staticRenderFns = [function () {
     staticClass: "text-center"
   }, [_vm._v("Precio Unitario")]), _vm._v(" "), _c("th", {
     staticClass: "text-center"
-  }, [_vm._v("Precio total")])])]);
+  }, [_vm._v("Subtotal")])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -6821,7 +6845,7 @@ var staticRenderFns = [function () {
     }
   }, [_c("i", {
     staticClass: "fa fa-plus"
-  })])]), _vm._v(" "), _c("th", [_vm._v("Código")]), _vm._v(" "), _c("th", [_vm._v("Descripción")]), _vm._v(" "), _c("th", [_vm._v("Lapso")]), _vm._v(" "), _c("th", [_vm._v("Costo")])])]);
+  })])]), _vm._v(" "), _c("th", [_vm._v("Código")]), _vm._v(" "), _c("th", [_vm._v("Descripción")]), _vm._v(" "), _c("th", [_vm._v("periodo")]), _vm._v(" "), _c("th", [_vm._v("Subtotal")])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -6853,9 +6877,11 @@ var staticRenderFns = [function () {
     staticClass: "text-center"
   }, [_vm._v("Cantidad")]), _vm._v(" "), _c("th", {
     staticClass: "text-center"
+  }, [_vm._v("Stock")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
   }, [_vm._v("Precio unitario (S/)")]), _vm._v(" "), _c("th", {
     staticClass: "text-center"
-  }, [_vm._v("Sub total (S/) ")]), _vm._v(" "), _c("th", {
+  }, [_vm._v("Subtotal (S/) ")]), _vm._v(" "), _c("th", {
     staticClass: "text-center"
   }, [_vm._v("Acciones ")])])]);
 }, function () {
@@ -6925,7 +6951,7 @@ var staticRenderFns = [function () {
     _c = _vm._self._c;
   return _c("td", {
     staticClass: "text-right"
-  }, [_c("b", [_vm._v("Monto vuelto")])]);
+  }, [_c("b", [_vm._v("Monto Devuelto")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;
@@ -6939,7 +6965,7 @@ var staticRenderFns = [function () {
     _c = _vm._self._c;
   return _c("td", {
     staticClass: "text-right"
-  }, [_c("b", [_vm._v("Monto deuda")])]);
+  }, [_c("b", [_vm._v("Monto faltante")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;

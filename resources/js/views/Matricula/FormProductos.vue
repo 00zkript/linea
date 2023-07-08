@@ -11,6 +11,7 @@
                         <th class="text-center">#</th>
                         <th class="text-center">Productos adicionales</th>
                         <th class="text-center">Cantidad</th>
+                        <th class="text-center">Stock</th>
                         <th class="text-center">Precio unitario (S/)</th>
                         <th class="text-center">Sub total (S/) </th>
                         <th class="text-center">Acciones </th>
@@ -21,6 +22,7 @@
                         <td>#{{ (index+1) }}</td>
                         <td><input type="text" class="form-control" v-model="item.nombre" ></td>
                         <td><input type="number" min="1" step="1" :max="item.stock" class="form-control" v-model="item.cantidad" @input="getMontoSubtotalDetalle(index)" ></td>
+                        <td>{{ item.stock }}</td>
                         <td>
                             <div class="input-group">
                                 <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
@@ -38,10 +40,9 @@
                 </thead>
                 <tfoot>
                     <tr>
-                        <td colspan="3"></td>
+                        <td colspan="4"></td>
                         <td class="text-right"> <b>Total</b> </td>
-                        <td class="text-center"> <b>S/. {{ total }}</b> </td>
-                        <td></td>
+                        <td colspan="2" class="text-right"> <b>S/. {{ total }}</b> </td>
                     </tr>
                 </tfoot>
             </table>
@@ -169,7 +170,7 @@ export default {
             .then( response => {
                 const data = response.data;
                 this.resources.productos = data;
-            })
+            }).catch(this.catch);
         },
         getMontoSubtotalModalProducto( index ) {
             const producto = this.resources.productos.data[index];

@@ -119,7 +119,7 @@ class VentaController extends Controller
             $ventaDetalle->nombre          = $itemDetalle['nombre'];
             $ventaDetalle->cantidad        = $itemDetalle['cantidad'];
             $ventaDetalle->precio          = $itemDetalle['precio'];
-            $ventaDetalle->monto_total     = $itemDetalle['monto_total'];
+            $ventaDetalle->subtotal     = $itemDetalle['subtotal'];
             $ventaDetalle->save();
         }
 
@@ -199,7 +199,7 @@ class VentaController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $productos = Producto::query()
-            ->selectRaw('*, 1 as cantidad, precio as monto_total')
+            ->selectRaw('*, 1 as cantidad, precio as subtotal')
             ->where('estado',1)
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query->where(DB::raw('LPAD(idproducto,7,0)'),'LIKE','%'.$txtBuscar.'%')

@@ -356,6 +356,24 @@ export default {
     methods: {
         soloNumeros: soloNumeros,
         number_format, number_format,
+        catch(error) {
+            if ( error.response === undefined) return console.error(error);
+
+            const response = error.response;
+            const data = response.data;
+
+            if (response.status == 422){
+                alertModal({ type:'error', content: listErrors(data) });
+            }
+
+            if (response.status == 400){
+                alertModal({ type:'error', content: data.mensaje });
+            }
+
+            alertModal({ type:'error', content: 'Error del servidor, contácte con soporte.' });
+
+
+        },
         disabledDatesRange(date) {
             const currentDate = new Date();
             currentDate.setHours(0, 0, 0, 0); // Establecer las horas, minutos, segundos y milisegundos a cero para comparación precisa
@@ -719,7 +737,7 @@ export default {
         validateMatricula() {
             const errors = [];
 
-            const { matricula } = this;
+            const { matricula, productosAdicionales } = this;
 
             if (!matricula.fecha || matricula.fecha.length !== 2) {
                 errors.push('Por favor, ingrese un rango de fechas válido para la matrícula.');
@@ -762,6 +780,17 @@ export default {
 
             if (!matricula.idcantidad_clases) {
                 errors.push('Por favor, seleccione una cantidad de sesiones válida.');
+            }
+
+
+
+            if (productosAdicionales.length > 0) {
+                const excedeStock = productosAdicionales.some( ele => ele.cantidad > ele.stock);
+                if (excedeStock) {
+                    errors.push('Uno de los productos agregados excede su stock, verifique antes de continuar.')
+                }
+
+
             }
 
             return errors;
