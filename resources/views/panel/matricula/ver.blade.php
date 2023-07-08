@@ -65,6 +65,24 @@
                                 <tbody id="horarioShow">
                                 </tbody>
                             </table>
+
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5" class="text-center">Productos adicionales</th>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-center">#</th>
+                                        <th class="text-center">Producto</th>
+                                        <th class="text-center">Cantidad</th>
+                                        <th class="text-center">Precio</th>
+                                        <th class="text-center">Subtotal</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productosAdicionalesShow">
+                                </tbody>
+                            </table>
+
                         </div>
 
 

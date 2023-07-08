@@ -99,7 +99,25 @@ class MatriculaController extends Controller
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
         }
 
-        return response()->json($matricula);
+        $TIPO_ARTICULO_MATRICULA_ID = $this->TIPO_ARTICULO_MATRICULA_ID;
+        $TIPO_ARTICULO_PRODUCTO_ID = $this->TIPO_ARTICULO_PRODUCTO_ID;
+
+        $productosAdicionales =  CarritoDetalle::query()
+            ->selectRaw("
+                *,
+                ( select producto.stock from producto where producto.idproducto = carrito_detalle.idarticulo and carrito_detalle.idtipo_articulo = $TIPO_ARTICULO_PRODUCTO_ID limit 1 ) as stock
+            ")
+            ->where('idcarrito',$matricula->idcarrito)
+            ->where(function ($query) use($matricula, $TIPO_ARTICULO_MATRICULA_ID) {
+                return $query->where('idarticulo', '!=', $matricula->idcarrito)
+                    ->where('idtipo_articulo', '!=', $TIPO_ARTICULO_MATRICULA_ID);
+            })
+            ->get();
+
+        return response()->json([
+            "matricula" => $matricula,
+            "productos_adicionales" => $productosAdicionales,
+        ]);
     }
 
     public function habilitar(Request $request,$idmatricula)

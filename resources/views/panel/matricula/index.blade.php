@@ -151,28 +151,31 @@
                 axios.get(URL_VER.replace(':id',idmatricula))
                 .then(response => {
                     const data = response.data;
+                    const { matricula, productos_adicionales } = data;
 
                     stop();
 
 
-                    $('#idmatriculaShow').html( data.idmatricula.toString().padStart(7,0) );
-                    $('#sucursalShow').html(data.sucursal.nombre+(data.sucursal.direccion ? ' - '+data.sucursal.direccion : ''));
-                    $('#clienteShow').html(data.cliente_nombres+' '+data.cliente_apellidos);
-                    $('#clienteIdtipoDocumentoIdentidadShow').html( data.cliente_tipo_documento_identidad.nombre +' - '+ data.cliente_numero_documento_identidad);
-                    $('#empleadoShow').html(data.empleado_nombres+' '+(data.empleado_apellidos??''));
-                    $('#empleadoIdtipoDocumentoIdentidadShow').html( data.empleado_tipo_documento_identidad.nombre +(data.empleado_numero_documento_identidad ? ' - '+data.empleado_numero_documento_identidad : ''));
-                    $('#periodoShow').html(data.fecha_inicio+' - '+data.fecha_fin);
-                    $('#conceptoShow').html(data.concepto.nombre);
-                    $('#temporadaShow').html(data.temporada.nombre);
-                    $('#programaShow').html(data.programa.nombre);
-                    $('#nivelShow').html(data.nivel.nombre);
-                    $('#carrilShow').html(data.carril.nombre);
-                    $('#frecuenciaShow').html(data.frecuencia.nombre);
-                    $('#cantidadClasesShow').html(data.cantidad_clases);
-                    $('#montoTotalShow').html('S/. '+data.monto_total);
+                    $('#idmatriculaShow').html( matricula.idmatricula.toString().padStart(7,0) );
+                    $('#sucursalShow').html(matricula.sucursal.nombre+(matricula.sucursal.direccion ? ' - '+matricula.sucursal.direccion : ''));
+                    $('#clienteShow').html(matricula.cliente_nombres+' '+matricula.cliente_apellidos);
+                    $('#clienteIdtipoDocumentoIdentidadShow').html( matricula.cliente_tipo_documento_identidad.nombre +' - '+ matricula.cliente_numero_documento_identidad);
+                    $('#empleadoShow').html(matricula.empleado_nombres+' '+(matricula.empleado_apellidos??''));
+                    $('#empleadoIdtipoDocumentoIdentidadShow').html( matricula.empleado_tipo_documento_identidad.nombre +(matricula.empleado_numero_documento_identidad ? ' - '+matricula.empleado_numero_documento_identidad : ''));
+                    $('#periodoShow').html(matricula.fecha_inicio+' - '+matricula.fecha_fin);
+                    $('#conceptoShow').html(matricula.concepto.nombre);
+                    $('#temporadaShow').html(matricula.temporada.nombre);
+                    $('#programaShow').html(matricula.programa.nombre);
+                    $('#nivelShow').html(matricula.nivel.nombre);
+                    $('#carrilShow').html(matricula.carril.nombre);
+                    $('#frecuenciaShow').html(matricula.frecuencia.nombre);
+                    $('#cantidadClasesShow').html(matricula.cantidad_clases);
+                    $('#montoTotalShow').html('S/. '+matricula.monto_total);
 
+
+                    $('#horarioShow').empty();
                     let detalleHtml = '';
-                    data.detalle.forEach( detalle => {
+                    matricula.detalle.forEach( detalle => {
                         detalleHtml +=  `
                             <tr>
                                 <td class="text-center" >${ detalle.dia_nombre }</td>
@@ -184,15 +187,32 @@
                     $('#horarioShow').html(detalleHtml);
 
 
+                    $('#productosAdicionalesShow').empty();
+                    let productosadicionalesHtml = '';
+                    productos_adicionales.forEach( (producto,idx) => {
+                        productosadicionalesHtml +=  `
+                            <tr>
+                                <td class="text-center">#${ (idx+1) }</td>
+                                <td class="text-left">${ producto.nombre }</td>
+                                <td class="text-center">${ producto.cantidad }</td>
+                                <td class="text-right">S/. ${ number_format(producto.precio,2) }</td>
+                                <td class="text-right">S/. ${ number_format(producto.subtotal,2) }</td>
+                            </tr>
+                        `;
+                    });
+
+                    $('#productosAdicionalesShow').html(productosadicionalesHtml);
 
 
-                    if (data.finalizado_at){
+
+
+                    if (matricula.finalizado_at){
                         $("#finalizadoShow").html('<label class="badge badge-primary">Finalizado</label>');
                     }else{
                         $("#finalizadoShow").html('<label class="badge badge-secondary">Sin finalizar</label>');
                     }
 
-                    if (data.estado){
+                    if (matricula.estado){
                         $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');
                     }else{
                         $("#estadoShow").html('<label class="badge badge-danger">Inhabilitado</label>');
