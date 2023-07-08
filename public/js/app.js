@@ -2071,9 +2071,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_StepsContainerComponent_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/StepsContainerComponent.vue */ "./resources/js/components/StepsContainerComponent.vue");
 /* harmony import */ var _components_StepComponent_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/StepComponent.vue */ "./resources/js/components/StepComponent.vue");
 /* harmony import */ var _FormAlumno_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./FormAlumno.vue */ "./resources/js/views/Matricula/FormAlumno.vue");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _FormProductos_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./FormProductos.vue */ "./resources/js/views/Matricula/FormProductos.vue");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_4__);
 function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+var _methods;
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
@@ -2089,12 +2091,14 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-moment__WEBPACK_IMPORTED_MODULE_3___default.a.locale('es-mx');
+
+moment__WEBPACK_IMPORTED_MODULE_4___default.a.locale('es-mx');
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
     StepsContainer: _components_StepsContainerComponent_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
     Step: _components_StepComponent_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    FormAlumno: _FormAlumno_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    FormAlumno: _FormAlumno_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    FormProductos: _FormProductos_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   props: {
     alumno_id: {
@@ -2179,6 +2183,7 @@ moment__WEBPACK_IMPORTED_MODULE_3___default.a.locale('es-mx');
       },
       matricula: {
         idmatricula: '',
+        idcarrito: null,
         fecha: [],
         idconcepto: 1,
         idempleado: '',
@@ -2192,10 +2197,12 @@ moment__WEBPACK_IMPORTED_MODULE_3___default.a.locale('es-mx');
         idcantidad_clases: ''
       },
       matriculaHorarioDia: [],
+      productosAdicionales: [],
       codigoMatricula: null,
       capacidadMaxima: null,
       cantidadMatriculados: null,
-      cantidadClasesMaxima: null
+      cantidadClasesMaxima: null,
+      sendMatricualCount: false
     };
   },
   watch: {
@@ -2212,129 +2219,480 @@ moment__WEBPACK_IMPORTED_MODULE_3___default.a.locale('es-mx');
       this.getCountMatriculados();
     }
   },
-  methods: {
+  computed: {
+    productosAdicionalesIsEmpty: function productosAdicionalesIsEmpty() {
+      var products = this.productosAdicionales;
+      return products.length === 0;
+    },
+    productosAdicionalesTotal: function productosAdicionalesTotal() {
+      var sum = this.productosAdicionales.reduce(function (acc, cur) {
+        return parseFloat(acc) + parseFloat(cur.subtotal);
+      }, 0);
+      return number_format(sum, 2, '.', '');
+    }
+  },
+  methods: (_methods = {
     soloNumeros: soloNumeros,
-    disabledDatesRange: function disabledDatesRange(date) {
-      var currentDate = new Date();
-      currentDate.setHours(0, 0, 0, 0); // Establecer las horas, minutos, segundos y milisegundos a cero para comparación precisa
+    number_format: number_format
+  }, _defineProperty(_methods, "number_format", number_format), _defineProperty(_methods, "disabledDatesRange", function disabledDatesRange(date) {
+    var currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0); // Establecer las horas, minutos, segundos y milisegundos a cero para comparación precisa
 
-      return date < currentDate;
-    },
-    formatDate: function formatDate(date) {
-      return moment__WEBPACK_IMPORTED_MODULE_3___default()(date).format('DD/MM/YYYY');
-    },
-    resetData: function resetData() {
-      Object.assign(this.$data, this.$options.data.call(this));
-      this.getResources();
-    },
-    getResources: function getResources() {
-      var _this = this;
-      axios(route('matricula.resources')).then(function (response) {
-        var data = response.data;
-        _this.resources.tipoDocumentoIdentidad = data.resources.tipoDocumentoIdentidad;
-        _this.resources.departamentos = data.resources.departamentos;
-        _this.resources.conceptos = data.resources.conceptos;
-        _this.resources.temporadas = data.resources.temporadas;
-        _this.resources.programas = data.resources.programas.sort(function (a, b) {
-          return a.posicion - b.posicion;
+    return date < currentDate;
+  }), _defineProperty(_methods, "formatDate", function formatDate(date) {
+    return moment__WEBPACK_IMPORTED_MODULE_4___default()(date).format('DD/MM/YYYY');
+  }), _defineProperty(_methods, "resetData", function resetData() {
+    Object.assign(this.$data, this.$options.data.call(this));
+    this.getResources();
+  }), _defineProperty(_methods, "getResources", function getResources() {
+    var _this = this;
+    axios(route('matricula.resources')).then(function (response) {
+      var data = response.data;
+      _this.resources.tipoDocumentoIdentidad = data.resources.tipoDocumentoIdentidad;
+      _this.resources.departamentos = data.resources.departamentos;
+      _this.resources.conceptos = data.resources.conceptos;
+      _this.resources.temporadas = data.resources.temporadas;
+      _this.resources.programas = data.resources.programas.sort(function (a, b) {
+        return a.posicion - b.posicion;
+      });
+      _this.resources.cantidadClases = data.resources.cantidadClases;
+      _this.resources.horarios = data.resources.horarios;
+      _this.temp.sucursal = data.current.sucursal;
+      _this.temp.temporada = data.current.temporada;
+      _this.temp.empleado = data.current.empleado;
+      _this.matricula.idsucursal = data.current.sucursal.idsucursal;
+      _this.matricula.idempleado = data.current.empleado.idusuario;
+      _this.matricula.idtemporada = data.current.temporada.idtemporada;
+    })["catch"](function (error) {
+      var response = error.response;
+      var data = response.data;
+    });
+  }), _defineProperty(_methods, "getAlumno", function getAlumno(clienteID) {
+    var _this2 = this;
+    return axios(route('matricula.resources.alumno', clienteID)).then(function (response) {
+      var _data$nombres, _data$apellidos, _data$correo, _data$telefono, _data$apoderado_nombr, _data$apoderado_apell, _data$apoderado_corre, _data$apoderado_telef, _data$numero_document, _data$direccion, _data$nota;
+      var data = response.data;
+      _this2.alumno.idcliente = data.idcliente;
+      _this2.alumno.nombres = (_data$nombres = data.nombres) !== null && _data$nombres !== void 0 ? _data$nombres : '';
+      _this2.alumno.apellidos = (_data$apellidos = data.apellidos) !== null && _data$apellidos !== void 0 ? _data$apellidos : '';
+      _this2.alumno.correo = (_data$correo = data.correo) !== null && _data$correo !== void 0 ? _data$correo : '';
+      _this2.alumno.telefono = (_data$telefono = data.telefono) !== null && _data$telefono !== void 0 ? _data$telefono : '';
+      _this2.alumno.apoderado_nombres = (_data$apoderado_nombr = data.apoderado_nombres) !== null && _data$apoderado_nombr !== void 0 ? _data$apoderado_nombr : '';
+      _this2.alumno.apoderado_apellidos = (_data$apoderado_apell = data.apoderado_apellidos) !== null && _data$apoderado_apell !== void 0 ? _data$apoderado_apell : '';
+      _this2.alumno.apoderado_correo = (_data$apoderado_corre = data.apoderado_correo) !== null && _data$apoderado_corre !== void 0 ? _data$apoderado_corre : '';
+      _this2.alumno.apoderado_telefono = (_data$apoderado_telef = data.apoderado_telefono) !== null && _data$apoderado_telef !== void 0 ? _data$apoderado_telef : '';
+      _this2.alumno.idtipo_documento_identidad = data.idtipo_documento_identidad;
+      _this2.alumno.numero_documento_identidad = (_data$numero_document = data.numero_documento_identidad) !== null && _data$numero_document !== void 0 ? _data$numero_document : '';
+      _this2.alumno.sexo = data.sexo;
+      _this2.alumno.fecha_nacimiento = data.fecha_nacimiento;
+      _this2.alumno.iddepartamento = data.iddepartamento;
+      _this2.alumno.idprovincia = data.idprovincia;
+      _this2.alumno.iddistrito = data.iddistrito;
+      _this2.alumno.direccion = (_data$direccion = data.direccion) !== null && _data$direccion !== void 0 ? _data$direccion : '';
+      _this2.alumno.nota = (_data$nota = data.nota) !== null && _data$nota !== void 0 ? _data$nota : '';
+      // this.alumno.referencia                 = data.referencia
+
+      if (data.iddepartamento) {
+        _this2.getProvincias();
+      }
+      if (data.idprovincia) {
+        _this2.getDistritos();
+      }
+    });
+  }), _defineProperty(_methods, "getMatricula", function getMatricula(matriculaID) {
+    var _this3 = this;
+    return axios(route('matricula.resources.matricula', matriculaID)).then(function (response) {
+      var _alumno$nombres, _alumno$apellidos, _alumno$correo, _alumno$telefono, _alumno$apoderado_nom, _alumno$apoderado_ape, _alumno$apoderado_cor, _alumno$apoderado_tel, _alumno$numero_docume, _alumno$direccion, _alumno$nota;
+      var data = response.data;
+      var resources = data.resources,
+        matricula = data.matricula,
+        alumno = data.alumno,
+        productos_adicionales = data.productos_adicionales;
+      _this3.alumno.idcliente = alumno.idcliente;
+      _this3.alumno.nombres = (_alumno$nombres = alumno.nombres) !== null && _alumno$nombres !== void 0 ? _alumno$nombres : '';
+      _this3.alumno.apellidos = (_alumno$apellidos = alumno.apellidos) !== null && _alumno$apellidos !== void 0 ? _alumno$apellidos : '';
+      _this3.alumno.correo = (_alumno$correo = alumno.correo) !== null && _alumno$correo !== void 0 ? _alumno$correo : '';
+      _this3.alumno.telefono = (_alumno$telefono = alumno.telefono) !== null && _alumno$telefono !== void 0 ? _alumno$telefono : '';
+      _this3.alumno.apoderado_nombres = (_alumno$apoderado_nom = alumno.apoderado_nombres) !== null && _alumno$apoderado_nom !== void 0 ? _alumno$apoderado_nom : '';
+      _this3.alumno.apoderado_apellidos = (_alumno$apoderado_ape = alumno.apoderado_apellidos) !== null && _alumno$apoderado_ape !== void 0 ? _alumno$apoderado_ape : '';
+      _this3.alumno.apoderado_correo = (_alumno$apoderado_cor = alumno.apoderado_correo) !== null && _alumno$apoderado_cor !== void 0 ? _alumno$apoderado_cor : '';
+      _this3.alumno.apoderado_telefono = (_alumno$apoderado_tel = alumno.apoderado_telefono) !== null && _alumno$apoderado_tel !== void 0 ? _alumno$apoderado_tel : '';
+      _this3.alumno.idtipo_documento_identidad = alumno.idtipo_documento_identidad;
+      _this3.alumno.numero_documento_identidad = (_alumno$numero_docume = alumno.numero_documento_identidad) !== null && _alumno$numero_docume !== void 0 ? _alumno$numero_docume : '';
+      _this3.alumno.sexo = alumno.sexo;
+      _this3.alumno.fecha_nacimiento = alumno.fecha_nacimiento;
+      _this3.alumno.iddepartamento = alumno.iddepartamento;
+      _this3.alumno.idprovincia = alumno.idprovincia;
+      _this3.alumno.iddistrito = alumno.iddistrito;
+      _this3.alumno.direccion = (_alumno$direccion = alumno.direccion) !== null && _alumno$direccion !== void 0 ? _alumno$direccion : '';
+      _this3.alumno.nota = (_alumno$nota = alumno.nota) !== null && _alumno$nota !== void 0 ? _alumno$nota : '';
+      if (alumno.iddepartamento) {
+        _this3.getProvincias();
+      }
+      if (alumno.idprovincia) {
+        _this3.getDistritos();
+      }
+      _this3.resources.niveles = resources.niveles;
+      _this3.resources.carriles = resources.carriles;
+      _this3.resources.frecuencias = resources.frecuencias;
+      _this3.matricula.idmatricula = matricula.idmatricula;
+      _this3.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
+      _this3.matricula.idconcepto = matricula.idconcepto;
+      _this3.matricula.idempleado = matricula.idempleado;
+      _this3.matricula.idsucursal = matricula.idsucursal;
+      _this3.matricula.idtemporada = matricula.idtemporada;
+      _this3.matricula.idprograma = matricula.idprograma;
+      _this3.matricula.idnivel = matricula.idnivel;
+      _this3.matricula.idcarril = matricula.idcarril;
+      _this3.matricula.idfrecuencia = matricula.idfrecuencia;
+      _this3.matricula.idhorario = matricula.idhorario;
+      _this3.matricula.idcantidad_clases = matricula.idcantidad_clases;
+      _this3.matricula.idcarrito = matricula.idcarrito;
+      _this3.matriculaHorarioDia = matricula.detalle.map(function (ele) {
+        return {
+          fecha: ele.fecha,
+          dia_name: ele.dia_nombre,
+          idhorario: ele.idhorario,
+          horario_nombre: ele.horario_nombre
+        };
+      });
+      _this3.productosAdicionales = productos_adicionales.map(function (ele) {
+        return {
+          idtipo_articulo: ele.idtipo_articulo,
+          idarticulo: ele.idarticulo,
+          nombre: ele.nombre,
+          cantidad: ele.cantidad,
+          stock: ele.stock,
+          precio: ele.precio,
+          subtotal: ele.subtotal
+        };
+      });
+      _this3.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
+      _this3.getCountMatriculados();
+    });
+  }), _defineProperty(_methods, "validateAlumno", function validateAlumno() {
+    var errors = [];
+    var alumno = this.alumno;
+    if (alumno.nombres.trim() === '') {
+      errors.push('Por favor, ingrese su(s) nombre(s).');
+    }
+    if (alumno.apellidos.trim() === '') {
+      errors.push('Por favor, ingrese su(s) apellido(s).');
+    }
+    if (alumno.correo && !validarEmail(alumno.correo)) {
+      errors.push('Por favor, proporcione una dirección de correo electrónico válida.');
+    }
+
+    // if (alumno.telefono.trim() === '') {
+    //     errors.push('Por favor, ingrese su número de teléfono de contacto.')
+    // }
+
+    if (alumno.idtipo_documento_identidad) {
+      if (alumno.numero_documento_identidad.trim() === '') {
+        errors.push('Por favor, ingrese el número de documento de identidad asociado.');
+      }
+      if (alumno.numero_documento_identidad.length > 0 && alumno.numero_documento_identidad.length < alumno.numero_documento_identidad_lemgth) {
+        errors.push('Por favor, ingrese lo caracteres minimos del número de documento de identidad asociado.');
+      }
+    } else {
+      if (alumno.numero_documento_identidad.length > 0) {
+        errors.push('Por favor, seleccione el tipo de documento de identidad válido.');
+      }
+    }
+    if (alumno.apoderado_nombres.trim() === '') {
+      errors.push('Por favor, ingrese el nombre de una persona de referencia.');
+    }
+    if (alumno.apoderado_apellidos.trim() === '') {
+      errors.push('Por favor, ingrese los apellidos de la persona de referencia.');
+    }
+    if (alumno.apoderado_correo && !validarEmail(alumno.apoderado_correo)) {
+      errors.push('Por favor, proporcione una dirección de correo electrónico válida para la persona de referencia.');
+    }
+
+    // if (alumno.apoderado_telefono.trim() === '') {
+    //     errors.push('Por favor, ingrese el número de teléfono de contacto de la persona de referencia.')
+    // }
+
+    return errors;
+  }), _defineProperty(_methods, "storeAlumno", function storeAlumno() {
+    var _this4 = this;
+    var errors = this.validateAlumno();
+    if (errors.length > 0) {
+      alertModal({
+        type: 'error',
+        title: 'Errores encontrados:',
+        content: listErrorsForm(errors)
+      });
+      return;
+    }
+    var alumnoData = jsonToFormData(this.alumno);
+    axios.post(route('matricula.storeAlumno'), alumnoData).then(function (response) {
+      var data = response.data;
+      _this4.alumno.idcliente = data.idcliente;
+      _this4.stepCurrent = 2;
+      scrollTo('#step-2', 50, 0);
+    });
+  }), _defineProperty(_methods, "cancelarStoreAlumno", function cancelarStoreAlumno() {
+    var _this5 = this;
+    if (this.matricula_id) {
+      this.getMatricula(this.matricula_id).then(function (_) {
+        _this5.stepCurrent = 1;
+        scrollTo('#step-1', 50, 0);
+      });
+      return;
+    }
+    if (this.alumno_id) {
+      this.getAlumno(this.alumno_id).then(function (_) {
+        _this5.stepCurrent = 1;
+        scrollTo('#step-1', 50, 0);
+      });
+      return;
+    }
+    this.alumno = {
+      idcliente: null,
+      nombres: '',
+      apellidos: '',
+      correo: '',
+      telefono: '',
+      apoderado_nombres: '',
+      apoderado_apellidos: '',
+      apoderado_correo: '',
+      apoderado_telefono: '',
+      idtipo_documento_identidad: null,
+      numero_documento_identidad: '',
+      numero_documento_identidad_lemgth: 8,
+      fecha_nacimiento: null,
+      sexo: null,
+      iddepartamento: null,
+      idprovincia: null,
+      iddistrito: null,
+      direccion: null,
+      nota: null
+    };
+  }), _defineProperty(_methods, "getNiveles", function getNiveles() {
+    var _this6 = this;
+    var nivelID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    return axios(route('matricula.resources.niveles', this.matricula.idprograma)).then(function (response) {
+      var data = response.data;
+      _this6.resources.niveles = data.sort(function (a, b) {
+        return a.posicion - b.posicion;
+      });
+      _this6.matricula.idnivel = nivelID;
+    });
+  }), _defineProperty(_methods, "getCarriles", function getCarriles() {
+    var _this7 = this;
+    var carrilID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    return axios(route('matricula.resources.carriles', this.matricula.idnivel)).then(function (response) {
+      var data = response.data;
+      _this7.resources.carriles = data;
+      _this7.matricula.idcarril = carrilID;
+    });
+  }), _defineProperty(_methods, "getFrecuencias", function getFrecuencias() {
+    var _this8 = this;
+    var frecuenciaID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+    return axios(route('matricula.resources.frecuencias', this.matricula.idprograma)).then(function (response) {
+      var data = response.data;
+      _this8.resources.frecuencias = data;
+      _this8.matricula.idfrecuencia = frecuenciaID;
+    });
+  }), _defineProperty(_methods, "getCountMatriculados", function getCountMatriculados() {
+    var _this9 = this;
+    var _this$matricula = this.matricula,
+      idtemporada = _this$matricula.idtemporada,
+      idprograma = _this$matricula.idprograma,
+      idnivel = _this$matricula.idnivel,
+      idcarril = _this$matricula.idcarril,
+      idfrecuencia = _this$matricula.idfrecuencia;
+    if (!idtemporada || !idprograma || !idnivel || !idcarril || !idfrecuencia) return;
+    if (this.sendMatricualCount) return;
+    this.sendMatricualCount = true;
+    return axios.get(route('matricula.resources.cantidadDeAlumnosMatriculados'), {
+      params: {
+        idtemporada: idtemporada,
+        idprograma: idprograma,
+        idnivel: idnivel,
+        idcarril: idcarril,
+        idfrecuencia: idfrecuencia
+      }
+    }).then(function (response) {
+      var data = response.data;
+      _this9.sendMatricualCount = false;
+      _this9.capacidadMaxima = data.capacidad_maxima;
+      _this9.cantidadMatriculados = data.cantidad_matriculados;
+    })["catch"](function (error) {
+      _this9.sendMatricualCount = false;
+      if (error.response === undefined) return console.error(error);
+      var response = error.response;
+      var data = response.data;
+    });
+    ;
+  }), _defineProperty(_methods, "getDaysFromDate", function getDaysFromDate(fechaInicio, fechaFin, daysValid) {
+    var fechasDeseadas = [];
+    while (fechaInicio.isSameOrBefore(fechaFin)) {
+      var diaSemana = fechaInicio.day();
+      if (daysValid.includes(diaSemana.toString())) {
+        // fechasDeseadas.push(fechaInicio.clone());
+        fechasDeseadas.push({
+          name: fechaInicio.format('dddd (DD/MM/YYYY)'),
+          dia: fechaInicio.format('dddd'),
+          fecha: fechaInicio.format('YYYY-MM-DD')
         });
-        _this.resources.cantidadClases = data.resources.cantidadClases;
-        _this.resources.horarios = data.resources.horarios;
-        _this.temp.sucursal = data.current.sucursal;
-        _this.temp.temporada = data.current.temporada;
-        _this.temp.empleado = data.current.empleado;
-        _this.matricula.idsucursal = data.current.sucursal.idsucursal;
-        _this.matricula.idempleado = data.current.empleado.idusuario;
-        _this.matricula.idtemporada = data.current.temporada.idtemporada;
-      })["catch"](function (error) {
-        var response = error.response;
-        var data = response.data;
+      }
+      fechaInicio = fechaInicio.add(1, 'days');
+    }
+    return fechasDeseadas;
+  }), _defineProperty(_methods, "validateMatricula", function validateMatricula() {
+    var errors = [];
+    var matricula = this.matricula;
+    if (!matricula.fecha || matricula.fecha.length !== 2) {
+      errors.push('Por favor, ingrese un rango de fechas válido para la matrícula.');
+    } else {
+      var _matricula$fecha = _slicedToArray(matricula.fecha, 2),
+        fechaInicio = _matricula$fecha[0],
+        fechaFin = _matricula$fecha[1];
+      if (!fechaInicio || !fechaFin || fechaInicio > fechaFin) {
+        errors.push('Por favor, ingrese un rango de fechas válido para la matrícula.');
+      }
+    }
+    if (!matricula.idconcepto) {
+      errors.push('Por favor, seleccione un concepto válido.');
+    }
+    if (!matricula.idtemporada) {
+      errors.push('Por favor, seleccione una temporada válida.');
+    }
+    if (!matricula.idprograma) {
+      errors.push('Por favor, seleccione un programa válido.');
+    }
+    if (!matricula.idnivel) {
+      errors.push('Por favor, seleccione una nivel válida.');
+    }
+    if (!matricula.idcarril) {
+      errors.push('Por favor, seleccione un carril válido.');
+    }
+    if (!matricula.idfrecuencia) {
+      errors.push('Por favor, seleccione una actividad semanal válida.');
+    }
+    if (!matricula.idhorario) {
+      errors.push('Por favor, seleccione un horario válido.');
+    }
+    if (!matricula.idcantidad_clases) {
+      errors.push('Por favor, seleccione una cantidad de sesiones válida.');
+    }
+    return errors;
+  }), _defineProperty(_methods, "saveMatricula", function saveMatricula() {
+    var _tipoDocumentoIdentid,
+      _this10 = this,
+      _departamentos$find,
+      _provincias$find,
+      _distritos$find;
+    var errors = this.validateMatricula();
+    if (errors.length > 0) {
+      alertModal({
+        type: 'error',
+        title: 'Errores encontrados:',
+        content: listErrorsForm(errors)
       });
-    },
-    getAlumno: function getAlumno(clienteID) {
-      var _this2 = this;
-      return axios(route('matricula.alumno', clienteID)).then(function (response) {
-        var _data$nombres, _data$apellidos, _data$correo, _data$telefono, _data$apoderado_nombr, _data$apoderado_apell, _data$apoderado_corre, _data$apoderado_telef, _data$numero_document, _data$direccion, _data$nota;
-        var data = response.data;
-        _this2.alumno.idcliente = data.idcliente;
-        _this2.alumno.nombres = (_data$nombres = data.nombres) !== null && _data$nombres !== void 0 ? _data$nombres : '';
-        _this2.alumno.apellidos = (_data$apellidos = data.apellidos) !== null && _data$apellidos !== void 0 ? _data$apellidos : '';
-        _this2.alumno.correo = (_data$correo = data.correo) !== null && _data$correo !== void 0 ? _data$correo : '';
-        _this2.alumno.telefono = (_data$telefono = data.telefono) !== null && _data$telefono !== void 0 ? _data$telefono : '';
-        _this2.alumno.apoderado_nombres = (_data$apoderado_nombr = data.apoderado_nombres) !== null && _data$apoderado_nombr !== void 0 ? _data$apoderado_nombr : '';
-        _this2.alumno.apoderado_apellidos = (_data$apoderado_apell = data.apoderado_apellidos) !== null && _data$apoderado_apell !== void 0 ? _data$apoderado_apell : '';
-        _this2.alumno.apoderado_correo = (_data$apoderado_corre = data.apoderado_correo) !== null && _data$apoderado_corre !== void 0 ? _data$apoderado_corre : '';
-        _this2.alumno.apoderado_telefono = (_data$apoderado_telef = data.apoderado_telefono) !== null && _data$apoderado_telef !== void 0 ? _data$apoderado_telef : '';
-        _this2.alumno.idtipo_documento_identidad = data.idtipo_documento_identidad;
-        _this2.alumno.numero_documento_identidad = (_data$numero_document = data.numero_documento_identidad) !== null && _data$numero_document !== void 0 ? _data$numero_document : '';
-        _this2.alumno.sexo = data.sexo;
-        _this2.alumno.fecha_nacimiento = data.fecha_nacimiento;
-        _this2.alumno.iddepartamento = data.iddepartamento;
-        _this2.alumno.idprovincia = data.idprovincia;
-        _this2.alumno.iddistrito = data.iddistrito;
-        _this2.alumno.direccion = (_data$direccion = data.direccion) !== null && _data$direccion !== void 0 ? _data$direccion : '';
-        _this2.alumno.nota = (_data$nota = data.nota) !== null && _data$nota !== void 0 ? _data$nota : '';
-        // this.alumno.referencia                 = data.referencia
-
-        if (data.iddepartamento) {
-          _this2.getProvincias();
-        }
-        if (data.idprovincia) {
-          _this2.getDistritos();
-        }
-      });
-    },
-    getMatricula: function getMatricula(matriculaID) {
-      var _this3 = this;
-      return axios(route('matricula.matricula', matriculaID)).then(function (response) {
-        var _alumno$nombres, _alumno$apellidos, _alumno$correo, _alumno$telefono, _alumno$apoderado_nom, _alumno$apoderado_ape, _alumno$apoderado_cor, _alumno$apoderado_tel, _alumno$numero_docume, _alumno$direccion, _alumno$nota;
+      return;
+    }
+    var matricula = this.matricula,
+      _this$resources = this.resources,
+      tipoDocumentoIdentidad = _this$resources.tipoDocumentoIdentidad,
+      departamentos = _this$resources.departamentos,
+      provincias = _this$resources.provincias,
+      distritos = _this$resources.distritos,
+      temporadas = _this$resources.temporadas,
+      programas = _this$resources.programas,
+      niveles = _this$resources.niveles,
+      carriles = _this$resources.carriles,
+      frecuencias = _this$resources.frecuencias,
+      cantidadClases = _this$resources.cantidadClases,
+      horarios = _this$resources.horarios;
+    var frecuenciasFind = frecuencias.find(function (ele) {
+      return ele.idfrecuencia === matricula.idfrecuencia;
+    });
+    var cantidadClasesFind = cantidadClases.find(function (ele) {
+      return ele.idcantidad_clases === matricula.idcantidad_clases;
+    });
+    var horarioFind = horarios.find(function (ele) {
+      return ele.idhorario === matricula.idhorario;
+    });
+    var daysValid = frecuenciasFind.dias.split('-');
+    var fechaInicio = moment__WEBPACK_IMPORTED_MODULE_4___default()(matricula.fecha[0]);
+    var fechaFin = moment__WEBPACK_IMPORTED_MODULE_4___default()(matricula.fecha[1]);
+    var dias = this.getDaysFromDate(fechaInicio, fechaFin, daysValid);
+    var diasAMatricular = dias.slice(0, cantidadClasesFind.cantidad).map(function (ele) {
+      return {
+        fecha: ele.fecha,
+        dia_name: ele.name,
+        idhorario: horarioFind.idhorario,
+        horario_nombre: horarioFind.nombre
+      };
+    });
+    this.temp.alumno.tipoDocumentoIdentidad = (_tipoDocumentoIdentid = tipoDocumentoIdentidad.find(function (ele) {
+      return ele.idtipo_documento_identidad === _this10.alumno.idtipo_documento_identidad;
+    })) !== null && _tipoDocumentoIdentid !== void 0 ? _tipoDocumentoIdentid : {
+      nombre: ''
+    };
+    this.temp.alumno.departamento = (_departamentos$find = departamentos.find(function (ele) {
+      return ele.iddepartamento === _this10.alumno.iddepartamento;
+    })) !== null && _departamentos$find !== void 0 ? _departamentos$find : {
+      nombre: ''
+    };
+    this.temp.alumno.provincia = (_provincias$find = provincias.find(function (ele) {
+      return ele.idprovincia === _this10.alumno.idprovincia;
+    })) !== null && _provincias$find !== void 0 ? _provincias$find : {
+      nombre: ''
+    };
+    this.temp.alumno.distrito = (_distritos$find = distritos.find(function (ele) {
+      return ele.iddistrito === _this10.alumno.iddistrito;
+    })) !== null && _distritos$find !== void 0 ? _distritos$find : {
+      nombre: ''
+    };
+    this.temp.temporada = temporadas.find(function (ele) {
+      return ele.idtemporada === _this10.matricula.idtemporada;
+    });
+    this.temp.programa = programas.find(function (ele) {
+      return ele.idprograma === _this10.matricula.idprograma;
+    });
+    this.temp.nivel = niveles.find(function (ele) {
+      return ele.idnivel === _this10.matricula.idnivel;
+    });
+    this.temp.carril = carriles.find(function (ele) {
+      return ele.idcarril === _this10.matricula.idcarril;
+    });
+    this.temp.frecuencias = frecuenciasFind;
+    this.temp.cantidadClases = cantidadClasesFind;
+    this.cantidadClasesMaxima = cantidadClasesFind.cantidad;
+    this.matriculaHorarioDia = diasAMatricular;
+    this.resources.dias = dias;
+    this.stepCurrent = 3;
+    scrollTo('#step-3', 50, 0);
+  }), _defineProperty(_methods, "cancelarSaveMatricula", function cancelarSaveMatricula() {
+    var _this11 = this;
+    if (this.matricula_id) {
+      axios(route('matricula.resources.matricula', this.matricula_id)).then(function (response) {
         var data = response.data;
         var resources = data.resources,
-          matricula = data.matricula,
-          alumno = data.alumno;
-        _this3.alumno.idcliente = alumno.idcliente;
-        _this3.alumno.nombres = (_alumno$nombres = alumno.nombres) !== null && _alumno$nombres !== void 0 ? _alumno$nombres : '';
-        _this3.alumno.apellidos = (_alumno$apellidos = alumno.apellidos) !== null && _alumno$apellidos !== void 0 ? _alumno$apellidos : '';
-        _this3.alumno.correo = (_alumno$correo = alumno.correo) !== null && _alumno$correo !== void 0 ? _alumno$correo : '';
-        _this3.alumno.telefono = (_alumno$telefono = alumno.telefono) !== null && _alumno$telefono !== void 0 ? _alumno$telefono : '';
-        _this3.alumno.apoderado_nombres = (_alumno$apoderado_nom = alumno.apoderado_nombres) !== null && _alumno$apoderado_nom !== void 0 ? _alumno$apoderado_nom : '';
-        _this3.alumno.apoderado_apellidos = (_alumno$apoderado_ape = alumno.apoderado_apellidos) !== null && _alumno$apoderado_ape !== void 0 ? _alumno$apoderado_ape : '';
-        _this3.alumno.apoderado_correo = (_alumno$apoderado_cor = alumno.apoderado_correo) !== null && _alumno$apoderado_cor !== void 0 ? _alumno$apoderado_cor : '';
-        _this3.alumno.apoderado_telefono = (_alumno$apoderado_tel = alumno.apoderado_telefono) !== null && _alumno$apoderado_tel !== void 0 ? _alumno$apoderado_tel : '';
-        _this3.alumno.idtipo_documento_identidad = alumno.idtipo_documento_identidad;
-        _this3.alumno.numero_documento_identidad = (_alumno$numero_docume = alumno.numero_documento_identidad) !== null && _alumno$numero_docume !== void 0 ? _alumno$numero_docume : '';
-        _this3.alumno.sexo = alumno.sexo;
-        _this3.alumno.fecha_nacimiento = alumno.fecha_nacimiento;
-        _this3.alumno.iddepartamento = alumno.iddepartamento;
-        _this3.alumno.idprovincia = alumno.idprovincia;
-        _this3.alumno.iddistrito = alumno.iddistrito;
-        _this3.alumno.direccion = (_alumno$direccion = alumno.direccion) !== null && _alumno$direccion !== void 0 ? _alumno$direccion : '';
-        _this3.alumno.nota = (_alumno$nota = alumno.nota) !== null && _alumno$nota !== void 0 ? _alumno$nota : '';
-        if (alumno.iddepartamento) {
-          _this3.getProvincias();
-        }
-        if (alumno.idprovincia) {
-          _this3.getDistritos();
-        }
-        _this3.resources.niveles = resources.niveles;
-        _this3.resources.carriles = resources.carriles;
-        _this3.resources.frecuencias = resources.frecuencias;
-        var horarioFind = _this3.resources.horarios.find(function (ele) {
+          matricula = data.matricula;
+        _this11.resources.niveles = resources.niveles;
+        _this11.resources.carriles = resources.carriles;
+        _this11.resources.frecuencias = resources.frecuencias;
+        var horarioFind = resources.horarios.find(function (ele) {
           return ele.idhorario === matricula.detalle[0].idhorario;
         });
-        _this3.matricula.idmatricula = matricula.idmatricula;
-        _this3.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
-        _this3.matricula.idconcepto = matricula.idconcepto;
-        _this3.matricula.idempleado = matricula.idempleado;
-        _this3.matricula.idsucursal = matricula.idsucursal;
-        _this3.matricula.idtemporada = matricula.idtemporada;
-        _this3.matricula.idprograma = matricula.idprograma;
-        _this3.matricula.idnivel = matricula.idnivel;
-        _this3.matricula.idcarril = matricula.idcarril;
-        _this3.matricula.idfrecuencia = matricula.idfrecuencia;
-        _this3.matricula.idhorario = matricula.detalle[0].idhorario;
-        _this3.matricula.idcantidad_clases = matricula.idcantidad_clases;
-        _this3.matriculaHorarioDia = matricula.detalle.map(function (ele) {
+        _this11.matricula.idmatricula = matricula.idmatricula;
+        _this11.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
+        _this11.matricula.idconcepto = matricula.idconcepto;
+        _this11.matricula.idempleado = matricula.idempleado;
+        _this11.matricula.idsucursal = matricula.idsucursal;
+        _this11.matricula.idtemporada = matricula.idtemporada;
+        _this11.matricula.idprograma = matricula.idprograma;
+        _this11.matricula.idnivel = matricula.idnivel;
+        _this11.matricula.idcarril = matricula.idcarril;
+        _this11.matricula.idfrecuencia = matricula.idfrecuencia;
+        _this11.matricula.idhorario = matricula.detalle[0].idhorario;
+        _this11.matricula.idcantidad_clases = matricula.idcantidad_clases;
+        _this11.matriculaHorarioDia = matricula.detalle.map(function (ele) {
           return {
             fecha: ele.fecha,
             dia_name: ele.dia_nombre,
@@ -2342,401 +2700,65 @@ moment__WEBPACK_IMPORTED_MODULE_3___default.a.locale('es-mx');
             horario_nombre: horarioFind.nombre
           };
         });
-        _this3.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
-        _this3.getCountMatriculados();
-      });
-    },
-    validateAlumno: function validateAlumno() {
-      var errors = [];
-      var alumno = this.alumno;
-      if (alumno.nombres.trim() === '') {
-        errors.push('Por favor, ingrese su(s) nombre(s).');
-      }
-      if (alumno.apellidos.trim() === '') {
-        errors.push('Por favor, ingrese su(s) apellido(s).');
-      }
-      if (alumno.correo && !validarEmail(alumno.correo)) {
-        errors.push('Por favor, proporcione una dirección de correo electrónico válida.');
-      }
-
-      // if (alumno.telefono.trim() === '') {
-      //     errors.push('Por favor, ingrese su número de teléfono de contacto.')
-      // }
-
-      if (alumno.idtipo_documento_identidad) {
-        if (alumno.numero_documento_identidad.trim() === '') {
-          errors.push('Por favor, ingrese el número de documento de identidad asociado.');
-        }
-        if (alumno.numero_documento_identidad.length > 0 && alumno.numero_documento_identidad.length < alumno.numero_documento_identidad_lemgth) {
-          errors.push('Por favor, ingrese lo caracteres minimos del número de documento de identidad asociado.');
-        }
-      } else {
-        if (alumno.numero_documento_identidad.length > 0) {
-          errors.push('Por favor, seleccione el tipo de documento de identidad válido.');
-        }
-      }
-      if (alumno.apoderado_nombres.trim() === '') {
-        errors.push('Por favor, ingrese el nombre de una persona de referencia.');
-      }
-      if (alumno.apoderado_apellidos.trim() === '') {
-        errors.push('Por favor, ingrese los apellidos de la persona de referencia.');
-      }
-      if (alumno.apoderado_correo && !validarEmail(alumno.apoderado_correo)) {
-        errors.push('Por favor, proporcione una dirección de correo electrónico válida para la persona de referencia.');
-      }
-
-      // if (alumno.apoderado_telefono.trim() === '') {
-      //     errors.push('Por favor, ingrese el número de teléfono de contacto de la persona de referencia.')
-      // }
-
-      return errors;
-    },
-    storeAlumno: function storeAlumno() {
-      var _this4 = this;
-      debugger;
-      var errors = this.validateAlumno();
-      if (errors.length > 0) {
-        alertModal({
-          type: 'error',
-          title: 'Errores encontrados:',
-          content: listErrorsForm(errors)
-        });
-        return;
-      }
-      var alumnoData = jsonToFormData(this.alumno);
-      axios.post(route('matricula.storeAlumno'), alumnoData).then(function (response) {
-        var data = response.data;
-        _this4.alumno.idcliente = data.idcliente;
-        _this4.stepCurrent = 2;
+        _this11.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
+        _this11.getCountMatriculados();
+        _this11.stepCurrent = 2;
         scrollTo('#step-2', 50, 0);
       });
-    },
-    cancelarStoreAlumno: function cancelarStoreAlumno() {
-      var _this5 = this;
-      if (this.matricula_id) {
-        this.getMatricula(this.matricula_id).then(function (_) {
-          _this5.stepCurrent = 1;
-          scrollTo('#step-1', 50, 0);
-        });
-        return;
-      }
-      if (this.alumno_id) {
-        this.getAlumno(this.alumno_id).then(function (_) {
-          _this5.stepCurrent = 1;
-          scrollTo('#step-1', 50, 0);
-        });
-        return;
-      }
-      this.alumno = {
-        idcliente: null,
-        nombres: '',
-        apellidos: '',
-        correo: '',
-        telefono: '',
-        apoderado_nombres: '',
-        apoderado_apellidos: '',
-        apoderado_correo: '',
-        apoderado_telefono: '',
-        idtipo_documento_identidad: null,
-        numero_documento_identidad: '',
-        numero_documento_identidad_lemgth: 8,
-        fecha_nacimiento: null,
-        sexo: null,
-        iddepartamento: null,
-        idprovincia: null,
-        iddistrito: null,
-        direccion: null,
-        nota: null
-      };
-    },
-    getNiveles: function getNiveles() {
-      var _this6 = this;
-      var nivelID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-      return axios(route('matricula.niveles', this.matricula.idprograma)).then(function (response) {
-        var data = response.data;
-        _this6.resources.niveles = data.sort(function (a, b) {
-          return a.posicion - b.posicion;
-        });
-        _this6.matricula.idnivel = nivelID;
-      });
-    },
-    getCarriles: function getCarriles() {
-      var _this7 = this;
-      var carrilID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-      return axios(route('matricula.carriles', this.matricula.idnivel)).then(function (response) {
-        var data = response.data;
-        _this7.resources.carriles = data;
-        _this7.matricula.idcarril = carrilID;
-      });
-    },
-    getFrecuencias: function getFrecuencias() {
-      var _this8 = this;
-      var frecuenciaID = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
-      return axios(route('matricula.frecuencias', this.matricula.idprograma)).then(function (response) {
-        var data = response.data;
-        _this8.resources.frecuencias = data;
-        _this8.matricula.idfrecuencia = frecuenciaID;
-      });
-    },
-    getCountMatriculados: function getCountMatriculados() {
-      var _this9 = this;
-      var _this$matricula = this.matricula,
-        idtemporada = _this$matricula.idtemporada,
-        idprograma = _this$matricula.idprograma,
-        idnivel = _this$matricula.idnivel,
-        idcarril = _this$matricula.idcarril,
-        idfrecuencia = _this$matricula.idfrecuencia;
-      if (!idtemporada || !idprograma || !idnivel || !idcarril || !idfrecuencia) return;
-      return axios.get(route('matricula.cantidadDeAlumnosMatriculados'), {
-        params: {
-          idtemporada: idtemporada,
-          idprograma: idprograma,
-          idnivel: idnivel,
-          idcarril: idcarril,
-          idfrecuencia: idfrecuencia
-        }
-      }).then(function (response) {
-        var data = response.data;
-        _this9.capacidadMaxima = data.capacidad_maxima;
-        _this9.cantidadMatriculados = data.cantidad_matriculados;
-      });
-    },
-    getDaysFromDate: function getDaysFromDate(fechaInicio, fechaFin, daysValid) {
-      var fechasDeseadas = [];
-      while (fechaInicio.isSameOrBefore(fechaFin)) {
-        var diaSemana = fechaInicio.day();
-        if (daysValid.includes(diaSemana.toString())) {
-          // fechasDeseadas.push(fechaInicio.clone());
-          fechasDeseadas.push({
-            name: fechaInicio.format('dddd (DD/MM/YYYY)'),
-            dia: fechaInicio.format('dddd'),
-            fecha: fechaInicio.format('YYYY-MM-DD')
-          });
-        }
-        fechaInicio = fechaInicio.add(1, 'days');
-      }
-      return fechasDeseadas;
-    },
-    validateMatricula: function validateMatricula() {
-      var errors = [];
-      var matricula = this.matricula;
-      if (!matricula.fecha || matricula.fecha.length !== 2) {
-        errors.push('Por favor, ingrese un rango de fechas válido para la matrícula.');
-      } else {
-        var _matricula$fecha = _slicedToArray(matricula.fecha, 2),
-          fechaInicio = _matricula$fecha[0],
-          fechaFin = _matricula$fecha[1];
-        if (!fechaInicio || !fechaFin || fechaInicio > fechaFin) {
-          errors.push('Por favor, ingrese un rango de fechas válido para la matrícula.');
-        }
-      }
-      if (!matricula.idconcepto) {
-        errors.push('Por favor, seleccione un concepto válido.');
-      }
-      if (!matricula.idtemporada) {
-        errors.push('Por favor, seleccione una temporada válida.');
-      }
-      if (!matricula.idprograma) {
-        errors.push('Por favor, seleccione un programa válido.');
-      }
-      if (!matricula.idnivel) {
-        errors.push('Por favor, seleccione una nivel válida.');
-      }
-      if (!matricula.idcarril) {
-        errors.push('Por favor, seleccione un carril válido.');
-      }
-      if (!matricula.idfrecuencia) {
-        errors.push('Por favor, seleccione una actividad semanal válida.');
-      }
-      if (!matricula.idhorario) {
-        errors.push('Por favor, seleccione un horario válido.');
-      }
-      if (!matricula.idcantidad_clases) {
-        errors.push('Por favor, seleccione una cantidad de sesiones válida.');
-      }
-      return errors;
-    },
-    saveMatricula: function saveMatricula() {
-      var _tipoDocumentoIdentid,
-        _this10 = this,
-        _departamentos$find,
-        _provincias$find,
-        _distritos$find;
-      var errors = this.validateMatricula();
-      if (errors.length > 0) {
-        alertModal({
-          type: 'error',
-          title: 'Errores encontrados:',
-          content: listErrorsForm(errors)
-        });
-        return;
-      }
-      var matricula = this.matricula,
-        _this$resources = this.resources,
-        tipoDocumentoIdentidad = _this$resources.tipoDocumentoIdentidad,
-        departamentos = _this$resources.departamentos,
-        provincias = _this$resources.provincias,
-        distritos = _this$resources.distritos,
-        temporadas = _this$resources.temporadas,
-        programas = _this$resources.programas,
-        niveles = _this$resources.niveles,
-        carriles = _this$resources.carriles,
-        frecuencias = _this$resources.frecuencias,
-        cantidadClases = _this$resources.cantidadClases,
-        horarios = _this$resources.horarios;
-      var frecuenciasFind = frecuencias.find(function (ele) {
-        return ele.idfrecuencia === matricula.idfrecuencia;
-      });
-      var cantidadClasesFind = cantidadClases.find(function (ele) {
-        return ele.idcantidad_clases === matricula.idcantidad_clases;
-      });
-      var horarioFind = horarios.find(function (ele) {
-        return ele.idhorario === matricula.idhorario;
-      });
-      var daysValid = frecuenciasFind.dias.split('-');
-      var fechaInicio = moment__WEBPACK_IMPORTED_MODULE_3___default()(matricula.fecha[0]);
-      var fechaFin = moment__WEBPACK_IMPORTED_MODULE_3___default()(matricula.fecha[1]);
-      var dias = this.getDaysFromDate(fechaInicio, fechaFin, daysValid);
-      var diasAMatricular = dias.slice(0, cantidadClasesFind.cantidad).map(function (ele) {
-        return {
-          fecha: ele.fecha,
-          dia_name: ele.name,
-          idhorario: horarioFind.idhorario,
-          horario_nombre: horarioFind.nombre
-        };
-      });
-      this.temp.alumno.tipoDocumentoIdentidad = (_tipoDocumentoIdentid = tipoDocumentoIdentidad.find(function (ele) {
-        return ele.idtipo_documento_identidad === _this10.alumno.idtipo_documento_identidad;
-      })) !== null && _tipoDocumentoIdentid !== void 0 ? _tipoDocumentoIdentid : {
-        nombre: ''
-      };
-      this.temp.alumno.departamento = (_departamentos$find = departamentos.find(function (ele) {
-        return ele.iddepartamento === _this10.alumno.iddepartamento;
-      })) !== null && _departamentos$find !== void 0 ? _departamentos$find : {
-        nombre: ''
-      };
-      this.temp.alumno.provincia = (_provincias$find = provincias.find(function (ele) {
-        return ele.idprovincia === _this10.alumno.idprovincia;
-      })) !== null && _provincias$find !== void 0 ? _provincias$find : {
-        nombre: ''
-      };
-      this.temp.alumno.distrito = (_distritos$find = distritos.find(function (ele) {
-        return ele.iddistrito === _this10.alumno.iddistrito;
-      })) !== null && _distritos$find !== void 0 ? _distritos$find : {
-        nombre: ''
-      };
-      this.temp.temporada = temporadas.find(function (ele) {
-        return ele.idtemporada === _this10.matricula.idtemporada;
-      });
-      this.temp.programa = programas.find(function (ele) {
-        return ele.idprograma === _this10.matricula.idprograma;
-      });
-      this.temp.nivel = niveles.find(function (ele) {
-        return ele.idnivel === _this10.matricula.idnivel;
-      });
-      this.temp.carril = carriles.find(function (ele) {
-        return ele.idcarril === _this10.matricula.idcarril;
-      });
-      this.temp.frecuencias = frecuenciasFind;
-      this.temp.cantidadClases = cantidadClasesFind;
-      this.cantidadClasesMaxima = cantidadClasesFind.cantidad;
-      this.matriculaHorarioDia = diasAMatricular;
-      this.resources.dias = dias;
-      this.stepCurrent = 3;
-      scrollTo('#step-3', 50, 0);
-    },
-    cancelarSaveMatricula: function cancelarSaveMatricula() {
-      var _this11 = this;
-      if (this.matricula_id) {
-        axios(route('matricula.matricula', this.matricula_id)).then(function (response) {
-          var data = response.data;
-          var resources = data.resources,
-            matricula = data.matricula;
-          _this11.resources.niveles = resources.niveles;
-          _this11.resources.carriles = resources.carriles;
-          _this11.resources.frecuencias = resources.frecuencias;
-          var horarioFind = resources.horarios.find(function (ele) {
-            return ele.idhorario === matricula.detalle[0].idhorario;
-          });
-          _this11.matricula.idmatricula = matricula.idmatricula;
-          _this11.matricula.fecha = [matricula.fecha_inicio.split('/').reverse().join('-'), matricula.fecha_fin.split('/').reverse().join('-')];
-          _this11.matricula.idconcepto = matricula.idconcepto;
-          _this11.matricula.idempleado = matricula.idempleado;
-          _this11.matricula.idsucursal = matricula.idsucursal;
-          _this11.matricula.idtemporada = matricula.idtemporada;
-          _this11.matricula.idprograma = matricula.idprograma;
-          _this11.matricula.idnivel = matricula.idnivel;
-          _this11.matricula.idcarril = matricula.idcarril;
-          _this11.matricula.idfrecuencia = matricula.idfrecuencia;
-          _this11.matricula.idhorario = matricula.detalle[0].idhorario;
-          _this11.matricula.idcantidad_clases = matricula.idcantidad_clases;
-          _this11.matriculaHorarioDia = matricula.detalle.map(function (ele) {
-            return {
-              fecha: ele.fecha,
-              dia_name: ele.dia_nombre,
-              idhorario: ele.idhorario,
-              horario_nombre: horarioFind.nombre
-            };
-          });
-          _this11.codigoMatricula = matricula.idmatricula.toString().padStart(7, 0);
-          _this11.getCountMatriculados();
-          _this11.stepCurrent = 2;
-          scrollTo('#step-2', 50, 0);
-        });
-        return;
-      }
-      var temporadaCurrent = this.resources.temporadas.find(function (ele) {
-        return moment__WEBPACK_IMPORTED_MODULE_3___default()(ele.fecha_inicio).isSameOrBefore(moment__WEBPACK_IMPORTED_MODULE_3___default()());
-      });
-      var temporadaID = temporadaCurrent ? temporadaCurrent.idtemporada : null;
-      this.matricula = {
-        idmatricula: '',
-        fecha: [],
-        idconcepto: 1,
-        idempleado: '',
-        idsucursal: '',
-        idtemporada: temporadaID,
-        idprograma: '',
-        idnivel: '',
-        idcarril: '',
-        idfrecuencia: '',
-        idhorario: '',
-        idcantidad_clases: ''
-      };
-      this.matriculaHorarioDia = [];
-      this.codigoMatricula = null;
-      this.capacidadMaxima = null;
-      this.cantidadMatriculados = null;
-      this.cantidadClasesMaxima = null;
-      this.resources.niveles = [];
-      this.resources.carriles = [];
-      this.resources.frecuencias = [];
-    },
-    storeMatriculaHorario: function storeMatriculaHorario() {
-      var _this12 = this;
-      var matricula = this.matricula,
-        alumno = this.alumno,
-        matriculaHorarioDia = this.matriculaHorarioDia;
-      var matriculaData = _objectSpread(_objectSpread({}, matricula), {}, {
-        idcliente: alumno.idcliente,
-        detalle: matriculaHorarioDia
-      });
-      var URL_ACTION = route('matricula.storeMatricula');
-      if (this.type == 'editar') {
-        URL_ACTION = route('matricula.updateMatricula');
-      }
-      axios.post(URL_ACTION, matriculaData).then(function (response) {
-        var data = response.data;
-        _this12.codigoMatricula = data.codigo;
-        _this12.stepCurrent = 4;
-        scrollTo('#step-4', 50, 0);
-      });
-    },
-    cancelarStoreMatriculaHorario: function cancelarStoreMatriculaHorario() {
-      this.stepCurrent = 2;
-      scrollTo('#step-2', 50, 0);
+      return;
     }
-  },
+    var temporadaCurrent = this.resources.temporadas.find(function (ele) {
+      return moment__WEBPACK_IMPORTED_MODULE_4___default()(ele.fecha_inicio).isSameOrBefore(moment__WEBPACK_IMPORTED_MODULE_4___default()());
+    });
+    var temporadaID = temporadaCurrent ? temporadaCurrent.idtemporada : null;
+    this.matricula = {
+      idmatricula: '',
+      fecha: [],
+      idconcepto: 1,
+      idempleado: '',
+      idsucursal: '',
+      idtemporada: temporadaID,
+      idprograma: '',
+      idnivel: '',
+      idcarril: '',
+      idfrecuencia: '',
+      idhorario: '',
+      idcantidad_clases: ''
+    };
+    this.matriculaHorarioDia = [];
+    this.codigoMatricula = null;
+    this.capacidadMaxima = null;
+    this.cantidadMatriculados = null;
+    this.cantidadClasesMaxima = null;
+    this.resources.niveles = [];
+    this.resources.carriles = [];
+    this.resources.frecuencias = [];
+  }), _defineProperty(_methods, "storeMatriculaHorario", function storeMatriculaHorario() {
+    var _this12 = this;
+    var matricula = this.matricula,
+      alumno = this.alumno,
+      matriculaHorarioDia = this.matriculaHorarioDia,
+      productosAdicionales = this.productosAdicionales;
+    var matriculaData = _objectSpread(_objectSpread({}, matricula), {}, {
+      idcliente: alumno.idcliente,
+      detalle: matriculaHorarioDia,
+      productosAdicionales: productosAdicionales,
+      productosAdicionalesTotal: this.productosAdicionalesTotal
+    });
+    var URL_ACTION = route('matricula.storeMatricula');
+    if (this.type == 'editar') {
+      URL_ACTION = route('matricula.updateMatricula');
+    }
+    axios.post(URL_ACTION, matriculaData).then(function (response) {
+      var data = response.data;
+      _this12.codigoMatricula = data.codigo;
+      _this12.stepCurrent = 4;
+      scrollTo('#step-4', 50, 0);
+    });
+  }), _defineProperty(_methods, "cancelarStoreMatriculaHorario", function cancelarStoreMatriculaHorario() {
+    this.stepCurrent = 2;
+    scrollTo('#step-2', 50, 0);
+  }), _methods),
   mounted: function mounted() {
     var _this13 = this;
     this.getResources();
@@ -2832,6 +2854,130 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {}
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/FormProductos.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/FormProductos.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    detalle: {
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
+    }
+  },
+  computed: {
+    productsIsEmpty: function productsIsEmpty() {
+      var _this$resources$produ, _this$resources$produ2;
+      var products = (_this$resources$produ = (_this$resources$produ2 = this.resources.productos) === null || _this$resources$produ2 === void 0 ? void 0 : _this$resources$produ2.data) !== null && _this$resources$produ !== void 0 ? _this$resources$produ : [];
+      return products.length === 0;
+    },
+    detalleIsEmpty: function detalleIsEmpty() {
+      var products = this.detalle;
+      return products.length === 0;
+    },
+    total: function total() {
+      var sum = this.detalle.reduce(function (acc, cur) {
+        return parseFloat(acc) + parseFloat(cur.subtotal);
+      }, 0);
+      return number_format(sum, 2, '.', '');
+    }
+  },
+  data: function data() {
+    return {
+      TIPO_ARTICULO_ID: {
+        PRODUCTO: 1,
+        MATRICULA: 2
+      },
+      resources: {
+        productos: []
+      },
+      search: {
+        producto: {
+          cantidadRegistros: 5,
+          paginaActual: 1,
+          txtBuscar: ''
+        }
+      }
+    };
+  },
+  methods: {
+    openModalProductos: function openModalProductos() {
+      $('#addProductoModalCenter').modal('show');
+    },
+    getProductos: function getProductos() {
+      var _this = this;
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      this.search.producto.paginaActual = page;
+      return axios(route('matricula.resources.productos'), {
+        params: this.search.producto
+      }).then(function (response) {
+        var data = response.data;
+        _this.resources.productos = data;
+      });
+    },
+    getMontoSubtotalModalProducto: function getMontoSubtotalModalProducto(index) {
+      var _producto$cantidad, _producto$precio;
+      var producto = this.resources.productos.data[index];
+      var cantidad = (_producto$cantidad = producto.cantidad) !== null && _producto$cantidad !== void 0 ? _producto$cantidad : 0;
+      var precio = (_producto$precio = producto.precio) !== null && _producto$precio !== void 0 ? _producto$precio : 0;
+      this.resources.productos.data[index].subtotal = number_format(cantidad * precio, 2, '.', '');
+    },
+    addProductoInDetalle: function addProductoInDetalle(index) {
+      var _this2 = this;
+      var producto = this.resources.productos.data[index];
+      var stock = producto.stock,
+        precio = producto.precio,
+        cantidad = producto.cantidad;
+      var productoAddedIndex = this.detalle.findIndex(function (ele) {
+        return ele.idtipo_articulo === _this2.TIPO_ARTICULO_ID.PRODUCTO && ele.idarticulo === producto.idproducto && ele.precio === producto.precio;
+      });
+      if (productoAddedIndex === -1) {
+        var _newCantidad = cantidad <= stock ? cantidad : stock;
+        this.detalle.push({
+          idtipo_articulo: this.TIPO_ARTICULO_ID.PRODUCTO,
+          idarticulo: producto.idproducto,
+          nombre: producto.nombre,
+          cantidad: _newCantidad,
+          stock: stock,
+          precio: precio,
+          subtotal: producto.subtotal
+        });
+        $('#addProductoModalCenter').modal('hide');
+        return;
+      }
+      var productoAdded = this.detalle[productoAddedIndex];
+      var cantidadSum = parseInt(productoAdded.cantidad) + parseInt(producto.cantidad);
+      var newCantidad = cantidadSum <= stock ? cantidadSum : stock;
+      this.detalle[productoAddedIndex].cantidad = newCantidad;
+      this.detalle[productoAddedIndex].subtotal = newCantidad * precio;
+      $('#addProductoModalCenter').modal('hide');
+    },
+    removeItemDetalle: function removeItemDetalle(index) {
+      this.detalle = this.detalle.filter(function (ele, idx) {
+        return idx !== index;
+      });
+    },
+    getMontoSubtotalDetalle: function getMontoSubtotalDetalle(index) {
+      var detalleItem = this.detalle[index];
+      var cantidad = detalleItem.cantidad,
+        precio = detalleItem.precio;
+      this.detalle[index].subtotal = number_format((cantidad !== null && cantidad !== void 0 ? cantidad : 0) * (precio !== null && precio !== void 0 ? precio : 0), 2, '.', '');
+    }
+  },
+  mounted: function mounted() {
+    this.getProductos(1);
+  }
 });
 
 /***/ }),
@@ -3064,16 +3210,16 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       this.getMontoTotal();
     },
     'headVenta.monto_total': function headVentaMonto_total(newValue) {
-      this.getMontoVuelto();
-      this.getMontoDeuda();
+      this.getMontoDevelto();
+      this.getMontoFaltante();
     },
     'headVenta.monto_efectivo': function headVentaMonto_efectivo(newValue) {
-      this.getMontoVuelto();
-      this.getMontoDeuda();
+      this.getMontoDevelto();
+      this.getMontoFaltante();
     },
     'headVenta.monto_transferido': function headVentaMonto_transferido(newValue) {
-      this.getMontoVuelto();
-      this.getMontoDeuda();
+      this.getMontoDevelto();
+      this.getMontoFaltante();
     }
   },
   methods: {
@@ -3122,7 +3268,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         _this3.resources.productos = data;
       });
     },
-    changePrecioTotal: function changePrecioTotal(index) {
+    getMontoSubtotalModalProducto: function getMontoSubtotalModalProducto(index) {
       var _producto$cantidad, _producto$precio;
       var producto = this.resources.productos.data[index];
       var cantidad = (_producto$cantidad = producto.cantidad) !== null && _producto$cantidad !== void 0 ? _producto$cantidad : 0;
@@ -3145,6 +3291,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
           idarticulo: producto.idproducto,
           nombre: producto.nombre,
           cantidad: _newCantidad,
+          stock: stock,
           precio: precio,
           monto_total: producto.monto_total
         });
@@ -3194,6 +3341,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         idarticulo: matricula.idmatricula,
         nombre: matricula.descripcion,
         cantidad: 1,
+        stock: 1,
         precio: matricula.monto_total,
         monto_total: matricula.monto_total
       });
@@ -3212,7 +3360,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       var montoTotal = number_format(sum, 2, '.', '');
       this.headVenta.monto_total = montoTotal;
     },
-    getMontoVuelto: function getMontoVuelto() {
+    getMontoDevelto: function getMontoDevelto() {
       var montoTotal = parseFloat(this.headVenta.monto_total);
       var montoPagado = parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
       var vuelto = montoPagado - montoTotal;
@@ -3222,7 +3370,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       }
       this.headVenta.monto_efectivo_devuelto = number_format(vuelto, 2, '.', '');
     },
-    getMontoDeuda: function getMontoDeuda() {
+    getMontoFaltante: function getMontoFaltante() {
       var montoTotal = parseFloat(this.headVenta.monto_total);
       var montoPagado = parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
       var deuda = montoPagado - montoTotal;
@@ -3237,7 +3385,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         return idx !== index;
       });
     },
-    changeMontoTotalDetalle: function changeMontoTotalDetalle(index) {
+    getMontoSubtotalDetalle: function getMontoSubtotalDetalle(index) {
       var detalleItem = this.detalle[index];
       var cantidad = detalleItem.cantidad,
         precio = detalleItem.precio;
@@ -3956,7 +4104,7 @@ var render = function render() {
       }
     });
   })], 2)]), _vm._v(" "), _c("div", {
-    staticClass: "col-12 form-group"
+    staticClass: "col-md-8 col-12 form-group"
   }, [_c("label", {
     attrs: {
       "for": "fecha"
@@ -3978,11 +4126,15 @@ var render = function render() {
       },
       expression: "matricula.fecha"
     }
-  })], 1), _vm._v(" "), _vm.capacidadMaxima ? _c("div", {
+  })], 1), _vm._v(" "), _c("FormProductos", {
+    attrs: {
+      detalle: _vm.productosAdicionales
+    }
+  }), _vm._v(" "), _vm.capacidadMaxima ? _c("div", {
     staticClass: "col-12"
   }, [_c("div", {
     staticClass: "mt-3 mb-3 pr-5 alert alert-warning"
-  }, [_c("h5", [_c("u", [_vm._v("NOTA:")])]), _vm._v(" "), _c("h5", [_vm._v("Actualmente hay " + _vm._s(_vm.cantidadMatriculados) + " matriculados y la capacidad máxima es de " + _vm._s(_vm.capacidadMaxima) + ".")])])]) : _vm._e()]), _vm._v(" "), _c("template", {
+  }, [_c("h5", [_c("u", [_vm._v("NOTA:")])]), _vm._v(" "), _c("h5", [_vm._v("Actualmente hay " + _vm._s(_vm.cantidadMatriculados) + " matriculados y la capacidad máxima es de " + _vm._s(_vm.capacidadMaxima) + ".")])])]) : _vm._e()], 1), _vm._v(" "), _c("template", {
     slot: "btnNext"
   }, [_vm._v(" Siguiente "), _c("i", {
     staticClass: "fa fa-arrow-right"
@@ -4048,11 +4200,7 @@ var render = function render() {
     attrs: {
       colspan: "2"
     }
-  }, [_c("b", [_vm._v("Frecuencia:")]), _vm._v(" " + _vm._s(_vm.temp.frecuencias.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", {
-    attrs: {
-      colspan: "2"
-    }
-  }, [_c("b", [_vm._v("Cantidad de clases:")]), _vm._v(" " + _vm._s(_vm.temp.cantidadClases.nombre) + " "), _c("br")])])])]), _vm._v(" "), _c("table", {
+  }, [_c("b", [_vm._v("Frecuencia:")]), _vm._v(" " + _vm._s(_vm.temp.frecuencias.nombre) + " "), _c("br")]), _vm._v(" "), _c("td", [_c("b", [_vm._v("Cantidad de clases:")]), _vm._v(" " + _vm._s(_vm.temp.cantidadClases.cantidad) + " "), _c("br")]), _vm._v(" "), _c("td", [_c("b", [_vm._v("Precio :")]), _vm._v("S/. " + _vm._s(_vm.temp.cantidadClases.precio) + " "), _c("br")])])])]), _vm._v(" "), _c("table", {
     staticClass: "table table-bordered"
   }, [_c("thead", [_c("tr", [_c("th", {
     staticClass: "text-center",
@@ -4067,7 +4215,39 @@ var render = function render() {
     }, [_vm._v(_vm._s(item.dia_name))]), _vm._v(" "), _c("td", {
       staticClass: "text-center"
     }, [_vm._v(_vm._s(item.horario_nombre))])]);
-  }), 0)]), _vm._v(" "), _c("template", {
+  }), 0)]), _vm._v(" "), !_vm.productosAdicionalesIsEmpty ? _c("table", {
+    staticClass: "table table-sm"
+  }, [_c("thead", [_c("tr", [_c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("#")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Productos adicionales")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Cantidad")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Precio unitario (S/)")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Sub total (S/) ")])])]), _vm._v(" "), _c("thead", _vm._l(_vm.productosAdicionales, function (item, index) {
+    return _c("tr", {
+      key: index
+    }, [_c("td", {
+      staticClass: "text-center"
+    }, [_vm._v("#" + _vm._s(index + 1))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(item.nombre))]), _vm._v(" "), _c("td", {
+      staticClass: "text-center"
+    }, [_vm._v(_vm._s(item.cantidad))]), _vm._v(" "), _c("td", {
+      staticClass: "text-right"
+    }, [_vm._v("S/. " + _vm._s(_vm.number_format(item.precio, 2, ".", "")))]), _vm._v(" "), _c("td", {
+      staticClass: "text-right"
+    }, [_vm._v("S/. " + _vm._s(_vm.number_format(item.subtotal, 2, ".", "")))])]);
+  }), 0), _vm._v(" "), _c("tfoot", [_c("tr", [_c("td", {
+    attrs: {
+      colspan: "3"
+    }
+  }), _vm._v(" "), _c("td", {
+    staticClass: "text-right"
+  }, [_c("b", [_vm._v("Monto Adicional")])]), _vm._v(" "), _c("td", {
+    staticClass: "text-right"
+  }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.number_format(_vm.productosAdicionalesTotal, 2, ".", "")))])])])])]) : _vm._e(), _vm._v(" "), _c("template", {
     slot: "btnNext"
   }, [_c("i", {
     staticClass: "fa fa-save"
@@ -4737,6 +4917,446 @@ render._withStripped = true;
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/FormProductos.vue?vue&type=template&id=63c50a22&lang=true&":
+/*!*************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/Matricula/FormProductos.vue?vue&type=template&id=63c50a22&lang=true& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "col-12 row pl-0 pr-0"
+  }, [_c("div", {
+    staticClass: "col-12 mt-3 mb-3"
+  }, [_c("button", {
+    staticClass: "btn btn-primary",
+    on: {
+      click: function click($event) {
+        return _vm.openModalProductos();
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-plus"
+  }), _vm._v(" Agregar Productos")])]), _vm._v(" "), !_vm.detalleIsEmpty ? _c("div", {
+    staticClass: "col-12"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_vm._m(0), _vm._v(" "), _c("thead", _vm._l(_vm.detalle, function (item, index) {
+    return _c("tr", {
+      key: index
+    }, [_c("td", [_vm._v("#" + _vm._s(index + 1))]), _vm._v(" "), _c("td", [_c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: item.nombre,
+        expression: "item.nombre"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "text"
+      },
+      domProps: {
+        value: item.nombre
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(item, "nombre", $event.target.value);
+        }
+      }
+    })]), _vm._v(" "), _c("td", [_c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: item.cantidad,
+        expression: "item.cantidad"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "number",
+        min: "1",
+        step: "1",
+        max: item.stock
+      },
+      domProps: {
+        value: item.cantidad
+      },
+      on: {
+        input: [function ($event) {
+          if ($event.target.composing) return;
+          _vm.$set(item, "cantidad", $event.target.value);
+        }, function ($event) {
+          return _vm.getMontoSubtotalDetalle(index);
+        }]
+      }
+    })]), _vm._v(" "), _c("td", [_c("div", {
+      staticClass: "input-group"
+    }, [_vm._m(1, true), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: item.precio,
+        expression: "item.precio"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "number",
+        min: "0",
+        step: "0.01"
+      },
+      domProps: {
+        value: item.precio
+      },
+      on: {
+        input: [function ($event) {
+          if ($event.target.composing) return;
+          _vm.$set(item, "precio", $event.target.value);
+        }, function ($event) {
+          return _vm.getMontoSubtotalDetalle(index);
+        }]
+      }
+    })])]), _vm._v(" "), _c("td", [_c("div", {
+      staticClass: "input-group"
+    }, [_vm._m(2, true), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: item.subtotal,
+        expression: "item.subtotal"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "text",
+        readonly: ""
+      },
+      domProps: {
+        value: item.subtotal
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(item, "subtotal", $event.target.value);
+        }
+      }
+    })])]), _vm._v(" "), _c("td", [_c("button", {
+      staticClass: "btn btn-danger",
+      on: {
+        click: function click($event) {
+          return _vm.removeItemDetalle(index);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-trash"
+    })])])]);
+  }), 0), _vm._v(" "), _c("tfoot", [_c("tr", [_c("td", {
+    attrs: {
+      colspan: "3"
+    }
+  }), _vm._v(" "), _vm._m(3), _vm._v(" "), _c("td", {
+    staticClass: "text-center"
+  }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.total))])]), _vm._v(" "), _c("td")])])])]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "modal fade",
+    attrs: {
+      id: "addProductoModalCenter",
+      tabindex: "-1",
+      role: "dialog",
+      "aria-labelledby": "addProductoModalCenterTitle",
+      "aria-hidden": "true"
+    }
+  }, [_c("div", {
+    staticClass: "modal-dialog modal-dialog-centered modal-lg",
+    attrs: {
+      role: "document"
+    }
+  }, [_c("div", {
+    staticClass: "modal-content"
+  }, [_vm._m(4), _vm._v(" "), _c("div", {
+    staticClass: "modal-body"
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-12 form-group"
+  }, [_c("label", {
+    attrs: {
+      "for": "buscarProducto"
+    }
+  }, [_vm._v("Buscar producto")]), _vm._v(" "), _c("div", {
+    staticClass: "input-group"
+  }, [_c("input", {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: _vm.search.producto.txtBuscar,
+      expression: "search.producto.txtBuscar"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      id: "buscarProducto",
+      placeholder: "Código/ Nombre/ Descripción"
+    },
+    domProps: {
+      value: _vm.search.producto.txtBuscar
+    },
+    on: {
+      keyup: function keyup($event) {
+        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "enter", 13, $event.key, "Enter")) return null;
+        return _vm.getProductos(1);
+      },
+      input: function input($event) {
+        if ($event.target.composing) return;
+        _vm.$set(_vm.search.producto, "txtBuscar", $event.target.value);
+      }
+    }
+  }), _vm._v(" "), _c("div", {
+    staticClass: "input-group-append"
+  }, [_c("span", {
+    staticClass: "btn-primary input-group-text",
+    attrs: {
+      "cursor-pointer": ""
+    },
+    on: {
+      click: function click($event) {
+        return _vm.getProductos(1);
+      }
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-search"
+  })])])])]), _vm._v(" "), !_vm.productsIsEmpty ? _c("div", {
+    staticClass: "col-12"
+  }, [_c("table", {
+    staticClass: "table table-sm"
+  }, [_vm._m(5), _vm._v(" "), _c("tbody", _vm._l(_vm.resources.productos.data, function (producto, index) {
+    return _c("tr", {
+      key: index
+    }, [_c("td", [_c("button", {
+      staticClass: "btn btn-primary btn-sm",
+      attrs: {
+        type: "button"
+      },
+      on: {
+        click: function click($event) {
+          return _vm.addProductoInDetalle(index);
+        }
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-plus"
+    })])]), _vm._v(" "), _c("td", [_vm._v(_vm._s(producto.idproducto.toString().padStart(7, 0)))]), _vm._v(" "), _c("td", [_vm._v(_vm._s(producto.nombre))]), _vm._v(" "), _c("td", [_c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: producto.cantidad,
+        expression: "producto.cantidad"
+      }],
+      staticClass: "form-control form-control-sm",
+      attrs: {
+        type: "number",
+        min: "1",
+        step: "1",
+        max: producto.stock
+      },
+      domProps: {
+        value: producto.cantidad
+      },
+      on: {
+        input: [function ($event) {
+          if ($event.target.composing) return;
+          _vm.$set(producto, "cantidad", $event.target.value);
+        }, function ($event) {
+          return _vm.getMontoSubtotalModalProducto(index);
+        }]
+      }
+    })]), _c("td", {
+      staticClass: "text-center"
+    }, [_vm._v(_vm._s(producto.stock))]), _vm._v(" "), _c("td", [_c("div", {
+      staticClass: "input-group"
+    }, [_vm._m(6, true), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: producto.precio,
+        expression: "producto.precio"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "number",
+        min: "0",
+        step: "0.01"
+      },
+      domProps: {
+        value: producto.precio
+      },
+      on: {
+        input: [function ($event) {
+          if ($event.target.composing) return;
+          _vm.$set(producto, "precio", $event.target.value);
+        }, function ($event) {
+          return _vm.getMontoSubtotalModalProducto(index);
+        }]
+      }
+    })])]), _vm._v(" "), _c("td", [_c("div", {
+      staticClass: "input-group"
+    }, [_vm._m(7, true), _vm._v(" "), _c("input", {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: producto.subtotal,
+        expression: "producto.subtotal"
+      }],
+      staticClass: "form-control",
+      attrs: {
+        type: "number",
+        step: "0.01",
+        readonly: ""
+      },
+      domProps: {
+        value: producto.subtotal
+      },
+      on: {
+        input: function input($event) {
+          if ($event.target.composing) return;
+          _vm.$set(producto, "subtotal", $event.target.value);
+        }
+      }
+    })])])]);
+  }), 0)]), _vm._v(" "), _c("pagination", {
+    attrs: {
+      align: "center",
+      data: _vm.resources.productos
+    },
+    on: {
+      "pagination-change-page": _vm.getProductos
+    }
+  })], 1) : _c("div", {
+    staticClass: "col-12"
+  }, [_vm._m(8)])])])])])])]);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("tr", [_c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("#")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Productos adicionales")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Cantidad")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Precio unitario (S/)")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Sub total (S/) ")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Acciones ")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "input-group-prepend"
+  }, [_c("span", {
+    staticClass: "input-group-text"
+  }, [_vm._v("S/.")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "input-group-prepend"
+  }, [_c("span", {
+    staticClass: "input-group-text"
+  }, [_vm._v("S/.")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("td", {
+    staticClass: "text-right"
+  }, [_c("b", [_vm._v("Total")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "modal-header"
+  }, [_c("h5", {
+    staticClass: "modal-title",
+    attrs: {
+      id: "addProductoModalCenterTitle"
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-plus"
+  }), _vm._v(" Agregar producto")]), _vm._v(" "), _c("button", {
+    staticClass: "close",
+    attrs: {
+      type: "button",
+      "data-dismiss": "modal",
+      "aria-label": "Close"
+    }
+  }, [_c("span", {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("tr", [_c("th", {
+    staticClass: "text-center"
+  }, [_c("button", {
+    staticClass: "btn btn-primary btn-sm",
+    attrs: {
+      disabled: ""
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-plus"
+  })])]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Código")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Nombre")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Cantidad")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Stock")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Precio Unitario")]), _vm._v(" "), _c("th", {
+    staticClass: "text-center"
+  }, [_vm._v("Precio total")])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "input-group-prepend"
+  }, [_c("span", {
+    staticClass: "input-group-text"
+  }, [_vm._v("S/.")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "input-group-prepend"
+  }, [_c("span", {
+    staticClass: "input-group-text"
+  }, [_vm._v("S/.")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "alert alert-danger"
+  }, [_c("p", {
+    staticClass: "text-center mb-0"
+  }, [_c("i", {
+    staticClass: "fa fa-exclamation-circle"
+  }), _vm._v(" No hay registros encontrados para mostrar.")])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/MatriculaGym/Nuevo.vue?vue&type=template&id=6948fe44&":
 /*!**********************************************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/views/MatriculaGym/Nuevo.vue?vue&type=template&id=6948fe44& ***!
@@ -5257,7 +5877,7 @@ var render = function render() {
           if ($event.target.composing) return;
           _vm.$set(producto, "cantidad", $event.target.value);
         }, function ($event) {
-          return _vm.changePrecioTotal(index);
+          return _vm.getMontoSubtotalModalProducto(index);
         }]
       }
     })]), _c("td", {
@@ -5285,7 +5905,7 @@ var render = function render() {
           if ($event.target.composing) return;
           _vm.$set(producto, "precio", $event.target.value);
         }, function ($event) {
-          return _vm.changePrecioTotal(index);
+          return _vm.getMontoSubtotalModalProducto(index);
         }]
       }
     })])]), _vm._v(" "), _c("td", [_c("div", {
@@ -5812,6 +6432,7 @@ var render = function render() {
         type: "number",
         min: "1",
         step: "1",
+        max: item.stock,
         readonly: item.idtipo_articulo === _vm.TIPO_ARTICULO_ID.MATRICULA
       },
       domProps: {
@@ -5822,7 +6443,7 @@ var render = function render() {
           if ($event.target.composing) return;
           _vm.$set(item, "cantidad", $event.target.value);
         }, function ($event) {
-          return _vm.changeMontoTotalDetalle(index);
+          return _vm.getMontoSubtotalDetalle(index);
         }]
       }
     })]), _vm._v(" "), _c("td", [_c("div", {
@@ -5849,7 +6470,7 @@ var render = function render() {
           if ($event.target.composing) return;
           _vm.$set(item, "precio", $event.target.value);
         }, function ($event) {
-          return _vm.changeMontoTotalDetalle(index);
+          return _vm.getMontoSubtotalDetalle(index);
         }]
       }
     })])]), _vm._v(" "), _c("td", [_c("div", {
@@ -6234,7 +6855,7 @@ var staticRenderFns = [function () {
     staticClass: "text-center"
   }, [_vm._v("Precio unitario (S/)")]), _vm._v(" "), _c("th", {
     staticClass: "text-center"
-  }, [_vm._v("costo total (S/) ")]), _vm._v(" "), _c("th", {
+  }, [_vm._v("Sub total (S/) ")]), _vm._v(" "), _c("th", {
     staticClass: "text-center"
   }, [_vm._v("Acciones ")])])]);
 }, function () {
@@ -64611,6 +65232,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_FormAlumno_vue_vue_type_template_id_7d1d6550_lang_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_FormAlumno_vue_vue_type_template_id_7d1d6550_lang_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/views/Matricula/FormProductos.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/views/Matricula/FormProductos.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _FormProductos_vue_vue_type_template_id_63c50a22_lang_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./FormProductos.vue?vue&type=template&id=63c50a22&lang=true& */ "./resources/js/views/Matricula/FormProductos.vue?vue&type=template&id=63c50a22&lang=true&");
+/* harmony import */ var _FormProductos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./FormProductos.vue?vue&type=script&lang=js& */ "./resources/js/views/Matricula/FormProductos.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _FormProductos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _FormProductos_vue_vue_type_template_id_63c50a22_lang_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _FormProductos_vue_vue_type_template_id_63c50a22_lang_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/views/Matricula/FormProductos.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/views/Matricula/FormProductos.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/views/Matricula/FormProductos.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormProductos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./FormProductos.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/FormProductos.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_FormProductos_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/views/Matricula/FormProductos.vue?vue&type=template&id=63c50a22&lang=true&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/views/Matricula/FormProductos.vue?vue&type=template&id=63c50a22&lang=true& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_FormProductos_vue_vue_type_template_id_63c50a22_lang_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../node_modules/vue-loader/lib??vue-loader-options!./FormProductos.vue?vue&type=template&id=63c50a22&lang=true& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/views/Matricula/FormProductos.vue?vue&type=template&id=63c50a22&lang=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_FormProductos_vue_vue_type_template_id_63c50a22_lang_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_FormProductos_vue_vue_type_template_id_63c50a22_lang_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

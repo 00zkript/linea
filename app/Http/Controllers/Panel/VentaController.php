@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
+use App\Models\CarritoDetalle;
 use App\Models\Cliente;
 use App\Models\Matricula;
 use App\Models\PagoCliente;

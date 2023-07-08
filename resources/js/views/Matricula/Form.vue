@@ -73,10 +73,13 @@
                     </select>
                 </div>
 
-                <div class="col-12 form-group">
+                <div class="col-md-8 col-12 form-group">
                     <label for="fecha">Periodo desde - hasta <span class="text-danger">(*)</span></label>
                     <DatePicker input-class="form-control" value-type="format" range v-model="matricula.fecha" placeholder="Periodo desde - hasta" :disabled-date="disabledDatesRange" ></DatePicker>
                 </div>
+
+                <FormProductos :detalle="productosAdicionales"/>
+
 
                 <div class="col-12" v-if="capacidadMaxima">
                     <div class="mt-3 mb-3 pr-5  alert alert-warning">
@@ -140,7 +143,8 @@
                     </tr>
                     <tr>
                         <td colspan="2"><b>Frecuencia:</b> {{ temp.frecuencias.nombre }} <br></td>
-                        <td colspan="2"><b>Cantidad de clases:</b> {{ temp.cantidadClases.nombre }} <br></td>
+                        <td><b>Cantidad de clases:</b> {{ temp.cantidadClases.cantidad }} <br></td>
+                        <td><b>Precio :</b>S/. {{ temp.cantidadClases.precio }} <br></td>
                     </tr>
                 </tbody>
             </table>
@@ -159,6 +163,35 @@
 
                 </tbody>
             </table>
+
+            <table class="table table-sm" v-if="!productosAdicionalesIsEmpty">
+                <thead >
+                    <tr>
+                        <th class="text-center">#</th>
+                        <th class="text-center">Productos adicionales</th>
+                        <th class="text-center">Cantidad</th>
+                        <th class="text-center">Precio unitario (S/)</th>
+                        <th class="text-center">Sub total (S/) </th>
+                    </tr>
+                </thead>
+                <thead>
+                    <tr v-for="(item, index) in productosAdicionales" :key="index" >
+                        <td class="text-center">#{{ (index+1) }}</td>
+                        <td>{{ item.nombre }}</td>
+                        <td class="text-center">{{ item.cantidad }}</td>
+                        <td class="text-right">S/. {{ number_format(item.precio,2,'.','') }}</td>
+                        <td class="text-right">S/. {{ number_format(item.subtotal,2,'.','') }}</td>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"></td>
+                        <td class="text-right"> <b>Monto Adicional</b> </td>
+                        <td class="text-right"> <b>S/. {{ number_format(productosAdicionalesTotal,2,'.','') }}</b> </td>
+                    </tr>
+                </tfoot>
+            </table>
+
 
             <template slot="btnNext"> <i class="fa fa-save"></i> Guardar </template>
             <template slot="btnCancel"> <i class="fa fa-times"></i> Cancelar </template>
@@ -185,12 +218,13 @@
 import StepsContainer from "../../components/StepsContainerComponent.vue";
 import Step from '../../components/StepComponent.vue';
 import FormAlumno from "./FormAlumno.vue";
+import FormProductos from "./FormProductos.vue";
 import moment from 'moment';
 moment.locale('es-mx');
 
 
 export default {
-    components: { StepsContainer, Step, FormAlumno },
+    components: { StepsContainer, Step, FormAlumno, FormProductos },
     props: {
         alumno_id: {
             type: Number,
@@ -271,6 +305,7 @@ export default {
             },
             matricula: {
                 idmatricula: '',
+                idcarrito: null,
                 fecha: [],
                 idconcepto: 1,
                 idempleado: '',
@@ -284,10 +319,12 @@ export default {
                 idcantidad_clases: '',
             },
             matriculaHorarioDia: [],
+            productosAdicionales: [],
             codigoMatricula: null,
             capacidadMaxima: null,
             cantidadMatriculados: null,
             cantidadClasesMaxima: null,
+            sendMatricualCount : false,
         };
     },
     watch: {
@@ -304,8 +341,21 @@ export default {
             this.getCountMatriculados();
         },
     },
+    computed: {
+        productosAdicionalesIsEmpty() {
+            const products = this.productosAdicionales;
+            return products.length === 0
+        },
+        productosAdicionalesTotal() {
+            const sum = this.productosAdicionales.reduce( (acc,cur) => {
+                return parseFloat(acc)+parseFloat(cur.subtotal);
+            },0);
+            return number_format( sum, 2, '.', '' );
+        }
+    },
     methods: {
         soloNumeros: soloNumeros,
+        number_format, number_format,
         disabledDatesRange(date) {
             const currentDate = new Date();
             currentDate.setHours(0, 0, 0, 0); // Establecer las horas, minutos, segundos y milisegundos a cero para comparación precisa
@@ -349,7 +399,7 @@ export default {
             })
         },
         getAlumno(clienteID) {
-            return axios(route('matricula.alumno',clienteID))
+            return axios(route('matricula.resources.alumno',clienteID))
                 .then( (response) => {
                     const data = response.data;
 
@@ -385,10 +435,10 @@ export default {
                 })
         },
         getMatricula(matriculaID) {
-            return axios(route('matricula.matricula',matriculaID))
+            return axios(route('matricula.resources.matricula',matriculaID))
                 .then( (response) => {
                     const data = response.data;
-                    const { resources, matricula, alumno } = data;
+                    const { resources, matricula, alumno, productos_adicionales } = data;
 
                     this.alumno.idcliente                  = alumno.idcliente;
                     this.alumno.nombres                    = alumno.nombres ?? '';
@@ -419,7 +469,6 @@ export default {
                     this.resources.niveles     = resources.niveles;
                     this.resources.carriles    = resources.carriles;
                     this.resources.frecuencias = resources.frecuencias;
-                    const horarioFind = this.resources.horarios.find(ele => ele.idhorario === matricula.detalle[0].idhorario );
 
 
                     this.matricula.idmatricula       = matricula.idmatricula;
@@ -435,8 +484,9 @@ export default {
                     this.matricula.idnivel           = matricula.idnivel;
                     this.matricula.idcarril          = matricula.idcarril;
                     this.matricula.idfrecuencia      = matricula.idfrecuencia;
-                    this.matricula.idhorario         = matricula.detalle[0].idhorario;
+                    this.matricula.idhorario         = matricula.idhorario;
                     this.matricula.idcantidad_clases = matricula.idcantidad_clases;
+                    this.matricula.idcarrito = matricula.idcarrito;
 
 
 
@@ -444,7 +494,17 @@ export default {
                         fecha: ele.fecha,
                         dia_name: ele.dia_nombre,
                         idhorario: ele.idhorario,
-                        horario_nombre: horarioFind.nombre,
+                        horario_nombre: ele.horario_nombre,
+                    }));
+
+                    this.productosAdicionales = productos_adicionales.map( ele => ({
+                        idtipo_articulo: ele.idtipo_articulo,
+                        idarticulo: ele.idarticulo,
+                        nombre: ele.nombre,
+                        cantidad: ele.cantidad,
+                        stock: ele.stock,
+                        precio: ele.precio,
+                        subtotal: ele.subtotal,
                     }))
 
                     this.codigoMatricula = matricula.idmatricula.toString().padStart(7,0);
@@ -511,7 +571,6 @@ export default {
             return errors;
         },
         storeAlumno() {
-            debugger;
             const errors = this.validateAlumno();
             if (errors.length > 0) {
                 alertModal({ type: 'error', title: 'Errores encontrados:', content: listErrorsForm(errors)});
@@ -577,7 +636,7 @@ export default {
 
 
         getNiveles(nivelID = '') {
-            return axios(route('matricula.niveles',this.matricula.idprograma))
+            return axios(route('matricula.resources.niveles',this.matricula.idprograma))
             .then( response => {
                 const data = response.data;
                 this.resources.niveles = data.sort((a, b) => a.posicion - b.posicion);
@@ -585,7 +644,7 @@ export default {
             });
         },
         getCarriles(carrilID = '') {
-            return axios(route('matricula.carriles',this.matricula.idnivel))
+            return axios(route('matricula.resources.carriles',this.matricula.idnivel))
             .then( response => {
                 const data = response.data;
                 this.resources.carriles = data;
@@ -593,7 +652,7 @@ export default {
             });
         },
         getFrecuencias(frecuenciaID = '') {
-            return axios(route('matricula.frecuencias',this.matricula.idprograma))
+            return axios(route('matricula.resources.frecuencias',this.matricula.idprograma))
             .then( response => {
                 const data = response.data;
                 this.resources.frecuencias = data;
@@ -606,8 +665,11 @@ export default {
 
             if (!idtemporada || !idprograma || !idnivel || !idcarril || !idfrecuencia) return;
 
+            if (this.sendMatricualCount )return;
+            this.sendMatricualCount = true
 
-            return axios.get(route('matricula.cantidadDeAlumnosMatriculados'),{
+
+            return axios.get(route('matricula.resources.cantidadDeAlumnosMatriculados'),{
                 params: {
                     idtemporada: idtemporada,
                     idprograma: idprograma,
@@ -618,10 +680,21 @@ export default {
             })
             .then( response => {
                 const data = response.data;
+                this.sendMatricualCount = false;
 
                 this.capacidadMaxima = data.capacidad_maxima;
                 this.cantidadMatriculados = data.cantidad_matriculados;
-            });
+            })
+            .catch( error => {
+                this.sendMatricualCount = false;
+                if ( error.response === undefined) return console.error(error);
+
+                const response = error.response;
+                const data = response.data;
+
+
+
+            });;
         },
         getDaysFromDate( fechaInicio, fechaFin, daysValid ) {
             const fechasDeseadas = [];
@@ -744,7 +817,7 @@ export default {
         },
         cancelarSaveMatricula() {
             if ( this.matricula_id ) {
-                axios(route('matricula.matricula',this.matricula_id))
+                axios(route('matricula.resources.matricula',this.matricula_id))
                 .then( (response) => {
                     const data = response.data;
                     const { resources, matricula } = data;
@@ -831,12 +904,14 @@ export default {
 
         storeMatriculaHorario(){
 
-            const { matricula, alumno, matriculaHorarioDia } = this;
+            const { matricula, alumno, matriculaHorarioDia, productosAdicionales } = this;
 
             const matriculaData = {
                 ...matricula,
                 idcliente: alumno.idcliente,
                 detalle : matriculaHorarioDia,
+                productosAdicionales : productosAdicionales,
+                productosAdicionalesTotal : this.productosAdicionalesTotal,
             };
 
             let URL_ACTION = route('matricula.storeMatricula');

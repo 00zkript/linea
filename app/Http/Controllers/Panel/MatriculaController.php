@@ -14,14 +14,21 @@ use Illuminate\Http\Request;
 use App\Models\CantidadClases;
 use App\Http\Controllers\Controller;
 use App\Models\Carril;
+use App\Models\Carrito;
+use App\Models\CarritoDetalle;
 use App\Models\Cliente;
 use App\Models\MatriculaDetalle;
+use App\Models\Producto;
 use App\Models\Programa;
 use App\Models\TipoDocumentoIdentidad;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class MatriculaController extends Controller
 {
+    public $TIPO_ARTICULO_PRODUCTO_ID = 1;
+    public $TIPO_ARTICULO_MATRICULA_ID = 2;
+
     public function index()
     {
         $registros = Matricula::query()
@@ -212,7 +219,7 @@ class MatriculaController extends Controller
 
     public function matricula(Request $request, $matriculaID)
     {
-
+        $TIPO_ARTICULO_PRODUCTO_ID = $this->TIPO_ARTICULO_PRODUCTO_ID;
         $matricula = Matricula::query()->with(['detalle'])->find($matriculaID);
 
         $alumno = Cliente::query()
@@ -234,6 +241,20 @@ class MatriculaController extends Controller
             ->get();
 
         $frecuencias = $matricula->programa->frecuencias()->where('estado',1)->get();
+        $TIPO_ARTICULO_MATRICULA_ID = $this->TIPO_ARTICULO_MATRICULA_ID;
+
+
+        $productosAdicionales =  CarritoDetalle::query()
+            ->selectRaw("
+                *,
+                ( select producto.stock from producto where producto.idproducto = carrito_detalle.idarticulo and carrito_detalle.idtipo_articulo = $TIPO_ARTICULO_PRODUCTO_ID limit 1 ) as stock
+            ")
+            ->where('idcarrito',$matricula->idcarrito)
+            ->where(function ($query) use($matricula, $TIPO_ARTICULO_MATRICULA_ID) {
+                return $query->where('idarticulo', '!=', $matricula->idcarrito)
+                    ->where('idtipo_articulo', '!=', $TIPO_ARTICULO_MATRICULA_ID);
+            })
+            ->get();
 
         return response()->json([
             "resources" => [
@@ -243,7 +264,32 @@ class MatriculaController extends Controller
             ],
             "matricula" => $matricula,
             "alumno" => $alumno,
+            "productos_adicionales" => $productosAdicionales,
         ]);
+    }
+
+    public function productos(Request $request)
+    {
+        if ( !$request->ajax() ) {
+            return abort(400);
+        }
+
+        $cantidadRegistros = $request->input('cantidadRegistros');
+        $paginaActual = $request->input('paginaActual');
+        $txtBuscar = $request->input('txtBuscar');
+
+        $productos = Producto::query()
+            ->selectRaw('*, 1 as cantidad, precio as subtotal')
+            ->where('estado',1)
+            ->when($txtBuscar,function($query) use($txtBuscar){
+                return $query->where(DB::raw('LPAD(idproducto,7,0)'),'LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('nombre','LIKE','%'.$txtBuscar.'%')
+                    ->orWhere('descripcion','LIKE','%'.$txtBuscar.'%');
+            })
+            ->orderBy('idproducto','desc')
+            ->paginate($cantidadRegistros,['*'],'page',$paginaActual);
+
+        return response()->json($productos);
     }
 
     public function provincias(Request $request, $iddepartamento)
@@ -409,7 +455,7 @@ class MatriculaController extends Controller
             ->where('idnivel', $piscinaID)
             ->where('idcarril', $carrilID)
             ->where('idfrecuencia', $frecuenciaID)
-            ->whereNotNull('finalizado_at')
+            ->whereNull('finalizado_at')
             ->count('idcliente');
 
         return response()->json([
@@ -424,18 +470,21 @@ class MatriculaController extends Controller
             return abort(400);
         }
 
-        $fecha               = $request->input('fecha');
-        $idconcepto          = $request->input('idconcepto');
-        $idempleado          = $request->input('idempleado');
-        $idsucursal          = $request->input('idsucursal');
-        $idtemporada         = $request->input('idtemporada');
-        $idprograma          = $request->input('idprograma');
-        $idnivel           = $request->input('idnivel');
-        $idcarril            = $request->input('idcarril');
-        $idfrecuencia = $request->input('idfrecuencia');
-        $idcantidad_clases = $request->input('idcantidad_clases');
-        $idcliente           = $request->input('idcliente');
-        $detalle             = $request->input('detalle');
+        $fecha                     = $request->input('fecha');
+        $idconcepto                = $request->input('idconcepto');
+        $idempleado                = $request->input('idempleado');
+        $idsucursal                = $request->input('idsucursal');
+        $idtemporada               = $request->input('idtemporada');
+        $idprograma                = $request->input('idprograma');
+        $idnivel                   = $request->input('idnivel');
+        $idcarril                  = $request->input('idcarril');
+        $idfrecuencia              = $request->input('idfrecuencia');
+        $idcantidad_clases         = $request->input('idcantidad_clases');
+        $idcliente                 = $request->input('idcliente');
+        $idhorario                 = $request->input('idhorario');
+        $detalle                   = $request->input('detalle');
+        $productosAdicionales      = $request->input('productosAdicionales');
+        $productosAdicionalesTotal = $request->input('productosAdicionalesTotal');
 
 
 
@@ -444,6 +493,16 @@ class MatriculaController extends Controller
         $cliente          = Cliente::query()->find($idcliente);
         $empleado         = auth()->user();
         $cantidadClases   = CantidadClases::query()->find($idcantidad_clases);
+        $concepto         = Concepto::query()->find($idconcepto);
+        $TIPO_ARTICULO_MATRICULA_ID = $this->TIPO_ARTICULO_MATRICULA_ID;
+
+        $carrito = new Carrito();
+        $carrito->idsucursal = $idsucursal;
+        $carrito->idempleado = $idempleado;
+        $carrito->idcliente = $idcliente;
+        $carrito->estado = 1;
+        $carrito->monto_total = number_format($cantidadClases->precio + $productosAdicionalesTotal,2,'.','');
+        $carrito->save();
 
 
         $matricula = new Matricula();
@@ -467,8 +526,10 @@ class MatriculaController extends Controller
         $matricula->idcarril                            = $idcarril;
         $matricula->idfrecuencia                        = $idfrecuencia;
         $matricula->idcantidad_clases                   = $idcantidad_clases;
+        $matricula->idhorario                           = $idhorario;
         $matricula->cantidad_clases                     = $cantidadClases->cantidad;
         $matricula->monto_total                         = $cantidadClases->precio;
+        $matricula->idcarrito                           = $carrito->idcarrito;
         $matricula->estado                              = 1;
         $matricula->save();
 
@@ -483,8 +544,33 @@ class MatriculaController extends Controller
         }
 
 
+        $carritoDetalle = new CarritoDetalle();
+        $carritoDetalle->idcarrito       = $carrito->idcarrito;
+        $carritoDetalle->idtipo_articulo = $TIPO_ARTICULO_MATRICULA_ID;
+        $carritoDetalle->nombre          = $concepto->nombre." ".now()->format('m/Y');
+        $carritoDetalle->idarticulo      = $matricula->idmatricula;
+        $carritoDetalle->cantidad        = 1;
+        $carritoDetalle->precio          = $matricula->monto_total;
+        $carritoDetalle->subtotal        = $matricula->monto_total;
+        $carritoDetalle->save();
+
+
+        foreach($productosAdicionales as $adicional) {
+            $carritoDetalle = new CarritoDetalle();
+            $carritoDetalle->idcarrito       = $carrito->idcarrito;
+            $carritoDetalle->idtipo_articulo = $adicional['idtipo_articulo'];
+            $carritoDetalle->nombre          = $adicional['nombre'];
+            $carritoDetalle->idarticulo      = $adicional['idarticulo'];
+            $carritoDetalle->cantidad        = $adicional['cantidad'];
+            $carritoDetalle->precio          = $adicional['precio'];
+            $carritoDetalle->subtotal        = $adicional['subtotal'];
+            $carritoDetalle->save();
+        }
+
+
+
         return response()->json([
-            'codigo' => str_pad($matricula->idmatricula,7,0,STR_PAD_LEFT)
+            'codigo' => str_pad($carrito->idcarrito,7,0,STR_PAD_LEFT)
         ]);
 
     }
@@ -507,8 +593,12 @@ class MatriculaController extends Controller
         $idcarril            = $request->input('idcarril');
         $idfrecuencia        = $request->input('idfrecuencia');
         $idcantidad_clases   = $request->input('idcantidad_clases');
+        $idhorario           = $request->input('idhorario');
         $idcliente           = $request->input('idcliente');
         $detalle             = $request->input('detalle');
+        $productosAdicionales = $request->input('productosAdicionales');
+        $productosAdicionalesTotal = $request->input('productosAdicionalesTotal');
+        $idcarrito = $request->input('idcarrito');
 
 
 
@@ -517,6 +607,18 @@ class MatriculaController extends Controller
         $cliente          = Cliente::query()->find($idcliente);
         $empleado         = auth()->user();
         $cantidadClases   = CantidadClases::query()->find($idcantidad_clases);
+        $concepto   = Concepto::query()->find($idconcepto);
+        $TIPO_ARTICULO_MATRICULA_ID = $this->TIPO_ARTICULO_MATRICULA_ID;
+
+
+
+        $carrito = Carrito::query()->find($idcarrito);
+        $carrito->idsucursal = $idsucursal;
+        $carrito->idempleado = $idempleado;
+        $carrito->idcliente = $idcliente;
+        $carrito->estado = 1;
+        $carrito->monto_total = number_format($cantidadClases->precio + $productosAdicionalesTotal,2,'.','');
+        $carrito->update();
 
 
         $matricula = Matricula::query()->find($matriculaID);
@@ -540,6 +642,7 @@ class MatriculaController extends Controller
         $matricula->idcarril                            = $idcarril;
         $matricula->idfrecuencia                        = $idfrecuencia;
         $matricula->idcantidad_clases                   = $idcantidad_clases;
+        $matricula->idhorario                           = $idhorario;
         $matricula->cantidad_clases                     = $cantidadClases->cantidad;
         $matricula->monto_total                         = $cantidadClases->precio;
         $matricula->estado                              = 1;
@@ -557,8 +660,35 @@ class MatriculaController extends Controller
         }
 
 
+        CarritoDetalle::query()->where('idcarrito',$idcarrito)->delete();
+
+        $carritoDetalle = new CarritoDetalle();
+        $carritoDetalle->idcarrito       = $carrito->idcarrito;
+        $carritoDetalle->idtipo_articulo = $TIPO_ARTICULO_MATRICULA_ID;
+        $carritoDetalle->nombre          = $concepto->nombre." ".now()->format('m/Y');
+        $carritoDetalle->idarticulo      = $matricula->idmatricula;
+        $carritoDetalle->cantidad        = 1;
+        $carritoDetalle->precio          = $matricula->monto_total;
+        $carritoDetalle->subtotal        = $matricula->monto_total;
+        $carritoDetalle->save();
+
+
+        foreach($productosAdicionales as $adicional) {
+            $carritoDetalle = new CarritoDetalle();
+            $carritoDetalle->idcarrito       = $carrito->idcarrito;
+            $carritoDetalle->idtipo_articulo = $adicional['idtipo_articulo'];
+            $carritoDetalle->nombre          = $adicional['nombre'];
+            $carritoDetalle->idarticulo      = $adicional['idarticulo'];
+            $carritoDetalle->cantidad        = $adicional['cantidad'];
+            $carritoDetalle->precio          = $adicional['precio'];
+            $carritoDetalle->subtotal        = $adicional['subtotal'];
+            $carritoDetalle->save();
+        }
+
+
+
         return response()->json([
-            'codigo' => str_pad($matricula->idmatricula,7,0,STR_PAD_LEFT)
+            'codigo' => str_pad($carrito->idcarrito,7,0,STR_PAD_LEFT)
         ]);
 
     }

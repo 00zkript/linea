@@ -79,11 +79,11 @@
                                             <td><button class="btn btn-primary btn-sm" type="button" @click="addProductoInDetalle(index)"><i class="fa fa-plus"></i></button></td>
                                             <td>{{ (producto.idproducto).toString().padStart(7,0) }}</td>
                                             <td>{{ producto.nombre }}</td>
-                                            <td><input type="number" class="form-control form-control-sm" min="1" step="1" :max="producto.stock" v-model="producto.cantidad" @input="changePrecioTotal(index)"></th>
+                                            <td><input type="number" class="form-control form-control-sm" min="1" step="1" :max="producto.stock" v-model="producto.cantidad" @input="getMontoSubtotalModalProducto(index)"></th>
                                             <td class="text-center">{{ producto.stock }}</td>
                                             <td><div class="input-group">
                                                 <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                <input type="number" class="form-control" min="0" step="0.01" v-model="producto.precio" @input="changePrecioTotal(index)" >
+                                                <input type="number" class="form-control" min="0" step="0.01" v-model="producto.precio" @input="getMontoSubtotalModalProducto(index)" >
                                             </div></td>
                                             <td>
                                                 <div class="input-group">
@@ -266,7 +266,7 @@
                                                 <th class="text-center">Producto / Servicio</th>
                                                 <th class="text-center">Cantidad</th>
                                                 <th class="text-center">Precio unitario (S/)</th>
-                                                <th class="text-center">costo total (S/) </th>
+                                                <th class="text-center">Sub total (S/) </th>
                                                 <th class="text-center">Acciones </th>
                                             </tr>
                                         </thead>
@@ -274,11 +274,11 @@
                                             <tr v-for="(item, index) in detalle" :key="index" >
                                                 <td>{{ (index+1) }}</td>
                                                 <td><input type="text" class="form-control" v-model="item.nombre" ></td>
-                                                <td><input type="number" min="1" step="1" class="form-control" v-model="item.cantidad" :readonly="item.idtipo_articulo === TIPO_ARTICULO_ID.MATRICULA" @input="changeMontoTotalDetalle(index)" ></td>
+                                                <td><input type="number" min="1" step="1" :max="item.stock" class="form-control" v-model="item.cantidad" :readonly="item.idtipo_articulo === TIPO_ARTICULO_ID.MATRICULA" @input="getMontoSubtotalDetalle(index)" ></td>
                                                 <td>
                                                     <div class="input-group">
                                                         <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
-                                                        <input type="number" min="0" step="0.01" class="form-control" v-model="item.precio" :readonly="item.idtipo_articulo === TIPO_ARTICULO_ID.MATRICULA" @input="changeMontoTotalDetalle(index)" ></input>
+                                                        <input type="number" min="0" step="0.01" class="form-control" v-model="item.precio" :readonly="item.idtipo_articulo === TIPO_ARTICULO_ID.MATRICULA" @input="getMontoSubtotalDetalle(index)" ></input>
                                                     </div>
                                                 </td>
                                                 <td>
@@ -459,16 +459,16 @@ export default {
             this.getMontoTotal();
         },
         'headVenta.monto_total'(newValue) {
-            this.getMontoVuelto();
-            this.getMontoDeuda();
+            this.getMontoDevelto();
+            this.getMontoFaltante();
         },
         'headVenta.monto_efectivo'(newValue) {
-            this.getMontoVuelto();
-            this.getMontoDeuda();
+            this.getMontoDevelto();
+            this.getMontoFaltante();
         },
         'headVenta.monto_transferido'(newValue) {
-            this.getMontoVuelto();
-            this.getMontoDeuda();
+            this.getMontoDevelto();
+            this.getMontoFaltante();
         }
     },
     methods: {
@@ -522,7 +522,7 @@ export default {
                 this.resources.productos = data;
             })
         },
-        changePrecioTotal( index ) {
+        getMontoSubtotalModalProducto( index ) {
             const producto = this.resources.productos.data[index];
             const cantidad =  producto.cantidad ?? 0;
             const precio =  producto.precio ?? 0;
@@ -542,6 +542,7 @@ export default {
                     idarticulo: producto.idproducto,
                     nombre: producto.nombre,
                     cantidad: newCantidad,
+                    stock: stock,
                     precio: precio,
                     monto_total: producto.monto_total,
                 });
@@ -596,6 +597,7 @@ export default {
                 idarticulo: matricula.idmatricula,
                 nombre: matricula.descripcion,
                 cantidad: 1,
+                stock: 1,
                 precio: matricula.monto_total,
                 monto_total: matricula.monto_total,
             });
@@ -613,7 +615,7 @@ export default {
             const montoTotal =  number_format( sum, 2, '.', '' );
             this.headVenta.monto_total = montoTotal;
         },
-        getMontoVuelto() {
+        getMontoDevelto() {
             const montoTotal = parseFloat(this.headVenta.monto_total);
             const montoPagado =  parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
             const vuelto =  montoPagado - montoTotal;
@@ -623,7 +625,7 @@ export default {
             }
             this.headVenta.monto_efectivo_devuelto = number_format(vuelto,2,'.','');
         },
-        getMontoDeuda() {
+        getMontoFaltante() {
             const montoTotal = parseFloat(this.headVenta.monto_total);
             const montoPagado =  parseFloat(this.headVenta.monto_efectivo) + parseFloat(this.headVenta.monto_transferido);
             const deuda =  montoPagado - montoTotal;
@@ -637,7 +639,7 @@ export default {
         removeItemDetalle( index ) {
             this.detalle = this.detalle.filter( (ele,idx) => idx !== index);
         },
-        changeMontoTotalDetalle( index ) {
+        getMontoSubtotalDetalle( index ) {
             const detalleItem = this.detalle[index];
             const { cantidad, precio } = detalleItem;
 
