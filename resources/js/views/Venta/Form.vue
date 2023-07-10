@@ -148,16 +148,21 @@
                                             <th><button class="btn btn-primary" disabled="disabled"><i class="fa fa-plus"></i></button></th>
                                             <th>Código</th>
                                             <th>Descripción</th>
-                                            <th>periodo</th>
+                                            <th>Periodo</th>
+                                            <th>¿Pagado?</th>
                                             <th>Subtotal</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr v-for="(matricula, index) in resources.matriculas.data" :key="index" >
-                                            <td><button class="btn btn-primary" type="button" @click="addMatriculaInDetalle(index)"><i class="fa fa-plus"></i></button></td>
+                                            <td><button class="btn btn-primary" type="button" @click="addMatriculaInDetalle(index)" :disabled="matricula.pagado != 0"><i class="fa fa-plus"></i></button></td>
                                             <td>{{ (matricula.idmatricula).toString().padStart(7,0) }}</td>
                                             <td><input type="text" class="form-control" v-model="matricula.descripcion"></td>
                                             <td>{{ matricula.fecha_inicio }} - {{ matricula.fecha_fin }}</td>
+                                            <td>
+                                                <label class="badge badge-success" v-if="matricula.pagado" >Pagado</label>
+                                                <label class="badge badge-danger" v-else >Pendiente</label>
+                                            </td>
                                             <td>S/. {{ matricula.monto_total }}</td>
                                         </tr>
                                     </tbody>

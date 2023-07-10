@@ -6081,7 +6081,8 @@ var render = function render() {
     }, [_c("td", [_c("button", {
       staticClass: "btn btn-primary",
       attrs: {
-        type: "button"
+        type: "button",
+        disabled: matricula.pagado != 0
       },
       on: {
         click: function click($event) {
@@ -6110,7 +6111,11 @@ var render = function render() {
           _vm.$set(matricula, "descripcion", $event.target.value);
         }
       }
-    })]), _vm._v(" "), _c("td", [_vm._v(_vm._s(matricula.fecha_inicio) + " - " + _vm._s(matricula.fecha_fin))]), _vm._v(" "), _c("td", [_vm._v("S/. " + _vm._s(matricula.monto_total))])]);
+    })]), _vm._v(" "), _c("td", [_vm._v(_vm._s(matricula.fecha_inicio) + " - " + _vm._s(matricula.fecha_fin))]), _vm._v(" "), _c("td", [matricula.pagado ? _c("label", {
+      staticClass: "badge badge-success"
+    }, [_vm._v("Pagado")]) : _c("label", {
+      staticClass: "badge badge-danger"
+    }, [_vm._v("Pendiente")])]), _vm._v(" "), _c("td", [_vm._v("S/. " + _vm._s(matricula.monto_total))])]);
   }), 0)]), _vm._v(" "), _c("pagination", {
     attrs: {
       align: "center",
@@ -6833,7 +6838,7 @@ var staticRenderFns = [function () {
     }
   }, [_c("i", {
     staticClass: "fa fa-plus"
-  })])]), _vm._v(" "), _c("th", [_vm._v("Código")]), _vm._v(" "), _c("th", [_vm._v("Descripción")]), _vm._v(" "), _c("th", [_vm._v("periodo")]), _vm._v(" "), _c("th", [_vm._v("Subtotal")])])]);
+  })])]), _vm._v(" "), _c("th", [_vm._v("Código")]), _vm._v(" "), _c("th", [_vm._v("Descripción")]), _vm._v(" "), _c("th", [_vm._v("Periodo")]), _vm._v(" "), _c("th", [_vm._v("¿Pagado?")]), _vm._v(" "), _c("th", [_vm._v("Subtotal")])])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;

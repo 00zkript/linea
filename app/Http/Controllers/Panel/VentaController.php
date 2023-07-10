@@ -290,14 +290,15 @@ class VentaController extends Controller
 
         $matriculas = Matricula::query()
             ->leftJoin('concepto','concepto.idconcepto','matricula.idconcepto')
-            // ->leftJoin('carrito','carrito.idcarrito','matricula.idcarrito')
+            ->leftJoin('carrito','carrito.idcarrito','matricula.idcarrito')
             ->selectRaw("
                 matricula.idmatricula,
                 matricula.idcliente,
                 matricula.monto_total,
                 matricula.fecha_inicio,
                 matricula.fecha_fin,
-                concat(concepto.nombre, ' - ', LPAD(MONTH(matricula.created_at),2,0), '/', YEAR(matricula.created_at)) as descripcion
+                concat(concepto.nombre, ' - ', LPAD(MONTH(matricula.created_at),2,0), '/', YEAR(matricula.created_at)) as descripcion,
+                if(carrito.pagado is null,0,carrito.pagado) as pagado
             ")
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query->where('matricula.idmatricula','LIKE','%'.$txtBuscar.'%')
