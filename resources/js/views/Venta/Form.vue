@@ -514,7 +514,7 @@ export default {
             this.getProductos(1);
 
             if (this.carrito_id) {
-                this.search.carrito.idcarrito = this.carrito_id;
+                this.search.carrito.idcarrito = this.carrito_id.toString().padStart(7,0);
                 this.getCarrito();
             }
 
@@ -522,7 +522,9 @@ export default {
         },
         resetData() {
             Object.assign(this.$data, this.$options.data.call(this));
-            this.init();
+            this.getResources();
+            this.getProductos(1);
+            this.headVenta.fecha_pago = moment().format('YYYY-MM-DD');
             document.querySelector('#cliente').value="";
         },
         disabledDates( date ) {
@@ -540,7 +542,7 @@ export default {
                 const data = response.data;
                 const { carrito, cliente, detalle} = data;
 
-                this.headVenta.idcarrito = this.idcarrito;
+                this.headVenta.idcarrito = parseInt(idcarrito);
                 this.cliente = cliente;
                 this.detalle = detalle.map( ele => {
                     if (ele.idtipo_articulo == this.TIPO_ARTICULO_ID.MATRICULA) {
@@ -791,7 +793,13 @@ export default {
             .then( response => {
                 const data = response.data;
                 alertModal({ type: 'success',title: '¡Felicidades!', content: 'Se guardó el pago exitosamente.', time: 3*1000});
-                this.resetData();
+
+                if (this.carrito_id) {
+                    location.href = route('venta.create');
+                }else{
+                    this.resetData();
+
+                }
 
             }).catch(this.catch);
 

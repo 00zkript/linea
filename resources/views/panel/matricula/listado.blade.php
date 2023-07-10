@@ -10,6 +10,7 @@
                 <th>Precio total</th>
                 <th>Periodo</th>
                 <th>Fecha de registro</th>
+                <th>N° pedido</th>
                 {{-- <th>Estado</th> --}}
                 <th>¿Finalizado?</th>
                 <th>¿Pagado?</th>
@@ -26,6 +27,7 @@
                     <td>S/. {{ number_format($item->monto_total,2) }}</td>
                     <td>{{ now()->parse($item->fecha_inicio)->format('d/m/Y') }} -- {{ now()->parse($item->fecha_fin)->format('d/m/Y') }}</td>
                     <td>{{ now()->parse($item->created_at)->format('d/m/Y  h:i A') }}</td>
+                    <td>{{ str_pad($item->idcarrito,7,0,STR_PAD_LEFT) }}</td>
                     {{-- <td>{!! $item->estado ? '<label class="badge badge-success">Habilidado</label>' : '<label class="badge badge-danger">Inhabilitado</label>' !!}</td> --}}
                     <td>{!! $item->finalizado_at ? '<label class="badge badge-primary">Finalizado</label>' : '<label class="badge badge-secondary">Sin finalizar</label>' !!}</td>
                     <td>{!! $item->carrito->pagado ? '<label class="badge badge-primary">Pagado</label>' : '<label class="badge badge-secondary">Pendiente</label>' !!}</td>

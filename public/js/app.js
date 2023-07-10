@@ -3356,14 +3356,16 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       this.getResources();
       this.getProductos(1);
       if (this.carrito_id) {
-        this.search.carrito.idcarrito = this.carrito_id;
+        this.search.carrito.idcarrito = this.carrito_id.toString().padStart(7, 0);
         this.getCarrito();
       }
       this.headVenta.fecha_pago = moment__WEBPACK_IMPORTED_MODULE_1___default()().format('YYYY-MM-DD');
     },
     resetData: function resetData() {
       Object.assign(this.$data, this.$options.data.call(this));
-      this.init();
+      this.getResources();
+      this.getProductos(1);
+      this.headVenta.fecha_pago = moment__WEBPACK_IMPORTED_MODULE_1___default()().format('YYYY-MM-DD');
       document.querySelector('#cliente').value = "";
     },
     disabledDates: function disabledDates(date) {
@@ -3381,7 +3383,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         var carrito = data.carrito,
           cliente = data.cliente,
           detalle = data.detalle;
-        _this.headVenta.idcarrito = _this.idcarrito;
+        _this.headVenta.idcarrito = parseInt(idcarrito);
         _this.cliente = cliente;
         _this.detalle = detalle.map(function (ele) {
           if (ele.idtipo_articulo == _this.TIPO_ARTICULO_ID.MATRICULA) {
@@ -3615,7 +3617,11 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
           content: 'Se guardó el pago exitosamente.',
           time: 3 * 1000
         });
-        _this9.resetData();
+        if (_this9.carrito_id) {
+          location.href = route('venta.create');
+        } else {
+          _this9.resetData();
+        }
       })["catch"](this["catch"]);
     }
   },
