@@ -416,7 +416,7 @@ export default {
                 const data = response.data;
             })
         },
-          getProvincias() {
+        getProvincias() {
             return axios.get(route('matricula.resources.provincias',[ this.alumno.iddepartamento ]))
             .then( response => {
                 const data = response.data;

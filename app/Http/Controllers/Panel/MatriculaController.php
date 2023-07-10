@@ -32,7 +32,7 @@ class MatriculaController extends Controller
     public function index()
     {
         $registros = Matricula::query()
-            ->with(['temporada','programa'])
+            ->with(['temporada', 'programa', 'carrito'])
             ->orderBy('idmatricula','DESC')
             ->withSucursal()
             ->paginate(10,['*'],'pagina',1);
@@ -51,7 +51,7 @@ class MatriculaController extends Controller
         $txtBuscar = $request->input('txtBuscar');
 
         $registros = Matricula::query()
-            ->with(['temporada','programa'])
+            ->with(['temporada', 'programa', 'carrito'])
             ->when($txtBuscar,function($query) use($txtBuscar){
                 return $query->where('idmatricula','LIKE','%'.$txtBuscar.'%')
                     ->orWhere('cliente_nombres','LIKE','%'.$txtBuscar.'%')

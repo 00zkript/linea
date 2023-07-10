@@ -36,7 +36,6 @@
                 </button>
             </div>
             <div class="modal-body pt-0">
-                <h5 class="titleAlertModal"></h5>
                 <div class="contentAlertModal">
                 </div>
             </div>

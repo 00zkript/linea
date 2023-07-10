@@ -22,9 +22,10 @@ const alertModal = ({ title = '', content = '', time = 5000, type = 'error' }) =
         warning: 'bg-warning',
     }
     const classValue = classArr[type] ?? classArr['error'];
+    const newTitle = title == 'Error' || (title == '' && type == 'error') ? '¡Atención!': title;
 
 
-    $('#alertModalCenter .titleAlertModal').html(title);
+    $('#alertModalCenter #alertModalCenterTitle').html(newTitle);
     $('#alertModalCenter .contentAlertModal').html(content);
     $('#alertModalCenter .modal-content').addClass( classValue );
     $('#alertModalCenter').modal('show');
@@ -32,7 +33,7 @@ const alertModal = ({ title = '', content = '', time = 5000, type = 'error' }) =
 
     timeoutAlerModalId = setTimeout(() => {
         $('#alertModalCenter').modal('hide');
-        $('#alertModalCenter .titleAlertModal').html('');
+        $('#alertModalCenter #alertModalCenterTitle').html('');
         $('#alertModalCenter .contentAlertModal').html('');
         $('#alertModalCenter .modal-content').removeClass( classValue );
     }, time);

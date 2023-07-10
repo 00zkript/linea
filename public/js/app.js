@@ -3217,6 +3217,12 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
   components: {
     Autocomplete: _components_AutocompleteComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
+  props: {
+    carrito_id: {
+      type: Number,
+      "default": ''
+    }
+  },
   data: function data() {
     return {
       TIPO_ARTICULO_ID: {
@@ -3257,6 +3263,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       },
       cliente: {},
       headVenta: {
+        idcarrito: '',
         idtipo_facturacion: '',
         serie: '',
         numero: '',
@@ -3320,7 +3327,6 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       return '0.00';
     }
   },
-  watch: {},
   methods: {
     number_format: number_format,
     soloNumeros: soloNumeros,
@@ -3349,6 +3355,10 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
     init: function init() {
       this.getResources();
       this.getProductos(1);
+      if (this.carrito_id) {
+        this.search.carrito.idcarrito = this.carrito_id;
+        this.getCarrito();
+      }
       this.headVenta.fecha_pago = moment__WEBPACK_IMPORTED_MODULE_1___default()().format('YYYY-MM-DD');
     },
     resetData: function resetData() {
@@ -3371,6 +3381,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         var carrito = data.carrito,
           cliente = data.cliente,
           detalle = data.detalle;
+        _this.headVenta.idcarrito = _this.idcarrito;
         _this.cliente = cliente;
         _this.detalle = detalle.map(function (ele) {
           if (ele.idtipo_articulo == _this.TIPO_ARTICULO_ID.MATRICULA) {
@@ -6237,15 +6248,7 @@ var render = function render() {
   })], 1) : _c("div", {
     staticClass: "col-12"
   }, [_vm._m(9)])])])])])]), _vm._v(" "), _c("div", {
-    staticClass: "container-fluid"
-  }, [_c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-12"
-  }, [_c("div", {
-    staticClass: "card"
-  }, [_vm._m(10), _vm._v(" "), _c("div", {
-    staticClass: "card-body pl-4 pr-4"
+    staticClass: "contenido"
   }, [_c("div", {
     staticClass: "row"
   }, [_c("div", {
@@ -6294,7 +6297,7 @@ var render = function render() {
         return _vm.getCarrito();
       }
     }
-  }, [_vm._m(11)])])])]), _vm._v(" "), _c("div", {
+  }, [_vm._m(10)])])])]), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col-md-4 col-12 form-group"
@@ -6513,7 +6516,7 @@ var render = function render() {
       key: "item",
       fn: function fn(_ref) {
         var item = _ref.item;
-        return [_vm._v("\n                                        (" + _vm._s(item.numero_documento_identidad) + ") " + _vm._s(item.nombres) + " " + _vm._s(item.apellidos) + "\n                                    ")];
+        return [_vm._v("\n                        (" + _vm._s(item.numero_documento_identidad) + ") " + _vm._s(item.nombres) + " " + _vm._s(item.apellidos) + "\n                    ")];
       }
     }]),
     model: {
@@ -6554,7 +6557,7 @@ var render = function render() {
     staticClass: "col-12 mt-4"
   }, [_c("table", {
     staticClass: "table table-sm"
-  }, [_vm._m(12), _vm._v(" "), _c("thead", _vm._l(_vm.detalle, function (item, index) {
+  }, [_vm._m(11), _vm._v(" "), _c("thead", _vm._l(_vm.detalle, function (item, index) {
     return _c("tr", {
       key: index
     }, [_c("td", [_vm._v("#" + _vm._s(index + 1))]), _vm._v(" "), _c("td", [_c("input", {
@@ -6607,7 +6610,7 @@ var render = function render() {
       staticClass: "text-center"
     }, [_vm._v(_vm._s(item.stock))]), _vm._v(" "), _c("td", [_c("div", {
       staticClass: "input-group"
-    }, [_vm._m(13, true), _vm._v(" "), _c("input", {
+    }, [_vm._m(12, true), _vm._v(" "), _c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -6634,7 +6637,7 @@ var render = function render() {
       }
     })])]), _vm._v(" "), _c("td", [_c("div", {
       staticClass: "input-group"
-    }, [_vm._m(14, true), _vm._v(" "), _c("input", {
+    }, [_vm._m(13, true), _vm._v(" "), _c("input", {
       directives: [{
         name: "model",
         rawName: "v-model",
@@ -6669,29 +6672,29 @@ var render = function render() {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(15), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(14), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.detalleMontoTotalSinIGV))])]), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(16), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(15), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.detalleMontoTotalIGV))])]), _vm._v(" "), _c("td")]), _vm._v(" "), _c("tr", [_c("td", {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(17), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(16), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("b", [_vm._v("S/. " + _vm._s(_vm.detalleTotal))])]), _vm._v(" "), _c("td")]), _vm._v(" "), _vm.headVenta.idtipo_pago == _vm.TIPO_PAGO_ID.EFECTIVO || _vm.headVenta.idtipo_pago == _vm.TIPO_PAGO_ID.AMBOS ? _c("tr", [_c("td", {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(18), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(17), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("div", {
     staticClass: "input-group"
-  }, [_vm._m(19), _vm._v(" "), _c("input", {
+  }, [_vm._m(18), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6718,11 +6721,11 @@ var render = function render() {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(20), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(19), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("div", {
     staticClass: "input-group"
-  }, [_vm._m(21), _vm._v(" "), _c("input", {
+  }, [_vm._m(20), _vm._v(" "), _c("input", {
     directives: [{
       name: "model",
       rawName: "v-model",
@@ -6749,11 +6752,11 @@ var render = function render() {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(22), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(21), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("div", {
     staticClass: "input-group"
-  }, [_vm._m(23), _vm._v(" "), _c("input", {
+  }, [_vm._m(22), _vm._v(" "), _c("input", {
     staticClass: "form-control",
     attrs: {
       type: "text",
@@ -6767,11 +6770,11 @@ var render = function render() {
     attrs: {
       colspan: "4"
     }
-  }), _vm._v(" "), _vm._m(24), _vm._v(" "), _c("td", {
+  }), _vm._v(" "), _vm._m(23), _vm._v(" "), _c("td", {
     staticClass: "text-center"
   }, [_c("div", {
     staticClass: "input-group"
-  }, [_vm._m(25), _vm._v(" "), _c("input", {
+  }, [_vm._m(24), _vm._v(" "), _c("input", {
     staticClass: "form-control",
     attrs: {
       type: "text",
@@ -6801,7 +6804,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "fa fa-money-bill"
-  }), _vm._v(" Pagar")])])])])])])])])]);
+  }), _vm._v(" Pagar")])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -6967,16 +6970,6 @@ var staticRenderFns = [function () {
   }, [_c("i", {
     staticClass: "fa fa-exclamation-circle"
   }), _vm._v(" No hay registros encontrados para mostrar.")])]);
-}, function () {
-  var _vm = this,
-    _c = _vm._self._c;
-  return _c("div", {
-    staticClass: "card-header",
-    staticStyle: {}
-  }, [_c("p", {
-    staticClass: "card-title text-center text-white mb-0",
-    staticStyle: {}
-  }, [_vm._v(" Ventas")])]);
 }, function () {
   var _vm = this,
     _c = _vm._self._c;

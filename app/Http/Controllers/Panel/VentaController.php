@@ -41,8 +41,13 @@ class VentaController extends Controller
         }
         $cantidadRegistros = $request->input('cantidadRegistros');
         $paginaActual = $request->input('paginaActual');
+        $txtBuscar = $request->input('txtBuscar');
 
         $registros = Venta::query()
+            ->when($txtBuscar,function($query) use($txtBuscar){
+                return $query->where(DB::raw("LPAD(idventa, 7, 0)"),'LIKE','%'.$txtBuscar.'%')
+                    ->orWhere(DB::raw("concat(cliente_nombres, '', cliente_apellidos)"),'LIKE','%'.$txtBuscar.'%');
+            })
             ->withSucursal()
             ->where('estado',1)
             ->orderBy('idventa','desc')
@@ -52,9 +57,9 @@ class VentaController extends Controller
         return view('panel.venta.listado')->with(compact('registros'))->render();
     }
 
-    public function create(Request $request)
+    public function create(Request $request, $carritoID = 0)
     {
-        return view('panel.venta.create');
+        return view('panel.venta.create')->with(compact('carritoID'));
     }
 
     public function store(Request $request)
@@ -76,6 +81,7 @@ class VentaController extends Controller
         $montoTotal             = $request->input('monto_total');
         $fechaPago              = now()->format('Y-m-d');
         $detalle                = $request->input('detalle', []);
+        $idcarrito              = $request->input('idcarrito');
         $idempleado             = auth()->id();
         $sucursal               = auth()->user()->sucursal;
 
@@ -129,6 +135,10 @@ class VentaController extends Controller
             $ventaDetalle->subtotal     = $itemDetalle['subtotal'];
             $ventaDetalle->save();
         }
+
+        $carrito = Carrito::query()->find($idcarrito);
+        $carrito->pagado = 1;
+        $carrito->update();
 
         return response()->json([
             "mensaje" => "La venta se guardó con éxito."
@@ -204,10 +214,10 @@ class VentaController extends Controller
         $TIPO_ARTICULO_MATRICULA_ID = $this->TIPO_ARTICULO_MATRICULA_ID;
 
 
-        $carrito = Carrito::query()->where('idcarrito',(int)$carritoID)->first();
+        $carrito = Carrito::query()->where('idcarrito',(int)$carritoID)->where('pagado',0)->first();
 
         if (!$carrito) {
-            return response()->json( ['mensaje' => "Registro no encontrado"],400);
+            return response()->json( ['mensaje' => "El código agregado ya ha sido procesado o no existe, intente con otro código."],400);
         }
 
         $cliente = Cliente:: query()
@@ -280,6 +290,7 @@ class VentaController extends Controller
 
         $matriculas = Matricula::query()
             ->leftJoin('concepto','concepto.idconcepto','matricula.idconcepto')
+            // ->leftJoin('carrito','carrito.idcarrito','matricula.idcarrito')
             ->selectRaw("
                 matricula.idmatricula,
                 matricula.idcliente,
@@ -302,8 +313,12 @@ class VentaController extends Controller
                 return $query->whereDate('matricula.created_at', '<=', $fechaFin);
             })
             ->when($clienteID, function ($query) use ($clienteID) {
-                return $query->where('idcliente', $clienteID);
+                return $query->where('matricula.idcliente', $clienteID);
             })
+            // ->where(function ($query) {
+            //     return $query->whereNull('matricula.idcarrito')
+            //         ->orWhere('carrito.pagado', 0);
+            // })
             ->whereNull('matricula.finalizado_at')
             ->where('matricula.estado',1)
             ->orderBy('matricula.idmatricula','desc')

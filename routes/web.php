@@ -110,7 +110,7 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::get('venta/resources/clientes', [\App\Http\Controllers\Panel\VentaController::class, 'clientes'] )->name('venta.resources.clientes');
     Route::get('venta/resources/{idcarrito}/carrito', [\App\Http\Controllers\Panel\VentaController::class, 'carrito'] )->name('venta.resources.carrito');
 
-    Route::get('venta/create', [\App\Http\Controllers\Panel\VentaController::class, 'create'] )->name('venta.create');
+    Route::get('venta/create/{idcarrito?}', [\App\Http\Controllers\Panel\VentaController::class, 'create'] )->name('venta.create');
     Route::get('venta/listar',[\App\Http\Controllers\Panel\VentaController::class,'listar'])->name("venta.listar");
     Route::resource( 'venta', \App\Http\Controllers\Panel\VentaController::class )->only(['index','store','edit','show'])->names('venta');
 

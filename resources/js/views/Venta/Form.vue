@@ -180,207 +180,189 @@
         </div>
 
 
-        <div class="container-fluid">
+        <div class="contenido">
             <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header" style="background-color #2a3f54">
-                             <p style="font-size 20px" class="card-title text-center text-white mb-0"> Ventas</p>
-                        </div>
-                        <div class="card-body pl-4 pr-4" >
-                            <div class="row">
-                                <div class="col-12 mb-4 pt-2 codigoInput">
-                                    <label for="codigoCarrito">Código</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control" name="codigoCarrito" id="codigoCarrito" placeholder="Código" @keypress="soloNumeros" v-model="search.carrito.idcarrito" @keyup.enter="getCarrito()" >
-                                        <div class="input-group-append" @click="getCarrito()" cursor-pointer><span class="input-group-text"><i class="fa fa-search"></i></span></div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-4 col-12 form-group">
-                                    <label for="tipoFacturacion">Tipo Facturación</label>
-                                    <select class="form-control form-control-sm" name="tipoFacturacion" id="tipoFacturacion" title="Tipo Facturación" v-model="headVenta.idtipo_facturacion" @change="getSerie()" >
-                                        <option value="" hidden selected >[---Seleccione---]</option>
-                                        <option
-                                            v-for="(item, index) in resources.tipoFacturacion" :key="index"
-                                            :value="item.idtipo_facturacion"
-                                            v-text="item.nombre"
-                                            >
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4 col-12 form-group">
-                                    <label for="serie">Serie</label>
-                                    <input type="text" class="form-control form-control-sm" name="serie" id="serie" placeholder="Serie" :value="headVenta.serie" readonly>
-                                </div>
-                                <div class="col-md-4 col-12 form-group">
-                                    <label for="numero">Numero</label>
-                                    <input type="text" class="form-control form-control-sm" name="numero" id="numero" placeholder="Numero" :value="headVenta.numero" readonly >
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-4 col-12 form-group">
-                                    <label for="tipoPago">Modo pago </label>
-                                    <select class="form-control form-control-sm" name="tipoPago" id="tipoPago" title="Modo pago" v-model="headVenta.idtipo_pago" >
-                                        <option value="" hidden >[---Seleccione---]</option>
-                                        <option v-for="(item, index) in resources.tipoPago" :key="index" :value="item.idtipo_pago" v-text="item.nombre"></option>
-                                    </select>
-                                </div>
-                                <div class="col-md-2 col-12 form-group">
-                                    <label for="moneda">Moneda</label>
-                                    <select class="form-control form-control-sm" name="moneda" id="moneda" title="Moneda" v-model="headVenta.idmoneda" >
-                                        <option value="" hidden>[---Seleccione---]</option>
-                                        <option value="1">Soles (S/.)</option>
-                                        <!-- <option value="2">Dolares ($)</option> -->
-                                    </select>
-                                </div>
-                                <div class="col-md-2 col-12 form-group">
-                                    <label for="fecha_pago">Fecha pago</label>
-                                    <input type="date" class="form-control form-control-sm" name="fecha_pago" id="fecha_pago" placeholder="Fecha pago" v-model="headVenta.fecha_pago" readonly >
-                                </div>
-
-                                <div class="col-md-4 col-12 form-group">
-                                    <label for="cliente">Cliente </span></label>
-                                    <Autocomplete
-                                        name="cliente"
-                                        id="cliente"
-                                        classInput="form-control form-control-sm"
-                                        placeholder="Cliente"
-                                        v-model="cliente"
-                                        :url="route('venta.resources.clientes')"
-                                        @afterSelected="removeMatriculasInDetalle"
-                                        >
-                                        <template v-slot:item="{ item }">
-                                            ({{ item.numero_documento_identidad }}) {{ item.nombres }} {{ item.apellidos }}
-                                        </template>
-                                    </Autocomplete>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12 mt-4 row">
-                                    <div class="col-md-6 col-12">
-                                        <button class="btn btn-primary" @click="openModalProductos()" ><i class="fa fa-plus"></i>Agregar producto</button>
-                                        <button class="btn btn-primary" @click="openModalMatricula()" :disabled="clienteIsEmpty" ><i class="fa fa-plus"></i>Agregar matricula</button>
-                                    </div>
-                                </div>
-                                <div class="col-12 mt-4" v-if="!detalleIsEmpty">
-                                    <table class="table table-sm">
-                                        <thead >
-                                            <tr>
-                                                <th class="text-center">#</th>
-                                                <th class="text-center">Producto / Servicio</th>
-                                                <th class="text-center">Cantidad</th>
-                                                <th class="text-center">Stock</th>
-                                                <th class="text-center">Precio unitario (S/)</th>
-                                                <th class="text-center">Subtotal (S/) </th>
-                                                <th class="text-center">Acciones </th>
-                                            </tr>
-                                        </thead>
-                                        <thead>
-                                            <tr v-for="(item, index) in detalle" :key="index" >
-                                                <td>#{{ (index+1) }}</td>
-                                                <td><input type="text" class="form-control" v-model="item.nombre" ></td>
-                                                <td><input type="number" min="1" step="1" :max="item.stock" class="form-control" v-model="item.cantidad" :readonly="item.idtipo_articulo === TIPO_ARTICULO_ID.MATRICULA" @input="getMontoSubtotalDetalle(index)" ></td>
-                                                <td class="text-center">{{ item.stock }}</td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
-                                                        <input type="number" min="0" step="0.01" class="form-control" v-model="item.precio" :readonly="item.idtipo_articulo === TIPO_ARTICULO_ID.MATRICULA" @input="getMontoSubtotalDetalle(index)" ></input>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
-                                                        <input type="text" class="form-control" v-model="item.subtotal" readonly ></input>
-                                                    </div>
-                                                </td>
-                                                <td><button class="btn btn-danger" @click="removeItemDetalle(index)"><i class="fa fa-trash"></i></button></td>
-                                            </tr>
-                                        </thead>
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="4"></td>
-                                                <td class="text-right"> <b>Total (Sin IGV)</b> </td>
-                                                <td class="text-center"> <b>S/. {{ detalleMontoTotalSinIGV }}</b> </td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4"></td>
-                                                <td class="text-right"> <b>IGV</b> </td>
-                                                <td class="text-center"> <b>S/. {{ detalleMontoTotalIGV }}</b> </td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="4"></td>
-                                                <td class="text-right"> <b>Total</b> </td>
-                                                <td class="text-center"> <b>S/. {{ detalleTotal }}</b> </td>
-                                                <td></td>
-                                            </tr>
-                                            <tr v-if="headVenta.idtipo_pago == TIPO_PAGO_ID.EFECTIVO || headVenta.idtipo_pago == TIPO_PAGO_ID.AMBOS">
-                                                <td colspan="4"></td>
-                                                <td class="text-right"> <b>Monto efectivo</b> </td>
-                                                <td class="text-center">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                        <input type="text" class="form-control" name="montoEfectivo" id="montoEfectivo" placeholder="Monto efectivo" v-model="headVenta.monto_efectivo" >
-                                                    </div>
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                            <tr v-if="headVenta.idtipo_pago == TIPO_PAGO_ID.TRANSFERENCIA || headVenta.idtipo_pago == TIPO_PAGO_ID.AMBOS">
-                                                <td colspan="4"></td>
-                                                <td class="text-right"> <b>Monto tranferido</b> </td>
-                                                <td class="text-center">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                        <input type="text" class="form-control" name="monotTransferido" id="monotTransferido" placeholder="Monto efectivo" v-model="headVenta.monto_transferido" >
-                                                    </div>
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                            <tr v-if="headVenta.idtipo_pago">
-                                                <td colspan="4"></td>
-                                                <td class="text-right"> <b>Monto Devuelto</b> </td>
-                                                <td class="text-center">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                        <input type="text" class="form-control" placeholder="Monto Devuelto" :value="detalleMontoDevelto" readonly >
-                                                    </div>
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                            <tr v-if="headVenta.idtipo_pago">
-                                                <td colspan="4"></td>
-                                                <td class="text-right"> <b>Monto faltante</b> </td>
-                                                <td class="text-center">
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
-                                                        <input type="text" class="form-control" placeholder="Monto faltante" :value="detalleMontoFaltante" readonly >
-                                                    </div>
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
-
-                                <div class="col-12 mt-5 d-flex justify-content-center">
-                                    <button class="btn btn-secondary" @click="cancelarVenta()"><i class="fa fa-times"></i> Cancelar</button>
-                                    <button class="btn btn-primary" @click="aceptarVenta()"> <i class="fa fa-money-bill" ></i> Pagar</button>
-                                </div>
-
-                            </div>
-
-                        </div>
+                <div class="col-12 mb-4 pt-2 codigoInput">
+                    <label for="codigoCarrito">Código</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="codigoCarrito" id="codigoCarrito" placeholder="Código" @keypress="soloNumeros" v-model="search.carrito.idcarrito" @keyup.enter="getCarrito()" >
+                        <div class="input-group-append" @click="getCarrito()" cursor-pointer><span class="input-group-text"><i class="fa fa-search"></i></span></div>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-4 col-12 form-group">
+                    <label for="tipoFacturacion">Tipo Facturación</label>
+                    <select class="form-control form-control-sm" name="tipoFacturacion" id="tipoFacturacion" title="Tipo Facturación" v-model="headVenta.idtipo_facturacion" @change="getSerie()" >
+                        <option value="" hidden selected >[---Seleccione---]</option>
+                        <option
+                            v-for="(item, index) in resources.tipoFacturacion" :key="index"
+                            :value="item.idtipo_facturacion"
+                            v-text="item.nombre"
+                            >
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4 col-12 form-group">
+                    <label for="serie">Serie</label>
+                    <input type="text" class="form-control form-control-sm" name="serie" id="serie" placeholder="Serie" :value="headVenta.serie" readonly>
+                </div>
+                <div class="col-md-4 col-12 form-group">
+                    <label for="numero">Numero</label>
+                    <input type="text" class="form-control form-control-sm" name="numero" id="numero" placeholder="Numero" :value="headVenta.numero" readonly >
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 col-12 form-group">
+                    <label for="tipoPago">Modo pago </label>
+                    <select class="form-control form-control-sm" name="tipoPago" id="tipoPago" title="Modo pago" v-model="headVenta.idtipo_pago" >
+                        <option value="" hidden >[---Seleccione---]</option>
+                        <option v-for="(item, index) in resources.tipoPago" :key="index" :value="item.idtipo_pago" v-text="item.nombre"></option>
+                    </select>
+                </div>
+                <div class="col-md-2 col-12 form-group">
+                    <label for="moneda">Moneda</label>
+                    <select class="form-control form-control-sm" name="moneda" id="moneda" title="Moneda" v-model="headVenta.idmoneda" >
+                        <option value="" hidden>[---Seleccione---]</option>
+                        <option value="1">Soles (S/.)</option>
+                        <!-- <option value="2">Dolares ($)</option> -->
+                    </select>
+                </div>
+                <div class="col-md-2 col-12 form-group">
+                    <label for="fecha_pago">Fecha pago</label>
+                    <input type="date" class="form-control form-control-sm" name="fecha_pago" id="fecha_pago" placeholder="Fecha pago" v-model="headVenta.fecha_pago" readonly >
+                </div>
+                <div class="col-md-4 col-12 form-group">
+                    <label for="cliente">Cliente </span></label>
+                    <Autocomplete
+                        name="cliente"
+                        id="cliente"
+                        classInput="form-control form-control-sm"
+                        placeholder="Cliente"
+                        v-model="cliente"
+                        :url="route('venta.resources.clientes')"
+                        @afterSelected="removeMatriculasInDetalle"
+                        >
+                        <template v-slot:item="{ item }">
+                            ({{ item.numero_documento_identidad }}) {{ item.nombres }} {{ item.apellidos }}
+                        </template>
+                    </Autocomplete>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12 mt-4 row">
+                    <div class="col-md-6 col-12">
+                        <button class="btn btn-primary" @click="openModalProductos()" ><i class="fa fa-plus"></i>Agregar producto</button>
+                        <button class="btn btn-primary" @click="openModalMatricula()" :disabled="clienteIsEmpty" ><i class="fa fa-plus"></i>Agregar matricula</button>
+                    </div>
+                </div>
+                <div class="col-12 mt-4" v-if="!detalleIsEmpty">
+                    <table class="table table-sm">
+                        <thead >
+                            <tr>
+                                <th class="text-center">#</th>
+                                <th class="text-center">Producto / Servicio</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-center">Stock</th>
+                                <th class="text-center">Precio unitario (S/)</th>
+                                <th class="text-center">Subtotal (S/) </th>
+                                <th class="text-center">Acciones </th>
+                            </tr>
+                        </thead>
+                        <thead>
+                            <tr v-for="(item, index) in detalle" :key="index" >
+                                <td>#{{ (index+1) }}</td>
+                                <td><input type="text" class="form-control" v-model="item.nombre" ></td>
+                                <td><input type="number" min="1" step="1" :max="item.stock" class="form-control" v-model="item.cantidad" :readonly="item.idtipo_articulo === TIPO_ARTICULO_ID.MATRICULA" @input="getMontoSubtotalDetalle(index)" ></td>
+                                <td class="text-center">{{ item.stock }}</td>
+                                <td>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
+                                        <input type="number" min="0" step="0.01" class="form-control" v-model="item.precio" :readonly="item.idtipo_articulo === TIPO_ARTICULO_ID.MATRICULA" @input="getMontoSubtotalDetalle(index)" ></input>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"> <span class="input-group-text">S/.</span> </div>
+                                        <input type="text" class="form-control" v-model="item.subtotal" readonly ></input>
+                                    </div>
+                                </td>
+                                <td><button class="btn btn-danger" @click="removeItemDetalle(index)"><i class="fa fa-trash"></i></button></td>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td class="text-right"> <b>Total (Sin IGV)</b> </td>
+                                <td class="text-center"> <b>S/. {{ detalleMontoTotalSinIGV }}</b> </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td class="text-right"> <b>IGV</b> </td>
+                                <td class="text-center"> <b>S/. {{ detalleMontoTotalIGV }}</b> </td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="4"></td>
+                                <td class="text-right"> <b>Total</b> </td>
+                                <td class="text-center"> <b>S/. {{ detalleTotal }}</b> </td>
+                                <td></td>
+                            </tr>
+                            <tr v-if="headVenta.idtipo_pago == TIPO_PAGO_ID.EFECTIVO || headVenta.idtipo_pago == TIPO_PAGO_ID.AMBOS">
+                                <td colspan="4"></td>
+                                <td class="text-right"> <b>Monto efectivo</b> </td>
+                                <td class="text-center">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
+                                        <input type="text" class="form-control" name="montoEfectivo" id="montoEfectivo" placeholder="Monto efectivo" v-model="headVenta.monto_efectivo" >
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr v-if="headVenta.idtipo_pago == TIPO_PAGO_ID.TRANSFERENCIA || headVenta.idtipo_pago == TIPO_PAGO_ID.AMBOS">
+                                <td colspan="4"></td>
+                                <td class="text-right"> <b>Monto tranferido</b> </td>
+                                <td class="text-center">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
+                                        <input type="text" class="form-control" name="monotTransferido" id="monotTransferido" placeholder="Monto efectivo" v-model="headVenta.monto_transferido" >
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr v-if="headVenta.idtipo_pago">
+                                <td colspan="4"></td>
+                                <td class="text-right"> <b>Monto Devuelto</b> </td>
+                                <td class="text-center">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
+                                        <input type="text" class="form-control" placeholder="Monto Devuelto" :value="detalleMontoDevelto" readonly >
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                            <tr v-if="headVenta.idtipo_pago">
+                                <td colspan="4"></td>
+                                <td class="text-right"> <b>Monto faltante</b> </td>
+                                <td class="text-center">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend"><span class="input-group-text">S/.</span></div>
+                                        <input type="text" class="form-control" placeholder="Monto faltante" :value="detalleMontoFaltante" readonly >
+                                    </div>
+                                </td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+                <div class="col-12 mt-5 d-flex justify-content-center">
+                    <button class="btn btn-secondary" @click="cancelarVenta()"><i class="fa fa-times"></i> Cancelar</button>
+                    <button class="btn btn-primary" @click="aceptarVenta()"> <i class="fa fa-money-bill" ></i> Pagar</button>
+                </div>
+            </div>
         </div>
+
 
 
 
@@ -395,6 +377,12 @@ moment.locale('es-mx');
 export default {
     components: {
         Autocomplete
+    },
+    props: {
+        carrito_id: {
+            type: Number,
+            default: '',
+        }
     },
     data() {
         return {
@@ -436,6 +424,7 @@ export default {
             },
             cliente: {},
             headVenta: {
+                idcarrito: '',
                 idtipo_facturacion: '',
                 serie: '',
                 numero: '',
@@ -498,8 +487,6 @@ export default {
         },
 
     },
-    watch: {
-    },
     methods: {
         number_format: number_format,
         soloNumeros: soloNumeros,
@@ -526,6 +513,11 @@ export default {
             this.getResources();
             this.getProductos(1);
 
+            if (this.carrito_id) {
+                this.search.carrito.idcarrito = this.carrito_id;
+                this.getCarrito();
+            }
+
             this.headVenta.fecha_pago = moment().format('YYYY-MM-DD');
         },
         resetData() {
@@ -548,6 +540,7 @@ export default {
                 const data = response.data;
                 const { carrito, cliente, detalle} = data;
 
+                this.headVenta.idcarrito = this.idcarrito;
                 this.cliente = cliente;
                 this.detalle = detalle.map( ele => {
                     if (ele.idtipo_articulo == this.TIPO_ARTICULO_ID.MATRICULA) {

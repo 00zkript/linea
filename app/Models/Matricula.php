@@ -100,10 +100,18 @@ class Matricula extends Model
         ]);
     }
 
+    public function carrito()
+    {
+        return $this->hasOne(Carrito::class, 'idcarrito', 'idcarrito')->withDefault([
+            'pagado' => 0
+        ]);
+    }
+
     public function detalle()
     {
         return $this->hasMany(MatriculaDetalle::class, 'idmatricula', 'idmatricula')->orderBy('fecha','asc');
     }
+
 
 
 

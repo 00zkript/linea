@@ -12,6 +12,7 @@
                 <th>Fecha de registro</th>
                 {{-- <th>Estado</th> --}}
                 <th>¿Finalizado?</th>
+                <th>¿Pagado?</th>
                 <th>Opciones</th>
             </tr>
             </thead>
@@ -27,6 +28,7 @@
                     <td>{{ now()->parse($item->created_at)->format('d/m/Y  h:i A') }}</td>
                     {{-- <td>{!! $item->estado ? '<label class="badge badge-success">Habilidado</label>' : '<label class="badge badge-danger">Inhabilitado</label>' !!}</td> --}}
                     <td>{!! $item->finalizado_at ? '<label class="badge badge-primary">Finalizado</label>' : '<label class="badge badge-secondary">Sin finalizar</label>' !!}</td>
+                    <td>{!! $item->carrito->pagado ? '<label class="badge badge-primary">Pagado</label>' : '<label class="badge badge-secondary">Pendiente</label>' !!}</td>
                     <td class="text-center">
                         <div class="dropdown">
                             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu-{{$item->idmatricula}}" data-toggle="dropdown" data-boundary="viewport" aria-haspopup="true" aria-expanded="false">
@@ -35,7 +37,9 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu-{{$item->idmatricula}}" data-idmatricula="{{$item->idmatricula}}">
                                 <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
                                 <a href="{{ route('matricula.edit',$item->idmatricula) }}" class="dropdown-item" type="button"><i class="fa fa-pencil"></i> Editar</a>
-                                <a href="{{ route('venta.create',$item->idcliente) }}" class="dropdown-item" type="button"><i class="fa fa-money-bill"></i> Pagar</a>
+                                @if ($item->idcarrito && !$item->carrito->pagado)
+                                    <a href="{{ route('venta.create',$item->idcarrito) }}" class="dropdown-item" type="button"><i class="fa fa-money-bill"></i> Pagar</a>
+                                @endif
                                 {{-- <button class="dropdown-item btnModalEditar" type="button"><i class="fa fa-pencil"></i> Editar</button> --}}
                                 @if($item->estado)
                                     <button class="dropdown-item btnModalInhabilitar" type="button"><i class="fa fa-times"></i> Inhabilitar</button>
