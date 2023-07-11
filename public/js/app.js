@@ -3132,9 +3132,30 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
     Autocomplete: _components_AutocompleteComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   props: {
+    resources_init: {
+      type: Object,
+      "default": function _default() {
+        return {
+          tipoFacturacion: [],
+          tipoPago: []
+        };
+      }
+    },
     carrito_id: {
       type: Number,
-      "default": ''
+      "default": 0,
+      required: false
+    },
+    venta_edit: {
+      type: Object,
+      "default": function _default() {
+        return {};
+      }
+    },
+    type: {
+      type: String,
+      "default": 'crear',
+      required: false
     }
   },
   data: function data() {
@@ -3149,10 +3170,10 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         AMBOS: 3
       },
       resources: {
-        tipoFacturacion: [],
-        tipoPago: [],
+        tipoFacturacion: this.resources_init.tipoFacturacion,
+        tipoPago: this.resources_init.tipoPago,
         monedas: [],
-        productos: {},
+        productos: this.resources_init.productos,
         matriculas: {}
       },
       search: {
@@ -3175,15 +3196,22 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
           idcarrito: null
         }
       },
-      cliente: {},
+      cliente: {
+        idcliente: null,
+        nombres: '',
+        apellidos: '',
+        numero_documento_identidad: '',
+        idtipo_documento_identidad: null
+      },
       headVenta: {
-        idcarrito: '',
-        idtipo_facturacion: '',
+        idventa: null,
+        idcarrito: null,
+        idtipo_facturacion: null,
         serie: '',
         numero: '',
         idmoneda: 1,
         fecha_pago: '',
-        idtipo_pago: '',
+        idtipo_pago: null,
         monto_efectivo: '0.00',
         monto_transferido: '0.00',
         monto_total: '',
@@ -3266,19 +3294,8 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         content: 'Error del servidor, contácte con soporte.'
       });
     },
-    init: function init() {
-      this.getResources();
-      this.getProductos(1);
-      if (this.carrito_id) {
-        this.search.carrito.idcarrito = this.carrito_id.toString().padStart(7, 0);
-        this.getCarrito();
-      }
-      this.headVenta.fecha_pago = moment__WEBPACK_IMPORTED_MODULE_1___default()().format('YYYY-MM-DD');
-    },
     resetData: function resetData() {
       Object.assign(this.$data, this.$options.data.call(this));
-      this.getResources();
-      this.getProductos(1);
       this.headVenta.fecha_pago = moment__WEBPACK_IMPORTED_MODULE_1___default()().format('YYYY-MM-DD');
       document.querySelector('#cliente').value = "";
     },
@@ -3309,35 +3326,27 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         document.querySelector('#cliente').value = "(".concat((_cliente$idtipo_docum = cliente.idtipo_documento_identidad) !== null && _cliente$idtipo_docum !== void 0 ? _cliente$idtipo_docum : '', ") ").concat(cliente.nombres, " ").concat(cliente.apellidos);
       })["catch"](this["catch"]);
     },
-    getResources: function getResources() {
-      var _this2 = this;
-      return axios.get(route('venta.resources')).then(function (response) {
-        var data = response.data;
-        _this2.resources.tipoFacturacion = data.tipo_facturacion;
-        _this2.resources.tipoPago = data.tipo_pago;
-      })["catch"](this["catch"]);
-    },
     getSerie: function getSerie() {
-      var _this3 = this;
+      var _this2 = this;
       var headVenta = this.headVenta;
       axios.get(route('venta.resources.facturaSerie', headVenta.idtipo_facturacion)).then(function (response) {
         var data = response.data;
-        _this3.headVenta.serie = data.serie;
-        _this3.headVenta.numero = data.numero;
+        _this2.headVenta.serie = data.serie;
+        _this2.headVenta.numero = data.numero;
       })["catch"](this["catch"]);
     },
     openModalProductos: function openModalProductos() {
       $('#addProductoModalCenter').modal('show');
     },
     getProductos: function getProductos() {
-      var _this4 = this;
+      var _this3 = this;
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.search.producto.paginaActual = page;
       return axios(route('venta.resources.productos'), {
         params: this.search.producto
       }).then(function (response) {
         var data = response.data;
-        _this4.resources.productos = data;
+        _this3.resources.productos = data;
       })["catch"](this["catch"]);
     },
     getMontoSubtotalModalProducto: function getMontoSubtotalModalProducto(index) {
@@ -3348,13 +3357,13 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       this.resources.productos.data[index].subtotal = number_format(cantidad * precio, 2, '.', '');
     },
     addProductoInDetalle: function addProductoInDetalle(index) {
-      var _this5 = this;
+      var _this4 = this;
       var producto = this.resources.productos.data[index];
       var stock = producto.stock,
         precio = producto.precio,
         cantidad = producto.cantidad;
       var productoAddedIndex = this.detalle.findIndex(function (ele) {
-        return ele.idtipo_articulo === _this5.TIPO_ARTICULO_ID.PRODUCTO && ele.idarticulo === producto.idproducto && ele.precio === producto.precio;
+        return ele.idtipo_articulo === _this4.TIPO_ARTICULO_ID.PRODUCTO && ele.idarticulo === producto.idproducto && ele.precio === producto.precio;
       });
       if (productoAddedIndex === -1) {
         var _newCantidad = cantidad <= stock ? cantidad : stock;
@@ -3382,7 +3391,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       $('#addMatriculaModalCenter').modal('show');
     },
     getMatriculas: function getMatriculas() {
-      var _this6 = this;
+      var _this5 = this;
       var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
       this.search.matricula.paginaActual = page;
       return axios(route('venta.resources.matriculas'), {
@@ -3391,14 +3400,14 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
         })
       }).then(function (response) {
         var data = response.data;
-        _this6.resources.matriculas = data;
+        _this5.resources.matriculas = data;
       })["catch"](this["catch"]);
     },
     addMatriculaInDetalle: function addMatriculaInDetalle(index) {
-      var _this7 = this;
+      var _this6 = this;
       var matricula = this.resources.matriculas.data[index];
       var matriculaInDetalleIndex = this.detalle.findIndex(function (ele) {
-        return ele.idtipo_articulo === _this7.TIPO_ARTICULO_ID.MATRICULA && ele.idarticulo === matricula.idmatricula;
+        return ele.idtipo_articulo === _this6.TIPO_ARTICULO_ID.MATRICULA && ele.idarticulo === matricula.idmatricula;
       });
       if (matriculaInDetalleIndex !== -1) {
         $('#addMatriculaModalCenter').modal('hide');
@@ -3420,9 +3429,9 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       $('#addMatriculaModalCenter').modal('hide');
     },
     removeMatriculasInDetalle: function removeMatriculasInDetalle() {
-      var _this8 = this;
+      var _this7 = this;
       this.detalle = this.detalle.filter(function (ele) {
-        return ele.idtipo_articulo !== _this8.TIPO_ARTICULO_ID.MATRICULA;
+        return ele.idtipo_articulo !== _this7.TIPO_ARTICULO_ID.MATRICULA;
       });
     },
     removeItemDetalle: function removeItemDetalle(index) {
@@ -3511,7 +3520,7 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       $('#asegurarPagoModalCenter').modal('show');
     },
     pagarVenta: function pagarVenta() {
-      var _this9 = this;
+      var _this8 = this;
       $('#asegurarPagoModalCenter').modal('hide');
       var headVenta = this.headVenta,
         cliente = this.cliente,
@@ -3521,9 +3530,19 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
       headVenta.monto_faltante = this.detalleMontoFaltante;
       var form = _objectSpread(_objectSpread({}, headVenta), {}, {
         idcliente: cliente.idcliente,
-        detalle: detalle
+        detalle: detalle,
+        '_method': 'POST'
       });
-      axios.post(route('venta.store'), form).then(function (response) {
+      var URL = route('venta.store');
+      if (this.type === 'editar') {
+        URL = route('venta.update', this.headVenta.idventa);
+        form['_method'] = 'PUT';
+      }
+      axios({
+        url: URL,
+        method: 'POST',
+        data: form
+      }).then(function (response) {
         var data = response.data;
         alertModal({
           type: 'success',
@@ -3531,16 +3550,54 @@ moment__WEBPACK_IMPORTED_MODULE_1___default.a.locale('es-mx');
           content: 'Se guardó el pago exitosamente.',
           time: 3 * 1000
         });
-        if (_this9.carrito_id) {
+        if (_this8.carrito_id) {
           location.href = route('venta.create');
-        } else {
-          _this9.resetData();
+          return;
         }
+        if (_this8.type === 'editar') {
+          location.href = route('venta.index');
+          return;
+        }
+        _this8.resetData();
       })["catch"](this["catch"]);
     }
   },
   mounted: function mounted() {
-    this.init();
+    var _this9 = this;
+    if (this.carrito_id) {
+      this.search.carrito.idcarrito = this.carrito_id.toString().padStart(7, 0);
+      this.getCarrito();
+    }
+    if (Object.keys(this.venta_edit).length > 0) {
+      var _venta$cliente_idtipo;
+      var venta = this.venta_edit;
+      var detalle = venta.detalle;
+      this.cliente.idcliente = venta.idcliente;
+      this.cliente.nombres = venta.cliente_nombres;
+      this.cliente.apellidos = venta.cliente_apellidos;
+      this.cliente.numero_documento_identidad = venta.cliente_numero_documento_identidad;
+      this.cliente.idtipo_documento_identidad = venta.cliente_idtipo_documento_identidad;
+      this.search.cliente.txtBuscar = "(".concat(venta.cliente_idtipo_documento_identidad, ") ").concat(venta.cliente_nombres, " ").concat(venta.cliente_apellidos);
+      document.querySelector('#cliente').value = "(".concat((_venta$cliente_idtipo = venta.cliente_idtipo_documento_identidad) !== null && _venta$cliente_idtipo !== void 0 ? _venta$cliente_idtipo : '', ") ").concat(venta.cliente_nombres, " ").concat(venta.cliente_apellidos);
+      this.headVenta.idventa = venta.idventa;
+      this.headVenta.idtipo_facturacion = venta.idtipo_facturacion;
+      this.headVenta.serie = venta.tipo_facturacion_serie;
+      this.headVenta.numero = venta.tipo_facturacion_numero;
+      this.headVenta.fecha_pago = venta.fecha_pago;
+      this.headVenta.idtipo_pago = venta.idtipo_pago;
+      this.headVenta.monto_efectivo = parseFloat(venta.monto_efectivo_recibido);
+      this.headVenta.monto_efectivo_devuelto = parseFloat(venta.monto_efectivo_devuelto);
+      this.headVenta.monto_transferido = parseFloat(venta.monto_transferido_pagado);
+      this.headVenta.monto_total = parseFloat(venta.monto_total);
+      this.headVenta.monto_faltante = parseFloat(venta.monto_faltante);
+      this.detalle = detalle.map(function (ele) {
+        if (ele.idtipo_articulo == _this9.TIPO_ARTICULO_ID.MATRICULA) {
+          ele.stock = 1;
+        }
+        return ele;
+      });
+    }
+    this.headVenta.fecha_pago = moment__WEBPACK_IMPORTED_MODULE_1___default()().format('YYYY-MM-DD');
   }
 });
 
@@ -6212,9 +6269,11 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      value: "",
       hidden: "",
       selected: ""
+    },
+    domProps: {
+      value: null
     }
   }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.tipoFacturacion, function (item, index) {
     return _c("option", {
@@ -6294,8 +6353,10 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      value: "",
       hidden: ""
+    },
+    domProps: {
+      value: null
     }
   }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _vm._l(_vm.resources.tipoPago, function (item, index) {
     return _c("option", {
@@ -6337,8 +6398,10 @@ var render = function render() {
     }
   }, [_c("option", {
     attrs: {
-      value: "",
       hidden: ""
+    },
+    domProps: {
+      value: null
     }
   }, [_vm._v("[---Seleccione---]")]), _vm._v(" "), _c("option", {
     attrs: {

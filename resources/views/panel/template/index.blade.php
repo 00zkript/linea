@@ -59,7 +59,7 @@
             border: 1px solid #dee2e6;
         }
         @media (min-width: 992px) {
-            .modal-xl {
+            .modal-lg {
                 max-width: 100%;
                 margin-left: 1%;
                 margin-right: 1%;

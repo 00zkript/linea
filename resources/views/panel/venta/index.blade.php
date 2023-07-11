@@ -1,7 +1,8 @@
 @extends('panel.template.index')
 @section('cuerpo')
     @include('panel.venta.ver')
-    @include('panel.venta.eliminar')
+    @include('panel.venta.anular')
+    {{-- @include('panel.venta.eliminar') --}}
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
@@ -58,6 +59,7 @@
     <script type="module" >
         const URL_LISTADO     = "{{ route('venta.listar') }}";
         const URL_VER         = "{{ route('venta.show',':id') }}";
+        const URL_ANULAR         = "{{ route('venta.anular',':id') }}";
 
 
         const filtros = () => {
@@ -165,11 +167,45 @@
 
             });
 
+            $(document).on("click",".btnModalAnular",function(e){
+                e.preventDefault();
+                const idventa = $(this).closest('div.dropdown-menu').data('idventa');
+
+                $('#frmAnular input[name=idventa]').val( idventa );
+                $("#modalAnular").modal("show");
+
+            });
+
+        }
+
+
+        const actions = () => {
+            $(document).on( "submit","#frmAnular" , function(e){
+                e.preventDefault();
+
+                const idventa = $("#frmAnular input[name=idventa]").val();
+                cargando('Procesando...');
+
+                axios.post(URL_ANULAR.replace(':id',idventa))
+                .then( response => {
+                    const data = response.data;
+                    stop();
+                    $("#modalAnular").modal("hide");
+
+                    notificacion("success","Anulado",data.mensaje);
+
+                    listado($("#cantidadRegistros").val(),$("#paginaActual").val());
+
+                } )
+                .catch( errorCatch )
+
+            } )
         }
 
         $(function () {
             modales();
             filtros();
+            actions();
 
 
         });

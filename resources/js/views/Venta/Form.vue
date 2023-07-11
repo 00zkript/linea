@@ -199,7 +199,7 @@
                 <div class="col-md-4 col-12 form-group">
                     <label for="tipoFacturacion">Tipo Facturación</label>
                     <select class="form-control form-control-sm" name="tipoFacturacion" id="tipoFacturacion" title="Tipo Facturación" v-model="headVenta.idtipo_facturacion" @change="getSerie()" >
-                        <option value="" hidden selected >[---Seleccione---]</option>
+                        <option :value="null" hidden selected >[---Seleccione---]</option>
                         <option
                             v-for="(item, index) in resources.tipoFacturacion" :key="index"
                             :value="item.idtipo_facturacion"
@@ -221,14 +221,14 @@
                 <div class="col-md-4 col-12 form-group">
                     <label for="tipoPago">Modo pago </label>
                     <select class="form-control form-control-sm" name="tipoPago" id="tipoPago" title="Modo pago" v-model="headVenta.idtipo_pago" >
-                        <option value="" hidden >[---Seleccione---]</option>
+                        <option :value="null" hidden >[---Seleccione---]</option>
                         <option v-for="(item, index) in resources.tipoPago" :key="index" :value="item.idtipo_pago" v-text="item.nombre"></option>
                     </select>
                 </div>
                 <div class="col-md-2 col-12 form-group">
                     <label for="moneda">Moneda</label>
                     <select class="form-control form-control-sm" name="moneda" id="moneda" title="Moneda" v-model="headVenta.idmoneda" >
-                        <option value="" hidden>[---Seleccione---]</option>
+                        <option :value="null" hidden>[---Seleccione---]</option>
                         <option value="1">Soles (S/.)</option>
                         <!-- <option value="2">Dolares ($)</option> -->
                     </select>
@@ -384,10 +384,32 @@ export default {
         Autocomplete
     },
     props: {
+        resources_init: {
+            type: Object,
+            default() {
+                return {
+                    tipoFacturacion : [],
+                    tipoPago : [],
+                };
+            },
+        },
         carrito_id: {
             type: Number,
-            default: '',
+            default: 0,
+            required: false,
+        },
+        venta_edit: {
+            type: Object,
+            default() {
+                return {};
+            },
+        },
+        type: {
+            type: String,
+            default: 'crear',
+            required: false,
         }
+
     },
     data() {
         return {
@@ -401,10 +423,10 @@ export default {
                 AMBOS: 3,
             },
             resources: {
-                tipoFacturacion: [],
-                tipoPago: [],
+                tipoFacturacion: this.resources_init.tipoFacturacion,
+                tipoPago: this.resources_init.tipoPago,
                 monedas: [],
-                productos: {},
+                productos: this.resources_init.productos,
                 matriculas: {},
             },
             search: {
@@ -427,15 +449,22 @@ export default {
                     idcarrito: null,
                 }
             },
-            cliente: {},
+            cliente: {
+                idcliente: null,
+                nombres: '',
+                apellidos: '',
+                numero_documento_identidad: '',
+                idtipo_documento_identidad: null,
+            },
             headVenta: {
-                idcarrito: '',
-                idtipo_facturacion: '',
+                idventa: null,
+                idcarrito: null,
+                idtipo_facturacion: null,
                 serie: '',
                 numero: '',
                 idmoneda: 1,
                 fecha_pago: '',
-                idtipo_pago: '',
+                idtipo_pago: null,
                 monto_efectivo: '0.00',
                 monto_transferido: '0.00',
                 monto_total: '',
@@ -514,21 +543,8 @@ export default {
 
 
         },
-        init() {
-            this.getResources();
-            this.getProductos(1);
-
-            if (this.carrito_id) {
-                this.search.carrito.idcarrito = this.carrito_id.toString().padStart(7,0);
-                this.getCarrito();
-            }
-
-            this.headVenta.fecha_pago = moment().format('YYYY-MM-DD');
-        },
         resetData() {
             Object.assign(this.$data, this.$options.data.call(this));
-            this.getResources();
-            this.getProductos(1);
             this.headVenta.fecha_pago = moment().format('YYYY-MM-DD');
             document.querySelector('#cliente').value="";
         },
@@ -563,15 +579,6 @@ export default {
             .catch(this.catch);
         },
 
-
-        getResources() {
-            return axios.get(route('venta.resources'))
-            .then( response => {
-                const data = response.data;
-                this.resources.tipoFacturacion = data.tipo_facturacion;
-                this.resources.tipoPago = data.tipo_pago;
-            }).catch(this.catch);
-        },
         getSerie() {
             const { headVenta } = this;
 
@@ -792,19 +799,39 @@ export default {
                 ...headVenta,
                 idcliente: cliente.idcliente,
                 detalle: detalle,
+                '_method': 'POST',
             }
 
-            axios.post(route('venta.store'),form)
+
+            let URL = route('venta.store');
+            if(this.type === 'editar'){
+                URL = route('venta.update',this.headVenta.idventa);
+                form['_method'] = 'PUT';
+            }
+
+
+
+            axios({
+                url: URL,
+                method: 'POST',
+                data: form,
+            })
             .then( response => {
                 const data = response.data;
                 alertModal({ type: 'success',title: '¡Felicidades!', content: 'Se guardó el pago exitosamente.', time: 3*1000});
 
                 if (this.carrito_id) {
                     location.href = route('venta.create');
-                }else{
-                    this.resetData();
-
+                    return;
                 }
+
+                if (this.type === 'editar') {
+                    location.href = route('venta.index');
+                    return;
+                }
+
+
+                this.resetData();
 
             }).catch(this.catch);
 
@@ -815,7 +842,55 @@ export default {
 
     },
     mounted() {
-        this.init();
+
+        if ( this.carrito_id ) {
+            this.search.carrito.idcarrito = this.carrito_id.toString().padStart(7,0);
+            this.getCarrito();
+        }
+
+        if ( Object.keys(this.venta_edit).length > 0 ) {
+            const venta = this.venta_edit;
+            const {detalle} = venta;
+
+
+            this.cliente.idcliente                  = venta.idcliente;
+            this.cliente.nombres                    = venta.cliente_nombres;
+            this.cliente.apellidos                  = venta.cliente_apellidos;
+            this.cliente.numero_documento_identidad = venta.cliente_numero_documento_identidad;
+            this.cliente.idtipo_documento_identidad = venta.cliente_idtipo_documento_identidad;
+
+            this.search.cliente.txtBuscar = `(${venta.cliente_idtipo_documento_identidad}) ${venta.cliente_nombres} ${venta.cliente_apellidos}`;
+            document.querySelector('#cliente').value = `(${venta.cliente_idtipo_documento_identidad ?? ''}) ${venta.cliente_nombres} ${venta.cliente_apellidos}`;
+
+
+            this.headVenta.idventa      = venta.idventa;
+            this.headVenta.idtipo_facturacion      = venta.idtipo_facturacion;
+            this.headVenta.serie                   = venta.tipo_facturacion_serie;
+            this.headVenta.numero                  = venta.tipo_facturacion_numero;
+            this.headVenta.fecha_pago              = venta.fecha_pago;
+            this.headVenta.idtipo_pago             = venta.idtipo_pago;
+            this.headVenta.monto_efectivo          = parseFloat(venta.monto_efectivo_recibido);
+            this.headVenta.monto_efectivo_devuelto = parseFloat(venta.monto_efectivo_devuelto);
+            this.headVenta.monto_transferido       = parseFloat(venta.monto_transferido_pagado);
+            this.headVenta.monto_total             = parseFloat(venta.monto_total);
+            this.headVenta.monto_faltante          = parseFloat(venta.monto_faltante);
+
+            this.detalle = detalle.map( ele => {
+                if (ele.idtipo_articulo == this.TIPO_ARTICULO_ID.MATRICULA) {
+                    ele.stock = 1;
+                }
+                return ele;
+            });
+
+
+
+
+
+
+
+        }
+
+        this.headVenta.fecha_pago = moment().format('YYYY-MM-DD');
 
     },
 }

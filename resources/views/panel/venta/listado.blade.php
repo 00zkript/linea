@@ -17,7 +17,7 @@
             <tbody>
 
             @foreach($registros AS $item)
-                <tr>
+                <tr class="{{ $item->anulado ? 'alert-danger' : '' }}">
                     <td>{{ str_pad($item->idventa,7,0,STR_PAD_LEFT)}}</td>
                     <td>{{ $item->cliente_nombres }} {{ $item->cliente_apellidos }}</td>
                     <td>{{ $item->tipo_facturacion_serie }} - {{ $item->tipo_facturacion_numero }}</td>
@@ -33,6 +33,11 @@
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenu-{{$item->idventa}}" data-idventa="{{$item->idventa}}">
                                 <button class="dropdown-item btnModalVer" type="button"><i class="fa fa-eye"></i> Ver</button>
+                                @if (!$item->anulado)
+                                    <a class="dropdown-item"  href="{{ route('venta.edit',$item->idventa) }}" ><i class="fa fa-edit"></i> Editar</a>
+                                    <button class="dropdown-item text-primary btnModalEnviar" type="button"><i class="fa fa-paper-plane"></i> Enviar</button>
+                                    <button class="dropdown-item text-danger btnModalAnular" type="button"><i class="fa fa-times"></i> Anular</button>
+                                @endif
                             </div>
                         </div>
                     </td>

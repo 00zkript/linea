@@ -7,7 +7,6 @@ use App\Models\Carrito;
 use App\Models\CarritoDetalle;
 use App\Models\Cliente;
 use App\Models\Matricula;
-use App\Models\PagoCliente;
 use App\Models\Producto;
 use App\Models\TipoFacturacion;
 use App\Models\TipoPago;
@@ -57,9 +56,29 @@ class VentaController extends Controller
         return view('panel.venta.listado')->with(compact('registros'))->render();
     }
 
+    public function resources()
+    {
+        $tipoFacturacion = TipoFacturacion::query()->where('estado',1)->withSucursal()->get();
+        $tipoPago = TipoPago::query()->where('estado',1)->get();
+        $productos = Producto::query()
+            ->selectRaw('*, 1 as cantidad, precio as subtotal')
+            ->where('estado',1)
+            ->orderBy('idproducto','desc')
+            ->paginate(5,['*'],'page',1);
+
+        return [
+            'tipoFacturacion' => $tipoFacturacion,
+            'tipoPago' => $tipoPago,
+            'productos' => $productos,
+        ];
+    }
+
     public function create(Request $request, $carritoID = 0)
     {
-        return view('panel.venta.create')->with(compact('carritoID'));
+
+        $resources = $this->resources();
+
+        return view('panel.venta.crear')->with(compact('carritoID', 'resources'));
     }
 
     public function store(Request $request)
@@ -84,6 +103,8 @@ class VentaController extends Controller
         $idcarrito              = $request->input('idcarrito');
         $idempleado             = auth()->id();
         $sucursal               = auth()->user()->sucursal;
+        $TIPO_ARTICULO_PRODUCTO_ID  = $this->TIPO_ARTICULO_PRODUCTO_ID;
+        $TIPO_ARTICULO_MATRICULA_ID = $this->TIPO_ARTICULO_MATRICULA_ID;
 
         $cliente = Cliente::query()->find($idcliente);
         $empleado = auth()->user();
@@ -134,11 +155,19 @@ class VentaController extends Controller
             $ventaDetalle->precio          = $itemDetalle['precio'];
             $ventaDetalle->subtotal     = $itemDetalle['subtotal'];
             $ventaDetalle->save();
+
+
+            if( $itemDetalle['idtipo_articulo'] == $TIPO_ARTICULO_PRODUCTO_ID) {
+                DB::table('producto')->where('idproducto',$itemDetalle['idarticulo'])->decrement('stock',$itemDetalle['cantidad']);
+            }
         }
 
-        $carrito = Carrito::query()->find($idcarrito);
-        $carrito->pagado = 1;
-        $carrito->update();
+        if ($idcarrito) {
+            $carrito = Carrito::query()->find($idcarrito);
+            $carrito->pagado = 1;
+            $carrito->idventa = $venta->idventa;
+            $carrito->update();
+        }
 
         return response()->json([
             "mensaje" => "La venta se guardó con éxito."
@@ -160,14 +189,141 @@ class VentaController extends Controller
         return response()->json($venta);
     }
 
-    public function edit(Request $request)
+    public function edit(Request $request, $ventaID)
     {
-        return ;
+        $TIPO_ARTICULO_PRODUCTO_ID = $this->TIPO_ARTICULO_PRODUCTO_ID;
+        $TIPO_ARTICULO_MATRICULA_ID = $this->TIPO_ARTICULO_MATRICULA_ID;
+
+        $venta = Venta::query()->with([
+                'detalle' => function ($query) use ($TIPO_ARTICULO_PRODUCTO_ID) {
+                    return $query->selectRaw("
+                        *,
+                        (
+                            select producto.stock
+                            from producto
+                            where producto.idproducto = venta_detalle.idarticulo
+                            and venta_detalle.idtipo_articulo = $TIPO_ARTICULO_PRODUCTO_ID
+                            limit 1
+                        ) as stock
+                    ");
+                }
+            ])
+            ->find($ventaID);
+
+        if (!$venta) {
+            return abort(400);
+        }
+
+        $resources = $this->resources();
+
+
+        return view('panel.venta.editar')->with(compact('venta', 'resources' ));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $ventaID)
     {
-        return ;
+
+        $idtipoFacturacion      = $request->input('idtipo_facturacion');
+        $tipoFacturaconSerie    = $request->input('serie');
+        $tipoFacturacionNumero  = $request->input('numero');
+        $idcliente              = $request->input('idcliente');
+        $idmoneda               = $request->input('idmoneda');
+        $idtipoPago             = $request->input('idtipo_pago');
+        $montoEfectivoRecibido  = $request->input('monto_efectivo');
+        $montoEfectivoDevuelto  = $request->input('monto_efectivo_devuelto');
+        $montoEfectivoPagado    = $montoEfectivoRecibido - $montoEfectivoDevuelto;
+        $montoTranferidoPagado  = $request->input('monto_transferido');
+        $montoTotalPagado       = $montoEfectivoPagado + $montoTranferidoPagado;
+        $montoFaltante          = $request->input('monto_faltante');
+        $montoTotal             = $request->input('monto_total');
+        $fechaPago              = now()->format('Y-m-d');
+        $detalle                = $request->input('detalle', []);
+        $idcarrito              = $request->input('idcarrito');
+        $idempleado             = auth()->id();
+        $sucursal               = auth()->user()->sucursal;
+        $TIPO_ARTICULO_PRODUCTO_ID  = $this->TIPO_ARTICULO_PRODUCTO_ID;
+        $TIPO_ARTICULO_MATRICULA_ID = $this->TIPO_ARTICULO_MATRICULA_ID;
+
+        $cliente = Cliente::query()->find($idcliente);
+        $empleado = auth()->user();
+
+
+        $venta = Venta::find($ventaID);
+        $venta->idsucursal               = $sucursal->idsucursal;
+        $venta->idcliente                           = $idcliente;
+        $venta->cliente_nombres                     = $cliente->nombres;
+        $venta->cliente_apellidos                   = $cliente->apellidos;
+        $venta->cliente_idtipo_documento_identidad  = $cliente->idtipo_documento_identidad;
+        $venta->cliente_numero_documento_identidad  = $cliente->numero_documento_identidad;
+        $venta->idempleado                          = $idempleado;
+        $venta->empleado_nombres                    = $empleado->nombres;
+        $venta->empleado_apellidos                  = $empleado->apellidos;
+        $venta->empleado_idtipo_documento_identidad = $empleado->idtipo_documento_identidad;
+        $venta->empleado_numero_documento_identidad = $empleado->numero_documento_identidad;
+
+        $venta->idtipo_facturacion       = $idtipoFacturacion;
+        $venta->tipo_facturacion_serie   = $tipoFacturaconSerie;
+        $venta->tipo_facturacion_numero  = $tipoFacturacionNumero;
+
+        $venta->idmoneda                 = $idmoneda;
+        $venta->idtipo_pago              = $idtipoPago;
+        $venta->monto_efectivo_recibido    = number_format($montoEfectivoRecibido,2,'.','');
+        $venta->monto_efectivo_devuelto    = number_format($montoEfectivoDevuelto,2,'.','');
+        $venta->monto_efectivo_pagado      = number_format($montoEfectivoPagado,2,'.','');
+        $venta->monto_transferido_pagado   = number_format($montoTranferidoPagado,2,'.','');
+        $venta->monto_pagado               = number_format($montoTotalPagado,2,'.','');
+        $venta->monto_faltante             = number_format($montoFaltante,2,'.','');
+        $venta->monto_total                = number_format($montoTotal,2,'.','');
+        $venta->fecha_pago               = $fechaPago;
+        $venta->estado                   = 1;
+        $venta->save();
+
+
+        $tipoFacturacion = TipoFacturacion::query()->find($idtipoFacturacion);
+        if($idtipoFacturacion != $venta->idtipo_facturacion || $tipoFacturacionNumero != $venta->tipo_facturacion_numero) {
+            $tipoFacturacion->numero = str_pad( (int)$tipoFacturacion->numero + 1, 7,0,STR_PAD_LEFT);
+            $tipoFacturacion->update();
+
+        }
+
+
+
+        $detalleOld = VentaDetalle::query()->where('idventa',$ventaID)->get();
+        foreach ($detalleOld as $d) {
+            if( $d->idtipo_articulo == $TIPO_ARTICULO_PRODUCTO_ID) {
+                DB::table('producto')->where('idproducto',$d->idarticulo)->increment('stock',$d->cantidad);
+            }
+        }
+
+        VentaDetalle::query()->where('idventa',$ventaID)->delete();
+        foreach ($detalle as $itemDetalle) {
+            $ventaDetalle = new VentaDetalle();
+            $ventaDetalle->idventa         = $venta->idventa;
+            $ventaDetalle->idtipo_articulo = $itemDetalle['idtipo_articulo'];
+            $ventaDetalle->idarticulo      = $itemDetalle['idarticulo'];
+            $ventaDetalle->nombre          = $itemDetalle['nombre'];
+            $ventaDetalle->cantidad        = $itemDetalle['cantidad'];
+            $ventaDetalle->precio          = $itemDetalle['precio'];
+            $ventaDetalle->subtotal     = $itemDetalle['subtotal'];
+            $ventaDetalle->save();
+
+
+            if( $itemDetalle['idtipo_articulo'] == $TIPO_ARTICULO_PRODUCTO_ID) {
+                DB::table('producto')->where('idproducto',$itemDetalle['idarticulo'])->decrement('stock',$itemDetalle['cantidad']);
+            }
+
+        }
+
+        if ($idcarrito) {
+            $carrito = Carrito::query()->find($idcarrito);
+            $carrito->pagado = 1;
+            $carrito->idventa = $venta->idventa;
+            $carrito->update();
+        }
+
+        return response()->json([
+            "mensaje" => "La venta se modificó con éxito."
+        ]);
     }
 
     public function destroy(Request $request)
@@ -175,23 +331,41 @@ class VentaController extends Controller
         return ;
     }
 
-
-
-
-    public function resources(Request $request)
+    public function anular(Request $request,$ventaID)
     {
         if ( !$request->ajax() ) {
             return abort(400);
         }
+        $TIPO_ARTICULO_PRODUCTO_ID  = $this->TIPO_ARTICULO_PRODUCTO_ID;
+        $TIPO_ARTICULO_MATRICULA_ID = $this->TIPO_ARTICULO_MATRICULA_ID;
+        $venta = Venta::query()->find($ventaID);
 
-        $tipoFacturacion = TipoFacturacion::query()->where('estado',1)->withSucursal()->get();
-        $tipoPago = TipoPago::query()->where('estado',1)->get();
+        if (!$venta) {
+            return response()->json([ 'mensaje' => 'El registro no existe.'],400);
+        }
 
-        return response()->json([
-            'tipo_facturacion' => $tipoFacturacion,
-            'tipo_pago' => $tipoPago,
-        ]);
+        if ($venta->anulado) {
+            return response()->json([ 'mensaje' => 'La venta se encuentra anulado.'],400);
+        }
+
+        $venta->anulado = 1;
+        $venta->anulado_at = now()->format('Y-m-d');
+        $venta->update();
+
+
+        $detalleOld = VentaDetalle::query()->where('idventa',$ventaID)->get();
+        foreach ($detalleOld as $d) {
+            if( $d->idtipo_articulo == $TIPO_ARTICULO_PRODUCTO_ID) {
+                DB::table('producto')->where('idproducto',$d->idarticulo)->increment('stock',$d->cantidad);
+            }
+        }
+
+        return response()->json([ 'mensaje' => 'La venta se anulo con exitó.']);
+
     }
+
+
+
 
     public function facturaSerie(Request $request, $tipoFacturacionID)
     {
@@ -255,8 +429,8 @@ class VentaController extends Controller
             return abort(400);
         }
 
-        $cantidadRegistros = $request->input('cantidadRegistros');
-        $paginaActual = $request->input('paginaActual');
+        $cantidadRegistros = $request->input('cantidadRegistros',5);
+        $paginaActual = $request->input('paginaActual',1);
         $txtBuscar = $request->input('txtBuscar');
 
         $productos = Producto::query()
