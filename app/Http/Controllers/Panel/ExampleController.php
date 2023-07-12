@@ -364,9 +364,11 @@ class ExampleController extends Controller
 
         try {
 
-            foreach (json_decode($request->stack) as $key => $item) {
-                $file = ExampleFile::query()->find($item->key);
-                $file->posicion = $key+1;
+            $filesIDS = $request->input('files_ids', []);
+
+            foreach ($filesIDS as $i => $fileID) {
+                $file = ExampleFile::query()->find($fileID);
+                $file->posicion = $i+1;
                 $file->update();
             }
 

@@ -59,11 +59,11 @@
             border: 1px solid #dee2e6;
         }
         @media (min-width: 992px) {
-            .modal-lg {
+            /* .modal-lg {
                 max-width: 100%;
                 margin-left: 1%;
                 margin-right: 1%;
-            }
+            } */
         }
 
 
@@ -153,7 +153,7 @@
                                         <li><a href="{{ route('frecuencia.index') }}">Frecuencias</a></li>
                                         <li><a href="{{ route('horario.index') }}">Horarios</a></li>
                                         <li><a href="{{ route('cantidadClases.index') }}">Cantidad de sesiones</a></li>
-                                        {{-- <li><a href="{{ route('productos.index') }}">Productos</a></li> --}}
+                                        <li><a href="{{ route('producto.index') }}">Productos</a></li>
                                     </ul>
                                 </li>
 

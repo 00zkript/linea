@@ -653,10 +653,35 @@ function soloLetras(e) {
 
 
 $('.format-number').on('keypress', soloNumeros);
+$('.format-number').on('paste', function () {
+    const clipboard = event.clipboardData.getData('text/plain')
+    const value = clipboard.replace(/[^\d]/g,'');
+    $(this).val(value);
+    event.preventDefault();
+});
 
 $('.format-number-float').on('keypress', soloNumerosFloat);
+$('.format-number-float').on('paste', function () {
+    const clipboard = event.clipboardData.getData('text/plain')
+    const value = clipboard.replace(/[^\d\.]/g,'').split('.').filter(ele => ele).join('-').replace(/\-/i,'.').replace(/\-/g,'')
+    $(this).val(value);
+    event.preventDefault();
+});
 
 $('.format-number-price').on('keypress', soloNumerosPrice);
+$('.format-number-price').on('paste', function () {
+    const clipboard = event.clipboardData.getData('text/plain')
+    const value = clipboard.replace(/[^\d\.]/g,'').split('.').filter(ele => ele).join('-').replace(/\-/i,'.').replace(/\-/g,'')
+    const search = value.indexOf('.');
+    if (search === -1) {
+        $(this).val(value);
+        return event.preventDefault();
+    }
+
+
+    $(this).val(value.slice(0,search+5));
+    return event.preventDefault();
+});
 
 $('.format-text').on('keypress', soloLetras);
 

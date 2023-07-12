@@ -9,7 +9,7 @@ class Producto extends Model
 {
     protected  $table = 'producto';
     protected $primaryKey = 'idproducto';
-    // public $timestamps = false;
+    public $timestamps = false;
     // protected $guarded = [];
 
 

@@ -397,10 +397,11 @@
             $("#fileEditar").on('filesorted', function(e, params) {
                 e.preventDefault();
                 const idregistro = $("#frmEditar input[name=idregistro]").val();
-                const stack = params.stack;
+                const filesConfig = params.stack;
+                const filesIds = filesConfig.map( ele => ele.key );
 
                 axios.post(URL_FILE_SORT, {
-                    stack : JSON.stringify(stack)
+                    files_ids : filesIds
                 })
                 .then( response => {
                     const data = response.data;

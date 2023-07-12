@@ -179,6 +179,19 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
 
 
 
+    Route::post('productos/file/store',[\App\Http\Controllers\Panel\ProductoController::class,'fileStore'])->name("producto.file.store");
+    Route::post('productos/file/update',[\App\Http\Controllers\Panel\ProductoController::class,'fileUpdate'])->name("producto.file.update");
+    Route::post('productos/file/sort',[\App\Http\Controllers\Panel\ProductoController::class,'fileSort'])->name("producto.file.sort");
+    Route::post('productos/file/destroy',[\App\Http\Controllers\Panel\ProductoController::class,'fileDestroy'])->name("producto.file.destroy");
+    Route::put('productos/{idproducto}/habilitar',[\App\Http\Controllers\Panel\ProductoController::class,'habilitar'])->name("producto.habilitar");
+    Route::put('productos/{idproducto}/inhabilitar',[\App\Http\Controllers\Panel\ProductoController::class,'inhabilitar'])->name("producto.inhabilitar");
+    Route::get('productos/listar',[\App\Http\Controllers\Panel\ProductoController::class,'listar'])->name("producto.listar");
+    Route::resource('productos',\App\Http\Controllers\Panel\ProductoController::class)->names('producto');
+
+
+
+
+
     // Route::post('example/file/store',[\App\Http\Controllers\Panel\ExampleController::class,'fileStore'])->name("example.file.store");
     // Route::post('example/file/update',[\App\Http\Controllers\Panel\ExampleController::class,'fileUpdate'])->name("example.file.update");
     // Route::post('example/file/sort',[\App\Http\Controllers\Panel\ExampleController::class,'fileSort'])->name("example.file.sort");
