@@ -11,7 +11,7 @@
             <div class="col-12">
                 <div class="card">
                     <div class="card-header" style="background-color: #2a3f54">
-                         <p style="font-size: 20px" class="card-title text-center text-white mb-0"> Gestionar Registros</p>
+                         <p style="font-size: 20px" class="card-title text-center text-white mb-0"> Gestionar Productos</p>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -244,12 +244,16 @@
 
                     $("#nombreShow").html(data.nombre);
                     $("#descripcionShow").html(data.descripcion);
+                    $("#stockShow").html(data.stock);
+                    $("#precioShow").html('S/.'+data.precio);
 
 
 
-                    if(data.imagen){
-                        const img = `<img src="${ URL_CARPETA+data.imagen }" style ="width: 200px;" >`;
-                        $("#imagenShow").html(img);
+                    $("#imagenShow").empty();
+                    if(data.imagenes){
+                        for (const img of data.imagenes) {
+                            $("#imagenShow").append(`<img src="${ URL_CARPETA+img.nombre }" style ="width: 200px;" >`);
+                        }
                     }
 
 

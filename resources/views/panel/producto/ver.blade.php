@@ -24,8 +24,20 @@
 
 
                         <div class="col-12">
-                            <p class="text-capitalize">contenido:</p>
-                            <p id="contenidoShow"></p>
+                            <p class="text-capitalize">descripcion:</p>
+                            <p id="descripcionShow"></p>
+                            <hr>
+                        </div>
+
+                        <div class="col-12">
+                            <p class="text-capitalize">stock:</p>
+                            <p id="stockShow"></p>
+                            <hr>
+                        </div>
+
+                        <div class="col-12">
+                            <p class="text-capitalize">Precio:</p>
+                            <p id="PrecioShow"></p>
                             <hr>
                         </div>
 
