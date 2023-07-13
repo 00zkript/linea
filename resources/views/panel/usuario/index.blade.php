@@ -62,40 +62,53 @@
 
         const URL_LISTADO     = "{{ route('usuario.listar') }}";
         const URL_GUARDAR     = "{{ route('usuario.store') }}";
-        const URL_VER         = "{{ route('usuario.show','show') }}";
-        const URL_EDIT        = "{{ route('usuario.edit','edit') }}";
-        const URL_MODIFICAR   = "{{ route('usuario.update','update') }}";
+        const URL_VER         = "{{ route('usuario.show',':id') }}";
+        const URL_EDIT        = "{{ route('usuario.edit',':id') }}";
+        const URL_MODIFICAR   = "{{ route('usuario.update',':id') }}";
         const URL_HABILITAR   = "{{ route('usuario.habilitar') }}";
         const URL_INHABILITAR = "{{ route('usuario.inhabilitar') }}";
-        const URL_ELIMINAR    = "{{ route('usuario.destroy','destroy') }}";
+        const URL_ELIMINAR    = "{{ route('usuario.destroy',':id') }}";
+        const URL_CARPETA     = BASE_URL+"/panel/img/usuarios/";
+
+
+        const resources = {
+            tipoDocumentoIdentidad : @json($tipoDocumentoIdentidad)
+        }
+
 
         const filtros = () => {
 
-            $(document).on("click","a.page-link",function(e) {
+
+            $(document).on("click","a.page-link", function(e) {
                 e.preventDefault();
-                const url = e.target.href;
-                const paginaActual = url.split("?pagina=")[1];
+                const url               = e.target.href;
+                const paginaActual      = url.split("?pagina=")[1];
                 const cantidadRegistros = $("#cantidadRegistros").val();
-                const txtBuscar = $("#txtBuscar").val();
 
-                listado(cantidadRegistros,paginaActual,txtBuscar);
-            });
+                listado(cantidadRegistros,paginaActual);
+            } )
 
-            $(document).on("change", "#cantidadRegistros", function(e) {
+
+
+            $(document).on("change","#cantidadRegistros", function(e) {
                 e.preventDefault();
-                const paginaActual = $("#paginaActual").val();
+                const paginaActual      = $("#paginaActual").val();
                 const cantidadRegistros = e.target.value;
-                const txtBuscar = $("#txtBuscar").val();
 
-                listado(cantidadRegistros,paginaActual,txtBuscar);
-            });
+                listado(cantidadRegistros,paginaActual);
 
-            $(document).on("submit", "#frmBuscar", function(e) {
+            } )
+
+
+
+            $(document).on("submit","#frmBuscar", function(e) {
                 e.preventDefault();
-                const txtBuscar = $("#txtBuscar").val();
                 const cantidadRegistros = $("#cantidadRegistros").val();
+                const paginaActual      = $("#paginaActual").val();
+
                 listado(cantidadRegistros,1);
-            });
+
+            } )
 
         }
 
@@ -109,7 +122,9 @@
             }
 
             try{
-                const response = await axios.post(URL_LISTADO, form );
+                const response = await axios.get(URL_LISTADO, {
+                    params : form
+                });
                 const data = response.data;
 
                 stop();
@@ -125,7 +140,7 @@
 
         const modales = () => {
 
-            $("#btnModalCrear").on("click",(e)=>{
+            $("#btnModalCrear").on("click",function(e){
                 e.preventDefault();
                 $("#frmCrear span.error").remove();
                 $("#frmCrear")[0].reset();
@@ -158,7 +173,7 @@
                 var idusuario = $(this).closest('div.dropdown-menu').data('idusuario');
 
                 cargando('Procesando...');
-                axios(URL_EDIT,{ params: {idusuario : idusuario} })
+                axios(URL_EDIT.replace(':id',idusuario),{ params: {idusuario : idusuario} })
                 .then(response => {
                     const data = response.data;
                     stop();
@@ -167,9 +182,9 @@
                     $("#idusuario").val(data.idusuario);
                     $("#rolEditar").val(data.idrol);
                     $("#usuarioEditar").val(data.usuario);
-                    $("#nombresEditar").val(data.cliente.nombres);
-                    $("#apellidosEditar").val(data.cliente.apellidos);
-                    $("#correoEditar").val(data.cliente.correo);
+                    $("#nombresEditar").val(data.nombres);
+                    $("#apellidosEditar").val(data.apellidos);
+                    $("#correoEditar").val(data.correo);
 
                     $("#fotoEditar").fileinput('destroy').fileinput({
                         theme: 'fa',
@@ -196,7 +211,7 @@
                         maxFileCount:1,
                         autoReplace:true,
                         //minFileCount: 1,
-                        initialPreview:[ !empty(data.foto) ? '{{ asset('panel/img/usuarios/') }}/'+data.foto : '{{ asset('panel/default/foto_defecto.jpg') }}'],
+                        initialPreview:[ !empty(data.imagen) ? URL_CARPETA+data.imagen : "{{ asset('panel/default/foto_defecto.jpg') }}" ],
                         fileActionSettings: {
                             showRemove: false,
                             showUpload: false,
@@ -285,7 +300,7 @@
                 var form = new FormData($(this)[0]);
 
                 cargando('Procesando...');
-                axios.post(URL_MODIFICAR,form)
+                axios.post(URL_MODIFICAR.replace(':id',idusuario),form)
                     .then(response => {
                         const data = response.data;
 
@@ -307,7 +322,7 @@
                 var form = new FormData($(this)[0]);
                 cargando('Procesando...');
 
-                axios.post(URL_HABILITAR,form)
+                axios.post(URL_HABILITAR.replace(':id',idusuario),form)
                     .then( response => {
                         const data = response.data;
                         stop();
@@ -334,7 +349,7 @@
 
                 cargando('Procesando...');
 
-                axios.post(URL_INHABILITAR,form)
+                axios.post(URL_INHABILITAR.replace(':id',idusuario),form)
                     .then( response => {
                         const data = response.data;
                         stop();
@@ -358,7 +373,7 @@
 
                 cargando('Procesando...');
 
-                axios.post(URL_ELIMINAR,form)
+                axios.post(URL_ELIMINAR.replace(':id',idusuario),form)
                     .then( response => {
                         const data = response.data;
                         stop();
@@ -372,6 +387,20 @@
                     .catch( errorCatch )
 
             } )
+        }
+
+        const changeTipoDocumentoIdentidad = () => {
+            $(document).on( 'change', '#tipoDocumentoIdentidad', function (e) {
+                e.preventDefault();
+                const tipoDocumentoSelected = resources.tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad);
+                const { caracteres_length }  = tipoDocumentoSelected;
+
+                const value = $('#numeroDucmentoIdentidad').val();
+
+                $('#numeroDucmentoIdentidad').val( value.slice(0,caracteres_length))
+                $('#numeroDucmentoIdentidad').attr( 'minLength', caracteres_length).attr( 'maxLength', caracteres_length);
+
+            });
         }
 
 
@@ -417,6 +446,7 @@
             habilitar();
             inhabilitar();
             eliminar();
+            changeTipoDocumentoIdentidad();
         });
 
 

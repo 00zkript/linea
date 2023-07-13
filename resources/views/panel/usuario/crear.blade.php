@@ -18,70 +18,76 @@
                             <hr>
                         </div>
 
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="rol">Rol: <span class="text-danger">(*)</span></label>
-                                <select name="rol" id="rol" class="form-control" required>
-                                    <option value="" hidden selected disabled>[--Seleccione--]</option>
-                                    @foreach($roles AS $r)
-                                        <option value="{{ $r->idrol}}" >{{ $r->cargo}}</option>
-                                    @endforeach
-                                </select>
+                        <div class="col-12 form-group">
+                            <label for="rol">Rol: <span class="text-danger">(*)</span></label>
+                            <select name="rol" id="rol" class="form-control" title="Rol" required>
+                                <option value="" hidden selected disabled>[--Seleccione--]</option>
+                                @foreach($roles AS $r)
+                                    <option value="{{ $r->id }}" >{{ $r->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <label for="correo">Correo: <span class="text-danger">(*)</span></label>
+                            <input type="email" name="correo" id="correo" required class="form-control" maxlength="250" placeholder="Correo">
+                        </div>
+
+                        <div class="col-md-6 col-12 form-group">
+                            <label for="usuario">Usuario: <span class="text-danger">(*)</span></label>
+                            <input type="text" name="usuario" id="usuario" required  class="form-control" maxlength="50" placeholder="Usuario">
+                        </div>
+
+                        <div class="col-md-6 col-12 form-group">
+                            <label for="clave">Clave: <span class="text-danger">(*)</span></label>
+                            <input type="password" name="clave" id="clave" required class="form-control" maxlength="250" placeholder="Clave">
+                        </div>
+
+                        <div class="col-md-6 col-12 form-group">
+                            <label for="nombres">Nombres: <span class="text-danger">(*)</span></label>
+                            <input type="text" name="nombres" id="nombres" required class="form-control" maxlength="250" placeholder="Nombres">
+                        </div>
+
+                        <div class="col-md-6 col-12 form-group">
+                            <label for="apellidos">Apellidos: <span class="text-danger">(*)</span></label>
+                            <input type="text" name="apellidos" id="apellidos" required class="form-control" maxlength="250" placeholder="Nombres">
+                        </div>
+
+                        <div class="col-md-6 col-12 form-group">
+                            <label for="tipoDocumentoIdentidad">Tipo documento de identidad:</label>
+                            <select class="form-control" name="tipoDocumentoIdentidad" id="tipoDocumentoIdentidad" title="Tipo documento de identidad" >
+                                <option value="" hidden selected >[---Seleccione---]</option>
+                                @foreach ($tipoDocumentoIdentidad as $item)
+                                    <option value="{{ $item->idtipo_documento_identidad  }}">{{ $item->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 col-12 form-group">
+                            <label for="numeroDucmentoIdentidad">Número de documento de identidad</label>
+                            <input type="text" class="form-control format-number" name="numeroDucmentoIdentidad" id="numeroDucmentoIdentidad" placeholder="Número de documento de identidad" minLength="8" maxength="8" >
+                        </div>
+
+                        <div class="col-12 form-group">
+                            <label for="cargo">Cargo</label>
+                            <input type="text" class="form-control" name="cargo" id="cargo" placeholder="Cargo" >
+                        </div>
+
+
+
+                        <div class="col-12 form-group">
+                            <label for="foto" >Imagen:</label>
+                            <div class="file-loading">
+                                <input  id="foto" name="foto" type="file" class="file" >
                             </div>
                         </div>
 
-                        <div class="col-md-6 col-12">
-                            <div class="form-group">
-                                <label for="usuario">Usuario: <span class="text-danger">(*)</span></label>
-                                <input type="text" name="usuario" id="usuario" required  class="form-control" maxlength="50">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-12">
-                            <div class="form-group">
-                                <label for="clave">Clave: <span class="text-danger">(*)</span></label>
-                                <input type="password" name="clave" id="clave" required class="form-control" maxlength="20">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-12">
-                            <div class="form-group">
-                                <label for="nombres">Nombres: <span class="text-danger">(*)</span></label>
-                                <input type="text" name="nombres" id="nombres" required class="form-control" maxlength="250">
-                            </div>
-                        </div>
-
-                        <div class="col-md-6 col-12">
-                            <div class="form-group">
-                                <label for="apellidos">Apellidos: <span class="text-danger">(*)</span></label>
-                                <input type="text" name="apellidos" id="apellidos" required class="form-control" maxlength="250">
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="correo">Correo: <span class="text-danger">(*)</span></label>
-                                <input type="email" name="correo" id="correo" required class="form-control" maxlength="250">
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="foto" >Foto:</label>
-                                <div class="file-loading">
-                                    <input  id="foto" name="foto" type="file" class="file" >
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-12">
-                            <div class="form-group">
-                                <label for="estado">Estado: <span class="text-danger">(*)</span></label>
-                                <select name="estado" id="estado" class="form-control" required>
-                                    <option value="1" selected>Habilitado</option>
-                                    <option value="0" >Inhabilitado</option>
-                                </select>
-                            </div>
+                        <div class="col-12 form-group">
+                            <label for="estado">Estado: <span class="text-danger">(*)</span></label>
+                            <select name="estado" id="estado" class="form-control" required>
+                                <option value="1" selected>Habilitado</option>
+                                <option value="0" >Inhabilitado</option>
+                            </select>
                         </div>
 
                     </div>

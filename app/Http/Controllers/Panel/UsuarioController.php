@@ -4,32 +4,29 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Panel\UsuarioRequest;
-use App\Models\Cliente;
+use App\Models\TipoDocumentoIdentidad;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Role;
 
 class UsuarioController extends Controller
 {
 
     public function index()
     {
-        // $roles = DB::table('rol')
-        //     ->where('estado', 1)
-        //     //->where('idrol',1)
-        //     ->get();
+        $roles = Role::query()
+            ->where('status', 1)
+            // ->where('id', '!=', 1)
+            ->get();
 
-        $roles = [];
+        $tipoDocumentoIdentidad = TipoDocumentoIdentidad::query()->where('estado',1)->get();
 
-        $usuarios = DB::table('usuario AS u')
-            // ->join('rol AS r', 'u.idrol', '=', 'r.idrol')
-            // ->selectRaw('u.*,r.cargo AS cargo')
-            ->orderBy('u.idusuario', 'DESC')
+        $usuarios = User::query()
+            ->orderBy('idusuario', 'DESC')
             ->paginate(10, ['*'], 'pagina', 1);
 
-        return view('panel.usuario.index')->with(compact('roles', 'usuarios'));
+        return view('panel.usuario.index')->with(compact('roles', 'usuarios', 'tipoDocumentoIdentidad'));
     }
 
     public function listar(Request $request)
@@ -42,13 +39,11 @@ class UsuarioController extends Controller
         $paginaActual = $request->input('paginaActual');
         $txtBuscar = $request->input('txtBuscar');
 
-        $usuarios = DB::table('usuario AS u')
-            // ->join('rol AS r', 'u.idrol', '=', 'r.idrol')
-            // ->selectRaw('u.*,r.cargo AS cargo')
+        $usuarios = User::query()
             ->when(!empty($txtBuscar), function ($query) use ($txtBuscar) {
-                return $query->whereRaw('CONCAT(u.usuario,u.nombres,u.apellidos) LIKE ? ', ["%" . $txtBuscar . "%"]);
+                return $query->whereRaw('CONCAT(usuario,nombres,apellidos) LIKE ? ', ["%" . $txtBuscar . "%"]);
             })
-            ->orderBy('u.idusuario', 'DESC')
+            ->orderBy('idusuario', 'DESC')
             ->paginate($cantidadRegistros, ['*'], 'pagina', $paginaActual);
 
         return response()->json(view('panel.usuario.listado')->with(compact('usuarios'))->render());
@@ -58,7 +53,6 @@ class UsuarioController extends Controller
 
     public function create()
     {
-        //
     }
 
     public function store(UsuarioRequest $request)
@@ -67,30 +61,35 @@ class UsuarioController extends Controller
             return abort(404);
         }
 
+        $rol       = $request->input('rol');
+        $usuario   = $request->input('usuario');
+        $clave     = $request->input('clave');
+        $nombres   = $request->input('nombres');
+        $apellidos = $request->input('apellidos');
+        $tipoDocumentoIdentidad   = $request->input('tipoDocumentoIdentidad');
+        $numeroDocumentoIdentidad = $request->input('numeroDocumentoIdentidad');
+        $cargo     = $request->input('cargo');
+        $estado    = $request->input('estado');
+
         try {
 
             $usuario            = new User;
-            $usuario->idrol     = $request->input('rol');
-            $usuario->usuario   = $request->input('usuario');
-            $usuario->nombres                    = $request->input('nombres');
-            $usuario->apellidos                  = $request->input('apellidos');
-            $usuario->clave     = encrypt($request->input('clave'));
-            if ($request->hasFile('foto')) {
-                $foto = Storage::disk('panel')->putFile('usuarios', $request->file('foto'));
-                $usuario->foto = basename($foto);
+            $usuario->idrol     = $rol;
+            $usuario->usuario   = $usuario;
+            $usuario->clave     = encrypt($clave);
+            $usuario->nombres   = $nombres;
+            $usuario->apellidos = $apellidos;
+            $usuario->idtipo_documento_identidad = $tipoDocumentoIdentidad;
+            $usuario->numero_documento_identidad = $numeroDocumentoIdentidad;
+            $usuario->cargo     = $cargo;
+            $usuario->estado    = $estado;
+
+            if ($request->hasFile('imagen')) {
+                $imagen = Storage::disk('panel')->putFile('usuarios', $request->file('imagen'));
+                $usuario->imagen = basename($imagen);
             }
 
-            $usuario->estado = $request->input('estado');
             $usuario->save();
-
-
-            $cliente = new Cliente();
-            $cliente->idusuario                  = $usuario->idusuario;
-            $cliente->nombres                    = $request->input('nombres');
-            $cliente->apellidos                  = $request->input('apellidos');
-            $cliente->correo                     = $request->input('correo');
-            $cliente->estado                     = 1;
-            $cliente->save();
 
             return response()->json([
                 'mensaje'=> "Registro creado exitosamente.",
@@ -109,21 +108,13 @@ class UsuarioController extends Controller
 
     }
 
-    public function show(Request $request, $id)
+    public function show(Request $request, $usuarioID)
     {
         if (!$request->ajax()) {
             return abort(404);
         }
-        $idusuario = $request->input('idusuario');
 
-        $usuario = DB::table('usuario AS u')
-            ->join('rol AS r', 'u.idrol', '=', 'r.idrol')
-            ->selectRaw('u.*,r.cargo AS cargo')
-            ->where('idusuario', $idusuario)
-            ->first();
-
-        $usuario->cliente = Cliente::query()->where('idusuario',$idusuario)->first();
-
+        $usuario = User::query()->find($usuarioID);
 
         if(!$usuario){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -134,16 +125,13 @@ class UsuarioController extends Controller
 
     }
 
-    public function edit(Request $request, $id)
+    public function edit(Request $request, $usuarioID)
     {
         if (!$request->ajax()) {
             return abort(404);
         }
-        $idusuario = $request->input('idusuario');
 
-        $usuario = User::query()->find($idusuario);
-
-        $usuario->cliente = Cliente::query()->where('idusuario',$idusuario)->first();
+        $usuario = User::query()->find($usuarioID);
 
         if(!$usuario){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -155,43 +143,48 @@ class UsuarioController extends Controller
 
     }
 
-    public function update(UsuarioRequest $request, $id)
+    public function update(UsuarioRequest $request, $usuarioID)
     {
         if (!$request->ajax()) {
             return abort(404);
         }
+
+        $rol       = $request->input('rolEditar');
+        $usuario   = $request->input('usuarioEditar');
+        $clave     = $request->input('claveEditar');
+        $nombres   = $request->input('nombresEditar');
+        $apellidos = $request->input('apellidosEditar');
+        $tipoDocumentoIdentidad   = $request->input('tipoDocumentoIdentidadEditar');
+        $numeroDocumentoIdentidad = $request->input('numeroDocumentoIdentidadEditar');
+        $cargo     = $request->input('cargoEditar');
+        $estado    = $request->input('estadoEditar');
 
         try {
 
-            $usuario            = User::query()->findOrFail($request->input('idusuario'));
-            $usuario->idrol     = $request->input('rolEditar');
-            $usuario->usuario   = $request->input('usuarioEditar');
-            if (!empty($request->input('claveEditar'))) {
-                $usuario->clave = encrypt($request->input('claveEditar'));
+            $usuario            = User::query()->findOrFail($usuarioID);
+            $usuario->idrol     = $rol;
+            $usuario->usuario   = $usuario;
+            if (!empty($clave)) {
+                $usuario->clave = encrypt($clave);
             }
+            $usuario->nombres    = $nombres;
+            $usuario->apellidos  = $apellidos;
+            $usuario->idtipo_documento_identidad = $tipoDocumentoIdentidad;
+            $usuario->numero_documento_identidad = $numeroDocumentoIdentidad;
+            $usuario->cargo     = $cargo;
+            $usuario->estado    = $estado;
 
-            if ($request->hasFile('fotoEditar')) {
+            if ($request->hasFile('imagenEditar')) {
 
-                if (Storage::disk('panel')->exists('usuarios/' . $usuario->foto)) {
-                    Storage::disk('panel')->delete('usuarios/' . $usuario->foto);
+                if (Storage::disk('panel')->exists('usuarios/' . $usuario->imagen)) {
+                    Storage::disk('panel')->delete('usuarios/' . $usuario->imagen);
                 }
 
-                $foto = Storage::disk('panel')->putFile('usuarios', $request->file('fotoEditar'));
-                $usuario->foto = basename($foto);
+                $imagen = Storage::disk('panel')->putFile('usuarios', $request->file('imagenEditar'));
+                $usuario->imagen = basename($imagen);
             }
-
-            $usuario->nombres    = $request->input('nombresEditar');
-            $usuario->apellidos  = $request->input('apellidosEditar');
-            $usuario->estado = $request->input('estadoEditar');
             $usuario->update();
 
-
-            /*$cliente = Cliente::query()->where('idusuario',$usuario->idusuario)->first();
-            $cliente->nombres    = $request->input('nombresEditar');
-            $cliente->apellidos  = $request->input('apellidosEditar');
-            $cliente->correo     = $request->input('correoEditar');
-            $cliente->estado     = 1;
-            $cliente->update();*/
 
 
             return response()->json([
@@ -209,14 +202,14 @@ class UsuarioController extends Controller
 
     }
 
-    public function habilitar(Request $request)
+    public function habilitar(Request $request,$usuarioID)
     {
         if (!$request->ajax()) {
             return abort(404);
         }
 
         try {
-            $usuario = User::query()->findOrFail($request->input('idusuario'));
+            $usuario = User::query()->findOrFail($usuarioID);
             $usuario->estado = 1;
             $usuario->update();
 
@@ -236,15 +229,21 @@ class UsuarioController extends Controller
 
     }
 
-    public function inhabilitar(Request $request)
+    public function inhabilitar(Request $request, $usuarioID)
     {
         if (!$request->ajax()) {
             return abort(404);
         }
 
+        if ( $usuarioID == auth()->id()) {
+            return response()->json([
+                'mensaje'=> "No se pudo inhabilitar el registro. Debido a que el usuario que desea inhabilitar tiene la sessión activa.",
+            ]);
+        }
+
 
         try {
-            $usuario = User::query()->findOrFail($request->input('idusuario'));
+            $usuario = User::query()->findOrFail($usuarioID);
             $usuario->estado = 0;
             $usuario->update();
 
@@ -264,25 +263,25 @@ class UsuarioController extends Controller
 
     }
 
-    public function destroy(Request $request, $id)
+    public function destroy(Request $request, $usuarioID)
     {
         if (!$request->ajax()) {
             return abort(404);
         }
 
+        if ( $usuarioID == auth()->id()) {
+            return response()->json([
+                'mensaje'=> "No se pudo eliminar el registro. Debido a que el usuario que desea eliminar tiene la sessión activa.",
+            ]);
+        }
 
         try {
-            $usuario = User::query()->findOrFail($request->input('idusuario'));
-
-            if ( $usuario->idusuario == auth()->user()->idusuario) {
-                return response()->json([
-                    'mensaje'=> "No se pudo eliminar el registro. Debido a que el usuario que desea eliminar tiene la sessión activa.",
-                ]);
-            }
+            $usuario = User::query()->findOrFail($usuarioID);
 
 
-            if (Storage::disk('panel')->exists('usuarios/' . $usuario->foto)) {
-                Storage::disk('panel')->delete('usuarios/' . $usuario->foto);
+
+            if (Storage::disk('panel')->exists('usuarios/' . $usuario->imagen)) {
+                Storage::disk('panel')->delete('usuarios/' . $usuario->imagen);
             }
 
             $usuario->delete();
