@@ -119,6 +119,7 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::get('venta/resources/{idcarrito}/carrito', [\App\Http\Controllers\Panel\VentaController::class, 'carrito'] )->name('venta.resources.carrito');
     Route::get('venta/create/{idcarrito?}', [\App\Http\Controllers\Panel\VentaController::class, 'create'] )->name('venta.create');
     Route::get('venta/listar',[\App\Http\Controllers\Panel\VentaController::class,'listar'])->name("venta.listar");
+    Route::get('venta/ticket/{idventa}',[\App\Http\Controllers\Panel\VentaController::class,'ticket'])->name("venta.ticket");
 
     Route::post('venta/{idventa}/anular', [\App\Http\Controllers\Panel\VentaController::class, 'anular'] )->name('venta.anular');
     Route::resource( 'venta', \App\Http\Controllers\Panel\VentaController::class )->only(['index','store','edit', 'update','show'])->names('venta');

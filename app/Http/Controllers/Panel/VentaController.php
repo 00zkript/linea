@@ -14,6 +14,9 @@ use App\Models\Venta;
 use App\Models\VentaDetalle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Mike42\Escpos\CapabilityProfile;
+use Mike42\Escpos\PrintConnectors\FilePrintConnector;
+use Mike42\Escpos\Printer;
 
 class VentaController extends Controller
 {
@@ -530,6 +533,111 @@ class VentaController extends Controller
         return response()->json($clientes);
     }
 
+
+    public function ticket()
+    {
+
+        // $connector = new FilePrintConnector("php://stdout");
+        // $printer = new Printer($connector);
+        // $printer->text("Hello World!\n");
+        // $printer->cut();
+        // $printer->close();
+
+        // Ruta del archivo de salida para la impresión
+        $archivoSalida = "recibo.txt";
+
+        try {
+            // Conector de impresión usando archivo de salida
+            $connector = new FilePrintConnector($archivoSalida);
+
+            // Perfil de capacidad de la impresora
+            $capabilityProfile = CapabilityProfile::load("default");
+
+            // Crear instancia de la impresora
+            $printer = new Printer($connector, $capabilityProfile);
+
+            // Establecer el tamaño de la fuente
+            $printer->setTextSize(2, 2);
+
+            // Imprimir texto en el recibo
+            $printer->setJustification(Printer::JUSTIFY_CENTER);
+            $printer->text("******************************\n");
+            $printer->text("         COMPROBANTE DE VENTA         \n");
+            $printer->text("******************************\n");
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("Fecha: " . date('d/m/Y H:i:s') . "\n");
+            $printer->text("Cliente: Juan Pérez\n");
+            $printer->text("RUC: 12345678901\n");
+            $printer->text("Dirección: Av. Principal 123\n");
+            $printer->text("******************************\n");
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("Cant.   Descripción               P.Unit     Importe\n");
+            $printer->text("-------------------------------\n");
+            $printer->setJustification(Printer::JUSTIFY_LEFT);
+            $printer->text("2       Producto A                 25.00      50.00\n");
+            $printer->text("1       Producto B                 30.00      30.00\n");
+            $printer->text("-------------------------------\n");
+            $printer->setJustification(Printer::JUSTIFY_RIGHT);
+            $printer->text("SUBTOTAL: 80.00\n");
+            $printer->text("IGV (18%): 14.40\n");
+            $printer->text("TOTAL: 94.40\n");
+            $printer->text("******************************\n");
+            $printer->text("        GRACIAS POR SU COMPRA        \n");
+            $printer->text("******************************\n");
+
+
+            // Cortar el recibo y liberar recursos
+            // $printer->cut();
+            $printer->close();
+
+            $contenidoRecibo = file_get_contents($archivoSalida);
+
+            ?>
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Previsualización del recibo</title>
+                    <style>
+                        /* Estilos CSS para mostrar el contenido del recibo */
+                        body {
+                            font-family: Arial, sans-serif;
+                            margin: 20px;
+                            background: #1E1E1E;
+                        }
+
+                        .ticket {
+                            width: 300px;
+                            height: 100%;
+                            margin: 0 auto;
+                            padding: 20px;
+                            border: 1px solid #ccc;
+                            background-color: #f9f9f9;
+                        }
+                        .ticket-content p {
+                            margin: 0;
+                            padding: 0;
+                        }
+                        .ticket-content {
+                            margin-bottom: 10px;
+                        }
+                    </style>
+                </head>
+                <body>
+
+                    <div class="ticket">
+                        <div class="ticket-content"><?php echo nl2br($contenidoRecibo) ?></div>
+                    </div>
+                </body>
+                </html>
+            <?php
+
+            // return response($contenidoRecibo)->header('Content-Type', 'text/plain');
+            // return response()->json(['mensaje' => 'Recibo impreso exitosamente.']);
+        } catch (\Exception $e) {
+            return response()->json(['mensaje' => 'Error al imprimir el recibo: ' . $e->getMessage()], 500);
+        }
+
+    }
 
 
 
