@@ -133,6 +133,7 @@
                                 <li class=""><a><i class="fa fa-lock"></i> Seguridad <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>
+                                            <li><a href="{{ route('sucursal.index') }}">Sucursal</a></li>
                                             @can('usuario.manage')
                                                 <li><a href="{{ route('usuario.index') }}">Usuarios</a></li>
                                             @endcan

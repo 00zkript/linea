@@ -54,6 +54,15 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     Route::get('usuarios/listar',[\App\Http\Controllers\Panel\UsuarioController::class,'listar'])->name("usuario.listar");
     Route::resource('usuarios',\App\Http\Controllers\Panel\UsuarioController::class)->names('usuario');
 
+
+    Route::get('sucursal/ubigeo',[\App\Http\Controllers\Panel\SucursalController::class,'ubigeo'])->name("sucursal.ubigeo");
+    Route::put('sucursal/{idsucursal}/habilitar',[\App\Http\Controllers\Panel\SucursalController::class,'habilitar'])->name("sucursal.habilitar");
+    Route::put('sucursal/{idsucursal}/inhabilitar',[\App\Http\Controllers\Panel\SucursalController::class,'inhabilitar'])->name("sucursal.inhabilitar");
+    Route::get('sucursal/listar',[\App\Http\Controllers\Panel\SucursalController::class,'listar'])->name("sucursal.listar");
+    Route::resource('sucursal',\App\Http\Controllers\Panel\SucursalController::class);
+
+
+
     Route::put('moneda/{moneda}/habilitar',[\App\Http\Controllers\Panel\MonedaController::class,'habilitar'])->name("moneda.habilitar");
     Route::put('moneda/{moneda}/inhabilitar',[\App\Http\Controllers\Panel\MonedaController::class,'inhabilitar'])->name("moneda.inhabilitar");
     Route::get('moneda/listar',[\App\Http\Controllers\Panel\MonedaController::class,'listar'])->name("moneda.listar");
@@ -196,8 +205,8 @@ Route::middleware(['autenticado:panel',])->prefix("panel")->group(function (){
     // Route::post('example/file/update',[\App\Http\Controllers\Panel\ExampleController::class,'fileUpdate'])->name("example.file.update");
     // Route::post('example/file/sort',[\App\Http\Controllers\Panel\ExampleController::class,'fileSort'])->name("example.file.sort");
     // Route::post('example/file/destroy',[\App\Http\Controllers\Panel\ExampleController::class,'fileDestroy'])->name("example.file.destroy");
-    // Route::put('example/{example}/habilitar',[\App\Http\Controllers\Panel\ExampleController::class,'habilitar'])->name("example.habilitar");
-    // Route::put('example/{example}/inhabilitar',[\App\Http\Controllers\Panel\ExampleController::class,'inhabilitar'])->name("example.inhabilitar");
+    // Route::put('example/{idexample}/habilitar',[\App\Http\Controllers\Panel\ExampleController::class,'habilitar'])->name("example.habilitar");
+    // Route::put('example/{idexample}/inhabilitar',[\App\Http\Controllers\Panel\ExampleController::class,'inhabilitar'])->name("example.inhabilitar");
     // Route::get('example/listar',[\App\Http\Controllers\Panel\ExampleController::class,'listar'])->name("example.listar");
     // Route::resource('example',\App\Http\Controllers\Panel\ExampleController::class);
 
