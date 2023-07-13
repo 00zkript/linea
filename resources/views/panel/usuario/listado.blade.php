@@ -4,7 +4,7 @@
             <thead class="thead-dark">
             <tr class="text-center text-nowrap">
                 <th>Código</th>
-                <th>Foto</th>
+                <th>Imagen</th>
                 {{-- <th>Cargo</th> --}}
                 <th>Usuario</th>
                 <th>Correo</th>
@@ -16,10 +16,10 @@
 
             @foreach($usuarios AS $u)
                 <tr>
-                    <td>{{str_pad($u->idusuario,7,'0000000',STR_PAD_LEFT) }}</td>
+                    <td>{{str_pad($u->idusuario,7,0,STR_PAD_LEFT) }}</td>
                     <td class="text-center">
-                        @if(!empty($u->foto))
-                            <img class="img-thumbnail" style="width: 80px;height: 80px" src="{{ asset('panel/img/usuarios/'.$u->foto) }}" alt="">
+                        @if(!empty($u->imagen))
+                            <img class="img-thumbnail" style="width: 80px;height: 80px" src="{{ asset('panel/img/usuarios/'.$u->imagen) }}" alt="">
                         @else
                             <img class="img-thumbnail" style="width: 80px;height: 80px" src="{{ asset('panel/default/foto_defecto.jpg') }}" alt="">
                         @endif

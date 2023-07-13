@@ -27,26 +27,26 @@ class UsuarioRequest extends FormRequest
         switch ($this->method()) {
             case "POST":
                 return [
-                    'rol' => 'required|integer|exists:rol,idrol',
-                    'usuario' => 'exclude_if:rol,2|required|max:50|unique:usuario,usuario',
-                    'clave' => 'required|max:20',
+                    'rol' => 'required|integer|exists:roles,id',
+                    'usuario' => 'required|max:50|unique:usuario,usuario',
+                    'clave' => 'required',
                     'nombres' => 'required|max:250',
                     'apellidos' => 'required|max:250',
                     'correo' => 'nullable|email',
-                    'foto' => 'nullable|image|mimes:jpg,jpeg,png',
+                    'foto' => 'nullable|image|mimes:jpg,jpeg,png,webp',
                     'estado' => 'required|boolean'
                 ];
                 break;
 
             case "PUT":
                 return [
-                    'rolEditar' => 'required|integer|exists:rol,idrol',
-                    'usuarioEditar' => 'exclude_if:rolEditar,2|required|max:50|unique:usuario,usuario,'.$this->idusuario.',idusuario',
-                    'claveEditar' => 'nullable|max:20',
+                    'rolEditar' => 'required|integer|exists:roles,id',
+                    'usuarioEditar' => 'required|max:50|unique:usuario,usuario,'.$this->idusuario.',idusuario',
+                    'claveEditar' => 'nullable',
                     'nombresEditar' => 'required|max:250',
                     'apellidosEditar' => 'required|max:250',
                     'correoEditar' => 'nullable|email',
-                    'fotoEditar' => 'nullable|image|mimes:JPG,JPEG,PNG',
+                    'fotoEditar' => 'nullable|image|mimes:jpg,jpeg,png,webp',
                     'estadoEditar' => 'required|boolean'
                 ];
                 break;

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Panel;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Panel\UsuarioRequest;
+use App\Models\Sucursal;
 use App\Models\TipoDocumentoIdentidad;
 use App\User;
 use Illuminate\Http\Request;
@@ -17,8 +18,9 @@ class UsuarioController extends Controller
     {
         $roles = Role::query()
             ->where('status', 1)
-            // ->where('id', '!=', 1)
             ->get();
+
+        $sucursales = Sucursal::query()->where('estado',1)->get();
 
         $tipoDocumentoIdentidad = TipoDocumentoIdentidad::query()->where('estado',1)->get();
 
@@ -26,7 +28,7 @@ class UsuarioController extends Controller
             ->orderBy('idusuario', 'DESC')
             ->paginate(10, ['*'], 'pagina', 1);
 
-        return view('panel.usuario.index')->with(compact('roles', 'usuarios', 'tipoDocumentoIdentidad'));
+        return view('panel.usuario.index')->with(compact('roles', 'usuarios', 'tipoDocumentoIdentidad', 'sucursales'));
     }
 
     public function listar(Request $request)
@@ -46,7 +48,7 @@ class UsuarioController extends Controller
             ->orderBy('idusuario', 'DESC')
             ->paginate($cantidadRegistros, ['*'], 'pagina', $paginaActual);
 
-        return response()->json(view('panel.usuario.listado')->with(compact('usuarios'))->render());
+        return view('panel.usuario.listado')->with(compact('usuarios'))->render();
 
 
     }
@@ -62,7 +64,8 @@ class UsuarioController extends Controller
         }
 
         $rol       = $request->input('rol');
-        $usuario   = $request->input('usuario');
+        $username  = $request->input('usuario');
+        $correo     = $request->input('correo');
         $clave     = $request->input('clave');
         $nombres   = $request->input('nombres');
         $apellidos = $request->input('apellidos');
@@ -71,11 +74,12 @@ class UsuarioController extends Controller
         $cargo     = $request->input('cargo');
         $estado    = $request->input('estado');
 
-        try {
+        // try {
 
-            $usuario            = new User;
+            $usuario            = new User();
             $usuario->idrol     = $rol;
-            $usuario->usuario   = $usuario;
+            $usuario->correo    = $correo;
+            $usuario->usuario   = $username;
             $usuario->clave     = encrypt($clave);
             $usuario->nombres   = $nombres;
             $usuario->apellidos = $apellidos;
@@ -84,8 +88,8 @@ class UsuarioController extends Controller
             $usuario->cargo     = $cargo;
             $usuario->estado    = $estado;
 
-            if ($request->hasFile('imagen')) {
-                $imagen = Storage::disk('panel')->putFile('usuarios', $request->file('imagen'));
+            if ($request->hasFile('foto')) {
+                $imagen = Storage::disk('panel')->putFile('usuarios', $request->file('foto'));
                 $usuario->imagen = basename($imagen);
             }
 
@@ -96,15 +100,15 @@ class UsuarioController extends Controller
             ]);
 
 
-        } catch (\Throwable $th) {
+        // } catch (\Throwable $th) {
 
-            return response()->json([
-                'mensaje'=> "No se pudo crear el registro.",
-                "error" => $th->getMessage(),
-                "linea" => $th->getLine(),
-            ],400);
+        //     return response()->json([
+        //         'mensaje'=> "No se pudo crear el registro.",
+        //         "error" => $th->getMessage(),
+        //         "linea" => $th->getLine(),
+        //     ],400);
 
-        }
+        // }
 
     }
 
@@ -114,7 +118,7 @@ class UsuarioController extends Controller
             return abort(404);
         }
 
-        $usuario = User::query()->find($usuarioID);
+        $usuario = User::query()->with(['tipoDocumentoIdentidad','rol','sucursal'])->find($usuarioID);
 
         if(!$usuario){
             return response()->json( ['mensaje' => "Registro no encontrado"],400);
@@ -150,7 +154,8 @@ class UsuarioController extends Controller
         }
 
         $rol       = $request->input('rolEditar');
-        $usuario   = $request->input('usuarioEditar');
+        $username  = $request->input('usuarioEditar');
+        $correo    = $request->input('correoEditar');
         $clave     = $request->input('claveEditar');
         $nombres   = $request->input('nombresEditar');
         $apellidos = $request->input('apellidosEditar');
@@ -163,7 +168,8 @@ class UsuarioController extends Controller
 
             $usuario            = User::query()->findOrFail($usuarioID);
             $usuario->idrol     = $rol;
-            $usuario->usuario   = $usuario;
+            $usuario->correo    = $correo;
+            $usuario->usuario   = $username;
             if (!empty($clave)) {
                 $usuario->clave = encrypt($clave);
             }
@@ -174,13 +180,13 @@ class UsuarioController extends Controller
             $usuario->cargo     = $cargo;
             $usuario->estado    = $estado;
 
-            if ($request->hasFile('imagenEditar')) {
+            if ($request->hasFile('fotoEditar')) {
 
                 if (Storage::disk('panel')->exists('usuarios/' . $usuario->imagen)) {
                     Storage::disk('panel')->delete('usuarios/' . $usuario->imagen);
                 }
 
-                $imagen = Storage::disk('panel')->putFile('usuarios', $request->file('imagenEditar'));
+                $imagen = Storage::disk('panel')->putFile('usuarios', $request->file('fotoEditar'));
                 $usuario->imagen = basename($imagen);
             }
             $usuario->update();

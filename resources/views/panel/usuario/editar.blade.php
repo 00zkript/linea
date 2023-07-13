@@ -20,6 +20,16 @@
                             <hr>
                         </div>
 
+                        <div class="col-12 form-group">
+                            <label for="sucursalEditar">Sucursal:</label>
+                            <select class="form-control" name="sucursalEditar" id="sucursalEditar" title="Sucursal" >
+                                <option value="" hidden selected >[---Seleccione---]</option>
+                                @foreach ($sucursales as $sucursal)
+                                    <option value="{{ $sucursal->idsucursal }}">{{ $sucursal->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                        <div class="col-12 form-group">
                             <label for="rolEditar">Rol: <span class="text-danger">(*)</span></label>
                             <select name="rolEditar" id="rolEditar" class="form-control" title="Rol" required>
@@ -42,7 +52,7 @@
 
                         <div class="col-md-6 col-12 form-group">
                             <label for="claveEditar">Clave: <span class="text-danger">(*)</span></label>
-                            <input type="password" name="claveEditar" id="claveEditar" required class="form-control" maxlength="250" placeholder="Clave">
+                            <input type="password" name="claveEditar" id="claveEditar" class="form-control" maxlength="250" placeholder="Clave">
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
@@ -66,8 +76,8 @@
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="numeroDucmentoIdentidadEditar">Número de documento de identidad</label>
-                            <input type="text" class="form-control format-number" name="numeroDucmentoIdentidadEditar" id="numeroDucmentoIdentidadEditar" placeholder="Número de documento de identidad" minLength="8" maxLength="8" >
+                            <label for="numeroDocumentoIdentidadEditar">Número de documento de identidad</label>
+                            <input type="text" class="form-control" name="numeroDocumentoIdentidadEditar" id="numeroDocumentoIdentidadEditar" placeholder="Número de documento de identidad" minLength="8" maxLength="8" >
                         </div>
 
                         <div class="col-12 form-group">

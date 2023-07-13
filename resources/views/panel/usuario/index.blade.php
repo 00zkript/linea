@@ -65,8 +65,8 @@
         const URL_VER         = "{{ route('usuario.show',':id') }}";
         const URL_EDIT        = "{{ route('usuario.edit',':id') }}";
         const URL_MODIFICAR   = "{{ route('usuario.update',':id') }}";
-        const URL_HABILITAR   = "{{ route('usuario.habilitar') }}";
-        const URL_INHABILITAR = "{{ route('usuario.inhabilitar') }}";
+        const URL_HABILITAR   = "{{ route('usuario.habilitar', ':id') }}";
+        const URL_INHABILITAR = "{{ route('usuario.inhabilitar', ':id') }}";
         const URL_ELIMINAR    = "{{ route('usuario.destroy',':id') }}";
         const URL_CARPETA     = BASE_URL+"/panel/img/usuarios/";
 
@@ -179,12 +179,20 @@
                     stop();
                     $("#frmEditar")[0].reset();
                     $("#frmEditar span.error").remove();
-                    $("#idusuario").val(data.idusuario);
+
+                    $('#frmEditar input[name=idusuario]').val(data.idusuario);
+                    $("#sucursalEditar").val(data.idsucursal);
                     $("#rolEditar").val(data.idrol);
+                    $("#correoEditar").val(data.correo);
                     $("#usuarioEditar").val(data.usuario);
                     $("#nombresEditar").val(data.nombres);
                     $("#apellidosEditar").val(data.apellidos);
-                    $("#correoEditar").val(data.correo);
+                    $('#tipoDocumentoIdentidadEditar').val( data.idtipo_documento_identidad );
+                    const tipoDocumentoSelected = resources.tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad == data.idtipo_documento_identidad) ?? resources.tipoDocumentoIdentidad[0];
+                    const { caracteres_length }  = tipoDocumentoSelected;
+                    $('#numeroDocumentoIdentidadEditar').val( data.numero_documento_identidad );
+                    $('#numeroDocumentoIdentidadEditar').attr( 'minLength', caracteres_length).attr( 'maxLength', caracteres_length);
+                    $("#cargoEditar").val(data.cargo);
 
                     $("#fotoEditar").fileinput('destroy').fileinput({
                         theme: 'fa',
@@ -221,6 +229,7 @@
                     });
 
 
+
                     $("#estadoEditar").val(data.estado);
 
                     $("#modalEditar").modal("show");
@@ -235,27 +244,31 @@
                 var idusuario = $(this).closest('div.dropdown-menu').data('idusuario');
 
                 cargando('Procesando...');
-                axios(URL_VER,{ params: {idusuario : idusuario} })
+                axios(URL_VER.replace(':id',idusuario))
                 .then(response => {
                     const data = response.data;
                     stop();
-                    $("#txtRol").html(data.cargo);
-                    $("#txtUsuario").html(data.usuario);
-                    $("#txtNombres").html(data.cliente.nombres);
-                    $("#txtApellidos").html(data.cliente.apellidos);
-                    $("#txtCorreo").html(data.cliente.correo);
+
+                    $("#rolShow").html(data.rol.name);
+                    $("#sucursalShow").html(data.sucursal.nombre);
+                    $("#correoShow").html(data.correo);
+                    $("#usuarioShow").html(data.usuario);
+                    $("#nombresShow").html(data.nombres);
+                    $("#apellidosShow").html(data.apellidos);
+                    $("#tipoDocumentoIdentidadShow").html(data.tipo_documento_identidad.nombre);
+                    $("#numeroDocumentoIdentidadShow").html(data.numero_documento_identidad);
 
 
-                    if (!empty(data.foto)){
-                        $("#txtFoto").attr('src','{{ asset('panel/img/usuarios/') }}/'+data.foto);
+                    if (!empty(data.imagen)){
+                        $("#imagenShow").attr('src',URL_CARPETA+data.imagen);
                     }else{
-                        $("#txtFoto").attr('src','{{ asset('panel/default/foto_defecto.jpg') }}');
+                        $("#imagenShow").attr('src',"{{ asset('panel/default/foto_defecto.jpg') }}");
                     }
 
                     if (data.estado){
-                        $("#txtEstado").html('<label class="badge badge-success">Habilitado</label>');
+                        $("#estadoShow").html('<label class="badge badge-success">Habilitado</label>');
                     }else{
-                        $("#txtEstado").html('<label class="badge badge-danger">Inhabilitado</label>');
+                        $("#estadoShow").html('<label class="badge badge-danger">Inhabilitado</label>');
                     }
 
 
@@ -297,7 +310,8 @@
             $(document).on("submit","#frmEditar",function(e){
                 e.preventDefault();
 
-                var form = new FormData($(this)[0]);
+                const idusuario = $('#frmEditar input[name=idusuario]').val();
+                const form = new FormData($(this)[0]);
 
                 cargando('Procesando...');
                 axios.post(URL_MODIFICAR.replace(':id',idusuario),form)
@@ -319,22 +333,23 @@
         const habilitar = () => {
             $(document).on( "submit" ,"#frmHabilitar", function(e){
                 e.preventDefault();
-                var form = new FormData($(this)[0]);
+                // const form = new FormData($(this)[0]);
+                const idusuario = $("#frmHabilitar input[name=idusuario]").val();
                 cargando('Procesando...');
 
-                axios.post(URL_HABILITAR.replace(':id',idusuario),form)
-                    .then( response => {
-                        const data = response.data;
-                        stop();
+                axios.put(URL_HABILITAR.replace(':id',idusuario))
+                .then( response => {
+                    const data = response.data;
+                    stop();
 
-                        $("#modalHabilitar").modal("hide");
+                    $("#modalHabilitar").modal("hide");
 
-                        notificacion("success","Habilitado",data.mensaje);
+                    notificacion("success","Habilitado",data.mensaje);
 
-                        listado($("#cantidadRegistros").val(),$("#paginaActual").val());
+                    listado($("#cantidadRegistros").val(),$("#paginaActual").val());
 
-                    })
-                    .catch( errorCatch )
+                })
+                .catch( errorCatch )
 
 
             } )
@@ -345,22 +360,22 @@
             $(document).on( "submit","#frmInhabilitar" , function(e){
                 e.preventDefault();
 
-                var form = new FormData($(this)[0]);
-
+                // const form = new FormData($(this)[0]);
+                const idusuario = $("#frmInhabilitar input[name=idusuario]").val();
                 cargando('Procesando...');
 
-                axios.post(URL_INHABILITAR.replace(':id',idusuario),form)
-                    .then( response => {
-                        const data = response.data;
-                        stop();
-                        $("#modalInhabilitar").modal("hide");
+                axios.put(URL_INHABILITAR.replace(':id',idusuario))
+                .then( response => {
+                    const data = response.data;
+                    stop();
+                    $("#modalInhabilitar").modal("hide");
 
-                        notificacion("success","Inhabilitado",data.mensaje);
+                    notificacion("success","Inhabilitado",data.mensaje);
 
-                        listado($("#cantidadRegistros").val(),$("#paginaActual").val());
+                    listado($("#cantidadRegistros").val(),$("#paginaActual").val());
 
-                    } )
-                    .catch( errorCatch )
+                } )
+                .catch( errorCatch )
 
             } )
         }
@@ -369,22 +384,22 @@
             $(document).on( "submit","#frmEliminar" , function(e){
                 e.preventDefault();
 
-                var form = new FormData($(this)[0]);
-
+                // const form = new FormData($(this)[0]);
+                const idusuario = $("#frmEliminar input[name=idusuario]").val();
                 cargando('Procesando...');
 
-                axios.post(URL_ELIMINAR.replace(':id',idusuario),form)
-                    .then( response => {
-                        const data = response.data;
-                        stop();
-                        $("#modalEliminar").modal("hide");
+                axios.delete(URL_ELIMINAR.replace(':id',idusuario))
+                .then( response => {
+                    const data = response.data;
+                    stop();
+                    $("#modalEliminar").modal("hide");
 
-                        notificacion("success","Eliminado",data.mensaje);
+                    notificacion("success","Eliminado",data.mensaje);
 
-                        listado($("#cantidadRegistros").val(),$("#paginaActual").val());
+                    listado($("#cantidadRegistros").val(),$("#paginaActual").val());
 
-                    } )
-                    .catch( errorCatch )
+                } )
+                .catch( errorCatch )
 
             } )
         }
@@ -392,13 +407,27 @@
         const changeTipoDocumentoIdentidad = () => {
             $(document).on( 'change', '#tipoDocumentoIdentidad', function (e) {
                 e.preventDefault();
-                const tipoDocumentoSelected = resources.tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad);
+                const val = $(this).val();
+                const tipoDocumentoSelected = resources.tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad == val);
                 const { caracteres_length }  = tipoDocumentoSelected;
 
-                const value = $('#numeroDucmentoIdentidad').val();
+                const value = $('#numeroDocumentoIdentidad').val();
 
-                $('#numeroDucmentoIdentidad').val( value.slice(0,caracteres_length))
-                $('#numeroDucmentoIdentidad').attr( 'minLength', caracteres_length).attr( 'maxLength', caracteres_length);
+                $('#numeroDocumentoIdentidad').val( value.slice(0,caracteres_length))
+                $('#numeroDocumentoIdentidad').attr( 'minLength', caracteres_length).attr( 'maxLength', caracteres_length);
+
+            });
+
+            $(document).on( 'change', '#tipoDocumentoIdentidadEditar', function (e) {
+                e.preventDefault();
+                const val = $(this).val();
+                const tipoDocumentoSelected = resources.tipoDocumentoIdentidad.find(ele => ele.idtipo_documento_identidad == val);
+                const { caracteres_length }  = tipoDocumentoSelected;
+
+                const value = $('#numeroDocumentoIdentidadEditar').val();
+
+                $('#numeroDocumentoIdentidadEditar').val( value.slice(0,caracteres_length))
+                $('#numeroDocumentoIdentidadEditar').attr( 'minLength', caracteres_length).attr( 'maxLength', caracteres_length);
 
             });
         }

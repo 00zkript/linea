@@ -19,6 +19,16 @@
                         </div>
 
                         <div class="col-12 form-group">
+                            <label for="sucursal">Sucursal:</label>
+                            <select class="form-control" name="sucursal" id="sucursal" title="Sucursal" >
+                                <option value="" hidden selected >[---Seleccione---]</option>
+                                @foreach ($sucursales as $sucursal)
+                                    <option value="{{ $sucursal->idsucursal }}">{{ $sucursal->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-12 form-group">
                             <label for="rol">Rol: <span class="text-danger">(*)</span></label>
                             <select name="rol" id="rol" class="form-control" title="Rol" required>
                                 <option value="" hidden selected disabled>[--Seleccione--]</option>
@@ -64,8 +74,8 @@
                         </div>
 
                         <div class="col-md-6 col-12 form-group">
-                            <label for="numeroDucmentoIdentidad">Número de documento de identidad</label>
-                            <input type="text" class="form-control format-number" name="numeroDucmentoIdentidad" id="numeroDucmentoIdentidad" placeholder="Número de documento de identidad" minLength="8" maxength="8" >
+                            <label for="numeroDocumentoIdentidad">Número de documento de identidad</label>
+                            <input type="text" class="form-control" name="numeroDocumentoIdentidad" id="numeroDocumentoIdentidad" placeholder="Número de documento de identidad" minLength="8" maxength="8" >
                         </div>
 
                         <div class="col-12 form-group">

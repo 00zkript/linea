@@ -17,45 +17,64 @@
                     </div>
 
                     <div class="col-12">
+                        <p>Sucursal:</p>
+                        <p id="sucursalShow"></p>
+                        <hr>
+                    </div>
+
+                    <div class="col-12">
                         <p>Rol:</p>
-                        <p id="txtRol"></p>
+                        <p id="rolShow"></p>
+                        <hr>
+                    </div>
+
+                    <div class="col-12">
+                        <p>Correo:</p>
+                        <p id="correoShow"></p>
                         <hr>
                     </div>
 
                     <div class="col-12">
                         <p>Usuario:</p>
-                        <p id="txtUsuario"></p>
+                        <p id="usuarioShow"></p>
                         <hr>
                     </div>
 
 
                     <div class="col-12">
                         <p>Nombres:</p>
-                        <p id="txtNombres"></p>
+                        <p id="nombresShow"></p>
                         <hr>
                     </div>
 
                     <div class="col-12">
                         <p>Apellidos:</p>
-                        <p id="txtApellidos"></p>
+                        <p id="apellidosShow"></p>
                         <hr>
                     </div>
 
                     <div class="col-12">
-                        <p>Correo:</p>
-                        <p id="txtCorreo"></p>
+                        <p>Tipo de documento de identidad:</p>
+                        <p id="tipoDocumentoIdentidadShow"></p>
                         <hr>
                     </div>
 
+                    <div class="col-12">
+                        <p>Número de documento de identidad:</p>
+                        <p id="numeroDocumentoIdentidadShow"></p>
+                        <hr>
+                    </div>
+
+
                     <div class="col-12 text-center">
-                        <p>Foto:</p>
-                        <img style="width: 130px;height: 130px" class="img-thumbnail" src="" id="txtFoto">
+                        <p>Imagen:</p>
+                        <img style="width: 130px;height: 130px" class="img-thumbnail" src="" id="imagenShow">
                         <hr>
                     </div>
 
                     <div class="col-12">
                         <p>Estado:</p>
-                        <p id="txtEstado"></p>
+                        <p id="estadoShow"></p>
                     </div>
 
                 </div>

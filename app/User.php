@@ -2,11 +2,12 @@
 
 namespace App;
 
-use App\Models\Cliente;
+
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Models\Role;
 
 class User extends Authenticatable
 {
@@ -15,7 +16,7 @@ class User extends Authenticatable
 
     protected $table = "usuario";
     protected $primaryKey = "idusuario";
-    protected $rememberTokenName = "";
+    // protected $rememberTokenName = "";
 
     public $timestamps = true;
     // public const CREATED_AT = 'creado';
@@ -29,6 +30,23 @@ class User extends Authenticatable
             'nombre' => 'Sin sucursal'
         ]);
     }
+    public function rol()
+    {
+        return $this->hasOne(Role::class, 'id', 'idrol')->withDefault([
+            'id' => null,
+            'name' => 'Sin rol'
+        ]);
+    }
+
+
+    public function tipoDocumentoIdentidad()
+    {
+        return $this->hasOne(Models\TipoDocumentoIdentidad::class, 'idtipo_documento_identidad', 'idtipo_documento_identidad')
+            ->withDefault([
+                'nombre' => 'Sin documento'
+            ]);
+    }
+
 
 
 
